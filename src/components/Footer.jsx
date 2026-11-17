@@ -150,13 +150,6 @@ export function Footer({
 
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href="/admin"
-              className="inline-flex items-center gap-1 text-[#999999] hover:text-white transition"
-            >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Espace vendeur & équipe (/admin)</span>
-            </a>
-            <a
               href={BRAND.studioCredit.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"

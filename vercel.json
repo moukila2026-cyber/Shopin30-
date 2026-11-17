@@ -11,9 +11,9 @@
   },
   "headers": [
     {
-      "source": "/admin(.*)",
+      "source": "/(admin|gestion)(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
         { "key": "Referrer-Policy", "value": "same-origin" }
       ]
     },
@@ -32,7 +32,23 @@
       "destination": "/api"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/gestion",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/gestion/:path*",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/((?!api/|admin\\.html).*)",
       "destination": "/index.html"
     }
   ]

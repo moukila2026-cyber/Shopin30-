@@ -69,17 +69,18 @@ function enforceSameOrigin(req, res, next) {
       .trim()
       .toLowerCase();
 
-    const allowedPublic = (process.env.PUBLIC_ORIGIN || '').trim();
-    let allowedHost = '';
-    if (allowedPublic) {
+    const allowedHosts = new Set();
+    for (const rawUrl of [process.env.PUBLIC_ORIGIN, process.env.ADMIN_ORIGIN]) {
+      const trimmed = (rawUrl || '').trim();
+      if (!trimmed) continue;
       try {
-        allowedHost = new URL(allowedPublic).host.toLowerCase();
+        allowedHosts.add(new URL(trimmed).host.toLowerCase());
       } catch {
-        allowedHost = '';
+        // ignore invalid URL
       }
     }
 
-    if (reqHost && (originHost === reqHost || (allowedHost && originHost === allowedHost))) {
+    if (reqHost && (originHost === reqHost || allowedHosts.has(originHost))) {
       return next();
     }
     return res.status(403).json({
@@ -589,12 +590,24 @@ export function createApp({ store, production = false, serveStatic = false } = {
     res.status(404).json({ error: 'Point d’accès API introuvable.' });
   });
 
-  // En mode production Node autonome (`npm start`), servir dist/
+  // En mode production Node autonome (`npm start`), servir dist/ (2 apps distinctes : index.html & admin.html)
   if (serveStatic) {
     const distDir = path.join(ROOT_DIR, 'dist');
     if (fs.existsSync(distDir)) {
       app.use(express.static(distDir, { maxAge: '7d', index: false }));
-      app.get('/{*splat}', (_req, res) => {
+      app.get(['/admin', '/admin/{*splat}', '/gestion', '/gestion/{*splat}'], (_req, res) => {
+        res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        res.sendFile(path.join(distDir, 'admin.html'));
+      });
+      app.get('/{*splat}', (req, res) => {
+        const host = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+          .split(',')[0]
+          .trim()
+          .toLowerCase();
+        if (host.startsWith('admin.') || host.includes('perokado-admin')) {
+          res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+          return res.sendFile(path.join(distDir, 'admin.html'));
+        }
         res.sendFile(path.join(distDir, 'index.html'));
       });
     }

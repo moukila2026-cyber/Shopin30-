@@ -58,9 +58,16 @@ export async function apiFetch(path, options = {}) {
 }
 
 export function buildOrderTrackingUrl(order, originOverride) {
-  const origin =
+  let origin =
     originOverride ||
     (typeof window !== 'undefined' && window.location.origin ? window.location.origin : '');
+  // Si généré depuis un sous-domaine admin.* ou perokado-admin.*, pointer vers le domaine boutique client
+  if (!originOverride && typeof window !== 'undefined') {
+    const h = window.location.hostname.toLowerCase();
+    if (h.startsWith('admin.')) {
+      origin = `${window.location.protocol}//${window.location.host.slice(6)}`;
+    }
+  }
   const params = new URLSearchParams({ track: order.reference });
   if (order.trackingToken) {
     params.set('token', order.trackingToken);
