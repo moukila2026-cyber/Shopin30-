@@ -95,7 +95,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
   app.disable('x-powered-by');
   app.set('trust proxy', 1);
 
-  // En-têtes de sécurité HTTP (Helmet) — compatibles avec l'aperçu en direct et la production Vercel
+  // En-têtes de sécurité HTTP (Helmet) — compatibles avec l'aperçu en direct (iframe cross-origin) et la production Vercel
   app.use(
     helmet({
       contentSecurityPolicy: production
@@ -115,6 +115,8 @@ export function createApp({ store, production = false, serveStatic = false } = {
           }
         : false,
       crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: false,
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
       frameguard: false, // Géré par CSP frame-ancestors en prod et compatible Live Preview
     })
   );
