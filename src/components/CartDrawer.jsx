@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import {
   X,
   Trash2,
-  ShoppingBag,
+  ShoppingCart,
   Tag,
   Truck,
   CheckCircle2,
@@ -17,6 +17,7 @@ import {
   Download,
   ExternalLink,
   Info,
+  Lock,
 } from 'lucide-react';
 import { formatFcfa, DELIVERY_SLOTS, BRAND } from '../../shared/catalog.js';
 import {
@@ -35,6 +36,7 @@ function makeRequestId() {
 
 export function CartDrawer({
   open,
+  initialStep = 'cart',
   onClose,
   cartItems,
   productsMap,
@@ -42,6 +44,8 @@ export function CartDrawer({
   onRemoveItem,
   onClearCart,
   settings,
+  selectedZoneId,
+  onSelectZone,
   onOrderSuccess,
   onOpenDirectTrack,
 }) {
@@ -54,7 +58,9 @@ export function CartDrawer({
   const zones = settings?.deliveryZones || [];
   const [customerName, setCustomerName] = React.useState('');
   const [customerPhone, setCustomerPhone] = React.useState('');
-  const [cityZoneId, setCityZoneId] = React.useState(zones[0]?.id || 'daloa-commune');
+  const [cityZoneId, setCityZoneId] = React.useState(
+    selectedZoneId || zones[0]?.id || 'daloa-commune'
+  );
   const [neighborhood, setNeighborhood] = React.useState('');
   const [addressDetails, setAddressDetails] = React.useState('');
   const [deliverySlot, setDeliverySlot] = React.useState(DELIVERY_SLOTS[0].id);
@@ -72,14 +78,21 @@ export function CartDrawer({
   const [copiedRef, setCopiedRef] = React.useState(false);
   const [copiedWave, setCopiedWave] = React.useState(false);
 
+  // Synchroniser avec la zone choisie dans le Header Amazon
   React.useEffect(() => {
-    if (zones.length > 0 && !zones.some((z) => z.id === cityZoneId)) {
+    if (selectedZoneId && zones.some((z) => z.id === selectedZoneId)) {
+      setCityZoneId(selectedZoneId);
+    } else if (zones.length > 0 && !zones.some((z) => z.id === cityZoneId)) {
       setCityZoneId(zones[0].id);
     }
-  }, [zones, cityZoneId]);
+  }, [selectedZoneId, zones, cityZoneId]);
 
   React.useEffect(() => {
-    if (!open) {
+    if (open) {
+      if (step !== 'confirmed') {
+        setStep(initialStep === 'checkout' ? 'checkout' : 'cart');
+      }
+    } else {
       if (step === 'confirmed') {
         setStep('cart');
         setConfirmedData(null);
@@ -87,7 +100,7 @@ export function CartDrawer({
       }
       setSubmitError('');
     }
-  }, [open, step]);
+  }, [open, initialStep]);
 
   // Génération locale du Code QR haute précision pointant vers le lien de suivi en direct
   React.useEffect(() => {
@@ -99,7 +112,7 @@ export function CartDrawer({
     QRCode.toDataURL(url, {
       width: 280,
       margin: 2,
-      color: { dark: '#0F443E', light: '#FFFFFF' },
+      color: { dark: '#131921', light: '#FFFFFF' },
       errorCorrectionLevel: 'M',
     })
       .then((dataUrl) => setQrDataUrl(dataUrl))
@@ -126,7 +139,6 @@ export function CartDrawer({
   const selectedZone =
     zones.find((z) => z.id === cityZoneId) ||
     zones[0] || { fee: 1000, shortName: 'Daloa Commune' };
-  // Aucune livraison gratuite : tarif de base systématiquement appliqué
   const deliveryFee = Math.max(100, Number(selectedZone?.fee || 1000));
   const grandTotal = netSubtotal + deliveryFee;
 
@@ -208,40 +220,40 @@ export function CartDrawer({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-end bg-black/55 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex justify-end bg-black/60"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="Panier et commande"
+      aria-label="Panier et commande Pèrôkadô"
     >
       <div
-        className="w-full max-w-lg bg-[#FAF7F0] h-full flex flex-col shadow-2xl border-l border-[#E5DEC9]"
+        className="w-full max-w-lg bg-[#EAEDED] h-full flex flex-col shadow-2xl border-l border-[#D5D9D9]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* En-tête du tiroir */}
-        <div className="px-5 py-4 bg-white border-b border-[#E5DEC9] flex items-center justify-between">
+        {/* En-tête sombre #232F3E style Amazon Checkout */}
+        <div className="px-5 py-3.5 bg-[#232F3E] text-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             {step === 'checkout' && (
               <button
                 type="button"
                 onClick={() => setStep('cart')}
-                className="p-1.5 rounded-full hover:bg-[#FAF7F0] text-[#0F443E] cursor-pointer"
+                className="p-1.5 rounded hover:bg-[#37475A] text-white cursor-pointer"
                 aria-label="Retour au panier"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
             )}
-            <ShoppingBag className="w-5 h-5 text-[#D95D24]" />
-            <h2 className="text-lg font-bold text-[#0F443E]">
-              {step === 'cart' && 'Votre Panier'}
-              {step === 'checkout' && 'Livraison & Paiement Wave'}
-              {step === 'confirmed' && 'Référence & Code QR de suivi'}
+            <ShoppingCart className="w-5 h-5 text-[#FF9900]" />
+            <h2 className="text-base sm:text-lg font-bold">
+              {step === 'cart' && 'Panier Pèrôkadô'}
+              {step === 'checkout' && 'Passer la commande (Wave)'}
+              {step === 'confirmed' && 'Confirmation & Code QR de suivi'}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-[#FAF7F0] text-stone-600 cursor-pointer"
+            className="p-1.5 rounded hover:bg-[#37475A] text-white cursor-pointer"
             aria-label="Fermer"
           >
             <X className="w-5 h-5" />
@@ -251,38 +263,39 @@ export function CartDrawer({
         {/* ÉTAPE 1 : PANIER */}
         {step === 'cart' && (
           <>
-            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
               {detailedItems.length === 0 ? (
-                <div className="text-center py-16 space-y-3">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-white border border-[#E5DEC9] flex items-center justify-center">
-                    <ShoppingBag className="w-7 h-7 text-stone-400" />
+                <div className="bg-white rounded-md p-8 border border-[#D5D9D9] text-center space-y-3">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-[#F7FAFA] border border-[#D5D9D9] flex items-center justify-center">
+                    <ShoppingCart className="w-7 h-7 text-[#565959]" />
                   </div>
-                  <p className="font-bold text-[#0F443E]">Votre panier est vide</p>
-                  <p className="text-sm text-stone-600 max-w-xs mx-auto">
-                    Explorez nos catégories High-Tech, Mode, Beauté & Maison et ajoutez vos articles.
+                  <p className="font-bold text-lg text-[#0F1111]">Votre panier Pèrôkadô est vide</p>
+                  <p className="text-xs sm:text-sm text-[#565959] max-w-xs mx-auto">
+                    Découvrez nos Ventes Flash du jour et parcourez les rayons High-Tech, Mode,
+                    Beauté et Maison.
                   </p>
                 </div>
               ) : (
                 <>
-                  {/* Encadré clair sur la politique de livraison */}
-                  <div className="bg-white rounded-2xl p-3.5 border border-[#E5DEC9] text-xs space-y-1.5">
-                    <p className="font-bold text-[#0F443E] flex items-center gap-1.5">
-                      <Truck className="w-4 h-4 text-[#D95D24]" />
-                      <span>Tarifs Livraison & Expédition (aucune livraison gratuite)</span>
+                  {/* Encadré Tarifs Livraison sans gratuité */}
+                  <div className="bg-white rounded-md p-3.5 border border-[#D5D9D9] text-xs space-y-1.5">
+                    <p className="font-bold text-[#0F1111] flex items-center gap-1.5">
+                      <Truck className="w-4 h-4 text-[#C7511F]" />
+                      <span>Livraison & Expédition (aucune livraison gratuite)</span>
                     </p>
-                    <p className="text-stone-600 leading-relaxed">
+                    <p className="text-[#333333] leading-relaxed">
                       • <strong>Daloa Commune :</strong> 1 000 FCFA · <strong>Périphérie :</strong>{' '}
                       1 500 FCFA
                       <br />• <strong>Expédition Issia, Vavoua & alentours :</strong> 2 000 FCFA
                     </p>
-                    <p className="text-[11px] text-stone-500 italic">
+                    <p className="text-[11px] text-[#565959]">
                       Le tarif dépend de la taille et du poids de la marchandise. Pour plus
                       d’informations,{' '}
                       <a
                         href={buildWhatsappServiceUrl(settings?.whatsappNumber)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#D95D24] font-semibold underline"
+                        className="text-[#007185] hover:text-[#C7511F] font-semibold underline"
                       >
                         contactez le service client
                       </a>
@@ -290,59 +303,64 @@ export function CartDrawer({
                     </p>
                   </div>
 
-                  {/* Liste des articles */}
-                  <div className="space-y-3">
+                  {/* Liste des articles style Amazon Cart */}
+                  <div className="bg-white rounded-md border border-[#D5D9D9] divide-y divide-[#EAEDED]">
                     {detailedItems.map(({ product, quantity, lineTotal }) => (
-                      <div
-                        key={product.id}
-                        className="flex gap-3.5 bg-white p-3.5 rounded-2xl border border-[#E5DEC9]"
-                      >
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = '/images/products/placeholder.svg';
-                          }}
-                          className="w-18 h-20 rounded-xl object-cover bg-[#FAF7F0] shrink-0"
-                        />
+                      <div key={product.id} className="flex gap-3.5 p-3.5">
+                        <div className="w-20 h-20 rounded bg-[#F7F8F8] border border-[#EAEDED] p-1.5 flex items-center justify-center shrink-0">
+                          <img
+                            src={product.imageUrl}
+                            alt={product.name}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = '/images/products/placeholder.svg';
+                            }}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
                         <div className="flex-1 min-w-0 flex flex-col justify-between">
-                          <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-sm font-bold text-[#14231F] line-clamp-2">
+                          <div>
+                            <h3 className="text-xs sm:text-sm font-medium text-[#0F1111] line-clamp-2">
                               {product.name}
                             </h3>
-                            <button
-                              type="button"
-                              onClick={() => onRemoveItem(product.id)}
-                              className="text-stone-400 hover:text-red-600 p-1 cursor-pointer"
-                              aria-label="Supprimer"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+                            <p className="text-[11px] text-[#007600] font-semibold mt-0.5">
+                              En stock
+                            </p>
                           </div>
 
                           <div className="flex items-center justify-between pt-2">
-                            <div className="inline-flex items-center rounded-full border border-[#DED6C1] bg-[#FAF7F0]">
+                            <div className="flex items-center gap-2">
+                              <div className="inline-flex items-center rounded-full border-2 border-[#FFD814] bg-[#F7FAFA] shadow-2xs">
+                                <button
+                                  type="button"
+                                  onClick={() => onUpdateQty(product.id, quantity - 1)}
+                                  className="px-2.5 py-0.5 text-sm font-bold text-[#0F1111] cursor-pointer"
+                                >
+                                  −
+                                </button>
+                                <span className="px-2 text-xs font-bold text-[#0F1111]">
+                                  {quantity}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    onUpdateQty(product.id, Math.min(product.stock, quantity + 1))
+                                  }
+                                  disabled={quantity >= product.stock}
+                                  className="px-2.5 py-0.5 text-sm font-bold text-[#0F1111] disabled:opacity-40 cursor-pointer"
+                                >
+                                  +
+                                </button>
+                              </div>
                               <button
                                 type="button"
-                                onClick={() => onUpdateQty(product.id, quantity - 1)}
-                                className="px-2.5 py-0.5 text-sm font-bold text-[#0F443E] cursor-pointer"
+                                onClick={() => onRemoveItem(product.id)}
+                                className="text-[11px] text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
                               >
-                                −
-                              </button>
-                              <span className="px-2.5 text-xs font-bold">{quantity}</span>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  onUpdateQty(product.id, Math.min(product.stock, quantity + 1))
-                                }
-                                disabled={quantity >= product.stock}
-                                className="px-2.5 py-0.5 text-sm font-bold text-[#0F443E] disabled:opacity-40 cursor-pointer"
-                              >
-                                +
+                                Supprimer
                               </button>
                             </div>
-                            <span className="text-sm font-extrabold text-[#0F443E]">
+                            <span className="text-sm font-bold text-[#0F1111]">
                               {formatFcfa(lineTotal)}
                             </span>
                           </div>
@@ -354,11 +372,11 @@ export function CartDrawer({
                   {/* Code Promo */}
                   <form
                     onSubmit={handleApplyPromo}
-                    className="bg-white p-3.5 rounded-2xl border border-[#E5DEC9]"
+                    className="bg-white p-3.5 rounded-md border border-[#D5D9D9]"
                   >
-                    <label className="text-xs font-bold text-[#0F443E] flex items-center gap-1.5 mb-2">
-                      <Tag className="w-3.5 h-3.5 text-[#D95D24]" />
-                      <span>Code promotionnel</span>
+                    <label className="text-xs font-bold text-[#0F1111] flex items-center gap-1.5 mb-2">
+                      <Tag className="w-3.5 h-3.5 text-[#C7511F]" />
+                      <span>Chèque-cadeau ou code promotionnel</span>
                     </label>
                     <div className="flex gap-2">
                       <input
@@ -366,21 +384,21 @@ export function CartDrawer({
                         value={promoInput}
                         onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
                         placeholder="Ex: BIENVENUE10"
-                        className="flex-1 px-3 py-2 rounded-xl border border-[#DED6C1] text-xs uppercase font-semibold focus:outline-none focus:border-[#0F443E]"
+                        className="flex-1 px-3 py-1.5 rounded border border-[#888C8C] text-xs uppercase font-semibold focus:outline-none focus:ring-2 focus:ring-[#007185]"
                       />
                       <button
                         type="submit"
                         disabled={promoLoading}
-                        className="px-4 py-2 rounded-xl bg-[#0F443E] text-white text-xs font-semibold hover:bg-[#092E2A] cursor-pointer"
+                        className="px-4 py-1.5 rounded-full bg-white hover:bg-[#F7FAFA] border border-[#D5D9D9] text-[#0F1111] text-xs font-medium shadow-2xs cursor-pointer"
                       >
                         {promoLoading ? '...' : 'Appliquer'}
                       </button>
                     </div>
-                    {promoError && <p className="text-xs text-red-600 mt-1.5">{promoError}</p>}
+                    {promoError && <p className="text-xs text-[#CC0C39] mt-1.5">{promoError}</p>}
                     {appliedPromo && (
-                      <div className="mt-2 flex items-center justify-between text-xs text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg">
+                      <div className="mt-2 flex items-center justify-between text-xs text-[#007600] bg-[#F2FBF2] px-3 py-1.5 rounded border border-[#B7E4B7]">
                         <span>
-                          ✓ Code <strong>{appliedPromo.code}</strong> appliqué (-
+                          ✓ Code <strong>{appliedPromo.code}</strong> appliqué (−
                           {formatFcfa(discountAmount)})
                         </span>
                         <button
@@ -398,21 +416,24 @@ export function CartDrawer({
             </div>
 
             {detailedItems.length > 0 && (
-              <div className="p-5 bg-white border-t border-[#E5DEC9] space-y-3">
+              <div className="p-4 bg-white border-t border-[#D5D9D9] space-y-3">
                 <div className="space-y-1 text-sm">
-                  <div className="flex justify-between text-stone-600">
-                    <span>Sous-total articles</span>
-                    <span>{formatFcfa(subtotal)}</span>
+                  <div className="flex justify-between text-[#0F1111]">
+                    <span>
+                      Sous-total ({detailedItems.reduce((s, i) => s + i.quantity, 0)} article
+                      {detailedItems.reduce((s, i) => s + i.quantity, 0) > 1 ? 's' : ''}) :
+                    </span>
+                    <strong className="font-bold">{formatFcfa(subtotal)}</strong>
                   </div>
                   {discountAmount > 0 && (
-                    <div className="flex justify-between text-emerald-700 font-semibold">
+                    <div className="flex justify-between text-[#007600] font-semibold text-xs">
                       <span>Remise ({appliedPromo?.code})</span>
                       <span>−{formatFcfa(discountAmount)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-xs text-stone-500">
-                    <span>Livraison / Expédition</span>
-                    <span>Dès 1 000 FCFA (étape suivante)</span>
+                  <div className="flex justify-between text-xs text-[#565959]">
+                    <span>Livraison estimée ({selectedZone.shortName})</span>
+                    <span>+{formatFcfa(deliveryFee)}</span>
                   </div>
                 </div>
 
@@ -422,9 +443,9 @@ export function CartDrawer({
                     if (!waveSenderPhone && customerPhone) setWaveSenderPhone(customerPhone);
                     setStep('checkout');
                   }}
-                  className="w-full py-3.5 px-5 rounded-full bg-[#D95D24] hover:bg-[#BF4E1B] text-white font-bold text-sm shadow-md transition cursor-pointer"
+                  className="w-full py-2.5 px-5 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-[#0F1111] font-bold text-sm shadow-2xs transition cursor-pointer"
                 >
-                  Continuer vers Livraison & Wave · {formatFcfa(netSubtotal)}
+                  Passer la commande ({formatFcfa(grandTotal)})
                 </button>
               </div>
             )}
@@ -434,156 +455,159 @@ export function CartDrawer({
         {/* ÉTAPE 2 : LIVRAISON & PAIEMENT EN LIGNE WAVE UNIQUEMENT */}
         {step === 'checkout' && (
           <form onSubmit={handleSubmitOrder} className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
               {submitError && (
-                <div className="flex items-start gap-2 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-800">
+                <div className="flex items-start gap-2 p-3 rounded-md bg-[#FCF4F4] border border-[#CC0C39] text-xs text-[#CC0C39]">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                   <span>{submitError}</span>
                 </div>
               )}
 
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                    Nom et prénom *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    minLength={2}
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                    placeholder="Ex: Kouamé Yao Jean"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DED6C1] text-sm focus:outline-none focus:border-[#0F443E]"
-                  />
-                </div>
+              {/* Bloc 1 : Adresse de livraison */}
+              <div className="bg-white rounded-md border border-[#D5D9D9] p-4 space-y-3">
+                <h3 className="text-sm font-bold text-[#0F1111] border-b border-[#EAEDED] pb-2">
+                  1. Adresse de livraison ou d’expédition
+                </h3>
 
-                <div>
-                  <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                    Téléphone du destinataire *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={customerPhone}
-                    onChange={(e) => {
-                      setCustomerPhone(e.target.value);
-                      if (!waveSenderPhone) setWaveSenderPhone(e.target.value);
-                    }}
-                    placeholder="07 00 00 00 00"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DED6C1] text-sm focus:outline-none focus:border-[#0F443E]"
-                  />
-                </div>
-              </div>
-
-              {/* Sélection de la zone & note taille/poids */}
-              <div>
-                <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                  Zone de livraison / Ville d’expédition *
-                </label>
-                <select
-                  value={cityZoneId}
-                  onChange={(e) => setCityZoneId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DED6C1] text-sm font-semibold focus:outline-none focus:border-[#0F443E]"
-                >
-                  {zones.map((z) => (
-                    <option key={z.id} value={z.id}>
-                      {z.shortName} — {formatFcfa(z.fee)}
-                    </option>
-                  ))}
-                </select>
-                {selectedZone?.eta && (
-                  <p className="text-[11px] text-[#0F443E] mt-1 font-medium">
-                    ⏱ {selectedZone.eta}
-                  </p>
-                )}
-
-                <div className="mt-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-950 flex items-start gap-2">
-                  <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <p>{shippingDisclaimer}</p>
-                    <a
-                      href={buildWhatsappServiceUrl(settings?.whatsappNumber)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-bold text-[#D95D24] underline mt-1"
-                    >
-                      <MessageCircle className="w-3 h-3" />
-                      <span>Contacter le service client pour un colis volumineux/lourd</span>
-                    </a>
+                    <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                      Nom complet *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      minLength={2}
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                      placeholder="Ex: Kouamé Yao Jean"
+                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-sm focus:outline-none focus:ring-2 focus:ring-[#007185]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                      Téléphone destinataire *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={customerPhone}
+                      onChange={(e) => {
+                        setCustomerPhone(e.target.value);
+                        if (!waveSenderPhone) setWaveSenderPhone(e.target.value);
+                      }}
+                      placeholder="07 00 00 00 00"
+                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-sm focus:outline-none focus:ring-2 focus:ring-[#007185]"
+                    />
                   </div>
                 </div>
-              </div>
 
-              <div className="grid sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                    Quartier ou gare / localité *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    minLength={2}
-                    value={neighborhood}
-                    onChange={(e) => setNeighborhood(e.target.value)}
-                    placeholder="Ex: Lobia, Tazibouo, Gare d'Issia…"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DED6C1] text-sm focus:outline-none focus:border-[#0F443E]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                    Créneau souhaité *
+                  <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                    Zone de livraison / Ville d’expédition *
                   </label>
                   <select
-                    value={deliverySlot}
-                    onChange={(e) => setDeliverySlot(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-white border border-[#DED6C1] text-xs sm:text-sm focus:outline-none focus:border-[#0F443E]"
+                    value={cityZoneId}
+                    onChange={(e) => {
+                      setCityZoneId(e.target.value);
+                      onSelectZone?.(e.target.value);
+                    }}
+                    className="w-full px-3 py-2 rounded bg-[#F0F2F2] border border-[#888C8C] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#007185]"
                   >
-                    {DELIVERY_SLOTS.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.label}
+                    {zones.map((z) => (
+                      <option key={z.id} value={z.id}>
+                        {z.shortName} — {formatFcfa(z.fee)}
                       </option>
                     ))}
                   </select>
-                </div>
-              </div>
+                  {selectedZone?.eta && (
+                    <p className="text-[11px] text-[#007600] mt-1 font-medium">
+                      ✓ {selectedZone.eta}
+                    </p>
+                  )}
 
-              <div>
-                <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                  Point de repère / Compagnie de transport souhaitée (facultatif)
-                </label>
-                <input
-                  type="text"
-                  value={addressDetails}
-                  onChange={(e) => setAddressDetails(e.target.value)}
-                  placeholder="Ex: Près pharmacie Lobia, ou expédition par UTB / AVS…"
-                  className="w-full px-3.5 py-2 rounded-xl bg-white border border-[#DED6C1] text-sm focus:outline-none focus:border-[#0F443E]"
-                />
-              </div>
-
-              {/* BLOC PAIEMENT EN LIGNE WAVE UNIQUEMENT */}
-              <div className="rounded-2xl bg-[#E8F7FE] border-2 border-[#009EE3] p-4 space-y-3">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#009EE3] text-white font-extrabold text-xs">
-                      W
-                    </span>
+                  <div className="mt-2 p-2.5 rounded bg-[#FEF8F2] border border-[#F5D3B3] text-[11px] text-[#0F1111] flex items-start gap-2">
+                    <Info className="w-4 h-4 text-[#C7511F] shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs sm:text-sm font-extrabold text-[#053B54]">
-                        Paiement en ligne par Wave uniquement
-                      </p>
-                      <p className="text-[11px] text-[#053B54]/80">
-                        Montant exact à envoyer : <strong>{formatFcfa(grandTotal)}</strong>
-                      </p>
+                      <p>{shippingDisclaimer}</p>
+                      <a
+                        href={buildWhatsappServiceUrl(settings?.whatsappNumber)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-bold text-[#007185] hover:text-[#C7511F] underline mt-0.5"
+                      >
+                        <MessageCircle className="w-3 h-3 text-[#25D366]" />
+                        <span>Contacter le service client (colis volumineux/lourd)</span>
+                      </a>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-3 border border-[#B8E5FA] space-y-2 text-xs">
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                      Quartier ou gare / localité *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      minLength={2}
+                      value={neighborhood}
+                      onChange={(e) => setNeighborhood(e.target.value)}
+                      placeholder="Ex: Lobia, Tazibouo, Gare d'Issia…"
+                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-sm focus:outline-none focus:ring-2 focus:ring-[#007185]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                      Créneau souhaité *
+                    </label>
+                    <select
+                      value={deliverySlot}
+                      onChange={(e) => setDeliverySlot(e.target.value)}
+                      className="w-full px-3 py-2 rounded bg-[#F0F2F2] border border-[#888C8C] text-xs sm:text-sm focus:outline-none"
+                    >
+                      {DELIVERY_SLOTS.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                    Point de repère / Compagnie de transport (facultatif)
+                  </label>
+                  <input
+                    type="text"
+                    value={addressDetails}
+                    onChange={(e) => setAddressDetails(e.target.value)}
+                    placeholder="Ex: Près pharmacie Lobia, ou expédition par UTB / AVS…"
+                    className="w-full px-3 py-1.5 rounded border border-[#888C8C] text-sm focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Bloc 2 : Paiement en ligne Wave uniquement */}
+              <div className="bg-white rounded-md border-2 border-[#009EE3] p-4 space-y-3">
+                <div className="flex items-center justify-between border-b border-[#EAEDED] pb-2">
+                  <h3 className="text-sm font-bold text-[#0F1111] flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#009EE3] text-white font-extrabold text-xs">
+                      W
+                    </span>
+                    <span>2. Paiement en ligne Wave uniquement</span>
+                  </h3>
+                  <Lock className="w-4 h-4 text-[#009EE3]" />
+                </div>
+
+                <div className="bg-[#EBF8FF] rounded p-3 border border-[#B3E5FC] space-y-2 text-xs">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <span className="text-[11px] text-stone-500 block">
-                        Numéro Wave Pèrôkadô :
+                      <span className="text-[11px] text-[#565959] block">
+                        Envoyez <strong>{formatFcfa(grandTotal)}</strong> au n° Wave Pèrôkadô :
                       </span>
                       <strong className="text-base font-extrabold text-[#053B54] tracking-wide">
                         {waveMerchantNumber}
@@ -592,10 +616,10 @@ export function CartDrawer({
                     <button
                       type="button"
                       onClick={copyWaveNumber}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#009EE3] hover:bg-[#0086C3] text-white text-xs font-bold cursor-pointer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white text-xs font-bold cursor-pointer"
                     >
                       {copiedWave ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedWave ? 'Copié' : 'Copier n°'}</span>
+                      <span>{copiedWave ? 'Copié' : 'Copier'}</span>
                     </button>
                   </div>
 
@@ -604,7 +628,7 @@ export function CartDrawer({
                       href={wavePaymentUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-[#009EE3] hover:bg-[#0086C3] text-white font-bold text-xs"
+                      className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white font-bold text-xs"
                     >
                       <Smartphone className="w-3.5 h-3.5" />
                       <span>Ouvrir le lien de paiement Wave direct</span>
@@ -615,7 +639,7 @@ export function CartDrawer({
 
                 <div className="grid sm:grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block text-[11px] font-bold text-[#053B54] mb-1">
+                    <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
                       Votre n° Wave émetteur *
                     </label>
                     <input
@@ -624,11 +648,11 @@ export function CartDrawer({
                       value={waveSenderPhone}
                       onChange={(e) => setWaveSenderPhone(e.target.value)}
                       placeholder="07 / 05 / 01 …"
-                      className="w-full px-3 py-2 rounded-xl bg-white border border-[#90D5F6] text-xs sm:text-sm focus:outline-none focus:border-[#053B54]"
+                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#009EE3]"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-[#053B54] mb-1">
+                    <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
                       ID / Référence transaction Wave *
                     </label>
                     <input
@@ -638,50 +662,45 @@ export function CartDrawer({
                       value={waveTransactionRef}
                       onChange={(e) => setWaveTransactionRef(e.target.value.toUpperCase())}
                       placeholder="Ex: T7K9P2M4…"
-                      className="w-full px-3 py-2 rounded-xl bg-white border border-[#90D5F6] text-xs sm:text-sm font-bold uppercase focus:outline-none focus:border-[#053B54]"
+                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-xs sm:text-sm font-bold uppercase focus:outline-none focus:ring-2 focus:ring-[#009EE3]"
                     />
                   </div>
                 </div>
-                <p className="text-[11px] text-[#053B54]/85">
-                  1. Envoyez <strong>{formatFcfa(grandTotal)}</strong> par Wave au numéro ci-dessus.
-                  <br />
-                  2. Saisissez l’ID de transaction affiché dans votre reçu Wave pour générer votre{' '}
-                  <strong>Référence + Code QR de suivi en direct</strong>.
-                </p>
-              </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#0F443E] mb-1">
-                  Note (pointure, couleur, précision colis…)
-                </label>
-                <textarea
-                  rows={2}
-                  value={customerNote}
-                  onChange={(e) => setCustomerNote(e.target.value)}
-                  placeholder="Facultatif…"
-                  className="w-full px-3.5 py-2 rounded-xl bg-white border border-[#DED6C1] text-sm focus:outline-none focus:border-[#0F443E]"
-                />
+                <div>
+                  <label className="block text-xs font-bold text-[#0F1111] mb-1">
+                    Note (pointure, couleur, instruction livreur…)
+                  </label>
+                  <input
+                    type="text"
+                    value={customerNote}
+                    onChange={(e) => setCustomerNote(e.target.value)}
+                    placeholder="Facultatif…"
+                    className="w-full px-3 py-1.5 rounded border border-[#888C8C] text-xs sm:text-sm focus:outline-none"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="p-5 bg-white border-t border-[#E5DEC9] space-y-3">
-              <div className="space-y-1 text-sm">
-                <div className="flex justify-between text-stone-600">
-                  <span>Articles ({detailedItems.reduce((s, i) => s + i.quantity, 0)})</span>
+            {/* Récapitulatif final style Amazon */}
+            <div className="p-4 bg-white border-t border-[#D5D9D9] space-y-2.5">
+              <div className="space-y-1 text-xs text-[#565959]">
+                <div className="flex justify-between">
+                  <span>Articles :</span>
                   <span>{formatFcfa(subtotal)}</span>
                 </div>
                 {discountAmount > 0 && (
-                  <div className="flex justify-between text-emerald-700 font-semibold">
-                    <span>Remise ({appliedPromo?.code})</span>
+                  <div className="flex justify-between text-[#007600] font-semibold">
+                    <span>Code promo ({appliedPromo?.code}) :</span>
                     <span>−{formatFcfa(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-stone-600">
-                  <span>{selectedZone?.shortName} (tarif de base)</span>
+                <div className="flex justify-between">
+                  <span>Livraison ({selectedZone?.shortName}) :</span>
                   <span>{formatFcfa(deliveryFee)}</span>
                 </div>
-                <div className="flex justify-between text-base font-extrabold text-[#0F443E] pt-1.5 border-t border-[#EFE9D8]">
-                  <span>Total réglé par Wave</span>
+                <div className="flex justify-between text-base font-bold text-[#B12704] pt-1 border-t border-[#EAEDED]">
+                  <span>Montant total (Wave) :</span>
                   <span>{formatFcfa(grandTotal)}</span>
                 </div>
               </div>
@@ -689,13 +708,13 @@ export function CartDrawer({
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 px-5 rounded-full bg-[#0F443E] hover:bg-[#092E2A] disabled:opacity-60 text-white font-bold text-sm shadow-md transition cursor-pointer inline-flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-5 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] disabled:opacity-60 text-[#0F1111] font-bold text-sm shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-2"
               >
-                <QrCode className="w-4 h-4 text-[#E0A11B]" />
+                <QrCode className="w-4 h-4" />
                 <span>
                   {submitting
-                    ? 'Génération de votre Code QR…'
-                    : `Valider & Générer mon Code QR · ${formatFcfa(grandTotal)}`}
+                    ? 'Validation & création du Code QR…'
+                    : 'Acheter et obtenir ma Référence + Code QR'}
                 </span>
               </button>
             </div>
@@ -704,36 +723,34 @@ export function CartDrawer({
 
         {/* ÉTAPE 3 : CONFIRMATION AVEC RÉFÉRENCE + CODE QR DE SUIVI EN DIRECT */}
         {step === 'confirmed' && confirmedData?.order && (
-          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E5DEC9] text-center space-y-4 shadow-xs">
-              <div className="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-[#0F443E] flex items-center justify-center">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+            <div className="bg-white rounded-md p-5 border border-[#D5D9D9] text-center space-y-4">
+              <div className="w-12 h-12 mx-auto rounded-full bg-[#E8F8E8] text-[#007600] flex items-center justify-center">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#0F443E]">
-                  Commande enregistrée, {confirmedData.order.customerName} !
+                <h3 className="text-lg font-bold text-[#007600]">
+                  Merci {confirmedData.order.customerName}, votre commande est enregistrée !
                 </h3>
-                <p className="text-xs sm:text-sm text-stone-600 mt-1">
-                  Conservez ou téléchargez votre <strong>Code QR</strong> ci-dessous : scannez-le à
-                  tout moment avec l’appareil photo de votre téléphone pour suivre votre marchandise
-                  en direct.
+                <p className="text-xs text-[#565959] mt-1">
+                  Téléchargez ou photographiez votre <strong>Code QR</strong> ci-dessous pour suivre
+                  votre marchandise en direct jusqu’à livraison.
                 </p>
               </div>
 
-              {/* Référence copiables */}
-              <div className="bg-[#FAF7F0] rounded-2xl p-3.5 border border-[#E5DEC9] flex items-center justify-between">
+              <div className="bg-[#F7FAFA] rounded p-3 border border-[#D5D9D9] flex items-center justify-between">
                 <div className="text-left">
-                  <p className="text-[11px] uppercase tracking-wider text-stone-500 font-semibold">
-                    Référence de suivi
+                  <p className="text-[11px] uppercase tracking-wider text-[#565959] font-semibold">
+                    N° de commande Pèrôkadô
                   </p>
-                  <p className="text-lg font-extrabold text-[#D95D24] tracking-wide">
+                  <p className="text-lg font-extrabold text-[#B12704] tracking-wide">
                     {confirmedData.order.reference}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => copyReference(confirmedData.order.reference)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#DED6C1] text-xs font-semibold text-[#0F443E] cursor-pointer"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white border border-[#D5D9D9] text-xs font-semibold text-[#0F1111] cursor-pointer"
                 >
                   {copiedRef ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copiedRef ? 'Copié' : 'Copier'}</span>
@@ -741,19 +758,19 @@ export function CartDrawer({
               </div>
 
               {/* CODE QR DE SUIVI EN DIRECT */}
-              <div className="bg-[#FAF7F0] rounded-3xl p-4 border-2 border-dashed border-[#0F443E]/30 flex flex-col items-center space-y-3">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F443E]">
-                  <QrCode className="w-4 h-4 text-[#D95D24]" />
+              <div className="bg-[#F7FAFA] rounded-md p-4 border border-[#D5D9D9] flex flex-col items-center space-y-3">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F1111]">
+                  <QrCode className="w-4 h-4 text-[#C7511F]" />
                   <span>Code QR de suivi en direct</span>
                 </span>
                 {qrDataUrl ? (
                   <img
                     src={qrDataUrl}
                     alt={`Code QR de suivi ${confirmedData.order.reference}`}
-                    className="w-48 h-48 rounded-2xl bg-white p-2 border border-[#E5DEC9] shadow-xs"
+                    className="w-48 h-48 rounded bg-white p-2 border border-[#D5D9D9]"
                   />
                 ) : (
-                  <div className="w-48 h-48 rounded-2xl bg-white animate-pulse" />
+                  <div className="w-48 h-48 rounded bg-white animate-pulse" />
                 )}
 
                 <div className="flex flex-wrap items-center justify-center gap-2 w-full">
@@ -761,9 +778,9 @@ export function CartDrawer({
                     <a
                       href={qrDataUrl}
                       download={`Perokado-${confirmedData.order.reference}-QR.png`}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#0F443E] hover:bg-[#092E2A] text-white text-xs font-bold transition"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-[#0F1111] text-xs font-bold"
                     >
-                      <Download className="w-3.5 h-3.5 text-[#E0A11B]" />
+                      <Download className="w-3.5 h-3.5" />
                       <span>Télécharger le Code QR</span>
                     </a>
                   )}
@@ -777,7 +794,7 @@ export function CartDrawer({
                           token: confirmedData.order.trackingToken,
                         });
                       }}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-[#EFE9D8] text-[#0F443E] border border-[#DED6C1] text-xs font-bold cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white hover:bg-[#F7FAFA] text-[#0F1111] border border-[#D5D9D9] text-xs font-semibold cursor-pointer"
                     >
                       <span>Ouvrir le suivi en direct</span>
                     </button>
@@ -785,14 +802,15 @@ export function CartDrawer({
                 </div>
               </div>
 
-              <div className="text-left text-xs space-y-1 bg-[#FAF7F0] p-3.5 rounded-2xl border border-[#EAE2CE]">
+              <div className="text-left text-xs space-y-1 bg-[#F7FAFA] p-3 rounded border border-[#EAEDED]">
                 <p>
                   <strong>Destination :</strong> {confirmedData.order.cityZoneName} —{' '}
                   {confirmedData.order.neighborhood}
                 </p>
                 <p>
                   <strong>Paiement Wave :</strong> Réf{' '}
-                  <code>{confirmedData.order.waveTransactionRef}</code> ({formatFcfa(confirmedData.order.total)})
+                  <code>{confirmedData.order.waveTransactionRef}</code> (
+                  {formatFcfa(confirmedData.order.total)})
                 </p>
               </div>
             </div>
@@ -801,18 +819,18 @@ export function CartDrawer({
               href={buildWhatsappOrderUrl(confirmedData.whatsappNumber, confirmedData.order)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-[#1FAF5A] hover:bg-[#18934A] text-white font-bold text-sm shadow-md transition"
+              className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-sm shadow-xs transition"
             >
               <MessageCircle className="w-5 h-5" />
-              <span>Confirmer sur WhatsApp avec mon lien de suivi</span>
+              <span>Envoyer ma confirmation sur WhatsApp</span>
             </a>
 
             <button
               type="button"
               onClick={onClose}
-              className="w-full py-3 px-5 rounded-full bg-white border border-[#DED6C1] text-[#0F443E] font-semibold text-sm hover:bg-[#FAF7F0] cursor-pointer"
+              className="w-full py-2.5 px-5 rounded-full bg-white border border-[#D5D9D9] text-[#0F1111] font-medium text-xs sm:text-sm hover:bg-[#F7FAFA] cursor-pointer"
             >
-              Retourner à la boutique Pèrôkadô
+              Continuer mes achats sur Pèrôkadô
             </button>
           </div>
         )}

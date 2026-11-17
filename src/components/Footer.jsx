@@ -1,123 +1,170 @@
 import React from 'react';
-import { MapPin, Phone, MessageCircle, Smartphone, QrCode, Lock, Info } from 'lucide-react';
+import {
+  MapPin,
+  Phone,
+  MessageCircle,
+  Smartphone,
+  QrCode,
+  Lock,
+  Info,
+  ChevronUp,
+} from 'lucide-react';
 import { BRAND, formatPhoneDisplay } from '../../shared/catalog.js';
 import { buildWhatsappServiceUrl } from '../lib/api.js';
 
-export function Footer({ whatsappNumber, shippingDisclaimer, deliveryZones, onOpenTrack }) {
+export function Footer({
+  whatsappNumber,
+  shippingDisclaimer,
+  deliveryZones,
+  onOpenTrack,
+  onSelectCategory,
+}) {
   const waHref = buildWhatsappServiceUrl(whatsappNumber);
 
   return (
-    <footer className="bg-[#0F443E] text-[#FAF7F0] mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Identité */}
-          <div className="space-y-4">
-            <div className="inline-block bg-[#FAF7F0] px-4 py-2.5 rounded-2xl">
-              <img
-                src="/images/logo-horizontal.png"
-                alt="Logo Pèrôkadô"
-                className="h-10 w-auto object-contain"
-              />
-            </div>
-            <p className="text-sm text-[#FAF7F0]/80 leading-relaxed">
-              Votre boutique e-commerce multi-catégories à Daloa avec expédition rapide vers Issia,
-              Vavoua et toutes les villes aux alentours.
+    <footer className="mt-14 text-white">
+      {/* 1. Barre "Retour en haut" emblématique d'Amazon (#37475A) */}
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="w-full py-3.5 bg-[#37475A] hover:bg-[#485769] text-white text-xs sm:text-sm font-medium flex items-center justify-center gap-1.5 transition cursor-pointer"
+      >
+        <ChevronUp className="w-4 h-4" />
+        <span>Retour en haut</span>
+      </button>
+
+      {/* 2. Corps 4 colonnes #232F3E */}
+      <div className="bg-[#232F3E]">
+        <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+          {/* Col 1 : Mieux nous connaître */}
+          <div className="space-y-2.5">
+            <h3 className="font-bold text-base text-white">À propos de Pèrôkadô</h3>
+            <p className="text-xs text-[#DDDDDD] leading-relaxed">
+              Marketplace locale basée à Daloa (Haut-Sassandra) dédiée au High-Tech, à la Mode, à la
+              Beauté, aux Cadeaux et à l’Électroménager.
             </p>
-            <div className="space-y-1.5 text-xs text-[#E0A11B] font-semibold">
+            <div className="pt-1 space-y-1.5 text-xs text-[#FF9900] font-semibold">
               <p className="flex items-center gap-2">
-                <Smartphone className="w-4 h-4 shrink-0" />
-                <span>Paiement en ligne par Wave uniquement</span>
+                <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
+                <span>Paiement en ligne uniquement via Wave</span>
               </p>
               <p className="flex items-center gap-2">
                 <QrCode className="w-4 h-4 shrink-0" />
-                <span>Référence + Code QR de suivi en direct</span>
+                <span>Suivi marchandise en direct par Code QR</span>
               </p>
             </div>
           </div>
 
-          {/* Grille Livraison & Expédition */}
-          <div className="space-y-3">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-[#E0A11B]" />
-              <span>Livraison & Expéditions</span>
-            </h3>
-            <ul className="space-y-1.5 text-xs sm:text-sm text-[#FAF7F0]/85">
-              {(deliveryZones || []).slice(0, 6).map((z) => (
-                <li key={z.id} className="flex items-center justify-between gap-2">
-                  <span>{z.shortName}</span>
-                  <span className="text-[#E0A11B] font-semibold">
-                    {z.fee.toLocaleString('fr-FR')} F
-                  </span>
+          {/* Col 2 : Nos Rayons */}
+          <div className="space-y-2">
+            <h3 className="font-bold text-base text-white">Nos Rayons</h3>
+            <ul className="space-y-1.5 text-xs text-[#DDDDDD]">
+              {[
+                { id: 'high-tech', label: 'High-Tech, Smartphones & Audio' },
+                { id: 'maison', label: 'Maison, Cuisine & Solaire' },
+                { id: 'mode', label: 'Mode, Montres & Bagagerie' },
+                { id: 'beaute-cadeaux', label: 'Beauté, Parfums & Coffrets' },
+              ].map((cat) => (
+                <li key={cat.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onSelectCategory?.(cat.id);
+                      document.getElementById('catalogue')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="hover:underline text-left cursor-pointer"
+                  >
+                    {cat.label}
+                  </button>
                 </li>
               ))}
             </ul>
-            <p className="text-[11px] text-[#FAF7F0]/70 leading-relaxed flex items-start gap-1.5 pt-1 border-t border-white/10">
-              <Info className="w-3.5 h-3.5 text-[#E0A11B] shrink-0 mt-0.5" />
+          </div>
+
+          {/* Col 3 : Tarifs Livraison & Expéditions */}
+          <div className="space-y-2.5">
+            <h3 className="font-bold text-base text-white flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-[#FF9900]" />
+              <span>Tarifs Livraison & Expédition</span>
+            </h3>
+            <ul className="space-y-1 text-xs text-[#DDDDDD]">
+              {(deliveryZones || []).slice(0, 5).map((z) => (
+                <li key={z.id} className="flex items-center justify-between gap-2">
+                  <span>{z.shortName}</span>
+                  <strong className="text-white">{z.fee.toLocaleString('fr-FR')} F</strong>
+                </li>
+              ))}
+            </ul>
+            <p className="text-[11px] text-[#CCCCCC] leading-snug flex items-start gap-1.5 pt-1.5 border-t border-white/10">
+              <Info className="w-3.5 h-3.5 text-[#FF9900] shrink-0 mt-0.5" />
               <span>{shippingDisclaimer || BRAND.shippingDisclaimer}</span>
             </p>
           </div>
 
-          {/* Informations utiles */}
-          <div>
-            <h3 className="text-base font-bold text-white mb-3">Suivi & Infos</h3>
-            <ul className="space-y-2 text-sm text-[#FAF7F0]/80">
+          {/* Col 4 : Besoin d'aide / Suivi & Service Client */}
+          <div className="space-y-2.5">
+            <h3 className="font-bold text-base text-white">Besoin d’aide ?</h3>
+            <ul className="space-y-2 text-xs text-[#DDDDDD]">
               <li>
                 <button
                   type="button"
                   onClick={onOpenTrack}
-                  className="hover:text-[#E0A11B] transition cursor-pointer font-semibold text-left"
+                  className="text-[#FF9900] hover:underline font-bold text-left cursor-pointer"
                 >
                   Suivre ma marchandise en direct (Code QR / Réf)
                 </button>
               </li>
               <li>Horaires : Lundi – Samedi (08h00 – 19h30)</li>
-              <li>Règlement en ligne : Wave Côte d’Ivoire uniquement</li>
-              <li>Aucune livraison gratuite</li>
-              <li className="pt-1">
-                <a
-                  href="/admin"
-                  className="inline-flex items-center gap-1.5 text-xs text-[#FAF7F0]/60 hover:text-white transition"
-                >
-                  <Lock className="w-3.5 h-3.5" />
-                  <span>Espace équipe (/admin)</span>
-                </a>
-              </li>
+              <li>Aucune livraison gratuite (selon taille & poids)</li>
             </ul>
-          </div>
-
-          {/* Contact direct Service Client */}
-          <div className="space-y-3">
-            <h3 className="text-base font-bold text-white">Service Client Pèrôkadô</h3>
-            <p className="text-xs sm:text-sm text-[#FAF7F0]/80 leading-relaxed">
-              Le coût de livraison ou d’expédition dépend de la taille et du poids de votre
-              marchandise. Contactez notre service client pour tout renseignement ou colis spécial.
-            </p>
             <a
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#D95D24] hover:bg-[#BF4E1B] text-white text-sm font-bold shadow-md transition"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] text-[#0F1111] text-xs font-bold shadow-xs transition"
             >
-              <MessageCircle className="w-4 h-4" />
-              <span>Contacter le Service Client</span>
+              <MessageCircle className="w-4 h-4 text-[#128C7E]" />
+              <span>Service Client WhatsApp</span>
             </a>
-            <p className="text-xs text-[#FAF7F0]/75 flex items-center gap-1.5 pt-1">
-              <Phone className="w-3.5 h-3.5 text-[#E0A11B]" />
+            <p className="text-xs text-[#CCCCCC] flex items-center gap-1.5 pt-0.5">
+              <Phone className="w-3.5 h-3.5 text-[#FF9900]" />
               <span>{formatPhoneDisplay(whatsappNumber || BRAND.defaultWhatsapp)}</span>
             </p>
           </div>
         </div>
+      </div>
 
-        <div className="mt-10 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#FAF7F0]/70">
-          <p>© {new Date().getFullYear()} Pèrôkadô — Daloa, Côte d’Ivoire. Tous droits réservés.</p>
-          <a
-            href={BRAND.studioCredit.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#E0A11B] transition font-medium"
-          >
-            Conçu par {BRAND.studioCredit.name} · WhatsApp {BRAND.studioCredit.phoneDisplay}
-          </a>
+      {/* 3. Sous-barre finale #131921 */}
+      <div className="bg-[#131921] border-t border-[#3A4553]">
+        <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#CCCCCC]">
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/icon-512.png"
+              alt="Pèrôkadô"
+              className="w-7 h-7 rounded bg-white p-0.5 object-cover"
+            />
+            <span>
+              © {new Date().getFullYear()} <strong>Pèrôkadô</strong> — Daloa, Côte d’Ivoire.
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="/admin"
+              className="inline-flex items-center gap-1 text-[#999999] hover:text-white transition"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>Espace vendeur & équipe (/admin)</span>
+            </a>
+            <a
+              href={BRAND.studioCredit.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FF9900] transition"
+            >
+              Propulsé par {BRAND.studioCredit.name} ({BRAND.studioCredit.phoneDisplay})
+            </a>
+          </div>
         </div>
       </div>
 
@@ -127,7 +174,7 @@ export function Footer({ whatsappNumber, shippingDisclaimer, deliveryZones, onOp
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Service client WhatsApp"
-        className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#1FAF5A] hover:bg-[#18934A] text-white font-bold text-xs sm:text-sm shadow-xl transition"
+        className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs shadow-xl transition"
       >
         <MessageCircle className="w-5 h-5" />
         <span className="hidden sm:inline">Service Client</span>

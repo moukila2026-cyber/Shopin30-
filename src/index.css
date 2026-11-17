@@ -2,37 +2,50 @@
 
 @layer base {
   :root {
-    --pkd-emerald: #0F443E;
-    --pkd-emerald-dark: #092E2A;
-    --pkd-terracotta: #D95D24;
-    --pkd-gold: #E0A11B;
-    --pkd-cream: #FAF7F0;
-    --pkd-ink: #14231F;
+    --amz-navy: #131921;
+    --amz-subnav: #232F3E;
+    --amz-subnav-hover: #37475A;
+    --amz-orange: #FF9900;
+    --amz-orange-dark: #FA8900;
+    --amz-yellow: #FFD814;
+    --amz-yellow-hover: #F7CA00;
+    --amz-bg: #EAEDED;
+    --amz-ink: #0F1111;
+    --amz-muted: #565959;
+    --amz-link: #007185;
+    --amz-deal: #CC0C39;
+    --amz-stock: #007600;
   }
 
   html {
     scroll-behavior: smooth;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  }
-
-  h1, h2, h3, .font-serif-brand {
-    font-family: Georgia, "Times New Roman", serif;
-    letter-spacing: -0.015em;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #0F1111;
+    background-color: #EAEDED;
   }
 }
 
-/* Custom subtle scrollbars */
+/* Masquer la barre de défilement sur les rails horizontaux style Amazon */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Barres de défilement discrètes globales */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4EFE4;
+  background: #EAEDED;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C5BCAA;
-  border-radius: 9999px;
+  background: #A6A6A6;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0F443E;
+  background: #6F7373;
 }
