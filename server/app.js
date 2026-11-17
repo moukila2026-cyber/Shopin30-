@@ -1,0 +1,634 @@
+// ==============================================================================
+// PÈRÔKADÔ — Application Express (API publique, Espace /admin & Protections)
+// ==============================================================================
+import express from 'express';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { ZodError } from 'zod';
+
+import { CATEGORIES, DELIVERY_SLOTS, PAYMENT_METHODS, BRAND } from '../shared/catalog.js';
+import { BusinessError, DatabaseUnavailableError } from './store.js';
+import {
+  clearSessionCookie,
+  detectSafeImageMime,
+  getEffectiveAdminPassword,
+  isAdminConfigured,
+  parseCookies,
+  serializeSessionCookie,
+  signSessionToken,
+  timingSafeEqualStr,
+  verifySessionToken,
+} from './security.js';
+import {
+  AdminLoginSchema,
+  CreateAgentSchema,
+  CreatePromoSchema,
+  OrderStatusUpdateSchema,
+  PlaceOrderSchema,
+  ProductUpsertSchema,
+  PromoValidateSchema,
+  StoreSettingsUpdateSchema,
+  TrackOrderSchema,
+} from './validation.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT_DIR = path.resolve(__dirname, '..');
+
+function extractToken(req) {
+  const auth = req.headers.authorization || '';
+  if (auth.startsWith('Bearer ')) {
+    const t = auth.slice(7).trim();
+    if (t) return t;
+  }
+  const cookies = parseCookies(req.headers.cookie);
+  return cookies.pkd_session || null;
+}
+
+function isSecureRequest(req, production) {
+  if (production) return true;
+  if (req.secure) return true;
+  const proto = req.headers['x-forwarded-proto'];
+  return typeof proto === 'string' && proto.split(',')[0].trim() === 'https';
+}
+
+// Vérifie que les requêtes mutantes proviennent bien de la même origine (anti-CSRF)
+function enforceSameOrigin(req, res, next) {
+  if (req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS') {
+    return next();
+  }
+  const origin = req.headers.origin;
+  if (!origin) return next(); // Requêtes non-navigateur ou same-origin sans en-tête Origin
+
+  try {
+    const originHost = new URL(origin).host.toLowerCase();
+    const reqHost = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+      .split(',')[0]
+      .trim()
+      .toLowerCase();
+
+    const allowedPublic = (process.env.PUBLIC_ORIGIN || '').trim();
+    let allowedHost = '';
+    if (allowedPublic) {
+      try {
+        allowedHost = new URL(allowedPublic).host.toLowerCase();
+      } catch {
+        allowedHost = '';
+      }
+    }
+
+    if (reqHost && (originHost === reqHost || (allowedHost && originHost === allowedHost))) {
+      return next();
+    }
+    return res.status(403).json({
+      error: 'Requête refusée : origine non autorisée (protection CSRF).',
+    });
+  } catch {
+    return res.status(403).json({ error: 'En-tête Origin invalide.' });
+  }
+}
+
+export function createApp({ store, production = false, serveStatic = false } = {}) {
+  const app = express();
+  app.disable('x-powered-by');
+  app.set('trust proxy', 1);
+
+  // En-têtes de sécurité HTTP (Helmet) — compatibles avec l'aperçu en direct et la production Vercel
+  app.use(
+    helmet({
+      contentSecurityPolicy: production
+        ? {
+            directives: {
+              defaultSrc: ["'self'"],
+              scriptSrc: ["'self'"],
+              styleSrc: ["'self'", "'unsafe-inline'"],
+              imgSrc: ["'self'", 'data:', 'blob:'],
+              fontSrc: ["'self'", 'data:'],
+              connectSrc: ["'self'"],
+              objectSrc: ["'none'"],
+              baseUri: ["'self'"],
+              formAction: ["'self'"],
+              frameAncestors: ["'self'", 'https://*.e2b.app', 'https://*.arena.ai'],
+            },
+          }
+        : false,
+      crossOriginEmbedderPolicy: false,
+      frameguard: false, // Géré par CSP frame-ancestors en prod et compatible Live Preview
+    })
+  );
+
+  // Limiteurs de débit (anti-abus, anti-spam commandes, anti-force brute)
+  const generalApiLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    limit: 180,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: 'Trop de requêtes. Veuillez patienter quelques secondes.' },
+  });
+
+  const checkoutLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    limit: 20,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: 'Trop de tentatives de commande rapprochées. Réessayez dans quelques minutes.' },
+  });
+
+  const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: {
+      error: 'Trop de tentatives de connexion échouées. Accès bloqué temporairement pendant 15 minutes.',
+    },
+  });
+
+  const trackLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    limit: 25,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: 'Trop de recherches de suivi. Réessayez dans quelques instants.' },
+  });
+
+  app.use('/api', generalApiLimiter);
+  app.use('/api', enforceSameOrigin);
+
+  // Empêcher la mise en cache des données dynamiques ou sensibles d'API (sauf route photo dédiée)
+  app.use('/api', (req, res, next) => {
+    if (!req.path.endsWith('/photo')) {
+      res.setHeader('Cache-Control', 'no-store');
+    }
+    next();
+  });
+
+  // Upload binaire d'image produit (jusqu'à 4 Mo max)
+  app.put(
+    '/api/admin/products/:id/photo',
+    express.raw({ type: ['image/jpeg', 'image/png', 'image/webp'], limit: '4mb' }),
+    requireAuth('admin'),
+    async (req, res, next) => {
+      try {
+        const buf = req.body;
+        const detectedMime = detectSafeImageMime(buf);
+        if (!detectedMime) {
+          throw new BusinessError(
+            'Format d’image non reconnu ou corrompu. Utilisez uniquement JPG, PNG ou WebP.',
+            400,
+            'INVALID_IMAGE'
+          );
+        }
+        const product = await store.saveProductPhoto(
+          req.params.id,
+          detectedMime,
+          buf,
+          req.actorLabel
+        );
+        res.json({ product });
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
+
+  // Parseur JSON borné à 256 Ko pour toutes les autres routes API
+  app.use('/api', express.json({ limit: '256kb' }));
+
+  // Middleware d'authentification Admin / Agent
+  function requireAuth(requiredRole = 'any') {
+    return async (req, res, next) => {
+      try {
+        if (!isAdminConfigured()) {
+          return res.status(503).json({
+            error:
+              'Espace de gestion non configuré : ajoutez ADMIN_PASSWORD dans les variables d’environnement Vercel.',
+            code: 'ADMIN_NOT_CONFIGURED',
+          });
+        }
+        const token = extractToken(req);
+        const session = verifySessionToken(token);
+        if (!session) {
+          return res.status(401).json({ error: 'Session expirée ou non authentifiée.' });
+        }
+
+        // Si c'est un agent, vérifier en temps réel en base que son code n'a pas été révoqué
+        if (session.role === 'agent') {
+          const agentRow = await store.getAgentById(session.agentId);
+          if (!agentRow || !agentRow.active) {
+            res.setHeader('Set-Cookie', clearSessionCookie(isSecureRequest(req, production)));
+            return res.status(401).json({
+              error: 'Cet accès agent a été révoqué par l’administrateur.',
+              code: 'AGENT_REVOKED',
+            });
+          }
+          req.user = { role: 'agent', id: agentRow.id, name: agentRow.name };
+          req.actorLabel = `agent:${agentRow.name}`;
+        } else {
+          req.user = { role: 'admin', id: 'admin', name: 'Administrateur' };
+          req.actorLabel = 'admin';
+        }
+
+        if (requiredRole === 'admin' && req.user.role !== 'admin') {
+          return res.status(403).json({
+            error: 'Action réservée à l’administrateur principal.',
+          });
+        }
+        next();
+      } catch (err) {
+        next(err);
+      }
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // ROUTES PUBLIQUES (/api/*)
+  // ---------------------------------------------------------------------------
+
+  app.get('/api/health', async (_req, res) => {
+    try {
+      const health = await store.healthCheck();
+      res.json({
+        ok: true,
+        brand: BRAND.name,
+        storage: health.storage,
+        adminConfigured: isAdminConfigured(),
+      });
+    } catch (err) {
+      res.status(503).json({
+        ok: false,
+        brand: BRAND.name,
+        storage: { mode: 'disconnected', durable: false },
+        adminConfigured: isAdminConfigured(),
+        error:
+          err instanceof DatabaseUnavailableError
+            ? err.message
+            : 'Connexion à la base de données indisponible.',
+      });
+    }
+  });
+
+  app.get('/api/catalog', async (_req, res, next) => {
+    try {
+      const [products, settings] = await Promise.all([
+        store.listPublicProducts(),
+        store.getSettings(),
+      ]);
+      res.json({
+        brand: BRAND,
+        categories: CATEGORIES,
+        deliverySlots: DELIVERY_SLOTS,
+        paymentMethods: PAYMENT_METHODS,
+        settings,
+        products,
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/api/products/:id/photo', async (req, res, next) => {
+    try {
+      const photo = await store.getProductPhoto(req.params.id);
+      if (!photo) {
+        return res.redirect(302, '/images/products/placeholder.svg');
+      }
+      res.setHeader('Content-Type', photo.mimeType);
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+      res.send(photo.data);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/promos/validate', async (req, res, next) => {
+    try {
+      const { code, subtotal } = PromoValidateSchema.parse(req.body);
+      const promo = await store.validatePromoCode(code, subtotal);
+      res.json({ promo });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/orders', checkoutLimiter, async (req, res, next) => {
+    try {
+      const payload = PlaceOrderSchema.parse(req.body);
+      const [result, settings] = await Promise.all([
+        store.placeOrder(payload),
+        store.getSettings(),
+      ]);
+      res.status(result.duplicate ? 200 : 201).json({
+        order: result.order,
+        duplicate: result.duplicate,
+        whatsappNumber: settings.whatsappNumber,
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/orders/track', trackLimiter, async (req, res, next) => {
+    try {
+      const { reference, phone } = TrackOrderSchema.parse(req.body);
+      const order = await store.trackOrder({ reference, phone });
+      if (!order) {
+        return res.status(404).json({
+          error:
+            'Aucune commande trouvée pour cette référence et ce numéro de téléphone. Vérifiez vos informations.',
+        });
+      }
+      res.json({ order });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // AUTHENTIFICATION & ESPACE DE GESTION (/api/admin/*)
+  // ---------------------------------------------------------------------------
+
+  app.get('/api/admin/session', async (req, res) => {
+    const configured = isAdminConfigured();
+    let storage = { mode: 'unknown', durable: false };
+    try {
+      const h = await store.healthCheck();
+      storage = h.storage;
+    } catch {
+      storage = { mode: 'disconnected', durable: false };
+    }
+
+    if (!configured) {
+      return res.json({
+        authenticated: false,
+        configured: false,
+        storage,
+      });
+    }
+
+    const token = extractToken(req);
+    const session = verifySessionToken(token);
+    if (!session) {
+      return res.json({
+        authenticated: false,
+        configured: true,
+        demoHint:
+          !production && !process.env.VERCEL && !process.env.ADMIN_PASSWORD
+            ? 'perokado-demo-admin'
+            : null,
+        storage,
+      });
+    }
+
+    if (session.role === 'agent') {
+      try {
+        const agent = await store.getAgentById(session.agentId);
+        if (!agent || !agent.active) {
+          return res.json({ authenticated: false, configured: true, storage });
+        }
+        return res.json({
+          authenticated: true,
+          configured: true,
+          user: { role: 'agent', id: agent.id, name: agent.name },
+          storage,
+        });
+      } catch {
+        return res.json({ authenticated: false, configured: true, storage });
+      }
+    }
+
+    return res.json({
+      authenticated: true,
+      configured: true,
+      user: { role: 'admin', id: 'admin', name: 'Administrateur' },
+      storage,
+    });
+  });
+
+  app.post('/api/admin/login', loginLimiter, async (req, res, next) => {
+    try {
+      if (!isAdminConfigured()) {
+        return res.status(503).json({
+          error:
+            'ADMIN_PASSWORD non configuré sur le serveur. Ajoutez cette variable dans Vercel.',
+        });
+      }
+      const { credential } = AdminLoginSchema.parse(req.body);
+      const adminPw = getEffectiveAdminPassword();
+
+      let userPayload = null;
+      if (adminPw && timingSafeEqualStr(credential, adminPw)) {
+        userPayload = { role: 'admin', agentId: null, name: 'Administrateur' };
+      } else if (credential.toUpperCase().startsWith('PKD-')) {
+        const agent = await store.findActiveAgentByCode(credential);
+        if (agent) {
+          userPayload = { role: 'agent', agentId: agent.id, name: agent.name };
+        }
+      }
+
+      if (!userPayload) {
+        return res.status(401).json({
+          error: 'Mot de passe administrateur ou code agent incorrect.',
+        });
+      }
+
+      const token = signSessionToken(userPayload);
+      res.setHeader('Set-Cookie', serializeSessionCookie(token, isSecureRequest(req, production)));
+      res.json({
+        authenticated: true,
+        token,
+        user: {
+          role: userPayload.role,
+          id: userPayload.agentId || 'admin',
+          name: userPayload.name,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/admin/logout', (req, res) => {
+    res.setHeader('Set-Cookie', clearSessionCookie(isSecureRequest(req, production)));
+    res.json({ ok: true });
+  });
+
+  app.get('/api/admin/overview', requireAuth('any'), async (req, res, next) => {
+    try {
+      const [stats, orders, products, settings] = await Promise.all([
+        store.getDashboardStats(),
+        store.listOrders({ limit: 200 }),
+        store.listAllProducts(),
+        store.getSettings(),
+      ]);
+
+      let promos = [];
+      let agents = [];
+      if (req.user.role === 'admin') {
+        [promos, agents] = await Promise.all([store.listPromoCodes(), store.listAgents()]);
+      }
+
+      res.json({
+        user: req.user,
+        stats,
+        orders,
+        products,
+        settings,
+        promos,
+        agents,
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.patch('/api/admin/orders/:reference/status', requireAuth('any'), async (req, res, next) => {
+    try {
+      const { status } = OrderStatusUpdateSchema.parse(req.body);
+      const order = await store.updateOrderStatus(req.params.reference, status, req.actorLabel);
+      res.json({ order });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/admin/products', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const input = ProductUpsertSchema.parse(req.body);
+      const product = await store.upsertProduct(input, req.actorLabel);
+      res.status(201).json({ product });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/api/admin/products/:id', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const input = ProductUpsertSchema.parse({ ...req.body, id: req.params.id });
+      const product = await store.upsertProduct(input, req.actorLabel);
+      res.json({ product });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/api/admin/products/:id', requireAuth('admin'), async (req, res, next) => {
+    try {
+      await store.deleteProduct(req.params.id, req.actorLabel);
+      res.json({ deleted: true });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/api/admin/products/:id/photo', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const product = await store.deleteProductPhoto(req.params.id, req.actorLabel);
+      res.json({ product });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/admin/promos', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const input = CreatePromoSchema.parse(req.body);
+      const promos = await store.upsertPromoCode(input, req.actorLabel);
+      res.status(201).json({ promos });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/api/admin/promos/:code', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const promos = await store.deletePromoCode(req.params.code, req.actorLabel);
+      res.json({ promos });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/admin/agents', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const input = CreateAgentSchema.parse(req.body);
+      const created = await store.createAgent(input, req.actorLabel);
+      const agents = await store.listAgents();
+      res.status(201).json({ created, agents });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/api/admin/agents/:id', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const agents = await store.revokeAgent(req.params.id, req.actorLabel);
+      res.json({ agents });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/api/admin/settings', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const input = StoreSettingsUpdateSchema.parse(req.body);
+      const settings = await store.updateSettings(input, req.actorLabel);
+      res.json({ settings });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // 404 propre sur toute route API inconnue
+  app.use('/api', (_req, res) => {
+    res.status(404).json({ error: 'Point d’accès API introuvable.' });
+  });
+
+  // En mode production Node autonome (`npm start`), servir dist/
+  if (serveStatic) {
+    const distDir = path.join(ROOT_DIR, 'dist');
+    if (fs.existsSync(distDir)) {
+      app.use(express.static(distDir, { maxAge: '7d', index: false }));
+      app.get('/{*splat}', (_req, res) => {
+        res.sendFile(path.join(distDir, 'index.html'));
+      });
+    }
+  }
+
+  // Gestionnaire global d'erreurs (aucune fuite de stacktrace ou d'identifiants DB)
+  app.use((err, _req, res, _next) => {
+    if (err instanceof ZodError) {
+      const firstIssue = err.issues?.[0]?.message || 'Données invalides.';
+      return res.status(400).json({
+        error: firstIssue,
+        code: 'VALIDATION_ERROR',
+      });
+    }
+    if (err instanceof BusinessError) {
+      return res.status(err.status).json({
+        error: err.message,
+        code: err.code,
+      });
+    }
+    if (err instanceof DatabaseUnavailableError) {
+      return res.status(503).json({
+        error: err.message,
+        code: 'DB_UNAVAILABLE',
+      });
+    }
+    if (err?.type === 'entity.too.large') {
+      return res.status(413).json({
+        error: 'Fichier ou données trop volumineux (maximum 4 Mo pour une photo).',
+      });
+    }
+    console.error('[Pèrôkadô API Error]:', err?.code || err?.name || 'UnknownError', err?.message);
+    return res.status(500).json({
+      error: 'Une erreur interne est survenue. Veuillez réessayer dans un instant.',
+    });
+  });
+
+  return app;
+}

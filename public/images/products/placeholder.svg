@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 960" fill="none">
+  <rect width="800" height="960" fill="#FAF7F0"/>
+  <rect x="64" y="64" width="672" height="832" rx="32" stroke="#E5DEC9" stroke-width="3" stroke-dasharray="10 10"/>
+  <!-- Gift / Bag stylized icon -->
+  <g transform="translate(270, 300)">
+    <path d="M55 75 C55 25, 115 25, 130 75 C145 25, 205 25, 205 75" stroke="#E0A11B" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <path d="M35 80 L124 80 L124 270 L20 270 Z" fill="#D95D24"/>
+    <path d="M136 80 L225 80 L240 270 L136 270 Z" fill="#0F443E"/>
+    <rect x="124" y="80" width="12" height="190" fill="#E0A11B"/>
+  </g>
+  <text x="400" y="650" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="bold" fill="#0F443E">Pèrôkadô</text>
+  <text x="400" y="695" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#6B7280">Visuel en cours d'ajout</text>
+</svg>
