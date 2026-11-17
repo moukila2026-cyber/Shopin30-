@@ -10,7 +10,13 @@ import {
   INITIAL_PROMO_CODES,
   normalizeIvorianPhone,
 } from '../shared/catalog.js';
-import { generateAgentCode, generateOrderReference, hashSecret } from './security.js';
+import {
+  generateAgentCode,
+  generateOrderReference,
+  generateTrackingToken,
+  hashSecret,
+  timingSafeEqualStr,
+} from './security.js';
 
 export class BusinessError extends Error {
   constructor(message, status = 400, code = 'BUSINESS_ERROR') {
@@ -167,6 +173,9 @@ function mapOrderRow(row) {
     addressDetails: row.address_details || '',
     deliverySlot: row.delivery_slot,
     paymentMethod: row.payment_method,
+    waveSenderPhone: row.wave_sender_phone || '',
+    waveTransactionRef: row.wave_transaction_ref || '',
+    trackingToken: row.tracking_token || '',
     customerNote: row.customer_note || '',
     promoCode: row.promo_code || null,
     subtotal: Number(row.subtotal),
@@ -202,9 +211,11 @@ export function createStore(adapterPromiseOrInstance) {
         const envWa = normalizeIvorianPhone(process.env.WHATSAPP_NUMBER || BRAND.defaultWhatsapp);
         const defaultSettings = {
           whatsappNumber: envWa || BRAND.defaultWhatsapp,
-          freeShippingThreshold: BRAND.defaultFreeShippingThreshold,
+          wavePhone: process.env.WAVE_PHONE || BRAND.defaultWavePhone,
+          wavePaymentUrl: process.env.WAVE_PAYMENT_URL || BRAND.defaultWavePaymentUrl,
+          shippingDisclaimer: BRAND.shippingDisclaimer,
           announcementBanner:
-            'Livraison rapide à Daloa (1 000 FCFA) & villes aux alentours · Gratuite dès 50 000 FCFA · Code BIENVENUE10 (-10%)',
+            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua & alentours dès 2 000 F · Paiement Wave & Suivi QR',
           storeOpen: true,
           deliveryZones: DELIVERY_ZONES,
         };
@@ -281,21 +292,30 @@ export function createStore(adapterPromiseOrInstance) {
     const envWa = process.env.WHATSAPP_NUMBER
       ? normalizeIvorianPhone(process.env.WHATSAPP_NUMBER)
       : null;
+
+    // Filtrer toute ancienne zone éventuelle à 0 F (aucune livraison gratuite)
+    const storedZones =
+      Array.isArray(stored.deliveryZones) && stored.deliveryZones.length > 0
+        ? stored.deliveryZones.filter((z) => Number(z.fee) > 0)
+        : [];
+
     return {
       whatsappNumber: stored.whatsappNumber || envWa || BRAND.defaultWhatsapp,
-      freeShippingThreshold:
-        typeof stored.freeShippingThreshold === 'number'
-          ? stored.freeShippingThreshold
-          : BRAND.defaultFreeShippingThreshold,
+      wavePhone: stored.wavePhone || process.env.WAVE_PHONE || BRAND.defaultWavePhone,
+      wavePaymentUrl:
+        typeof stored.wavePaymentUrl === 'string'
+          ? stored.wavePaymentUrl
+          : process.env.WAVE_PAYMENT_URL || BRAND.defaultWavePaymentUrl,
+      shippingDisclaimer:
+        typeof stored.shippingDisclaimer === 'string' && stored.shippingDisclaimer.trim()
+          ? stored.shippingDisclaimer
+          : BRAND.shippingDisclaimer,
       announcementBanner:
         typeof stored.announcementBanner === 'string'
           ? stored.announcementBanner
-          : 'Livraison rapide à Daloa & villes aux alentours',
+          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua & alentours dès 2 000 F · Paiement Wave',
       storeOpen: stored.storeOpen !== false,
-      deliveryZones:
-        Array.isArray(stored.deliveryZones) && stored.deliveryZones.length > 0
-          ? stored.deliveryZones
-          : DELIVERY_ZONES,
+      deliveryZones: storedZones.length > 0 ? storedZones : DELIVERY_ZONES,
     };
   }
 
@@ -305,6 +325,7 @@ export function createStore(adapterPromiseOrInstance) {
     const next = {
       ...current,
       ...patch,
+      freeShippingThreshold: 0,
       whatsappNumber: normalizeIvorianPhone(patch.whatsappNumber || current.whatsappNumber),
     };
     await db.query(
@@ -671,19 +692,18 @@ export function createStore(adapterPromiseOrInstance) {
       }
 
       const netSubtotal = Math.max(0, subtotal - discountAmount);
-      const deliveryFee =
-        settings.freeShippingThreshold > 0 && netSubtotal >= settings.freeShippingThreshold
-          ? 0
-          : Number(zone.fee);
+      // Aucune livraison gratuite : le tarif de base de la zone s'applique systématiquement
+      const deliveryFee = Math.max(100, Number(zone.fee));
       const total = netSubtotal + deliveryFee;
 
-      // Générer une référence unique PKD-XXXXXX
+      // Générer une référence unique PKD-XXXXXX + jeton secret pour le Code QR de suivi en direct
       let reference = generateOrderReference();
       for (let attempt = 0; attempt < 5; attempt++) {
         const exists = await tx.query(`SELECT 1 FROM orders WHERE reference = $1`, [reference]);
         if (exists.rows.length === 0) break;
         reference = generateOrderReference();
       }
+      const trackingToken = generateTrackingToken();
 
       const phoneNorm = normalizeIvorianPhone(payload.customerPhone);
 
@@ -691,9 +711,9 @@ export function createStore(adapterPromiseOrInstance) {
         `INSERT INTO orders (
           reference, request_id, status, customer_name, customer_phone, customer_phone_norm,
           city_zone_id, city_zone_name, neighborhood, address_details,
-          delivery_slot, payment_method, customer_note, promo_code,
-          subtotal, discount_amount, delivery_fee, total, items
-        ) VALUES ($1,$2,'pending',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18::jsonb)
+          delivery_slot, payment_method, wave_sender_phone, wave_transaction_ref, tracking_token,
+          customer_note, promo_code, subtotal, discount_amount, delivery_fee, total, items
+        ) VALUES ($1,$2,'pending',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21::jsonb)
         RETURNING *`,
         [
           reference,
@@ -706,7 +726,10 @@ export function createStore(adapterPromiseOrInstance) {
           payload.neighborhood,
           payload.addressDetails || '',
           payload.deliverySlot,
-          payload.paymentMethod,
+          'wave',
+          payload.waveSenderPhone || '',
+          payload.waveTransactionRef || '',
+          trackingToken,
           payload.customerNote || '',
           appliedPromo,
           subtotal,
@@ -721,25 +744,32 @@ export function createStore(adapterPromiseOrInstance) {
     });
   }
 
-  async function trackOrder({ reference, phone }) {
+  async function trackOrder({ reference, phone, token }) {
     const db = await ensureReady();
     const refClean = String(reference || '').trim().toUpperCase();
-    const phoneNorm = normalizeIvorianPhone(phone);
     const { rows } = await db.query(
       `SELECT * FROM orders WHERE UPPER(reference) = $1`,
       [refClean]
     );
     if (rows.length === 0) return null;
     const row = rows[0];
-    // Vérification stricte du téléphone client (normalisé ou les 8 derniers chiffres)
-    const storedDigits = String(row.customer_phone_norm || '').replace(/\D/g, '');
-    const inputDigits = String(phoneNorm || '').replace(/\D/g, '');
-    const match =
-      storedDigits === inputDigits ||
-      (storedDigits.length >= 8 &&
-        inputDigits.length >= 8 &&
-        storedDigits.slice(-8) === inputDigits.slice(-8));
-    if (!match) return null;
+
+    // Autoriser soit par jeton QR secret en temps constant, soit par vérification du numéro client
+    let authorized = false;
+    if (token && row.tracking_token && timingSafeEqualStr(token.trim(), row.tracking_token)) {
+      authorized = true;
+    } else if (phone) {
+      const phoneNorm = normalizeIvorianPhone(phone);
+      const storedDigits = String(row.customer_phone_norm || '').replace(/\D/g, '');
+      const inputDigits = String(phoneNorm || '').replace(/\D/g, '');
+      authorized =
+        storedDigits === inputDigits ||
+        (storedDigits.length >= 8 &&
+          inputDigits.length >= 8 &&
+          storedDigits.slice(-8) === inputDigits.slice(-8));
+    }
+
+    if (!authorized) return null;
 
     const order = mapOrderRow(row);
     return {
@@ -750,6 +780,8 @@ export function createStore(adapterPromiseOrInstance) {
       neighborhood: order.neighborhood,
       deliverySlot: order.deliverySlot,
       paymentMethod: order.paymentMethod,
+      waveTransactionRef: order.waveTransactionRef,
+      trackingToken: order.trackingToken,
       subtotal: order.subtotal,
       discountAmount: order.discountAmount,
       deliveryFee: order.deliveryFee,

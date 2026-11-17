@@ -106,6 +106,10 @@ export function generateOrderReference() {
   return `PKD-${code}`;
 }
 
+export function generateTrackingToken() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
 export function parseCookies(cookieHeader) {
   const out = {};
   if (!cookieHeader || typeof cookieHeader !== 'string') return out;

@@ -335,12 +335,12 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
   app.post('/api/orders/track', trackLimiter, async (req, res, next) => {
     try {
-      const { reference, phone } = TrackOrderSchema.parse(req.body);
-      const order = await store.trackOrder({ reference, phone });
+      const { reference, phone, token } = TrackOrderSchema.parse(req.body);
+      const order = await store.trackOrder({ reference, phone, token });
       if (!order) {
         return res.status(404).json({
           error:
-            'Aucune commande trouvée pour cette référence et ce numéro de téléphone. Vérifiez vos informations.',
+            'Aucune commande trouvée pour ces informations. Vérifiez votre référence ou scannez votre Code QR.',
         });
       }
       res.json({ order });

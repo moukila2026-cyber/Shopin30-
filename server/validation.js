@@ -2,11 +2,10 @@
 // PÈRÔKADÔ — Validation stricte des entrées (Zod v4)
 // ==============================================================================
 import { z } from 'zod';
-import { CATEGORIES, DELIVERY_SLOTS, PAYMENT_METHODS } from '../shared/catalog.js';
+import { CATEGORIES, DELIVERY_SLOTS } from '../shared/catalog.js';
 
 const validCategoryIds = CATEGORIES.filter((c) => c.id !== 'all').map((c) => c.id);
 const validSlotIds = DELIVERY_SLOTS.map((s) => s.id);
-const validPaymentIds = PAYMENT_METHODS.map((p) => p.id);
 
 export const OrderItemInputSchema = z.object({
   productId: z.string().trim().min(1).max(120),
@@ -34,18 +33,37 @@ export const PlaceOrderSchema = z.object({
   deliverySlot: z.string().refine((v) => validSlotIds.includes(v), {
     message: 'Créneau de livraison invalide.',
   }),
-  paymentMethod: z.string().refine((v) => validPaymentIds.includes(v), {
-    message: 'Mode de paiement invalide.',
+  // Paiement en ligne UNIQUEMENT par Wave
+  paymentMethod: z.literal('wave', {
+    error: 'Le paiement en ligne s’effectue uniquement par Wave.',
   }),
+  waveSenderPhone: z
+    .string()
+    .trim()
+    .min(8, 'Veuillez indiquer le numéro Wave utilisé pour le paiement.')
+    .max(25)
+    .refine((val) => val.replace(/\D/g, '').length >= 8, {
+      message: 'Numéro Wave invalide (minimum 8 chiffres).',
+    }),
+  waveTransactionRef: z
+    .string()
+    .trim()
+    .min(4, 'Veuillez saisir la référence / ID de transaction Wave (reçu dans l’application Wave).')
+    .max(80),
   customerNote: z.string().trim().max(500).optional().default(''),
   promoCode: z.string().trim().max(40).optional().default(''),
   items: z.array(OrderItemInputSchema).min(1, 'Votre panier est vide.').max(30),
 });
 
-export const TrackOrderSchema = z.object({
-  reference: z.string().trim().min(4).max(30),
-  phone: z.string().trim().min(8).max(25),
-});
+export const TrackOrderSchema = z
+  .object({
+    reference: z.string().trim().min(4).max(30),
+    phone: z.string().trim().max(25).optional().default(''),
+    token: z.string().trim().max(80).optional().default(''),
+  })
+  .refine((data) => data.token.length >= 16 || data.phone.replace(/\D/g, '').length >= 8, {
+    message: 'Veuillez renseigner votre numéro de téléphone ou scanner votre code QR de suivi.',
+  });
 
 export const PromoValidateSchema = z.object({
   code: z.string().trim().min(2).max(40),
@@ -108,7 +126,17 @@ export const CreatePromoSchema = z.object({
 
 export const StoreSettingsUpdateSchema = z.object({
   whatsappNumber: z.string().trim().min(8).max(25),
-  freeShippingThreshold: z.number().int().min(0).max(50000000),
+  wavePhone: z.string().trim().min(8).max(30),
+  wavePaymentUrl: z
+    .string()
+    .trim()
+    .max(300)
+    .refine((v) => !v || v.startsWith('https://'), {
+      message: 'Le lien de paiement Wave doit commencer par https:// (ou rester vide).',
+    })
+    .optional()
+    .default(''),
+  shippingDisclaimer: z.string().trim().min(10).max(400),
   announcementBanner: z.string().trim().max(220),
   storeOpen: z.boolean(),
   deliveryZones: z
@@ -117,8 +145,8 @@ export const StoreSettingsUpdateSchema = z.object({
         id: z.string().trim().min(1).max(80),
         name: z.string().trim().min(2).max(180),
         shortName: z.string().trim().min(2).max(80),
-        fee: z.number().int().min(0).max(500000),
-        eta: z.string().trim().min(2).max(120),
+        fee: z.number().int().min(100, 'Aucune livraison gratuite : le tarif minimum doit être positif.').max(500000),
+        eta: z.string().trim().min(2).max(160),
       })
     )
     .min(1)

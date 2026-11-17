@@ -1,12 +1,10 @@
 import React from 'react';
-import { MapPin, Phone, MessageCircle, ShieldCheck, Lock } from 'lucide-react';
+import { MapPin, Phone, MessageCircle, Smartphone, QrCode, Lock, Info } from 'lucide-react';
 import { BRAND, formatPhoneDisplay } from '../../shared/catalog.js';
+import { buildWhatsappServiceUrl } from '../lib/api.js';
 
-export function Footer({ whatsappNumber, deliveryZones, onOpenTrack }) {
-  const cleanWa = String(whatsappNumber || BRAND.defaultWhatsapp).replace(/\D/g, '');
-  const waHref = `https://wa.me/${cleanWa}?text=${encodeURIComponent(
-    'Bonjour Pèrôkadô ! Je souhaite avoir un renseignement sur vos articles.'
-  )}`;
+export function Footer({ whatsappNumber, shippingDisclaimer, deliveryZones, onOpenTrack }) {
+  const waHref = buildWhatsappServiceUrl(whatsappNumber);
 
   return (
     <footer className="bg-[#0F443E] text-[#FAF7F0] mt-16">
@@ -22,48 +20,59 @@ export function Footer({ whatsappNumber, deliveryZones, onOpenTrack }) {
               />
             </div>
             <p className="text-sm text-[#FAF7F0]/80 leading-relaxed">
-              Votre boutique e-commerce multi-catégories à Daloa et dans les villes aux alentours.
-              Qualité vérifiée, livraison rapide et paiement en toute confiance.
+              Votre boutique e-commerce multi-catégories à Daloa avec expédition rapide vers Issia,
+              Vavoua et toutes les villes aux alentours.
             </p>
-            <div className="flex items-center gap-2 text-xs text-[#E0A11B] font-semibold">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Paiement à la réception ou Mobile Money</span>
+            <div className="space-y-1.5 text-xs text-[#E0A11B] font-semibold">
+              <p className="flex items-center gap-2">
+                <Smartphone className="w-4 h-4 shrink-0" />
+                <span>Paiement en ligne par Wave uniquement</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <QrCode className="w-4 h-4 shrink-0" />
+                <span>Référence + Code QR de suivi en direct</span>
+              </p>
             </div>
           </div>
 
-          {/* Zones de livraison */}
-          <div>
-            <h3 className="text-base font-bold text-white mb-3 flex items-center gap-2">
+          {/* Grille Livraison & Expédition */}
+          <div className="space-y-3">
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#E0A11B]" />
-              <span>Zones de livraison</span>
+              <span>Livraison & Expéditions</span>
             </h3>
-            <ul className="space-y-1.5 text-xs sm:text-sm text-[#FAF7F0]/80">
-              {(deliveryZones || []).slice(0, 7).map((z) => (
+            <ul className="space-y-1.5 text-xs sm:text-sm text-[#FAF7F0]/85">
+              {(deliveryZones || []).slice(0, 6).map((z) => (
                 <li key={z.id} className="flex items-center justify-between gap-2">
                   <span>{z.shortName}</span>
                   <span className="text-[#E0A11B] font-semibold">
-                    {z.fee === 0 ? 'Gratuit' : `${z.fee.toLocaleString('fr-FR')} F`}
+                    {z.fee.toLocaleString('fr-FR')} F
                   </span>
                 </li>
               ))}
             </ul>
+            <p className="text-[11px] text-[#FAF7F0]/70 leading-relaxed flex items-start gap-1.5 pt-1 border-t border-white/10">
+              <Info className="w-3.5 h-3.5 text-[#E0A11B] shrink-0 mt-0.5" />
+              <span>{shippingDisclaimer || BRAND.shippingDisclaimer}</span>
+            </p>
           </div>
 
           {/* Informations utiles */}
           <div>
-            <h3 className="text-base font-bold text-white mb-3">Service Client</h3>
+            <h3 className="text-base font-bold text-white mb-3">Suivi & Infos</h3>
             <ul className="space-y-2 text-sm text-[#FAF7F0]/80">
               <li>
                 <button
                   type="button"
                   onClick={onOpenTrack}
-                  className="hover:text-[#E0A11B] transition cursor-pointer"
+                  className="hover:text-[#E0A11B] transition cursor-pointer font-semibold text-left"
                 >
-                  Suivre ma commande en direct
+                  Suivre ma marchandise en direct (Code QR / Réf)
                 </button>
               </li>
               <li>Horaires : Lundi – Samedi (08h00 – 19h30)</li>
-              <li>Modes de règlement : Espèces, Wave, Orange, MTN, Moov</li>
+              <li>Règlement en ligne : Wave Côte d’Ivoire uniquement</li>
+              <li>Aucune livraison gratuite</li>
               <li className="pt-1">
                 <a
                   href="/admin"
@@ -76,12 +85,12 @@ export function Footer({ whatsappNumber, deliveryZones, onOpenTrack }) {
             </ul>
           </div>
 
-          {/* Contact direct WhatsApp */}
+          {/* Contact direct Service Client */}
           <div className="space-y-3">
-            <h3 className="text-base font-bold text-white">Besoin d’un conseil ?</h3>
-            <p className="text-xs sm:text-sm text-[#FAF7F0]/80">
-              Une question sur un produit, une livraison à Issia, Vavoua, Bouaflé ou un coffret
-              cadeau sur mesure ? Écrivez-nous directement.
+            <h3 className="text-base font-bold text-white">Service Client Pèrôkadô</h3>
+            <p className="text-xs sm:text-sm text-[#FAF7F0]/80 leading-relaxed">
+              Le coût de livraison ou d’expédition dépend de la taille et du poids de votre
+              marchandise. Contactez notre service client pour tout renseignement ou colis spécial.
             </p>
             <a
               href={waHref}
@@ -90,7 +99,7 @@ export function Footer({ whatsappNumber, deliveryZones, onOpenTrack }) {
               className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#D95D24] hover:bg-[#BF4E1B] text-white text-sm font-bold shadow-md transition"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>WhatsApp Direct</span>
+              <span>Contacter le Service Client</span>
             </a>
             <p className="text-xs text-[#FAF7F0]/75 flex items-center gap-1.5 pt-1">
               <Phone className="w-3.5 h-3.5 text-[#E0A11B]" />
@@ -112,16 +121,16 @@ export function Footer({ whatsappNumber, deliveryZones, onOpenTrack }) {
         </div>
       </div>
 
-      {/* Bouton flottant WhatsApp */}
+      {/* Bouton flottant Service Client WhatsApp */}
       <a
         href={waHref}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Discuter sur WhatsApp"
+        aria-label="Service client WhatsApp"
         className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#1FAF5A] hover:bg-[#18934A] text-white font-bold text-xs sm:text-sm shadow-xl transition"
       >
         <MessageCircle className="w-5 h-5" />
-        <span className="hidden sm:inline">Aide WhatsApp</span>
+        <span className="hidden sm:inline">Service Client</span>
       </a>
     </footer>
   );

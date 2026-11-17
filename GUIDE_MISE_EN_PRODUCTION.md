@@ -86,5 +86,5 @@ Une fois le déploiement Vercel passé à **Ready** :
    - Connectez-vous avec le `ADMIN_PASSWORD` que vous avez choisi à l’Étape 3.
 3. **Personnaliser votre boutique en direct** :
    - **Onglet Catalogue** : remplacez ou ajoutez vos vrais articles, ajustez les prix FCFA, les stocks réels à Daloa et cliquez sur **Photo** pour téléverser les photos de vos produits (stockées directement dans Neon).
-   - **Onglet Zones & Paramètres** : ajustez si besoin votre numéro WhatsApp de réception, le seuil de livraison gratuite et les tarifs de livraison (Daloa Commune, Périphérie, Issia, Vavoua, Zoukougbeu, Bouaflé, Sinfra, Gagnoa…).
-   - **Onglet Équipe & Codes** : générez un code `PKD-XXXX-XXXX` pour vos vendeurs ou livreurs afin qu’ils suivent et livrent les commandes sans avoir accès à vos réglages administrateur.
+   - **Onglet Zones & Paramètres** : renseignez votre **numéro Wave marchand** (et éventuellement votre lien de paiement Wave Business `https://pay.wave.com/...`), le numéro WhatsApp de votre **Service Client**, ainsi que vos tarifs de base (**1 000 F** Daloa Commune, **1 500 F** Périphérie, **2 000 F** Expédition Issia, Vavoua… — aucune livraison gratuite).
+   - **Onglet Équipe & Codes** : générez un code `PKD-XXXX-XXXX` pour vos vendeurs ou livreurs afin qu’ils vérifient les paiements Wave et mettent à jour le statut des colis (ce qui met à jour en direct le suivi **Code QR** du client).

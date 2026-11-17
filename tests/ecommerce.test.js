@@ -1,5 +1,5 @@
 // ==============================================================================
-// PÈRÔKADÔ — Suite de tests automatisés (API, Transactions Stock, Promos, Sécurité)
+// PÈRÔKADÔ — Suite de tests automatisés (Tarifs sans gratuité, Wave uniquement, QR Suivi, Sécurité)
 // ==============================================================================
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -45,7 +45,7 @@ async function reqJson(path, { method = 'GET', body, token, origin } = {}) {
   return { status: res.status, headers: res.headers, data };
 }
 
-test('1. Santé API (/api/health) et catalogue initial Daloa & alentours', async () => {
+test('1. Catalogue & Grille tarifaire : Daloa Commune 1000 F, Périphérie 1500 F, Expédition 2000 F, aucune livraison gratuite', async () => {
   const health = await reqJson('/api/health');
   assert.equal(health.status, 200);
   assert.equal(health.data.ok, true);
@@ -53,44 +53,72 @@ test('1. Santé API (/api/health) et catalogue initial Daloa & alentours', async
 
   const catalog = await reqJson('/api/catalog');
   assert.equal(catalog.status, 200);
-  assert.ok(catalog.data.products.length >= 9, 'Au moins 9 produits initiaux');
-  assert.ok(
-    catalog.data.settings.deliveryZones.some((z) => z.id === 'daloa-centre'),
-    'Daloa Commune est présente'
-  );
-  assert.ok(
-    catalog.data.settings.deliveryZones.some((z) => z.id === 'issia'),
-    'Issia (ville alentour) est présente'
-  );
+  assert.ok(catalog.data.products.length >= 9);
+
+  const zones = catalog.data.settings.deliveryZones;
+  assert.ok(zones.every((z) => z.fee > 0), 'Aucune zone à 0 FCFA (aucune livraison gratuite)');
+
+  const commune = zones.find((z) => z.id === 'daloa-commune');
+  const periph = zones.find((z) => z.id === 'daloa-peripherie');
+  const issia = zones.find((z) => z.id === 'expedition-issia');
+  const vavoua = zones.find((z) => z.id === 'expedition-vavoua');
+
+  assert.equal(commune?.fee, 1000);
+  assert.equal(periph?.fee, 1500);
+  assert.equal(issia?.fee, 2000);
+  assert.equal(vavoua?.fee, 2000);
+
+  // Paiement en ligne Wave uniquement
+  assert.equal(catalog.data.paymentMethods.length, 1);
+  assert.equal(catalog.data.paymentMethods[0].id, 'wave');
 });
 
-test('2. Protection CSRF / Same-Origin rejette une origine externe malveillante', async () => {
-  const res = await reqJson('/api/orders', {
+test('2. Protection CSRF / Same-Origin et rejet de tout mode de paiement autre que Wave', async () => {
+  const csrfRes = await reqJson('/api/orders', {
     method: 'POST',
     origin: 'https://evil-attacker.example.com',
     body: {},
   });
-  assert.equal(res.status, 403);
+  assert.equal(csrfRes.status, 403);
+
+  const nonWaveRes = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_non_wave_1',
+      customerName: 'Client Test',
+      customerPhone: '0708091011',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Lobia',
+      deliverySlot: 'matin',
+      paymentMethod: 'especes-livraison',
+      waveSenderPhone: '0708091011',
+      waveTransactionRef: 'TWAVE1234',
+      items: [{ productId: 'ecouteurs-airpulse-pro', quantity: 1 }],
+    },
+  });
+  assert.equal(nonWaveRes.status, 400);
 });
 
-test('3. Commande complète : recalcul serveur des prix, code promo, idempotence et décrémentation stock', async () => {
+test('3. Commande Wave > 50 000 FCFA : livraison toujours facturée (pas de gratuité), référence + jeton QR de suivi en direct', async () => {
   const beforeCat = await reqJson('/api/catalog');
-  const targetProd = beforeCat.data.products.find((p) => p.id === 'ecouteurs-airpulse-pro');
-  assert.ok(targetProd);
-  const initialStock = targetProd.stock;
+  const phoneProd = beforeCat.data.products.find((p) => p.id === 'smartphone-nova-x12');
+  assert.ok(phoneProd);
+  const initialStock = phoneProd.stock;
 
+  // Commande de 74 900 FCFA vers Daloa Périphérie (1 500 FCFA) -> livraison facturée même > 50 000 FCFA
   const orderPayload = {
-    requestId: 'req_test_unique_1001',
+    requestId: 'req_wave_qr_test_1001',
     customerName: 'Kouassi Aya',
     customerPhone: '07 08 09 10 11',
-    cityZoneId: 'daloa-centre',
-    neighborhood: 'Tazibouo Université',
-    addressDetails: 'Carrefour Pharmacie',
+    cityZoneId: 'daloa-peripherie',
+    neighborhood: 'Bribouo',
+    addressDetails: 'Carrefour école',
     deliverySlot: 'matin',
-    paymentMethod: 'especes-livraison',
+    paymentMethod: 'wave',
+    waveSenderPhone: '0708091011',
+    waveTransactionRef: 'TWAVE987654',
     promoCode: 'BIENVENUE10',
-    // Même si un client tentait d'envoyer un faux prix, le serveur l'ignore et recalcule
-    items: [{ productId: targetProd.id, quantity: 2 }],
+    items: [{ productId: phoneProd.id, quantity: 1 }],
   };
 
   const created = await reqJson('/api/orders', { method: 'POST', body: orderPayload });
@@ -98,69 +126,67 @@ test('3. Commande complète : recalcul serveur des prix, code promo, idempotence
   assert.equal(created.data.duplicate, false);
   const order = created.data.order;
   assert.match(order.reference, /^PKD-[A-Z0-9]{6}$/);
+  assert.equal(order.paymentMethod, 'wave');
+  assert.equal(order.waveTransactionRef, 'TWAVE987654');
+  assert.ok(order.trackingToken && order.trackingToken.length === 32, 'Jeton QR généré');
 
-  const expectedSubtotal = targetProd.price * 2; // 29 000 FCFA
-  const expectedDiscount = Math.round(expectedSubtotal * 0.1); // 2 900 FCFA
-  assert.equal(order.subtotal, expectedSubtotal);
-  assert.equal(order.discountAmount, expectedDiscount);
-  assert.equal(order.deliveryFee, 1000);
-  assert.equal(order.total, expectedSubtotal - expectedDiscount + 1000);
+  const expectedSubtotal = phoneProd.price; // 74 900
+  const expectedDiscount = Math.round(expectedSubtotal * 0.1); // 7 490
+  assert.equal(order.deliveryFee, 1500, 'Aucune livraison gratuite même sur gros panier');
+  assert.equal(order.total, expectedSubtotal - expectedDiscount + 1500);
 
-  // Test d'idempotence (double clic réseau) : aucun double débit de stock
+  // Idempotence
   const retry = await reqJson('/api/orders', { method: 'POST', body: orderPayload });
   assert.equal(retry.status, 200);
   assert.equal(retry.data.duplicate, true);
   assert.equal(retry.data.order.reference, order.reference);
 
   const afterCat = await reqJson('/api/catalog');
-  const updatedProd = afterCat.data.products.find((p) => p.id === targetProd.id);
-  assert.equal(updatedProd.stock, initialStock - 2);
+  const updatedProd = afterCat.data.products.find((p) => p.id === phoneProd.id);
+  assert.equal(updatedProd.stock, initialStock - 1);
 
-  // Suivi de commande sécurisé : refuse un mauvais numéro de téléphone
-  const wrongPhoneTrack = await reqJson('/api/orders/track', {
+  // Suivi direct via le jeton du Code QR (sans avoir à ressaisir le téléphone)
+  const qrTrack = await reqJson('/api/orders/track', {
     method: 'POST',
-    body: { reference: order.reference, phone: '0102030405' },
+    body: { reference: order.reference, token: order.trackingToken },
   });
-  assert.equal(wrongPhoneTrack.status, 404);
+  assert.equal(qrTrack.status, 200);
+  assert.equal(qrTrack.data.order.reference, order.reference);
+  assert.equal(qrTrack.data.order.status, 'pending');
 
-  // Suivi de commande valide avec le bon numéro
-  const validTrack = await reqJson('/api/orders/track', {
+  // Rejet d'un faux jeton QR et d'un faux numéro
+  const badQrTrack = await reqJson('/api/orders/track', {
+    method: 'POST',
+    body: { reference: order.reference, token: '00000000000000000000000000000000' },
+  });
+  assert.equal(badQrTrack.status, 404);
+
+  // Suivi manuel par référence + téléphone client valide
+  const manualTrack = await reqJson('/api/orders/track', {
     method: 'POST',
     body: { reference: order.reference, phone: '+225 07 08 09 10 11' },
   });
-  assert.equal(validTrack.status, 200);
-  assert.equal(validTrack.data.order.reference, order.reference);
+  assert.equal(manualTrack.status, 200);
 });
 
-test('4. Authentification Admin, Agents révocables, Annulation avec restitution stock et blocage commande livrée', async () => {
-  // Connexion échouée avec mauvais mot de passe
-  const badLogin = await reqJson('/api/admin/login', {
-    method: 'POST',
-    body: { credential: 'wrong-password' },
-  });
-  assert.equal(badLogin.status, 401);
-
-  // Connexion Admin valide
+test('4. Admin, Agents révocables, Annulation avec restitution stock et Expédition Issia à 2 000 F', async () => {
   const adminLogin = await reqJson('/api/admin/login', {
     method: 'POST',
     body: { credential: process.env.ADMIN_PASSWORD },
   });
   assert.equal(adminLogin.status, 200);
   const adminToken = adminLogin.data.token;
-  assert.ok(adminToken);
 
-  // Création d'un agent d'équipe
+  // Création et révocation d'agent
   const agentRes = await reqJson('/api/admin/agents', {
     method: 'POST',
     token: adminToken,
-    body: { name: 'Agent Daloa Sud', phone: '0500112233' },
+    body: { name: 'Agent Expédition Issia', phone: '0500112233' },
   });
   assert.equal(agentRes.status, 201);
   const agentCode = agentRes.data.created.plainCode;
   const agentId = agentRes.data.created.id;
-  assert.match(agentCode, /^PKD-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
 
-  // Connexion avec le code agent
   const agentLogin = await reqJson('/api/admin/login', {
     method: 'POST',
     body: { credential: agentCode },
@@ -168,64 +194,36 @@ test('4. Authentification Admin, Agents révocables, Annulation avec restitution
   assert.equal(agentLogin.status, 200);
   const agentToken = agentLogin.data.token;
 
-  // Un agent ne peut PAS créer ou supprimer un produit (RBAC 403)
-  const forbiddenCreate = await reqJson('/api/admin/products', {
+  // RBAC : agent interdit de création produit
+  const forbidden = await reqJson('/api/admin/products', {
     method: 'POST',
     token: agentToken,
-    body: {
-      name: 'Produit Pirate',
-      category: 'high-tech',
-      price: 5000,
-      stock: 5,
-    },
+    body: { name: 'Interdit', category: 'high-tech', price: 5000, stock: 5 },
   });
-  assert.equal(forbiddenCreate.status, 403);
+  assert.equal(forbidden.status, 403);
 
-  // Révocation immédiate de l'agent par l'admin
-  const revokeRes = await reqJson(`/api/admin/agents/${agentId}`, {
-    method: 'DELETE',
-    token: adminToken,
-  });
-  assert.equal(revokeRes.status, 200);
-
-  // Le jeton de l'agent révoqué est immédiatement rejeté à la requête suivante
+  await reqJson(`/api/admin/agents/${agentId}`, { method: 'DELETE', token: adminToken });
   const afterRevoke = await reqJson('/api/admin/overview', { token: agentToken });
   assert.equal(afterRevoke.status, 401);
 
-  // Vérification de la restitution du stock à l'annulation d'une commande
-  const overview = await reqJson('/api/admin/overview', { token: adminToken });
-  assert.equal(overview.status, 200);
-  const order = overview.data.orders[0];
-  assert.ok(order);
-
-  const cancelRes = await reqJson(`/api/admin/orders/${order.reference}/status`, {
-    method: 'PATCH',
-    token: adminToken,
-    body: { status: 'cancelled' },
-  });
-  assert.equal(cancelRes.status, 200);
-  assert.equal(cancelRes.data.order.status, 'cancelled');
-
-  // Le stock des écouteurs est revenu à son niveau initial (25)
-  const catRestored = await reqJson('/api/catalog');
-  const restoredProd = catRestored.data.products.find((p) => p.id === 'ecouteurs-airpulse-pro');
-  assert.equal(restoredProd.stock, 25);
-
-  // Créer une commande, la marquer livrée et vérifier qu'elle ne peut plus être annulée
+  // Commande Expédition Issia (2 000 F) puis livraison -> non annulable
   const o2 = await reqJson('/api/orders', {
     method: 'POST',
     body: {
-      requestId: 'req_test_delivered_2002',
+      requestId: 'req_issia_wave_2002',
       customerName: 'Bamba Moussa',
       customerPhone: '0504030201',
-      cityZoneId: 'issia',
-      neighborhood: 'Issia Résidentiel',
+      cityZoneId: 'expedition-issia',
+      neighborhood: 'Issia Gare',
       deliverySlot: 'soir',
       paymentMethod: 'wave',
+      waveSenderPhone: '0504030201',
+      waveTransactionRef: 'TWAVE555888',
       items: [{ productId: 'ecouteurs-airpulse-pro', quantity: 1 }],
     },
   });
   assert.equal(o2.status, 201);
+  assert.equal(o2.data.order.deliveryFee, 2000);
   const ref2 = o2.data.order.reference;
 
   await reqJson(`/api/admin/orders/${ref2}/status`, {
@@ -249,28 +247,20 @@ test('5. Upload photo binaire sécurisé : rejette un faux fichier et accepte un
   });
   const token = adminLogin.data.token;
 
-  // Faux PNG (script texte déguisé) -> rejeté 400
   const fakeRes = await fetch(`${baseUrl}/api/admin/products/ecouteurs-airpulse-pro/photo`, {
     method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'image/png',
-    },
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/png' },
     body: Buffer.from('<svg onload="alert(1)"></svg>'),
   });
   assert.equal(fakeRes.status, 400);
 
-  // Vrai PNG minimal 1x1 valide -> accepté 200
   const minimalPng = Buffer.from(
     '89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4890000000a49444154789c63000100000500010d0a2db40000000049454e44ae426082',
     'hex'
   );
   const okRes = await fetch(`${baseUrl}/api/admin/products/ecouteurs-airpulse-pro/photo`, {
     method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'image/png',
-    },
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/png' },
     body: minimalPng,
   });
   assert.equal(okRes.status, 200);

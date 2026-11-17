@@ -10,11 +10,15 @@ Propulsée par **React 19 + Vite + Tailwind CSS 4** côté interface, **Express 
 
 ### Boutique Publique (`/`)
 - **Multi-catégories** : High-Tech & Téléphonie, Mode & Accessoires, Beauté/Parfums & Cadeaux, Maison & Électroménager (modifiable et extensible depuis `/admin`).
-- **Panier intelligent & Favoris persistants** : jauge de livraison gratuite automatique (offerte dès 50 000 FCFA par défaut, paramétrable).
-- **Codes promotionnels** : validation en direct en FCFA ou en pourcentage (`BIENVENUE10`, `DALOA2000`, et vos propres codes).
-- **Tarification par ville/zone** : Daloa Commune, Daloa Périphérie, Issia, Vavoua, Zoukougbeu, Bouaflé/Sinfra, Gagnoa/Soubré/Duékoué/Séguéla, ou Retrait gratuit sur place.
-- **Commande sans création de compte fastidieuse** : choix du créneau horaire, paiement à la livraison (Espèces, Wave, Orange Money, MTN/Moov), référence unique `PKD-XXXXXX` et bouton d’envoi du récapitulatif **WhatsApp** prérempli.
-- **Suivi de colis en direct** : recherche sécurisée par couple `(Référence commande + Téléphone client)`.
+- **Tarification claire sans livraison gratuite** :
+  - **Daloa Commune** : `1 000 FCFA`
+  - **Daloa Périphérie** : `1 500 FCFA`
+  - **Expédition vers Issia, Vavoua, Zoukougbeu, Bouaflé, Sinfra & autres villes** : `2 000 FCFA`
+  - Mention explicite que le tarif dépend de la taille et du poids de la marchandise, avec lien direct vers le **Service Client**.
+- **Paiement en ligne uniquement par Wave** : instructions Wave claires (numéro marchand copiable + lien Wave Business optionnel), saisie du numéro Wave émetteur et de l’ID de transaction Wave.
+- **Génération immédiate de Référence + Code QR de suivi en direct** :
+  - Chaque commande génère une référence `PKD-XXXXXX` et un **Code QR téléchargeable** intégrant un jeton cryptographique sécurisé.
+  - En scannant son Code QR à tout moment, le client ouvre instantanément le suivi en temps réel de sa marchandise (rafraîchissement automatique en direct).
 
 ### Back-Office Complet (`/admin`)
 - **Double niveau d’accès (RBAC)** :

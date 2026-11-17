@@ -35,9 +35,11 @@ export default function App() {
     categories: CATEGORIES,
     settings: {
       whatsappNumber: BRAND.defaultWhatsapp,
-      freeShippingThreshold: BRAND.defaultFreeShippingThreshold,
+      wavePhone: BRAND.defaultWavePhone,
+      wavePaymentUrl: BRAND.defaultWavePaymentUrl,
+      shippingDisclaimer: BRAND.shippingDisclaimer,
       announcementBanner:
-        'Livraison rapide à Daloa (1 000 FCFA) & villes aux alentours · Gratuite dès 50 000 FCFA',
+        'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua & alentours dès 2 000 F · Paiement Wave & Suivi QR',
       storeOpen: true,
       deliveryZones: DELIVERY_ZONES,
     },
@@ -55,6 +57,22 @@ export default function App() {
   const [selectedProduct, setSelectedProduct] = React.useState(null);
   const [cartOpen, setCartOpen] = React.useState(false);
   const [trackOpen, setTrackOpen] = React.useState(false);
+  const [initialTrack, setInitialTrack] = React.useState(null);
+
+  // Détection automatique d'un scan de Code QR de suivi en direct (?track=PKD-XXXXXX&token=...)
+  React.useEffect(() => {
+    if (isAdminRoute || typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('track');
+    const tok = params.get('token') || '';
+    if (ref) {
+      setInitialTrack({ reference: ref.trim().toUpperCase(), token: tok.trim() });
+      setTrackOpen(true);
+      // Nettoyer le jeton de la barre d'adresse par sécurité tout en gardant le suivi ouvert
+      const cleanUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, '', cleanUrl);
+    }
+  }, [isAdminRoute]);
 
   const loadCatalog = React.useCallback(async () => {
     try {
@@ -193,7 +211,7 @@ export default function App() {
       />
 
       <Hero
-        freeShippingThreshold={catalogData.settings.freeShippingThreshold}
+        whatsappNumber={catalogData.settings.whatsappNumber}
         onShopNow={() => {
           document.getElementById('catalogue')?.scrollIntoView({ behavior: 'smooth' });
         }}
@@ -305,6 +323,7 @@ export default function App() {
 
       <Footer
         whatsappNumber={catalogData.settings.whatsappNumber}
+        shippingDisclaimer={catalogData.settings.shippingDisclaimer}
         deliveryZones={catalogData.settings.deliveryZones}
         onOpenTrack={() => setTrackOpen(true)}
       />
@@ -327,9 +346,18 @@ export default function App() {
         onClearCart={() => setCart([])}
         settings={catalogData.settings}
         onOrderSuccess={loadCatalog}
+        onOpenDirectTrack={(trackInfo) => {
+          setInitialTrack(trackInfo);
+          setTrackOpen(true);
+        }}
       />
 
-      <OrderTrackerModal open={trackOpen} onClose={() => setTrackOpen(false)} />
+      <OrderTrackerModal
+        open={trackOpen}
+        onClose={() => setTrackOpen(false)}
+        initialTrack={initialTrack}
+        whatsappNumber={catalogData.settings.whatsappNumber}
+      />
     </div>
   );
 }

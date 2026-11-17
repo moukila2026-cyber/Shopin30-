@@ -63,6 +63,9 @@ CREATE TABLE IF NOT EXISTS orders (
   address_details TEXT NOT NULL DEFAULT '',
   delivery_slot TEXT NOT NULL,
   payment_method TEXT NOT NULL,
+  wave_sender_phone TEXT NOT NULL DEFAULT '',
+  wave_transaction_ref TEXT NOT NULL DEFAULT '',
+  tracking_token TEXT NOT NULL DEFAULT '',
   customer_note TEXT NOT NULL DEFAULT '',
   promo_code TEXT,
   subtotal INTEGER NOT NULL CHECK (subtotal >= 0),
@@ -74,6 +77,10 @@ CREATE TABLE IF NOT EXISTS orders (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS wave_sender_phone TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS wave_transaction_ref TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS tracking_token TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS idx_orders_status_created ON orders(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_orders_phone_norm ON orders(customer_phone_norm);

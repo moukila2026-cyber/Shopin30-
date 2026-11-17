@@ -21,18 +21,20 @@ import {
   ArrowLeft,
   Copy,
   Check,
+  QrCode,
 } from 'lucide-react';
 import { CATEGORIES, formatFcfa } from '../../shared/catalog.js';
 import {
   apiFetch,
   buildCustomerWhatsappLink,
+  buildOrderTrackingUrl,
   setStoredAdminToken,
 } from '../lib/api.js';
 
 const ORDER_STATUS_LABELS = {
-  pending: { label: 'Nouvelle (À confirmer)', badge: 'bg-amber-100 text-amber-900' },
-  preparing: { label: 'En préparation', badge: 'bg-blue-100 text-blue-900' },
-  shipped: { label: 'En livraison', badge: 'bg-indigo-100 text-indigo-900' },
+  pending: { label: 'Wave à vérifier (Nouvelle)', badge: 'bg-amber-100 text-amber-900' },
+  preparing: { label: 'Wave validé · Préparation', badge: 'bg-blue-100 text-blue-900' },
+  shipped: { label: 'Expédiée / En livraison', badge: 'bg-indigo-100 text-indigo-900' },
   delivered: { label: 'Livrée', badge: 'bg-emerald-100 text-emerald-900' },
   cancelled: { label: 'Annulée (stock restitué)', badge: 'bg-red-100 text-red-900' },
 };
@@ -384,7 +386,9 @@ export default function AdminApp() {
         method: 'PUT',
         body: {
           whatsappNumber: settingsForm.whatsappNumber,
-          freeShippingThreshold: Number(settingsForm.freeShippingThreshold || 0),
+          wavePhone: settingsForm.wavePhone || '',
+          wavePaymentUrl: settingsForm.wavePaymentUrl || '',
+          shippingDisclaimer: settingsForm.shippingDisclaimer || '',
           announcementBanner: settingsForm.announcementBanner,
           storeOpen: Boolean(settingsForm.storeOpen),
           deliveryZones: settingsForm.deliveryZones,
@@ -503,6 +507,7 @@ export default function AdminApp() {
         o.reference.toLowerCase().includes(q) ||
         o.customerName.toLowerCase().includes(q) ||
         o.customerPhone.toLowerCase().includes(q) ||
+        (o.waveTransactionRef || '').toLowerCase().includes(q) ||
         o.neighborhood.toLowerCase().includes(q) ||
         o.cityZoneName.toLowerCase().includes(q)
       );
@@ -706,7 +711,15 @@ export default function AdminApp() {
                           </p>
                           <p>
                             <strong>Créneau :</strong> {order.deliverySlot} ·{' '}
-                            <strong>Paiement :</strong> {order.paymentMethod}
+                            <strong>Paiement :</strong>{' '}
+                            <span className="font-bold text-[#007BB5]">
+                              Wave ({order.waveSenderPhone || order.customerPhone})
+                            </span>
+                            {order.waveTransactionRef && (
+                              <span className="ml-1 px-2 py-0.5 rounded-md bg-[#E8F7FE] text-[#053B54] font-bold">
+                                Réf Wave: {order.waveTransactionRef}
+                              </span>
+                            )}
                           </p>
                           {order.customerNote && (
                             <p className="bg-amber-50 text-amber-900 p-2 rounded-lg border border-amber-200">
@@ -731,13 +744,11 @@ export default function AdminApp() {
                             </div>
                           )}
                           <div className="flex justify-between text-stone-500">
-                            <span>Livraison</span>
-                            <span>
-                              {order.deliveryFee === 0 ? 'Gratuite' : formatFcfa(order.deliveryFee)}
-                            </span>
+                            <span>Livraison / Expédition (base)</span>
+                            <span>{formatFcfa(order.deliveryFee)}</span>
                           </div>
                           <div className="flex justify-between pt-1 border-t border-[#E5DEC9] text-sm font-extrabold text-[#0F443E]">
-                            <span>Total à encaisser</span>
+                            <span>Total payé Wave</span>
                             <span>{formatFcfa(order.total)}</span>
                           </div>
                         </div>
@@ -752,7 +763,7 @@ export default function AdminApp() {
                               onClick={() => handleOrderStatus(order.reference, 'preparing')}
                               className="px-3 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold cursor-pointer"
                             >
-                              Confirmer & Préparer
+                              Valider Wave & Préparer
                             </button>
                           )}
                           {order.status === 'preparing' && (
@@ -761,7 +772,7 @@ export default function AdminApp() {
                               onClick={() => handleOrderStatus(order.reference, 'shipped')}
                               className="px-3 py-1.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold cursor-pointer"
                             >
-                              Remettre au livreur
+                              Expédier / En livraison
                             </button>
                           )}
                           {(order.status === 'preparing' || order.status === 'shipped') && (
@@ -789,6 +800,17 @@ export default function AdminApp() {
                         </div>
 
                         <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard?.writeText(buildOrderTrackingUrl(order));
+                              showToast(`Lien de suivi QR (${order.reference}) copié !`);
+                            }}
+                            className="p-2 rounded-full bg-[#FAF7F0] hover:bg-[#EFE9D8] text-[#0F443E] cursor-pointer"
+                            title="Copier le lien de suivi en direct (QR)"
+                          >
+                            <QrCode className="w-4 h-4" />
+                          </button>
                           <a
                             href={`tel:${order.customerPhone}`}
                             className="p-2 rounded-full bg-[#FAF7F0] hover:bg-[#EFE9D8] text-[#0F443E]"
@@ -1234,7 +1256,7 @@ export default function AdminApp() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold mb-1">
-                  Numéro WhatsApp de réception commandes *
+                  Numéro WhatsApp du Service Client *
                 </label>
                 <input
                   type="text"
@@ -1248,18 +1270,49 @@ export default function AdminApp() {
               </div>
               <div>
                 <label className="block text-xs font-bold mb-1">
-                  Seuil de livraison gratuite (FCFA, 0 = désactivé)
+                  Numéro Wave marchand affiché aux clients *
                 </label>
                 <input
-                  type="number"
-                  min={0}
-                  value={settingsForm.freeShippingThreshold}
+                  type="text"
+                  required
+                  value={settingsForm.wavePhone || ''}
                   onChange={(e) =>
-                    setSettingsForm({ ...settingsForm, freeShippingThreshold: e.target.value })
+                    setSettingsForm({ ...settingsForm, wavePhone: e.target.value })
                   }
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm"
+                  placeholder="Ex: 05 01 30 33 43"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm font-bold"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold mb-1">
+                Lien direct Wave Business / Paiement Wave (optionnel, ex: https://pay.wave.com/m/...)
+              </label>
+              <input
+                type="url"
+                value={settingsForm.wavePaymentUrl || ''}
+                onChange={(e) =>
+                  setSettingsForm({ ...settingsForm, wavePaymentUrl: e.target.value })
+                }
+                placeholder="https://pay.wave.com/m/..."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold mb-1">
+                Mention sur le poids / la taille de la marchandise (affichée au panier & pied de page) *
+              </label>
+              <textarea
+                rows={2}
+                required
+                value={settingsForm.shippingDisclaimer || ''}
+                onChange={(e) =>
+                  setSettingsForm({ ...settingsForm, shippingDisclaimer: e.target.value })
+                }
+                className="w-full px-3.5 py-2 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-xs sm:text-sm"
+              />
             </div>
 
             <div>
@@ -1276,7 +1329,7 @@ export default function AdminApp() {
 
             <div className="space-y-2">
               <p className="text-xs font-bold text-[#0F443E]">
-                Tarifs de livraison par zone (Daloa & villes aux alentours)
+                Tarifs de base Livraison & Expédition (aucune livraison gratuite — minimum 100 F)
               </p>
               <div className="space-y-2">
                 {(settingsForm.deliveryZones || []).map((z, idx) => (
@@ -1298,7 +1351,7 @@ export default function AdminApp() {
                     <div className="sm:col-span-3 flex items-center gap-1">
                       <input
                         type="number"
-                        min={0}
+                        min={100}
                         step={100}
                         value={z.fee}
                         onChange={(e) => {

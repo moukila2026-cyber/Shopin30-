@@ -260,7 +260,7 @@ export function ProductDetailModal({ product, onClose, onAddToCart, isFavorite, 
                 ) : (
                   <span className="text-[#0F443E]">
                     ✓ En stock à Daloa ({product.stock} disponible{product.stock > 1 ? 's' : ''}) —
-                    Livraison express et paiement à la réception.
+                    Paiement en ligne Wave & suivi en direct par Code QR.
                   </span>
                 )}
               </div>

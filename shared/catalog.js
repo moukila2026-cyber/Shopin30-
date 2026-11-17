@@ -1,19 +1,26 @@
 // ==============================================================================
-// PÈRÔKADÔ — Catalogue initial, catégories, zones de livraison (Daloa & alentours)
+// PÈRÔKADÔ — Catalogue initial, catégories, zones de livraison (Daloa & expédition)
 // ==============================================================================
 
 export const BRAND = {
   name: 'Pèrôkadô',
-  tagline: 'Votre boutique en ligne de référence à Daloa & dans le Haut-Sassandra',
+  tagline: 'Votre boutique en ligne de référence à Daloa & villes aux alentours',
   shortDescription:
-    'Tous vos produits du quotidien, cadeaux, high-tech, mode, beauté et maison livrés rapidement à Daloa et dans les villes aux alentours.',
+    'Tous vos produits du quotidien, cadeaux, high-tech, mode, beauté et maison livrés à Daloa et expédiés vers Issia, Vavoua et les villes aux alentours.',
   city: 'Daloa, Côte d’Ivoire',
   defaultWhatsapp: '2250501303343',
-  defaultFreeShippingThreshold: 50000,
+  defaultWavePhone: '05 01 30 33 43',
+  defaultWavePaymentUrl: '',
+  shippingDisclaimer:
+    'Aucune livraison gratuite. Les tarifs affichés sont les tarifs de base : le coût final dépend de la taille et du poids de la marchandise. Pour les colis volumineux ou lourds, contactez notre service client.',
   studioCredit: {
     name: 'Shopin30',
     phoneDisplay: '+225 05 01 30 33 43',
-    whatsappUrl: 'https://wa.me/2250501303343?text=' + encodeURIComponent('Bonjour Shopin30, je visite la boutique Pèrôkadô et souhaite vous contacter.'),
+    whatsappUrl:
+      'https://wa.me/2250501303343?text=' +
+      encodeURIComponent(
+        'Bonjour Shopin30, je visite la boutique Pèrôkadô et souhaite vous contacter.'
+      ),
   },
 };
 
@@ -27,60 +34,53 @@ export const CATEGORIES = [
 
 export const DELIVERY_ZONES = [
   {
-    id: 'daloa-centre',
+    id: 'daloa-commune',
     name: 'Daloa Commune (Lobia, Tazibouo, Commerce, Orly, Kennedy, Abattoir, Soleil…)',
     shortName: 'Daloa Commune',
     fee: 1000,
-    eta: 'Livraison express en 1h à 3h',
+    eta: 'Livraison rapide 1h–3h · Tarif de base (selon taille/poids)',
   },
   {
     id: 'daloa-peripherie',
     name: 'Daloa Périphérie (Bribouo, Gbokora, Gonaté, Bédiala, Zaïbo…)',
     shortName: 'Daloa Périphérie',
     fee: 1500,
-    eta: 'Livraison le jour même (2h à 5h)',
+    eta: 'Livraison le jour même · Tarif de base (selon taille/poids)',
   },
   {
-    id: 'issia',
-    name: 'Issia',
-    shortName: 'Issia',
+    id: 'expedition-issia',
+    name: 'Expédition — Issia',
+    shortName: 'Expédition Issia',
     fee: 2000,
-    eta: 'Sous 24h (expédition quotidienne)',
+    eta: 'Expédition sous 24h · Dès 2 000 F selon taille et poids du colis',
   },
   {
-    id: 'vavoua',
-    name: 'Vavoua',
-    shortName: 'Vavoua',
+    id: 'expedition-vavoua',
+    name: 'Expédition — Vavoua',
+    shortName: 'Expédition Vavoua',
     fee: 2000,
-    eta: 'Sous 24h (expédition quotidienne)',
+    eta: 'Expédition sous 24h · Dès 2 000 F selon taille et poids du colis',
   },
   {
-    id: 'zoukougbeu',
-    name: 'Zoukougbeu',
-    shortName: 'Zoukougbeu',
-    fee: 2500,
-    eta: 'Sous 24h à 48h',
+    id: 'expedition-zoukougbeu',
+    name: 'Expédition — Zoukougbeu',
+    shortName: 'Expédition Zoukougbeu',
+    fee: 2000,
+    eta: 'Expédition 24h–48h · Dès 2 000 F selon taille et poids du colis',
   },
   {
-    id: 'bouafle-sinfra',
-    name: 'Bouaflé / Sinfra',
-    shortName: 'Bouaflé / Sinfra',
-    fee: 2500,
-    eta: 'Sous 24h via gare routière ou livreur',
+    id: 'expedition-bouafle-sinfra',
+    name: 'Expédition — Bouaflé / Sinfra',
+    shortName: 'Expédition Bouaflé / Sinfra',
+    fee: 2000,
+    eta: 'Expédition sous 24h · Dès 2 000 F selon taille et poids du colis',
   },
   {
-    id: 'gagnoa-soubre-duekoue',
-    name: 'Gagnoa / Soubré / Duékoué / Séguéla',
-    shortName: 'Gagnoa / Soubré / Duékoué / Séguéla',
-    fee: 3000,
-    eta: 'Sous 24h à 48h via compagnie partenaire',
-  },
-  {
-    id: 'retrait-daloa',
-    name: 'Retrait gratuit au point Pèrôkadô (Daloa)',
-    shortName: 'Retrait sur place (Daloa)',
-    fee: 0,
-    eta: 'Prêt en 30 minutes après confirmation',
+    id: 'expedition-gagnoa-alentours',
+    name: 'Expédition — Gagnoa / Soubré / Duékoué / Séguéla & autres villes',
+    shortName: 'Expédition Autres villes alentours',
+    fee: 2000,
+    eta: 'Expédition 24h–48h · Dès 2 000 F selon taille et poids (contactez le service client)',
   },
 ];
 
@@ -90,26 +90,13 @@ export const DELIVERY_SLOTS = [
   { id: 'soir', label: 'Fin de journée (16h00 – 19h30)' },
 ];
 
+// Paiement en ligne UNIQUEMENT par Wave
 export const PAYMENT_METHODS = [
   {
-    id: 'especes-livraison',
-    label: 'Espèces à la livraison',
-    description: 'Payez en cash à la réception de votre colis après vérification.',
-  },
-  {
     id: 'wave',
-    label: 'Wave Mobile Money',
-    description: 'Paiement rapide par Wave à la livraison ou lors de la confirmation.',
-  },
-  {
-    id: 'orange-money',
-    label: 'Orange Money',
-    description: 'Paiement par Orange Money à la livraison ou à la commande.',
-  },
-  {
-    id: 'mtn-moov',
-    label: 'MTN / Moov Money',
-    description: 'Paiement mobile sécurisé MTN MoMo ou Moov Money.',
+    label: 'Paiement en ligne Wave uniquement',
+    description:
+      'Réglez uniquement en ligne via Wave Côte d’Ivoire et obtenez votre référence avec Code QR de suivi en direct.',
   },
 ];
 
@@ -190,8 +177,8 @@ export const INITIAL_PRODUCTS = [
     featured: false,
     shortDescription: 'Design urbain épuré, semelle cousue antidérapante et confort respirant toute la journée.',
     description:
-      'Des baskets polyvalentes aux couleurs signatures crème, terracotta et vert profond. Semelle intérieure à mémoire de forme pour un confort optimal. Pointures disponibles du 38 au 45 (à préciser en note ou à la confirmation téléphonique).',
-    specs: ['Pointures 38 à 45 (confirmées à la commande)', 'Semelle cousue ultra-résistante', 'Doublure intérieure respirante'],
+      'Des baskets polyvalentes aux couleurs signatures crème, terracotta et vert profond. Semelle intérieure à mémoire de forme pour un confort optimal. Pointures disponibles du 38 au 45 (à préciser en note).',
+    specs: ['Pointures 38 à 45 (précisez en note)', 'Semelle cousue ultra-résistante', 'Doublure intérieure respirante'],
     imageUrl: '/images/products/sneakers-urban-ivoire.jpg',
   },
   {
@@ -268,7 +255,7 @@ export const INITIAL_PROMO_CODES = [
     minSubtotal: 10000,
     maxDiscount: 10000,
     active: true,
-    description: '-10% dès 10 000 FCFA d’achat',
+    description: '-10% sur les articles dès 10 000 FCFA (hors livraison)',
   },
   {
     code: 'DALOA2000',
@@ -277,7 +264,7 @@ export const INITIAL_PROMO_CODES = [
     minSubtotal: 25000,
     maxDiscount: 2000,
     active: true,
-    description: '-2 000 FCFA dès 25 000 FCFA d’achat',
+    description: '-2 000 FCFA sur les articles dès 25 000 FCFA (hors livraison)',
   },
 ];
 

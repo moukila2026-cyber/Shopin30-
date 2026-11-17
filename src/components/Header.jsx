@@ -4,8 +4,8 @@ import {
   Heart,
   Search,
   MapPin,
-  PackageCheck,
-  ShieldCheck,
+  QrCode,
+  Smartphone,
   Menu,
   X,
 } from 'lucide-react';
@@ -78,17 +78,17 @@ export function Header({
           <div className="flex items-center gap-1.5 sm:gap-2.5">
             <div className="hidden lg:flex items-center gap-1.5 text-xs font-medium text-[#0F443E] bg-[#0F443E]/8 px-3 py-1.5 rounded-full">
               <MapPin className="w-3.5 h-3.5 text-[#D95D24]" />
-              <span>Daloa & Alentours</span>
+              <span>Daloa & Expéditions</span>
             </div>
 
             <button
               type="button"
               onClick={onOpenTrack}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs sm:text-sm font-medium text-[#0F443E] hover:bg-[#0F443E]/10 transition cursor-pointer"
-              title="Suivre ma commande"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs sm:text-sm font-semibold text-[#0F443E] hover:bg-[#0F443E]/10 transition cursor-pointer"
+              title="Suivre ma marchandise en direct"
             >
-              <PackageCheck className="w-4 h-4 text-[#D95D24]" />
-              <span className="hidden sm:inline">Suivi commande</span>
+              <QrCode className="w-4 h-4 text-[#D95D24]" />
+              <span className="hidden sm:inline">Suivi en direct</span>
             </button>
 
             <button
@@ -175,9 +175,9 @@ export function Header({
               </button>
             );
           })}
-          <div className="hidden lg:flex ml-auto items-center gap-1.5 text-xs text-stone-600">
-            <ShieldCheck className="w-4 h-4 text-[#0F443E]" />
-            <span>Paiement à la livraison après vérification</span>
+          <div className="hidden lg:flex ml-auto items-center gap-1.5 text-xs font-semibold text-[#0F443E]">
+            <Smartphone className="w-4 h-4 text-[#009EE3]" />
+            <span>Paiement en ligne Wave uniquement · Référence + Code QR</span>
           </div>
         </nav>
       </div>
