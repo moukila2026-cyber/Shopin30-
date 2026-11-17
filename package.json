@@ -1,0 +1,38 @@
+{
+  "name": "perokado",
+  "version": "1.0.0",
+  "description": "Pèrôkadô — Boutique e-commerce multi-catégories à Daloa et villes aux alentours (React, Vite, Express, PostgreSQL Neon)",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "node server/dev.js",
+    "build": "vite build",
+    "start": "NODE_ENV=production node server/index.js",
+    "test": "node --test tests/*.test.js",
+    "db:init": "node scripts/init-db.js",
+    "secret:generate": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@neondatabase/serverless": "^1.0.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "lucide-react": "^0.511.0",
+    "pg": "^8.16.3",
+    "qrcode": "^1.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@vitejs/plugin-react": "^5.0.0",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.1.11",
+    "vite": "^7.0.0"
+  }
+}
