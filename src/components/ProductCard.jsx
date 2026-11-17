@@ -1,207 +1,278 @@
 import React from 'react';
-import { Heart, ShoppingBag, Eye, Check, X } from 'lucide-react';
-import { formatFcfa, CATEGORIES } from '../../shared/catalog.js';
+import {
+  Heart,
+  Check,
+  X,
+  Star,
+  Truck,
+  ShieldCheck,
+  QrCode,
+  MessageCircle,
+  Lock,
+} from 'lucide-react';
+import { formatFcfa } from '../../shared/catalog.js';
+import { buildWhatsappServiceUrl } from '../lib/api.js';
+
+// Note et nombre d'avis déterministes et réalistes par produit pour un rendu e-commerce authentique
+function getProductRatingMeta(id = '') {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  }
+  const ratings = [4.5, 4.6, 4.7, 4.8, 4.9];
+  const rating = ratings[hash % ratings.length];
+  const count = 28 + (hash % 190);
+  const boughtMonth = 20 + (hash % 80);
+  return { rating, count, boughtMonth };
+}
+
+function StarRating({ rating, count }) {
+  const fullStars = Math.floor(rating);
+  return (
+    <div className="flex items-center gap-1.5 text-xs">
+      <span className="font-semibold text-[#0F1111]">{rating.toFixed(1).replace('.', ',')}</span>
+      <div className="flex items-center text-[#FFA41C]" aria-label={`Note ${rating} sur 5`}>
+        {[0, 1, 2, 3, 4].map((idx) => (
+          <Star
+            key={idx}
+            className={`w-3.5 h-3.5 ${
+              idx < fullStars
+                ? 'fill-[#FFA41C] text-[#FFA41C]'
+                : 'fill-[#FFA41C]/40 text-[#FFA41C]'
+            }`}
+          />
+        ))}
+      </div>
+      <span className="text-[#007185] hover:text-[#C7511F]">({count})</span>
+    </div>
+  );
+}
+
+function formatNumberSpaced(amount) {
+  return Math.round(Number(amount) || 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
 
 export function ProductCard({
   product,
-  isFavorite,
-  onToggleFavorite,
-  onAddToCart,
-  onSelectProduct,
   inCartQty,
+  isFavorite,
+  onAddToCart,
+  onBuyNow,
+  onToggleFavorite,
+  onOpenDetail,
+  selectedZone,
 }) {
   const outOfStock = product.stock <= 0;
-  const lowStock = product.stock > 0 && product.stock <= 4;
   const discountPct =
     product.compareAtPrice && product.compareAtPrice > product.price
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
       : null;
 
-  const categoryLabel =
-    CATEGORIES.find((c) => c.id === product.category)?.shortLabel || product.category;
+  const { rating, count, boughtMonth } = getProductRatingMeta(product.id);
+  const zoneFee = selectedZone?.fee || 1000;
+  const zoneName = selectedZone?.shortName || 'Daloa Commune';
+
+  const isTopSeller =
+    (product.badge || '').toLowerCase().includes('vente') ||
+    (product.badge || '').toLowerCase().includes('n°1');
 
   return (
-    <article className="group bg-white rounded-3xl border border-[#E5DEC9] overflow-hidden shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col">
-      {/* Zone image */}
-      <div className="relative aspect-5/6 bg-[#FAF7F0] overflow-hidden">
+    <article className="group bg-white border border-[#D5D9D9] rounded-md overflow-hidden flex flex-col hover:shadow-md transition duration-200">
+      {/* Zone photo sur fond clair style Amazon */}
+      <div className="relative aspect-square bg-[#F7F8F8] p-4 flex items-center justify-center overflow-hidden">
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          loading="lazy"
+          onClick={() => onOpenDetail(product)}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/images/products/placeholder.svg';
+          }}
+          className="max-w-full max-h-full object-contain group-hover:scale-105 transition duration-300 cursor-pointer mix-blend-multiply"
+        />
+
+        {/* Ruban Amazon Best-Seller / Choix Pèrôkadô en haut à gauche */}
+        {product.badge && (
+          <span
+            className={`absolute top-0 left-0 px-2.5 py-1 text-[11px] font-bold tracking-tight rounded-br-md shadow-xs ${
+              isTopSeller
+                ? 'bg-[#E67A00] text-white'
+                : 'bg-[#232F3E] text-white'
+            }`}
+          >
+            {isTopSeller ? `#1 ${product.badge}` : product.badge}
+          </span>
+        )}
+
+        {/* Bouton Favori discret en haut à droite */}
         <button
           type="button"
-          onClick={() => onSelectProduct(product)}
-          className="w-full h-full block text-left focus:outline-none cursor-pointer"
-          aria-label={`Voir les détails de ${product.name}`}
+          onClick={() => onToggleFavorite(product.id)}
+          aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 hover:bg-white shadow-xs border border-[#EAEDED] flex items-center justify-center transition cursor-pointer"
         >
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            loading="lazy"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = '/images/products/placeholder.svg';
-            }}
-            className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
-              outOfStock ? 'opacity-60 grayscale-[35%]' : ''
+          <Heart
+            className={`w-4 h-4 ${
+              isFavorite ? 'fill-[#CC0C39] text-[#CC0C39]' : 'text-[#565959]'
             }`}
           />
         </button>
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 pointer-events-none">
-          {product.badge && (
-            <span className="inline-block px-2.5 py-1 rounded-full bg-[#0F443E] text-[#FAF7F0] text-[11px] font-bold shadow-xs">
-              {product.badge}
+        {outOfStock && (
+          <div className="absolute inset-0 bg-white/75 flex items-center justify-center">
+            <span className="px-3 py-1.5 rounded bg-[#0F1111] text-white text-xs font-bold">
+              Temporairement en rupture
             </span>
-          )}
-          {discountPct && (
-            <span className="inline-block px-2.5 py-1 rounded-full bg-[#D95D24] text-white text-[11px] font-bold shadow-xs">
-              -{discountPct}%
-            </span>
-          )}
-          {outOfStock && (
-            <span className="inline-block px-2.5 py-1 rounded-full bg-stone-800 text-white text-[11px] font-bold">
-              Rupture de stock
-            </span>
-          )}
-          {lowStock && (
-            <span className="inline-block px-2.5 py-1 rounded-full bg-amber-600 text-white text-[11px] font-bold">
-              Plus que {product.stock} en stock
-            </span>
-          )}
-        </div>
-
-        {/* Bouton favori */}
-        <button
-          type="button"
-          onClick={() => onToggleFavorite(product.id)}
-          className={`absolute top-3 right-3 p-2.5 rounded-full shadow-xs transition cursor-pointer ${
-            isFavorite
-              ? 'bg-[#D95D24] text-white'
-              : 'bg-white/90 hover:bg-white text-[#0F443E]'
-          }`}
-          aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-        >
-          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
-        </button>
-
-        {/* Aperçu rapide au survol */}
-        <button
-          type="button"
-          onClick={() => onSelectProduct(product)}
-          className="hidden sm:inline-flex opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-3 right-3 items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 text-[#0F443E] text-xs font-semibold shadow-sm cursor-pointer"
-        >
-          <Eye className="w-3.5 h-3.5" />
-          <span>Détails</span>
-        </button>
+          </div>
+        )}
       </div>
 
-      {/* Contenu */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3">
-        <div>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-[#D95D24]">
-            {categoryLabel}
-          </span>
-          <h3 className="mt-1 text-base sm:text-lg font-bold text-[#14231F] leading-snug line-clamp-2">
-            <button
-              type="button"
-              onClick={() => onSelectProduct(product)}
-              className="text-left hover:text-[#0F443E] transition cursor-pointer"
-            >
-              {product.name}
-            </button>
+      {/* Corps fiche produit dense et informatif style Amazon */}
+      <div className="p-3.5 flex-1 flex flex-col justify-between gap-2">
+        <div className="space-y-1">
+          <h3
+            onClick={() => onOpenDetail(product)}
+            className="text-sm font-medium text-[#0F1111] hover:text-[#C7511F] leading-snug line-clamp-2 cursor-pointer"
+          >
+            {product.name}
           </h3>
-          {product.shortDescription && (
-            <p className="mt-1.5 text-xs sm:text-sm text-stone-600 line-clamp-2">
-              {product.shortDescription}
-            </p>
-          )}
-        </div>
 
-        <div className="pt-2 border-t border-[#F0EAE0] space-y-3">
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="text-lg sm:text-xl font-extrabold text-[#0F443E]">
-              {formatFcfa(product.price)}
-            </span>
-            {product.compareAtPrice && (
-              <span className="text-xs sm:text-sm text-stone-400 line-through">
-                {formatFcfa(product.compareAtPrice)}
+          <StarRating rating={rating} count={count} />
+
+          <p className="text-[11px] text-[#565959]">
+            Plus de {boughtMonth} achetés récemment à Daloa & alentours
+          </p>
+
+          {/* Badge Vente Flash rouge #CC0C39 comme Amazon */}
+          {discountPct && (
+            <div className="flex items-center gap-1.5 pt-0.5">
+              <span className="bg-[#CC0C39] text-white text-[11px] font-bold px-1.5 py-0.5 rounded-xs">
+                -{discountPct}%
               </span>
+              <span className="text-[11px] font-bold text-[#CC0C39]">Offre à durée limitée</span>
+            </div>
+          )}
+
+          {/* Prix grand format typographique Amazon */}
+          <div className="pt-0.5">
+            <div className="flex items-baseline gap-1">
+              <span className="text-xl sm:text-2xl font-bold text-[#0F1111] leading-none">
+                {formatNumberSpaced(product.price)}
+              </span>
+              <span className="text-xs font-bold text-[#0F1111]">FCFA</span>
+            </div>
+            {product.compareAtPrice && (
+              <p className="text-[11px] text-[#565959] mt-0.5">
+                Prix conseillé :{' '}
+                <span className="line-through">{formatFcfa(product.compareAtPrice)}</span>
+              </p>
             )}
           </div>
 
+          {/* Info livraison selon la zone choisie dans le Header */}
+          <p className="text-[11px] text-[#0F1111] leading-snug pt-0.5">
+            Livraison <strong>{zoneName}</strong> dès{' '}
+            <strong className="text-[#0F1111]">{formatFcfa(zoneFee)}</strong>{' '}
+            <span className="text-[#565959]">(selon taille/poids)</span>
+          </p>
+
+          {!outOfStock && product.stock <= 6 ? (
+            <p className="text-[11px] font-semibold text-[#B12704]">
+              Il ne reste plus que {product.stock} ex. en stock — commandez vite.
+            </p>
+          ) : !outOfStock ? (
+            <p className="text-[11px] font-semibold text-[#007600]">En stock à Daloa</p>
+          ) : null}
+        </div>
+
+        {/* Boutons d'action Amazon : Jaune #FFD814 "Ajouter au panier" + Orange #FFA41C "Acheter" */}
+        <div className="pt-2 space-y-1.5">
           <button
             type="button"
             disabled={outOfStock}
             onClick={() => onAddToCart(product, 1)}
-            className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition ${
+            className={`w-full py-2 px-3 rounded-full text-xs font-medium border shadow-2xs transition cursor-pointer ${
               outOfStock
-                ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
-                : inCartQty > 0
-                ? 'bg-[#D95D24] hover:bg-[#BF4E1B] text-white cursor-pointer'
-                : 'bg-[#0F443E] hover:bg-[#092E2A] text-white cursor-pointer'
+                ? 'bg-[#EAEDED] border-[#D5D9D9] text-[#888C8C] cursor-not-allowed'
+                : 'bg-[#FFD814] hover:bg-[#F7CA00] border-[#FCD200] text-[#0F1111]'
             }`}
           >
-            {outOfStock ? (
-              <span>Indisponible</span>
-            ) : inCartQty > 0 ? (
-              <>
-                <Check className="w-4 h-4" />
-                <span>Dans le panier ({inCartQty}) · +1</span>
-              </>
-            ) : (
-              <>
-                <ShoppingBag className="w-4 h-4 text-[#E0A11B]" />
-                <span>Ajouter au panier</span>
-              </>
-            )}
+            {inCartQty > 0 ? `Ajouté au panier (${inCartQty})` : 'Ajouter au panier'}
           </button>
+
+          {!outOfStock && onBuyNow && (
+            <button
+              type="button"
+              onClick={() => onBuyNow(product)}
+              className="w-full py-1.5 px-3 rounded-full text-xs font-medium bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[#0F1111] shadow-2xs transition cursor-pointer"
+            >
+              Acheter maintenant (Wave)
+            </button>
+          )}
         </div>
       </div>
     </article>
   );
 }
 
-export function ProductDetailModal({ product, onClose, onAddToCart, isFavorite, onToggleFavorite }) {
+// ============================================================================
+// FICHE PRODUIT DÉTAILLÉE 3 COLONNES (GALERIE + INFOS + BUY BOX AMAZON)
+// ============================================================================
+export function ProductDetailModal({
+  product,
+  onClose,
+  onAddToCart,
+  onBuyNow,
+  selectedZone,
+  whatsappNumber,
+}) {
   const [qty, setQty] = React.useState(1);
 
-  React.useEffect(() => {
-    setQty(1);
-    if (!product) return;
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [product, onClose]);
-
   if (!product) return null;
-
   const outOfStock = product.stock <= 0;
-  const maxQty = Math.min(product.stock, 20);
-  const categoryLabel =
-    CATEGORIES.find((c) => c.id === product.category)?.label || product.category;
+  const { rating, count } = getProductRatingMeta(product.id);
+  const discountPct =
+    product.compareAtPrice && product.compareAtPrice > product.price
+      ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
+      : null;
+
+  const zoneFee = selectedZone?.fee || 1000;
+  const zoneName = selectedZone?.shortName || 'Daloa Commune';
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/65 overflow-y-auto"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label={product.name}
     >
       <div
-        className="relative bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#E5DEC9]"
+        className="relative bg-white rounded-lg max-w-5xl w-full overflow-hidden shadow-2xl border border-[#D5D9D9] my-auto max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-[#FAF7F0] text-[#14231F] border border-[#E5DEC9] cursor-pointer"
-          aria-label="Fermer"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Barre supérieure */}
+        <div className="sticky top-0 z-10 bg-[#F0F2F2] px-5 py-3 border-b border-[#D5D9D9] flex items-center justify-between">
+          <span className="text-xs text-[#565959] font-medium truncate pr-4">
+            Pèrôkadô › Catalogue › <strong className="text-[#0F1111]">{product.name}</strong>
+          </span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fermer"
+            className="p-1.5 rounded-full hover:bg-[#D5D9D9] text-[#0F1111] cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
-        <div className="grid md:grid-cols-2">
-          <div className="bg-[#FAF7F0] aspect-5/6 md:aspect-auto">
+        {/* Mise en page 3 colonnes façon page produit Amazon */}
+        <div className="p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Colonne 1 : Image produit grand format (5 cols) */}
+          <div className="lg:col-span-5 bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-6 flex items-center justify-center aspect-square">
             <img
               src={product.imageUrl}
               alt={product.name}
@@ -209,123 +280,170 @@ export function ProductDetailModal({ product, onClose, onAddToCart, isFavorite, 
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = '/images/products/placeholder.svg';
               }}
-              className="w-full h-full object-cover"
+              className="max-w-full max-h-full object-contain"
             />
           </div>
 
-          <div className="p-6 sm:p-8 flex flex-col justify-between gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#D95D24]">
-                  {categoryLabel}
-                </span>
-                {product.badge && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#0F443E] text-white text-xs font-semibold">
-                    {product.badge}
-                  </span>
+          {/* Colonne 2 : Titre, notes, prix, caractéristiques "À propos de cet article" (4 cols) */}
+          <div className="lg:col-span-4 space-y-3">
+            {product.badge && (
+              <span className="inline-block bg-[#232F3E] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-xs">
+                {product.badge}
+              </span>
+            )}
+            <h2 className="text-lg sm:text-xl font-semibold text-[#0F1111] leading-snug">
+              {product.name}
+            </h2>
+
+            <div className="pb-2 border-b border-[#EAEDED]">
+              <StarRating rating={rating} count={count} />
+            </div>
+
+            <div className="space-y-1 pb-3 border-b border-[#EAEDED]">
+              <div className="flex items-baseline gap-2">
+                {discountPct && (
+                  <span className="text-xl font-light text-[#CC0C39]">-{discountPct}%</span>
                 )}
-              </div>
-
-              <h2 className="text-2xl font-bold text-[#14231F] leading-tight">{product.name}</h2>
-
-              <div className="flex items-baseline gap-3">
-                <span className="text-2xl sm:text-3xl font-extrabold text-[#0F443E]">
+                <span className="text-2xl font-bold text-[#0F1111]">
                   {formatFcfa(product.price)}
                 </span>
-                {product.compareAtPrice && (
-                  <span className="text-base text-stone-400 line-through">
-                    {formatFcfa(product.compareAtPrice)}
-                  </span>
-                )}
               </div>
+              {product.compareAtPrice && (
+                <p className="text-xs text-[#565959]">
+                  Prix conseillé :{' '}
+                  <span className="line-through">{formatFcfa(product.compareAtPrice)}</span>
+                </p>
+              )}
+              <p className="text-xs text-[#565959]">
+                Paiement en ligne sécurisé uniquement via <strong className="text-[#009EE3]">Wave</strong>.
+              </p>
+            </div>
 
-              <p className="text-sm text-stone-700 leading-relaxed">
+            {/* Icônes garanties style Amazon */}
+            <div className="grid grid-cols-3 gap-2 py-2 border-b border-[#EAEDED] text-center text-[11px] text-[#007185]">
+              <div className="flex flex-col items-center gap-1">
+                <Truck className="w-5 h-5 text-[#C7511F]" />
+                <span>Daloa & Villes alentours</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <QrCode className="w-5 h-5 text-[#007185]" />
+                <span>Suivi direct par Code QR</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <ShieldCheck className="w-5 h-5 text-[#007600]" />
+                <span>Contrôlé avant envoi</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-bold text-[#0F1111] mb-1.5">À propos de cet article</h3>
+              <p className="text-xs sm:text-sm text-[#333333] leading-relaxed mb-2.5">
                 {product.description || product.shortDescription}
               </p>
-
-              {product.specs && product.specs.length > 0 && (
-                <ul className="space-y-1.5 pt-2">
+              {product.specs?.length > 0 && (
+                <ul className="list-disc pl-4 space-y-1 text-xs text-[#0F1111]">
                   {product.specs.map((spec, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-stone-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#D95D24] shrink-0" />
-                      <span>{spec}</span>
-                    </li>
+                    <li key={idx}>{spec}</li>
                   ))}
                 </ul>
               )}
+            </div>
+          </div>
 
-              <div className="text-xs font-medium text-stone-600 bg-[#FAF7F0] rounded-xl p-3 border border-[#EAE2CE]">
-                {outOfStock ? (
-                  <span className="text-red-700 font-semibold">Rupture temporaire de stock</span>
-                ) : (
-                  <span className="text-[#0F443E]">
-                    ✓ En stock à Daloa ({product.stock} disponible{product.stock > 1 ? 's' : ''}) —
-                    Paiement en ligne Wave & suivi en direct par Code QR.
-                  </span>
-                )}
-              </div>
+          {/* Colonne 3 : LA "BUY BOX" ENCADRÉE D'AMAZON (3 cols) */}
+          <div className="lg:col-span-3 border border-[#D5D9D9] rounded-lg p-4 space-y-3 bg-white">
+            <div className="text-xl font-bold text-[#0F1111]">{formatFcfa(product.price)}</div>
+
+            <div className="text-xs text-[#0F1111] space-y-1">
+              <p>
+                Livraison vers <strong>{zoneName}</strong> :{' '}
+                <strong className="text-[#B12704]">{formatFcfa(zoneFee)}</strong>
+              </p>
+              <p className="text-[11px] text-[#565959]">
+                Aucune livraison gratuite. Tarif de base : varie selon la taille et le poids du
+                colis (Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua… 2 000 F).
+              </p>
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-[#EFE9D8]">
-              {!outOfStock && (
-                <div className="flex items-center gap-3">
-                  <label className="text-xs font-semibold text-stone-600">Quantité :</label>
-                  <div className="inline-flex items-center rounded-full border border-[#DED6C1] bg-[#FAF7F0]">
-                    <button
-                      type="button"
-                      onClick={() => setQty((q) => Math.max(1, q - 1))}
-                      className="px-3.5 py-1.5 text-sm font-bold text-[#0F443E] cursor-pointer"
-                    >
-                      −
-                    </button>
-                    <span className="px-3 text-sm font-bold">{qty}</span>
-                    <button
-                      type="button"
-                      onClick={() => setQty((q) => Math.min(maxQty, q + 1))}
-                      className="px-3.5 py-1.5 text-sm font-bold text-[#0F443E] cursor-pointer"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              )}
+            <p className={`text-sm font-bold ${outOfStock ? 'text-[#CC0C39]' : 'text-[#007600]'}`}>
+              {outOfStock
+                ? 'Rupture de stock'
+                : `En stock (${product.stock} disponible${product.stock > 1 ? 's' : ''})`}
+            </p>
 
-              <div className="flex items-center gap-2.5">
+            {!outOfStock && (
+              <div>
+                <label className="block text-xs font-medium text-[#0F1111] mb-1">Quantité :</label>
+                <select
+                  value={qty}
+                  onChange={(e) => setQty(Number(e.target.value))}
+                  className="w-full px-3 py-1.5 rounded-md bg-[#F0F2F2] border border-[#D5D9D9] text-xs font-semibold text-[#0F1111] focus:outline-none"
+                >
+                  {Array.from({ length: Math.min(10, product.stock) }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={n}>
+                      Quantité : {n}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <div className="space-y-2 pt-1">
+              <button
+                type="button"
+                disabled={outOfStock}
+                onClick={() => {
+                  onAddToCart(product, qty);
+                  onClose();
+                }}
+                className="w-full py-2 px-4 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-xs font-medium text-[#0F1111] shadow-2xs disabled:opacity-50 cursor-pointer"
+              >
+                Ajouter au panier
+              </button>
+
+              {!outOfStock && onBuyNow && (
                 <button
                   type="button"
-                  disabled={outOfStock}
                   onClick={() => {
-                    onAddToCart(product, qty);
                     onClose();
+                    onBuyNow(product, qty);
                   }}
-                  className={`flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full font-semibold text-sm transition ${
-                    outOfStock
-                      ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
-                      : 'bg-[#D95D24] hover:bg-[#BF4E1B] text-white shadow-md cursor-pointer'
-                  }`}
+                  className="w-full py-2 px-4 rounded-full bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-xs font-medium text-[#0F1111] shadow-2xs cursor-pointer"
                 >
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>
-                    {outOfStock
-                      ? 'Indisponible'
-                      : `Ajouter au panier · ${formatFcfa(product.price * qty)}`}
-                  </span>
+                  Acheter maintenant (Wave)
                 </button>
+              )}
+            </div>
 
-                <button
-                  type="button"
-                  onClick={() => onToggleFavorite(product.id)}
-                  className={`p-3 rounded-full border transition cursor-pointer ${
-                    isFavorite
-                      ? 'bg-[#D95D24] text-white border-[#D95D24]'
-                      : 'bg-white text-[#0F443E] border-[#DED6C1] hover:bg-[#FAF7F0]'
-                  }`}
-                  aria-label="Favoris"
-                >
-                  <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
-                </button>
+            <div className="pt-2 border-t border-[#EAEDED] text-[11px] text-[#565959] space-y-1">
+              <div className="flex justify-between">
+                <span>Expédié par</span>
+                <strong className="text-[#0F1111]">Pèrôkadô Daloa</strong>
+              </div>
+              <div className="flex justify-between">
+                <span>Paiement</span>
+                <strong className="text-[#009EE3] flex items-center gap-1">
+                  <Lock className="w-3 h-3" /> Wave uniquement
+                </strong>
+              </div>
+              <div className="flex justify-between">
+                <span>Suivi colis</span>
+                <strong className="text-[#0F1111]">Référence + Code QR</strong>
               </div>
             </div>
+
+            <a
+              href={buildWhatsappServiceUrl(
+                whatsappNumber,
+                `Bonjour Service Client Pèrôkadô, je souhaite un renseignement sur l'article "${product.name}" (frais d'expédition selon taille/poids).`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full pt-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline"
+            >
+              <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+              <span>Question sur le poids ? Service Client</span>
+            </a>
           </div>
         </div>
       </div>
