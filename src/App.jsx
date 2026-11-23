@@ -79,7 +79,7 @@ export default function App() {
 
   // Détection automatique d'un scan de Code QR de suivi en direct (?track=PKD-XXXXXX&token=...)
   React.useEffect(() => {
-    if (isAdminRoute || typeof window === 'undefined') return;
+    if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('track');
     const tok = params.get('token') || '';
@@ -89,7 +89,7 @@ export default function App() {
       const cleanUrl = window.location.pathname + window.location.hash;
       window.history.replaceState({}, '', cleanUrl);
     }
-  }, [isAdminRoute]);
+  }, []);
 
   const loadCatalog = React.useCallback(async () => {
     try {
@@ -111,10 +111,8 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
-    if (!isAdminRoute) {
-      loadCatalog();
-    }
-  }, [isAdminRoute, loadCatalog]);
+    loadCatalog();
+  }, [loadCatalog]);
 
   React.useEffect(() => {
     try {
