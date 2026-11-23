@@ -403,51 +403,75 @@ export default function AdminApp() {
 
   if (authState.loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F0] text-[#0F443E] font-semibold">
-        Chargement de l’espace de gestion Pèrôkadô…
+      <div className="min-h-screen flex items-center justify-center bg-[#EAEDED] text-[#0F1111] font-semibold">
+        Chargement de Pèrôkadô Seller Central…
       </div>
     );
   }
 
-  // ÉCRAN DE CONNEXION SÉCURISÉ
+  const storefrontUrl = (() => {
+    if (typeof window === 'undefined') return '/';
+    const h = window.location.hostname.toLowerCase();
+    if (h.startsWith('admin.')) return `${window.location.protocol}//${window.location.host.slice(6)}/`;
+    return '/';
+  })();
+
+  // ÉCRAN DE CONNEXION SÉCURISÉ — APPLICATION DISTINCTE SELLER CENTRAL
   if (!authState.authenticated) {
     return (
-      <div className="min-h-screen bg-[#FAF7F0] flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white rounded-3xl p-7 sm:p-9 border border-[#E5DEC9] shadow-xl space-y-6">
-          <div className="flex flex-col items-center text-center space-y-3">
-            <img
-              src="/images/logo-horizontal.png"
-              alt="Logo Pèrôkadô"
-              className="h-14 w-auto object-contain"
-            />
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0F443E]/10 text-[#0F443E] text-xs font-bold">
-              <Lock className="w-3.5 h-3.5" />
-              <span>Espace Administration & Équipe</span>
+      <div className="min-h-screen bg-[#131921] flex flex-col items-center justify-center p-4">
+        <div className="mb-5 flex items-center gap-2.5 text-white">
+          <img
+            src="/images/icon-512.png"
+            alt="Logo Pèrôkadô"
+            className="w-10 h-10 rounded-md bg-white p-0.5 object-cover"
+          />
+          <div className="leading-tight">
+            <div className="flex items-baseline gap-1">
+              <span className="text-xl font-extrabold tracking-tight">pèrôkadô</span>
+              <span className="text-xs font-extrabold uppercase tracking-wider text-[#FF9900]">
+                seller central
+              </span>
             </div>
+            <span className="text-[11px] text-[#CCCCCC]">
+              Console d’administration indépendante · Daloa & Expéditions
+            </span>
+          </div>
+        </div>
+
+        <div className="w-full max-w-md bg-white rounded-lg p-7 sm:p-8 border border-[#D5D9D9] shadow-2xl space-y-5">
+          <div className="border-b border-[#EAEDED] pb-3">
+            <h1 className="text-xl font-bold text-[#0F1111] flex items-center gap-2">
+              <Lock className="w-5 h-5 text-[#C7511F]" />
+              <span>Identification Vendeur / Équipe</span>
+            </h1>
+            <p className="text-xs text-[#565959] mt-1">
+              Accès strictement réservé à l’administrateur et aux agents autorisés Pèrôkadô.
+            </p>
           </div>
 
           {!authState.configured ? (
-            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-2">
-              <p className="font-bold flex items-center gap-1.5">
+            <div className="p-4 rounded-md bg-[#FEF8F2] border border-[#F5D3B3] text-xs text-[#0F1111] space-y-2">
+              <p className="font-bold flex items-center gap-1.5 text-[#B12704]">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
-                <span>Configuration requise sur Vercel</span>
+                <span>Activation requise sur Vercel</span>
               </p>
               <p>
-                Ajoutez la variable d’environnement <code>ADMIN_PASSWORD</code> (ainsi que{' '}
-                <code>DATABASE_URL</code> Neon) dans les réglages de votre projet Vercel, puis
+                Ajoutez les variables <code>DATABASE_URL</code> (Neon PostgreSQL) et{' '}
+                <code>ADMIN_PASSWORD</code> dans Vercel → Settings → Environment Variables, puis
                 redéployez.
               </p>
             </div>
           ) : (
             <form onSubmit={handleLogin} className="space-y-4">
               {loginError && (
-                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-medium">
+                <div className="p-3 rounded bg-[#FCF4F4] border border-[#CC0C39] text-xs text-[#CC0C39] font-medium">
                   {loginError}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-bold text-[#0F443E] mb-1.5">
+                <label className="block text-xs font-bold text-[#0F1111] mb-1.5">
                   Mot de passe Administrateur ou Code Agent (PKD-…)
                 </label>
                 <input
@@ -457,34 +481,36 @@ export default function AdminApp() {
                   value={credential}
                   onChange={(e) => setCredential(e.target.value)}
                   placeholder="••••••••••••••••"
-                  className="w-full px-4 py-3 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm focus:outline-none focus:border-[#0F443E]"
+                  className="w-full px-3.5 py-2.5 rounded border border-[#888C8C] text-sm focus:outline-none focus:ring-2 focus:ring-[#007185]"
                 />
               </div>
 
               {authState.demoHint && (
-                <p className="text-[11px] text-stone-500 bg-[#FAF7F0] p-2.5 rounded-xl border border-[#EAE2CE]">
+                <p className="text-[11px] text-[#565959] bg-[#F7FAFA] p-2.5 rounded border border-[#D5D9D9]">
                   Mode démo local détecté — Mot de passe par défaut :{' '}
-                  <code className="font-bold text-[#0F443E]">{authState.demoHint}</code>
+                  <code className="font-bold text-[#0F1111]">{authState.demoHint}</code>
                 </p>
               )}
 
               <button
                 type="submit"
                 disabled={loginBusy}
-                className="w-full py-3.5 rounded-full bg-[#0F443E] hover:bg-[#092E2A] text-white font-bold text-sm shadow-md transition cursor-pointer"
+                className="w-full py-2.5 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-[#0F1111] font-bold text-sm shadow-2xs transition cursor-pointer"
               >
-                {loginBusy ? 'Vérification…' : 'Se connecter'}
+                {loginBusy ? 'Vérification…' : 'Accéder à Seller Central'}
               </button>
             </form>
           )}
 
-          <div className="pt-3 border-t border-[#EFE9D8] text-center">
+          <div className="pt-3 border-t border-[#EAEDED] text-center">
             <a
-              href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D95D24] hover:underline"
+              href={storefrontUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Retourner à la boutique publique</span>
+              <span>Ouvrir la boutique client dans un nouvel onglet</span>
             </a>
           </div>
         </div>
@@ -516,19 +542,28 @@ export default function AdminApp() {
   });
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] text-[#14231F]">
-      {/* Barre supérieure Admin */}
-      <header className="sticky top-0 z-30 bg-[#0F443E] text-white border-b border-white/10">
+    <div className="min-h-screen bg-[#EAEDED] text-[#0F1111]">
+      {/* Barre supérieure Seller Central distincte (#131921) */}
+      <header className="sticky top-0 z-30 bg-[#131921] text-white border-b border-[#37475A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <a href="/" className="bg-[#FAF7F0] px-3 py-1.5 rounded-xl">
-              <img src="/images/logo-horizontal.png" alt="Pèrôkadô" className="h-7 w-auto" />
-            </a>
+            <img
+              src="/images/icon-512.png"
+              alt="Pèrôkadô"
+              className="w-9 h-9 rounded-md bg-white p-0.5 object-cover"
+            />
             <div>
-              <span className="text-xs sm:text-sm font-bold block">Back-Office Pèrôkadô</span>
-              <span className="text-[11px] text-[#E0A11B]">
-                {authState.user?.name} ({isAdmin ? 'Accès complet' : 'Agent commandes'}) · Base :{' '}
-                {authState.storage?.durable ? 'Neon PostgreSQL (Durable)' : 'Locale (Démo)'}
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm sm:text-base font-extrabold tracking-tight">
+                  pèrôkadô
+                </span>
+                <span className="px-2 py-0.5 rounded bg-[#FF9900] text-[#131921] text-[10px] font-extrabold uppercase">
+                  Seller Central
+                </span>
+              </div>
+              <span className="text-[11px] text-[#CCCCCC]">
+                {authState.user?.name} ({isAdmin ? 'Administrateur' : 'Agent commandes'}) · Base :{' '}
+                {authState.storage?.durable ? 'Neon PostgreSQL (En ligne)' : 'Locale (Démo)'}
               </span>
             </div>
           </div>
@@ -537,21 +572,23 @@ export default function AdminApp() {
             <button
               type="button"
               onClick={loadOverview}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#232F3E] hover:bg-[#37475A] border border-white/15 text-xs font-semibold cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
               <span className="hidden sm:inline">Actualiser</span>
             </button>
             <a
-              href="/"
-              className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-semibold"
+              href={storefrontUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded bg-[#232F3E] hover:bg-[#37475A] border border-white/15 text-xs font-semibold"
             >
-              Voir la boutique
+              Ouvrir la boutique ↗
             </a>
             <button
               type="button"
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D95D24] hover:bg-[#BF4E1B] text-xs font-bold cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#CC0C39] hover:bg-[#A80A2E] text-xs font-bold cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Déconnexion</span>
@@ -591,7 +628,7 @@ export default function AdminApp() {
             </p>
           </div>
           <div className="bg-white p-4 rounded-2xl border border-[#E5DEC9]">
-            <p className="text-xs text-stone-500 font-semibold">Ventes du jour (Abidjan/Daloa)</p>
+            <p className="text-xs text-stone-500 font-semibold">Ventes du jour (Daloa & alentours)</p>
             <p className="text-xl sm:text-2xl font-extrabold text-[#0F443E] mt-1">
               {formatFcfa(stats.todayRevenue ?? 0)}
             </p>

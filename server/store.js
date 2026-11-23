@@ -868,6 +868,42 @@ export function createStore(adapterPromiseOrInstance) {
     });
   }
 
+  // Confirmation automatique par Webhook officiel Wave Business Checkout (sans intervention humaine)
+  async function confirmWaveWebhookPayment({ reference, waveTransactionId, waveSenderPhone }) {
+    const db = await ensureReady();
+    const refClean = String(reference || '').trim().toUpperCase();
+    return db.withTransaction(async (tx) => {
+      const { rows } = await tx.query(
+        `SELECT * FROM orders WHERE UPPER(reference) = $1 FOR UPDATE`,
+        [refClean]
+      );
+      if (rows.length === 0) return null;
+      const current = rows[0];
+      const nextStatus = current.status === 'pending' ? 'preparing' : current.status;
+      const { rows: updated } = await tx.query(
+        `UPDATE orders
+         SET status = $2,
+             wave_transaction_ref = COALESCE(NULLIF($3, ''), wave_transaction_ref),
+             wave_sender_phone = COALESCE(NULLIF($4, ''), wave_sender_phone),
+             handled_by = 'wave-webhook-auto',
+             updated_at = NOW()
+         WHERE id = $1
+         RETURNING *`,
+        [
+          current.id,
+          nextStatus,
+          String(waveTransactionId || '').trim(),
+          String(waveSenderPhone || '').trim(),
+        ]
+      );
+      await tx.query(
+        `INSERT INTO audit_logs (actor, action, target, details) VALUES ('wave-webhook-auto', 'order.wave_paid', $1, $2::jsonb)`,
+        [current.reference, JSON.stringify({ waveTransactionId })]
+      );
+      return mapOrderRow(updated[0]);
+    });
+  }
+
   async function getDashboardStats() {
     const db = await ensureReady();
     const { rows: summaryRows } = await db.query(`
@@ -1042,6 +1078,7 @@ export function createStore(adapterPromiseOrInstance) {
     trackOrder,
     listOrders,
     updateOrderStatus,
+    confirmWaveWebhookPayment,
     getDashboardStats,
     listAgents,
     createAgent,

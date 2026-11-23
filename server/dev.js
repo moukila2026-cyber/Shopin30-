@@ -1,5 +1,6 @@
 // ==============================================================================
 // PÈRÔKADÔ — Serveur de développement unifié (API Express + Vite HMR sur 0.0.0.0)
+// Séparation stricte : index.html (Boutique client) vs admin.html (Seller Central)
 // ==============================================================================
 import http from 'node:http';
 import { createServer as createViteServer } from 'vite';
@@ -28,11 +29,41 @@ const vite = await createViteServer({
       server: httpServer,
     },
   },
-  appType: 'spa',
+  appType: 'mpa',
+});
+
+// Réécriture interne pour servir l'application d'administration distincte (admin.html)
+app.use((req, res, next) => {
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+    .split(',')[0]
+    .trim()
+    .toLowerCase();
+  const isAdminHost = host.startsWith('admin.') || host.includes('perokado-admin');
+  const isAdminPath =
+    req.path === '/admin' ||
+    req.path.startsWith('/admin/') ||
+    req.path === '/gestion' ||
+    req.path.startsWith('/gestion/');
+
+  if (
+    !req.path.startsWith('/api') &&
+    !req.path.startsWith('/src/') &&
+    !req.path.startsWith('/@') &&
+    !req.path.startsWith('/node_modules/') &&
+    !req.path.includes('.')
+  ) {
+    if (isAdminHost || isAdminPath) {
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+      req.url = '/admin.html';
+    } else {
+      req.url = '/index.html';
+    }
+  }
+  next();
 });
 
 app.use(vite.middlewares);
 
 httpServer.listen(PORT, HOST, () => {
-  console.log(`Pèrôkadô (Dev + API + PGlite/Neon) prêt sur http://${HOST}:${PORT}`);
+  console.log(`Pèrôkadô (Boutique + Console Seller Central distincte) prêt sur http://${HOST}:${PORT}`);
 });

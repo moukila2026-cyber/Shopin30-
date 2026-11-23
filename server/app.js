@@ -33,6 +33,12 @@ import {
   StoreSettingsUpdateSchema,
   TrackOrderSchema,
 } from './validation.js';
+import {
+  createWaveCheckoutSession,
+  dispatchOrderAlert,
+  isWaveAutoCheckoutEnabled,
+  verifyWaveWebhookSignature,
+} from './automation.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -69,17 +75,18 @@ function enforceSameOrigin(req, res, next) {
       .trim()
       .toLowerCase();
 
-    const allowedPublic = (process.env.PUBLIC_ORIGIN || '').trim();
-    let allowedHost = '';
-    if (allowedPublic) {
+    const allowedHosts = new Set();
+    for (const rawUrl of [process.env.PUBLIC_ORIGIN, process.env.ADMIN_ORIGIN]) {
+      const trimmed = (rawUrl || '').trim();
+      if (!trimmed) continue;
       try {
-        allowedHost = new URL(allowedPublic).host.toLowerCase();
+        allowedHosts.add(new URL(trimmed).host.toLowerCase());
       } catch {
-        allowedHost = '';
+        // ignore invalid URL
       }
     }
 
-    if (reqHost && (originHost === reqHost || (allowedHost && originHost === allowedHost))) {
+    if (reqHost && (originHost === reqHost || allowedHosts.has(originHost))) {
       return next();
     }
     return res.status(403).json({
@@ -157,6 +164,44 @@ export function createApp({ store, production = false, serveStatic = false } = {
   });
 
   app.use('/api', generalApiLimiter);
+
+  // ---------------------------------------------------------------------------
+  // WEBHOOK OFFICIEL WAVE BUSINESS CHECKOUT (100% SANS INTERVENTION HUMAINE)
+  // Placé AVANT enforceSameOrigin et express.json() pour vérifier la signature HMAC sur le Buffer brut
+  // ---------------------------------------------------------------------------
+  app.post(
+    '/api/webhooks/wave',
+    express.raw({ type: 'application/json', limit: '128kb' }),
+    async (req, res) => {
+      const sigHeader = req.headers['wave-signature'];
+      if (!verifyWaveWebhookSignature(req.body, sigHeader)) {
+        return res.status(401).json({ error: 'Signature Webhook Wave invalide.' });
+      }
+      try {
+        const event = JSON.parse(req.body.toString('utf8'));
+        if (event?.type === 'checkout.session.completed' && event?.data) {
+          const data = event.data;
+          const clientRef = data.client_reference || '';
+          const waveTxId = data.transaction_id || data.id || '';
+          const senderMobile = data.sender_mobile || '';
+          if (clientRef) {
+            const confirmedOrder = await store.confirmWaveWebhookPayment({
+              reference: clientRef,
+              waveTransactionId: waveTxId,
+              waveSenderPhone: senderMobile,
+            });
+            if (confirmedOrder) {
+              await dispatchOrderAlert(confirmedOrder, 'payment.confirmed');
+            }
+          }
+        }
+        return res.json({ received: true });
+      } catch {
+        return res.status(400).json({ error: 'Payload Webhook Wave invalide.' });
+      }
+    }
+  );
+
   app.use('/api', enforceSameOrigin);
 
   // Empêcher la mise en cache des données dynamiques ou sensibles d'API (sauf route photo dédiée)
@@ -283,7 +328,10 @@ export function createApp({ store, production = false, serveStatic = false } = {
         categories: CATEGORIES,
         deliverySlots: DELIVERY_SLOTS,
         paymentMethods: PAYMENT_METHODS,
-        settings,
+        settings: {
+          ...settings,
+          waveAutoCheckout: isWaveAutoCheckoutEnabled(),
+        },
         products,
       });
     } catch (err) {
@@ -319,14 +367,57 @@ export function createApp({ store, production = false, serveStatic = false } = {
   app.post('/api/orders', checkoutLimiter, async (req, res, next) => {
     try {
       const payload = PlaceOrderSchema.parse(req.body);
+      const autoWave = isWaveAutoCheckoutEnabled();
+
+      // Si l'API Wave Business Checkout n'est pas encore branchée, exiger le numéro émetteur et l'ID transaction Wave
+      if (!autoWave) {
+        const digits = String(payload.waveSenderPhone || '').replace(/\D/g, '');
+        if (digits.length < 8) {
+          throw new BusinessError(
+            'Veuillez indiquer le numéro Wave utilisé pour le paiement (minimum 8 chiffres).',
+            400,
+            'WAVE_PHONE_REQUIRED'
+          );
+        }
+        if (String(payload.waveTransactionRef || '').trim().length < 4) {
+          throw new BusinessError(
+            'Veuillez saisir la référence / ID de transaction reçu dans votre application Wave.',
+            400,
+            'WAVE_REF_REQUIRED'
+          );
+        }
+      }
+
       const [result, settings] = await Promise.all([
         store.placeOrder(payload),
         store.getSettings(),
       ]);
+
+      let waveCheckoutUrl = null;
+      if (autoWave && !result.duplicate) {
+        const proto = isSecureRequest(req, production) ? 'https' : 'http';
+        const reqHost = String(req.headers['x-forwarded-host'] || req.headers.host || 'localhost:3000')
+          .split(',')[0]
+          .trim();
+        const origin = (process.env.PUBLIC_ORIGIN || `${proto}://${reqHost}`).replace(/\/+$/, '');
+        const session = await createWaveCheckoutSession({
+          amount: result.order.total,
+          reference: result.order.reference,
+          trackingToken: result.order.trackingToken,
+          origin,
+        });
+        waveCheckoutUrl = session?.launchUrl || null;
+      }
+
+      if (!result.duplicate) {
+        dispatchOrderAlert(result.order, 'order.created').catch(() => {});
+      }
+
       res.status(result.duplicate ? 200 : 201).json({
         order: result.order,
         duplicate: result.duplicate,
         whatsappNumber: settings.whatsappNumber,
+        waveCheckoutUrl,
       });
     } catch (err) {
       next(err);
@@ -589,12 +680,24 @@ export function createApp({ store, production = false, serveStatic = false } = {
     res.status(404).json({ error: 'Point d’accès API introuvable.' });
   });
 
-  // En mode production Node autonome (`npm start`), servir dist/
+  // En mode production Node autonome (`npm start`), servir dist/ (2 apps distinctes : index.html & admin.html)
   if (serveStatic) {
     const distDir = path.join(ROOT_DIR, 'dist');
     if (fs.existsSync(distDir)) {
       app.use(express.static(distDir, { maxAge: '7d', index: false }));
-      app.get('/{*splat}', (_req, res) => {
+      app.get(['/admin', '/admin/{*splat}', '/gestion', '/gestion/{*splat}'], (_req, res) => {
+        res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        res.sendFile(path.join(distDir, 'admin.html'));
+      });
+      app.get('/{*splat}', (req, res) => {
+        const host = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+          .split(',')[0]
+          .trim()
+          .toLowerCase();
+        if (host.startsWith('admin.') || host.includes('perokado-admin')) {
+          res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+          return res.sendFile(path.join(distDir, 'admin.html'));
+        }
         res.sendFile(path.join(distDir, 'index.html'));
       });
     }

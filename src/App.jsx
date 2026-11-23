@@ -17,8 +17,6 @@ import { CartDrawer } from './components/CartDrawer.jsx';
 import { OrderTrackerModal } from './components/OrderTrackerModal.jsx';
 import { Footer } from './components/Footer.jsx';
 
-const AdminApp = React.lazy(() => import('./admin/AdminApp.jsx'));
-
 const CART_STORAGE_KEY = 'pkd_cart_v1';
 const FAV_STORAGE_KEY = 'pkd_favs_v1';
 const ZONE_STORAGE_KEY = 'pkd_zone_v1';
@@ -41,10 +39,6 @@ function readJsonStorage(key, fallback) {
 }
 
 export default function App() {
-  const isAdminRoute =
-    typeof window !== 'undefined' &&
-    (window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/'));
-
   const [catalogData, setCatalogData] = React.useState({
     loading: true,
     error: '',
@@ -145,20 +139,6 @@ export default function App() {
       // ignore
     }
   }, [selectedZoneId]);
-
-  if (isAdminRoute) {
-    return (
-      <React.Suspense
-        fallback={
-          <div className="min-h-screen flex items-center justify-center bg-[#EAEDED] text-[#0F1111] font-semibold">
-            Ouverture de l’espace vendeur Pèrôkadô…
-          </div>
-        }
-      >
-        <AdminApp />
-      </React.Suspense>
-    );
-  }
 
   const zones = catalogData.settings.deliveryZones || DELIVERY_ZONES;
   const selectedZone = zones.find((z) => z.id === selectedZoneId) || zones[0];
