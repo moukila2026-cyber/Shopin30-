@@ -144,6 +144,7 @@ export function CartDrawer({
 
   const waveMerchantNumber = settings?.wavePhone || BRAND.defaultWavePhone;
   const wavePaymentUrl = settings?.wavePaymentUrl || '';
+  const waveAutoCheckout = Boolean(settings?.waveAutoCheckout);
   const shippingDisclaimer = settings?.shippingDisclaimer || BRAND.shippingDisclaimer;
 
   async function handleApplyPromo(e) {
@@ -191,14 +192,20 @@ export function CartDrawer({
           })),
         },
       });
-      setConfirmedData(res);
-      setStep('confirmed');
       onClearCart();
       setAppliedPromo(null);
       setPromoInput('');
       setWaveTransactionRef('');
       setRequestId(makeRequestId());
       if (onOrderSuccess) onOrderSuccess();
+
+      // Si l'API officielle Wave Business Checkout est active, rediriger automatiquement vers l'application Wave !
+      if (res.waveCheckoutUrl && typeof window !== 'undefined') {
+        window.location.href = res.waveCheckoutUrl;
+        return;
+      }
+      setConfirmedData(res);
+      setStep('confirmed');
     } catch (err) {
       setSubmitError(err.message || 'Impossible de valider la commande.');
     } finally {
@@ -603,69 +610,87 @@ export function CartDrawer({
                   <Lock className="w-4 h-4 text-[#009EE3]" />
                 </div>
 
-                <div className="bg-[#EBF8FF] rounded p-3 border border-[#B3E5FC] space-y-2 text-xs">
-                  <div className="flex items-center justify-between gap-2">
-                    <div>
-                      <span className="text-[11px] text-[#565959] block">
-                        Envoyez <strong>{formatFcfa(grandTotal)}</strong> au n° Wave Pèrôkadô :
-                      </span>
-                      <strong className="text-base font-extrabold text-[#053B54] tracking-wide">
-                        {waveMerchantNumber}
-                      </strong>
+                {waveAutoCheckout ? (
+                  <div className="bg-[#EBF8FF] rounded p-3.5 border border-[#B3E5FC] text-xs text-[#053B54] space-y-1.5">
+                    <p className="font-bold flex items-center gap-1.5">
+                      <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
+                      <span>Paiement Wave Business 100% Automatique</span>
+                    </p>
+                    <p>
+                      En cliquant sur le bouton ci-dessous, votre application{' '}
+                      <strong>Wave</strong> s’ouvrira automatiquement avec le montant exact de{' '}
+                      <strong>{formatFcfa(grandTotal)}</strong>. Dès confirmation dans Wave, votre
+                      commande passe automatiquement en préparation avec votre{' '}
+                      <strong>Code QR de suivi en direct</strong>.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="bg-[#EBF8FF] rounded p-3 border border-[#B3E5FC] space-y-2 text-xs">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <span className="text-[11px] text-[#565959] block">
+                            Envoyez <strong>{formatFcfa(grandTotal)}</strong> au n° Wave Pèrôkadô :
+                          </span>
+                          <strong className="text-base font-extrabold text-[#053B54] tracking-wide">
+                            {waveMerchantNumber}
+                          </strong>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={copyWaveNumber}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white text-xs font-bold cursor-pointer"
+                        >
+                          {copiedWave ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedWave ? 'Copié' : 'Copier'}</span>
+                        </button>
+                      </div>
+
+                      {wavePaymentUrl && (
+                        <a
+                          href={wavePaymentUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white font-bold text-xs"
+                        >
+                          <Smartphone className="w-3.5 h-3.5" />
+                          <span>Ouvrir le lien de paiement Wave direct</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
                     </div>
-                    <button
-                      type="button"
-                      onClick={copyWaveNumber}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white text-xs font-bold cursor-pointer"
-                    >
-                      {copiedWave ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedWave ? 'Copié' : 'Copier'}</span>
-                    </button>
-                  </div>
 
-                  {wavePaymentUrl && (
-                    <a
-                      href={wavePaymentUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white font-bold text-xs"
-                    >
-                      <Smartphone className="w-3.5 h-3.5" />
-                      <span>Ouvrir le lien de paiement Wave direct</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
-                      Votre n° Wave émetteur *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={waveSenderPhone}
-                      onChange={(e) => setWaveSenderPhone(e.target.value)}
-                      placeholder="07 / 05 / 01 …"
-                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#009EE3]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
-                      ID / Référence transaction Wave *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      minLength={4}
-                      value={waveTransactionRef}
-                      onChange={(e) => setWaveTransactionRef(e.target.value.toUpperCase())}
-                      placeholder="Ex: T7K9P2M4…"
-                      className="w-full px-3 py-2 rounded border border-[#888C8C] text-xs sm:text-sm font-bold uppercase focus:outline-none focus:ring-2 focus:ring-[#009EE3]"
-                    />
-                  </div>
-                </div>
+                    <div className="grid sm:grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
+                          Votre n° Wave émetteur *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={waveSenderPhone}
+                          onChange={(e) => setWaveSenderPhone(e.target.value)}
+                          placeholder="07 / 05 / 01 …"
+                          className="w-full px-3 py-2 rounded border border-[#888C8C] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#009EE3]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
+                          ID / Référence transaction Wave *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          minLength={4}
+                          value={waveTransactionRef}
+                          onChange={(e) => setWaveTransactionRef(e.target.value.toUpperCase())}
+                          placeholder="Ex: T7K9P2M4…"
+                          className="w-full px-3 py-2 rounded border border-[#888C8C] text-xs sm:text-sm font-bold uppercase focus:outline-none focus:ring-2 focus:ring-[#009EE3]"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div>
                   <label className="block text-xs font-bold text-[#0F1111] mb-1">

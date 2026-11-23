@@ -40,16 +40,15 @@ export const PlaceOrderSchema = z.object({
   waveSenderPhone: z
     .string()
     .trim()
-    .min(8, 'Veuillez indiquer le numéro Wave utilisé pour le paiement.')
     .max(25)
-    .refine((val) => val.replace(/\D/g, '').length >= 8, {
-      message: 'Numéro Wave invalide (minimum 8 chiffres).',
-    }),
+    .optional()
+    .default(''),
   waveTransactionRef: z
     .string()
     .trim()
-    .min(4, 'Veuillez saisir la référence / ID de transaction Wave (reçu dans l’application Wave).')
-    .max(80),
+    .max(80)
+    .optional()
+    .default(''),
   customerNote: z.string().trim().max(500).optional().default(''),
   promoCode: z.string().trim().max(40).optional().default(''),
   items: z.array(OrderItemInputSchema).min(1, 'Votre panier est vide.').max(30),

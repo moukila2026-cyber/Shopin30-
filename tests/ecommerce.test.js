@@ -4,11 +4,13 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
+import crypto from 'node:crypto';
 import { createDatabaseAdapter, createStore } from '../server/store.js';
 import { createApp } from '../server/app.js';
 
 process.env.ADMIN_PASSWORD = 'TestAdminStrongPassword!2026';
 process.env.SESSION_SECRET = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
+process.env.WAVE_WEBHOOK_SECRET = 'whsec_test_wave_secret_2026';
 
 let store;
 let server;
@@ -265,3 +267,74 @@ test('5. Upload photo binaire sécurisé : rejette un faux fichier et accepte un
   });
   assert.equal(okRes.status, 200);
 });
+
+test('6. Webhook Wave Business 100% automatique : rejette une fausse signature et valide automatiquement un paiement signé', async () => {
+  // Créer une commande en attente
+  const created = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_auto_webhook_001',
+      customerName: 'Awa Bamba',
+      customerPhone: '0709112233',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Tazibouo',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0709112233',
+      waveTransactionRef: 'PENDING',
+      items: [{ productId: 'bouilloire-inox-2l', quantity: 1 }],
+    },
+  });
+  assert.equal(created.status, 201);
+  assert.equal(created.data.order.status, 'pending');
+
+  const payloadStr = JSON.stringify({
+    type: 'checkout.session.completed',
+    data: {
+      client_reference: created.data.order.reference,
+      transaction_id: 'WAVE_AUTO_TX_998877',
+      sender_mobile: '+2250709112233',
+    },
+  });
+
+  // 1) Rejet d'un webhook falsifié
+  const badRes = await fetch(`${baseUrl}/api/webhooks/wave`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Wave-Signature': 't=1700000000,v1=deadbeef',
+    },
+    body: payloadStr,
+  });
+  assert.equal(badRes.status, 401);
+
+  // 2) Validation automatique avec signature HMAC-SHA256 authentique
+  const ts = Math.floor(Date.now() / 1000);
+  const hmac = crypto
+    .createHmac('sha256', process.env.WAVE_WEBHOOK_SECRET)
+    .update(`${ts}.${payloadStr}`)
+    .digest('hex');
+
+  const goodRes = await fetch(`${baseUrl}/api/webhooks/wave`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Wave-Signature': `t=${ts},v1=${hmac}`,
+    },
+    body: payloadStr,
+  });
+  assert.equal(goodRes.status, 200);
+
+  // Vérifier que le suivi QR client est passé tout seul à 'preparing' (Wave validé) sans aucune action humaine
+  const tracked = await reqJson('/api/orders/track', {
+    method: 'POST',
+    body: {
+      reference: created.data.order.reference,
+      token: created.data.order.trackingToken,
+    },
+  });
+  assert.equal(tracked.status, 200);
+  assert.equal(tracked.data.order.status, 'preparing');
+  assert.equal(tracked.data.order.waveTransactionRef, 'WAVE_AUTO_TX_998877');
+});
+
