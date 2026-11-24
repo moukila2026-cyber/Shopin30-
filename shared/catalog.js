@@ -286,7 +286,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-lave-linge-9kg-stml-9sh',
     slug: 'smart-technology-machine-a-laver-frontale-9kg-smart-wash-stml-9sh',
-    name: 'Machine à Laver Frontale SMART TECHNOLOGY 9 Kg Smart Wash BLDC Inverter (`STML-9SH`)',
+    name: 'Machine à Laver Frontale SMART TECHNOLOGY 9 Kg Smart Wash BLDC Inverter (STML-9SH)',
     category: 'lavage-cuisson',
     price: 235000,
     compareAtPrice: 286000,
@@ -358,7 +358,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-micro-ondes-25l-stmw-25wg',
     slug: 'smart-technology-four-micro-ondes-25l-stmw-25wg',
-    name: 'Four à Micro-Ondes SMART TECHNOLOGY 25 Litres (`STMW-25WG`) — Gris & Noir',
+    name: 'Four à Micro-Ondes SMART TECHNOLOGY 25 Litres (STMW-25WG) — Gris & Noir',
     category: 'maison',
     price: 44900,
     compareAtPrice: 65000,
@@ -380,7 +380,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-broyeur-foutou-stpe-792',
     slug: 'smart-technology-machine-a-foutou-broyeur-viande-inox-1000w-stpe-792',
-    name: 'Machine à Foutou & Broyeur à Viande Inox SMART TECHNOLOGY 1000W (`STPE-792`)',
+    name: 'Machine à Foutou & Broyeur à Viande Inox SMART TECHNOLOGY 1000W (STPE-792)',
     category: 'maison',
     price: 24900,
     compareAtPrice: 38000,
@@ -424,7 +424,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-mixeur-pro-stpe-8879r',
     slug: 'smart-technology-mixeur-professionnel-2-en-1-stpe-8879r',
-    name: 'Mixeur Blender Professionnel 2-en-1 SMART TECHNOLOGY (`STPE-8879R`) — Rouge & Noir',
+    name: 'Mixeur Blender Professionnel 2-en-1 SMART TECHNOLOGY (STPE-8879R) — Rouge & Noir',
     category: 'maison',
     price: 15500,
     compareAtPrice: 22000,
@@ -446,7 +446,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-regulateur-avr-1500',
     slug: 'smart-technology-regulateur-de-tension-automatique-avr-1500va-new-2026',
-    name: 'Régulateur de Tension Automatique SMART TECHNOLOGY `AVR-1500` — Édition Digital 2026',
+    name: 'Régulateur de Tension Automatique SMART TECHNOLOGY AVR-1500 — Édition Digital 2026',
     category: 'maison',
     price: 14900,
     compareAtPrice: 21000,
@@ -468,7 +468,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-bouilloire-beige-stpe-251u',
     slug: 'smart-technology-bouilloire-electrique-1-7l-beige-stpe-251u',
-    name: 'Bouilloire Électrique Design SMART TECHNOLOGY 1,7 L (`STPE-251U`) — Beige & Moka',
+    name: 'Bouilloire Électrique Design SMART TECHNOLOGY 1,7 L (STPE-251U) — Beige & Moka',
     category: 'maison',
     price: 13900,
     compareAtPrice: 18500,
@@ -490,7 +490,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-fer-vapeur-stpfr-5104b',
     slug: 'smart-technology-fer-a-repasser-a-vapeur-noir-or-stpfr-5104b',
-    name: 'Fer à Repasser à Vapeur Puissant SMART TECHNOLOGY (`STPFR-5104B`) — Noir & Or',
+    name: 'Fer à Repasser à Vapeur Puissant SMART TECHNOLOGY (STPFR-5104B) — Noir & Or',
     category: 'maison',
     price: 11500,
     compareAtPrice: 16500,
@@ -512,7 +512,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-bouilloire-rouge-stpe-249rb',
     slug: 'smart-technology-bouilloire-electrique-inox-1-8l-rouge-stpe-249rb',
-    name: 'Bouilloire Électrique Inox SMART TECHNOLOGY 1,8 L Rouge Métallisé (`STPE-249RB`)',
+    name: 'Bouilloire Électrique Inox SMART TECHNOLOGY 1,8 L Rouge Métallisé (STPE-249RB)',
     category: 'maison',
     price: 9500,
     compareAtPrice: 14500,
@@ -534,7 +534,7 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   {
     id: 'smart-fer-sec-stpfr-5103',
     slug: 'smart-technology-fer-a-repasser-a-sec-1200w-stpfr-5103',
-    name: 'Fer à Repasser à Sec SMART TECHNOLOGY 1200W (`STPFR-5103`) — Bleu & Blanc',
+    name: 'Fer à Repasser à Sec SMART TECHNOLOGY 1200W (STPFR-5103) — Bleu & Blanc',
     category: 'maison',
     price: 6500,
     compareAtPrice: 9500,

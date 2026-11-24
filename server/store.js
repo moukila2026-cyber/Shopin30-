@@ -140,7 +140,7 @@ function mapProductRow(row) {
   return {
     id: row.id,
     slug: row.slug,
-    name: row.name,
+    name: String(row.name || '').replace(/`/g, ''),
     category: row.category,
     price: Number(row.price),
     compareAtPrice: compareAt && compareAt > Number(row.price) ? compareAt : null,
@@ -301,6 +301,9 @@ export function createStore(adapterPromiseOrInstance) {
                ON CONFLICT (key) DO NOTHING`
             );
           }
+          await adapter.query(
+            `UPDATE products SET name = REPLACE(name, '\`', '') WHERE name LIKE '%\`%'`
+          );
         }
 
         // Seed codes promo initiaux si la table est vide
