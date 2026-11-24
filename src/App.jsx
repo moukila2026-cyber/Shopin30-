@@ -23,10 +23,10 @@ const ZONE_STORAGE_KEY = 'pkd_zone_v1';
 
 const PRICE_RANGES = [
   { id: 'all', label: 'Tous les prix', min: 0, max: Infinity },
-  { id: 'u15', label: 'Moins de 15 000 FCFA', min: 0, max: 15000 },
-  { id: '15to25', label: '15 000 F à 25 000 FCFA', min: 15000, max: 25000 },
-  { id: '25to40', label: '25 000 F à 40 000 FCFA', min: 25000, max: 40000 },
-  { id: 'o40', label: 'Plus de 40 000 FCFA', min: 40000, max: Infinity },
+  { id: 'u20', label: 'Moins de 20 000 FCFA', min: 0, max: 20000 },
+  { id: '20to100', label: '20 000 F à 100 000 FCFA', min: 20000, max: 100000 },
+  { id: '100to300', label: '100 000 F à 300 000 FCFA', min: 100000, max: 300000 },
+  { id: 'o300', label: 'Plus de 300 000 FCFA', min: 300000, max: Infinity },
 ];
 
 function readJsonStorage(key, fallback) {

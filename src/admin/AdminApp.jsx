@@ -1277,6 +1277,62 @@ export default function AdminApp() {
               Paramètres de la boutique & Livraison Daloa
             </h2>
 
+            {/* Diagnostic SasPay & Webhooks */}
+            {overview?.paymentIntegration && (
+              <div className="p-4 rounded-2xl bg-[#F4FBF8] border border-[#B7E4CE] space-y-2.5 text-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="font-extrabold text-[#0F443E] text-sm">
+                    Paiements instantanés SasPay (`saspay.me`) & Webhooks
+                  </p>
+                  <span
+                    className={`px-2.5 py-1 rounded-full font-bold ${
+                      overview.paymentIntegration.saspayConfigured
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-amber-100 text-amber-900'
+                    }`}
+                  >
+                    {overview.paymentIntegration.saspayConfigured
+                      ? 'SasPay API Actif'
+                      : 'En attente de SASPAY_API_KEY'}
+                  </span>
+                </div>
+                <p className="text-stone-700 leading-relaxed">
+                  URL Webhook à coller dans votre dashboard{' '}
+                  <strong>app.saspay.me → Webhooks</strong> (événement{' '}
+                  <code>transaction.success</code>) :
+                </p>
+                <div className="flex items-center justify-between gap-2 bg-white px-3 py-2 rounded-xl border border-[#D4E9DF] font-mono text-[11px] break-all">
+                  <span>{overview.paymentIntegration.saspayWebhookUrl}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard?.writeText(overview.paymentIntegration.saspayWebhookUrl);
+                      showToast('URL Webhook SasPay copiée !');
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-[#0F443E] text-white font-sans font-bold shrink-0 cursor-pointer"
+                  >
+                    Copier
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-3 gap-2 pt-1 text-[11px]">
+                  <div className="p-2 rounded-lg bg-white border border-[#E5DEC9]">
+                    <strong>Clé API (`SASPAY_API_KEY`) :</strong>{' '}
+                    {overview.paymentIntegration.saspayConfigured ? '✅ Configurée' : '⏳ Non définie'}
+                  </div>
+                  <div className="p-2 rounded-lg bg-white border border-[#E5DEC9]">
+                    <strong>Secret (`SASPAY_WEBHOOK_SECRET`) :</strong>{' '}
+                    {overview.paymentIntegration.saspayWebhookSecretConfigured
+                      ? '✅ Configuré'
+                      : '⏳ Non défini'}
+                  </div>
+                  <div className="p-2 rounded-lg bg-white border border-[#E5DEC9]">
+                    <strong>Alerte Telegram :</strong>{' '}
+                    {overview.paymentIntegration.telegramConfigured ? '✅ Active' : 'Optionnel'}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-[#FAF7F0] border border-[#E5DEC9]">
               <input
                 id="storeOpen"

@@ -81,9 +81,16 @@ CREATE TABLE IF NOT EXISTS orders (
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS wave_sender_phone TEXT NOT NULL DEFAULT '';
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS wave_transaction_ref TEXT NOT NULL DEFAULT '';
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS tracking_token TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_provider TEXT NOT NULL DEFAULT 'wave';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS saspay_session_id TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS saspay_payment_id TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS saspay_checkout_url TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS saspay_payout_id TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS idx_orders_status_created ON orders(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_orders_phone_norm ON orders(customer_phone_norm);
+CREATE INDEX IF NOT EXISTS idx_orders_saspay_session ON orders(saspay_session_id);
+CREATE INDEX IF NOT EXISTS idx_orders_saspay_payment ON orders(saspay_payment_id);
 
 CREATE TABLE IF NOT EXISTS agents (
   id TEXT PRIMARY KEY,

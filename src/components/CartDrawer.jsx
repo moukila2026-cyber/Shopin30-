@@ -144,6 +144,7 @@ export function CartDrawer({
 
   const waveMerchantNumber = settings?.wavePhone || BRAND.defaultWavePhone;
   const wavePaymentUrl = settings?.wavePaymentUrl || '';
+  const saspayEnabled = Boolean(settings?.saspayEnabled);
   const waveAutoCheckout = Boolean(settings?.waveAutoCheckout);
   const shippingDisclaimer = settings?.shippingDisclaimer || BRAND.shippingDisclaimer;
 
@@ -199,9 +200,10 @@ export function CartDrawer({
       setRequestId(makeRequestId());
       if (onOrderSuccess) onOrderSuccess();
 
-      // Si l'API officielle Wave Business Checkout est active, rediriger automatiquement vers l'application Wave !
-      if (res.waveCheckoutUrl && typeof window !== 'undefined') {
-        window.location.href = res.waveCheckoutUrl;
+      // Si SasPay ou l'API Wave Business Checkout est active, rediriger instantanément vers la page de paiement !
+      const redirectUrl = res.checkoutUrl || res.waveCheckoutUrl;
+      if (redirectUrl && typeof window !== 'undefined') {
+        window.location.href = redirectUrl;
         return;
       }
       setConfirmedData(res);
@@ -598,19 +600,39 @@ export function CartDrawer({
                 </div>
               </div>
 
-              {/* Bloc 2 : Paiement en ligne Wave uniquement */}
+              {/* Bloc 2 : Paiement en ligne instantané (SasPay ou Wave) */}
               <div className="bg-white rounded-md border-2 border-[#009EE3] p-4 space-y-3">
                 <div className="flex items-center justify-between border-b border-[#EAEDED] pb-2">
                   <h3 className="text-sm font-bold text-[#0F1111] flex items-center gap-2">
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#009EE3] text-white font-extrabold text-xs">
-                      W
+                      {saspayEnabled ? 'S' : 'W'}
                     </span>
-                    <span>2. Paiement en ligne Wave uniquement</span>
+                    <span>
+                      {saspayEnabled
+                        ? '2. Paiement en ligne instantané sécurisé (SasPay)'
+                        : '2. Paiement en ligne Wave uniquement'}
+                    </span>
                   </h3>
                   <Lock className="w-4 h-4 text-[#009EE3]" />
                 </div>
 
-                {waveAutoCheckout ? (
+                {saspayEnabled ? (
+                  <div className="bg-[#EBF8FF] rounded p-3.5 border border-[#B3E5FC] text-xs text-[#053B54] space-y-1.5">
+                    <p className="font-bold flex items-center gap-1.5">
+                      <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
+                      <span>
+                        Paiement instantané 100% automatisé (Wave, Orange Money, MTN, Moov & Carte)
+                      </span>
+                    </p>
+                    <p>
+                      En cliquant sur le bouton ci-dessous, vous serez redirigé vers le portail
+                      sécurisé <strong>SasPay</strong> pour régler exactement{' '}
+                      <strong>{formatFcfa(grandTotal)}</strong>. Dès confirmation du paiement, votre
+                      commande passe automatiquement en préparation avec votre{' '}
+                      <strong>Code QR de suivi en direct</strong> !
+                    </p>
+                  </div>
+                ) : waveAutoCheckout ? (
                   <div className="bg-[#EBF8FF] rounded p-3.5 border border-[#B3E5FC] text-xs text-[#053B54] space-y-1.5">
                     <p className="font-bold flex items-center gap-1.5">
                       <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
