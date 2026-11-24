@@ -14,36 +14,36 @@ import { buildWhatsappServiceUrl } from '../lib/api.js';
 
 const BANNERS = [
   {
-    id: 'hightech',
-    image: '/images/banners/banner-hightech.jpg',
-    tag: 'OFFRES HIGH-TECH & SON',
-    title: 'Smartphones, Montres Connectées & Audio Bluetooth',
+    id: 'froid-lavage',
+    image: '/images/banners/banner-maison.jpg',
+    tag: 'OFFICIEL SMART TECHNOLOGY — DALOA & CÔTE D’IVOIRE',
+    title: 'Réfrigérateurs ProSmart Inverter, Lave-Linge BLDC & Gazinières Inox',
     subtitle:
-      'Commandez en ligne par Wave et suivez votre colis en direct par Code QR à Daloa, Issia, Vavoua et alentours.',
-    ctaLabel: 'Voir le rayon High-Tech',
-    targetCategory: 'high-tech',
-    darkText: false,
+      'Équipez votre maison avec la gamme SMART TECHNOLOGY aux meilleurs prix du marché ivoirien. Paiement en ligne instantané & Suivi Code QR.',
+    ctaLabel: 'Voir les Frigos & Vitrines SMART',
+    targetCategory: 'froid',
+    darkText: true,
   },
   {
-    id: 'maison',
-    image: '/images/banners/banner-maison.jpg',
-    tag: 'ÉQUIPEMENT MAISON & ANTI-DÉLESTAGE',
-    title: 'Air Fryer XXL, Blenders Inox & Ventilateurs Solaires',
+    id: 'cuisine-smart',
+    image: '/images/banners/banner-hightech.jpg',
+    tag: 'CUISINE, MACHINES À FOUTOU & PROTECTION CIE',
+    title: 'Micro-ondes 25L, Broyeurs à Foutou 1000W & Régulateurs AVR 2026',
     subtitle:
-      'Des appareils robustes en stock immédiat à Daloa. Livraison Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F.',
-    ctaLabel: 'Équiper ma maison',
+      'Des appareils robustes en stock immédiat à Daloa. Livraison Commune 1 000 F · Périphérie 1 500 F · Expédition Issia & Vavoua dès 2 000 F.',
+    ctaLabel: 'Voir Petit Électroménager SMART',
     targetCategory: 'maison',
-    darkText: true,
+    darkText: false,
   },
   {
     id: 'mode-cadeaux',
     image: '/images/banners/banner-mode-cadeaux.jpg',
-    tag: 'MODE, PARFUMS & COFFRETS CADEAUX',
-    title: 'Faites plaisir avec nos Coffrets Prestige & Accessoires',
+    tag: 'HIGH-TECH, MODE & COFFRETS CADEAUX',
+    title: 'Smartphones, Audio Bluetooth, Parfums Prestige & Idées Cadeaux',
     subtitle:
-      'Sacs structurés, parfums Oud Royal, montres acier et soins au karité pur livrés rapidement.',
-    ctaLabel: 'Découvrir les idées cadeaux',
-    targetCategory: 'beaute-cadeaux',
+      'Commandez en ligne en quelques secondes (Wave / Mobile Money) et suivez votre marchandise en direct par Code QR.',
+    ctaLabel: 'Découvrir High-Tech & Cadeaux',
+    targetCategory: 'high-tech',
     darkText: true,
   },
 ];
@@ -71,12 +71,9 @@ export function Hero({
   const pickByCategory = (catId, count = 4) =>
     products.filter((p) => p.category === catId).slice(0, count);
 
-  const highTechItems = pickByCategory('high-tech', 4);
+  const froidItems = pickByCategory('froid', 4);
+  const lavageCuissonItems = pickByCategory('lavage-cuisson', 4);
   const maisonItems = pickByCategory('maison', 4);
-  const modeCadeauxItems = [
-    ...pickByCategory('mode', 2),
-    ...pickByCategory('beaute-cadeaux', 2),
-  ].slice(0, 4);
 
   const topDeals = products
     .filter((p) => p.compareAtPrice && p.compareAtPrice > p.price)
@@ -184,12 +181,12 @@ export function Hero({
 
         {/* 2. RANGÉE DE 4 CARTES CATÉGORIES CHEVAUCHANT LA BANNIÈRE (-mt-16 / -mt-28) COMME SUR AMAZON */}
         <div className="relative z-10 -mt-14 sm:-mt-24 px-3 sm:px-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {/* CARTE 1 : High-Tech & Téléphonie (Grille 2x2) */}
+          {/* CARTE 1 : Réfrigérateurs & Vitrines SMART TECHNOLOGY */}
           <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
-              <h2 className="text-lg font-bold text-[#0F1111] mb-3">High-Tech & Connecté</h2>
+              <h2 className="text-lg font-bold text-[#0F1111] mb-3">Réfrigérateurs & Vitrines SMART</h2>
               <div className="grid grid-cols-2 gap-3">
-                {highTechItems.map((item) => (
+                {froidItems.map((item) => (
                   <button
                     key={item.id}
                     type="button"
@@ -213,19 +210,57 @@ export function Hero({
             <button
               type="button"
               onClick={() => {
-                onSelectCategory?.('high-tech');
+                onSelectCategory?.('froid');
                 scrollToCatalog();
               }}
               className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
             >
-              Voir tout le rayon High-Tech
+              Voir tous les Frigos & Vitrines
             </button>
           </div>
 
-          {/* CARTE 2 : Maison & Électroménager (Grille 2x2) */}
+          {/* CARTE 2 : Lave-linge & Gazinières SMART TECHNOLOGY */}
           <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
-              <h2 className="text-lg font-bold text-[#0F1111] mb-3">Maison & Électroménager</h2>
+              <h2 className="text-lg font-bold text-[#0F1111] mb-3">Lave-Linge & Gazinières Inox</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {lavageCuissonItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => onSelectProduct?.(item)}
+                    className="text-left group cursor-pointer"
+                  >
+                    <div className="aspect-square bg-[#F7F8F8] rounded-xs p-2 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="w-full h-full object-contain group-hover:scale-105 transition duration-200"
+                      />
+                    </div>
+                    <p className="text-[11px] text-[#0F1111] mt-1 line-clamp-1 font-medium group-hover:text-[#C7511F]">
+                      {item.name}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                onSelectCategory?.('lavage-cuisson');
+                scrollToCatalog();
+              }}
+              className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
+            >
+              Voir Lavage & Cuisinières SMART
+            </button>
+          </div>
+
+          {/* CARTE 3 : Petit Électroménager Cuisine & Maison SMART */}
+          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-[#0F1111] mb-3">Cuisine, Foutou & Protection CIE</h2>
               <div className="grid grid-cols-2 gap-3">
                 {maisonItems.map((item) => (
                   <button
@@ -256,45 +291,7 @@ export function Hero({
               }}
               className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
             >
-              Découvrir Maison & Cuisine
-            </button>
-          </div>
-
-          {/* CARTE 3 : Mode, Beauté & Idées Cadeaux (Grille 2x2) */}
-          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-[#0F1111] mb-3">Mode, Beauté & Cadeaux</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {modeCadeauxItems.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => onSelectProduct?.(item)}
-                    className="text-left group cursor-pointer"
-                  >
-                    <div className="aspect-square bg-[#F7F8F8] rounded-xs p-2 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition duration-200"
-                      />
-                    </div>
-                    <p className="text-[11px] text-[#0F1111] mt-1 line-clamp-1 font-medium group-hover:text-[#C7511F]">
-                      {item.name}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                onSelectCategory?.('mode');
-                scrollToCatalog();
-              }}
-              className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
-            >
-              Explorer Mode & Parfumerie
+              Découvrir Cuisine & Maison SMART
             </button>
           </div>
 

@@ -256,6 +256,16 @@ export function OrderTrackerModal({ open, onClose, initialTrack, whatsappNumber 
                 <span>{meta.label}</span>
               </div>
 
+              {/* Si le client n'a pas encore finalisé son paiement sur SasPay, lui permettre d'y retourner en 1 clic */}
+              {order.status === 'pending' && order.saspayCheckoutUrl && (
+                <a
+                  href={order.saspayCheckoutUrl}
+                  className="w-full py-2.5 px-4 rounded-full bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[#0F1111] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs"
+                >
+                  <span>Finaliser mon paiement sécurisé sur SasPay ({formatFcfa(order.total)})</span>
+                </a>
+              )}
+
               {/* Barre de progression Amazon Package Tracking */}
               {order.status !== 'cancelled' && (
                 <div className="grid grid-cols-4 gap-1.5 text-[10px] sm:text-xs text-center font-bold">

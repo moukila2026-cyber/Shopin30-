@@ -34,9 +34,17 @@ import {
   TrackOrderSchema,
 } from './validation.js';
 import {
+  createSaspayCheckoutSession,
   createWaveCheckoutSession,
   dispatchOrderAlert,
+  fetchSaspayCheckoutStatus,
+  getPaymentIntegrationStatus,
+  isInstantCheckoutEnabled,
+  isSaspayEnabled,
   isWaveAutoCheckoutEnabled,
+  triggerOptionalSaspayAutoPayout,
+  verifySaspayPaymentById,
+  verifySaspayWebhookSignature,
   verifyWaveWebhookSignature,
 } from './automation.js';
 
@@ -166,7 +174,100 @@ export function createApp({ store, production = false, serveStatic = false } = {
   app.use('/api', generalApiLimiter);
 
   // ---------------------------------------------------------------------------
-  // WEBHOOK OFFICIEL WAVE BUSINESS CHECKOUT (100% SANS INTERVENTION HUMAINE)
+  // 1) WEBHOOK OFFICIEL SASPAY (https://docs.saspay.me/api-reference/webhooks)
+  // Vérification HMAC-SHA256 sur `${X-Webhook-Timestamp}.${rawBody}` + tolérance 300s
+  // ---------------------------------------------------------------------------
+  app.post(
+    '/api/webhooks/saspay',
+    express.raw({ type: 'application/json', limit: '128kb' }),
+    async (req, res) => {
+      const sigHeader = req.headers['x-webhook-signature'];
+      const tsHeader = req.headers['x-webhook-timestamp'];
+
+      if (!verifySaspayWebhookSignature(req.body, sigHeader, tsHeader)) {
+        return res.status(401).json({ error: 'Signature ou horodatage Webhook SasPay invalide.' });
+      }
+
+      try {
+        const payload = JSON.parse(req.body.toString('utf8'));
+        const eventType = String(payload?.event || req.headers['x-webhook-event'] || '');
+        const data = payload?.data || {};
+
+        if (eventType === 'webhook.test') {
+          return res.json({ received: true, test: true });
+        }
+
+        if (
+          eventType === 'transaction.success' &&
+          String(data.status || '').toUpperCase() === 'SUCCESS' &&
+          String(data.type || 'PAIEMENT').toUpperCase() !== 'RETRAIT'
+        ) {
+          const paymentId = String(data.id || '').trim();
+          const txReference = String(data.reference || paymentId).trim();
+          const senderMsisdn = String(data.msisdn || '').trim();
+          let orderReference = String(
+            data.metadata?.order_reference || data.order_reference || ''
+          ).trim();
+          let sessionId = String(data.checkout_session_id || data.session_id || '').trim();
+
+          // Si le payload webhook ne porte pas directement order_reference, interroger
+          // les sessions SasPay en attente (`GET /checkout-sessions/{id}/status/`) pour relier le transaction_id
+          if (!orderReference && !sessionId) {
+            if (isSaspayEnabled() && paymentId) {
+              const verified = await verifySaspayPaymentById(paymentId);
+              if (verified?.metadata?.order_reference) {
+                orderReference = String(verified.metadata.order_reference);
+              }
+            }
+            if (!orderReference && isSaspayEnabled()) {
+              const pendingOrders = await store.listPendingSaspayOrders(15);
+              for (const po of pendingOrders) {
+                const st = await fetchSaspayCheckoutStatus(po.saspaySessionId);
+                if (
+                  st &&
+                  (st.status === 'PAID' || st.transactionStatus === 'SUCCESS') &&
+                  (!paymentId || !st.transactionId || st.transactionId === paymentId)
+                ) {
+                  orderReference = po.reference;
+                  sessionId = po.saspaySessionId;
+                  break;
+                }
+              }
+            }
+          }
+
+          let payoutId = null;
+          if (orderReference) {
+            payoutId = await triggerOptionalSaspayAutoPayout({
+              netAmount: data.net_amount || data.amount,
+              orderReference,
+            });
+          }
+
+          const { order: confirmedOrder, newlyConfirmed } = await store.confirmSaspayPayment({
+            reference: orderReference,
+            sessionId,
+            paymentId,
+            transactionRef: txReference,
+            senderPhone: senderMsisdn,
+            payoutId: payoutId || '',
+            actor: 'saspay-webhook-auto',
+          });
+
+          if (confirmedOrder && newlyConfirmed) {
+            await dispatchOrderAlert(confirmedOrder, 'payment.confirmed');
+          }
+        }
+
+        return res.json({ received: true });
+      } catch {
+        return res.status(400).json({ error: 'Payload Webhook SasPay invalide.' });
+      }
+    }
+  );
+
+  // ---------------------------------------------------------------------------
+  // 2) WEBHOOK OFFICIEL WAVE BUSINESS CHECKOUT (100% SANS INTERVENTION HUMAINE)
   // Placé AVANT enforceSameOrigin et express.json() pour vérifier la signature HMAC sur le Buffer brut
   // ---------------------------------------------------------------------------
   app.post(
@@ -330,7 +431,8 @@ export function createApp({ store, production = false, serveStatic = false } = {
         paymentMethods: PAYMENT_METHODS,
         settings: {
           ...settings,
-          waveAutoCheckout: isWaveAutoCheckoutEnabled(),
+          saspayEnabled: isSaspayEnabled(),
+          waveAutoCheckout: isInstantCheckoutEnabled(),
         },
         products,
       });
@@ -367,10 +469,13 @@ export function createApp({ store, production = false, serveStatic = false } = {
   app.post('/api/orders', checkoutLimiter, async (req, res, next) => {
     try {
       const payload = PlaceOrderSchema.parse(req.body);
-      const autoWave = isWaveAutoCheckoutEnabled();
+      const saspayActive = isSaspayEnabled();
+      const waveApiActive = isWaveAutoCheckoutEnabled();
+      const instantCheckout = saspayActive || waveApiActive;
 
-      // Si l'API Wave Business Checkout n'est pas encore branchée, exiger le numéro émetteur et l'ID transaction Wave
-      if (!autoWave) {
+      // Si ni SasPay ni l'API Wave Business Checkout ne sont encore activés par clé API,
+      // exiger le numéro émetteur et l'ID transaction Wave saisis par le client
+      if (!instantCheckout) {
         const digits = String(payload.waveSenderPhone || '').replace(/\D/g, '');
         if (digits.length < 8) {
           throw new BusinessError(
@@ -393,20 +498,47 @@ export function createApp({ store, production = false, serveStatic = false } = {
         store.getSettings(),
       ]);
 
-      let waveCheckoutUrl = null;
-      if (autoWave && !result.duplicate) {
+      let checkoutUrl = null;
+      let paymentProvider = 'wave';
+
+      if (instantCheckout && !result.duplicate) {
         const proto = isSecureRequest(req, production) ? 'https' : 'http';
         const reqHost = String(req.headers['x-forwarded-host'] || req.headers.host || 'localhost:3000')
           .split(',')[0]
           .trim();
         const origin = (process.env.PUBLIC_ORIGIN || `${proto}://${reqHost}`).replace(/\/+$/, '');
-        const session = await createWaveCheckoutSession({
-          amount: result.order.total,
-          reference: result.order.reference,
-          trackingToken: result.order.trackingToken,
-          origin,
-        });
-        waveCheckoutUrl = session?.launchUrl || null;
+
+        if (saspayActive) {
+          const saspaySession = await createSaspayCheckoutSession({
+            amount: result.order.total,
+            reference: result.order.reference,
+            trackingToken: result.order.trackingToken,
+            customerName: result.order.customerName,
+            customerPhone: result.order.customerPhone,
+            origin,
+          });
+          if (saspaySession?.checkoutUrl) {
+            checkoutUrl = saspaySession.checkoutUrl;
+            paymentProvider = 'saspay';
+            const updatedOrder = await store.attachSaspaySession(result.order.reference, {
+              sessionId: saspaySession.sessionId,
+              checkoutUrl: saspaySession.checkoutUrl,
+              transactionId: saspaySession.transactionId,
+            });
+            if (updatedOrder) result.order = updatedOrder;
+          }
+        } else if (waveApiActive) {
+          const session = await createWaveCheckoutSession({
+            amount: result.order.total,
+            reference: result.order.reference,
+            trackingToken: result.order.trackingToken,
+            origin,
+          });
+          checkoutUrl = session?.launchUrl || null;
+        }
+      } else if (result.duplicate && result.order?.saspayCheckoutUrl) {
+        checkoutUrl = result.order.saspayCheckoutUrl;
+        paymentProvider = 'saspay';
       }
 
       if (!result.duplicate) {
@@ -417,7 +549,9 @@ export function createApp({ store, production = false, serveStatic = false } = {
         order: result.order,
         duplicate: result.duplicate,
         whatsappNumber: settings.whatsappNumber,
-        waveCheckoutUrl,
+        paymentProvider,
+        checkoutUrl,
+        waveCheckoutUrl: checkoutUrl,
       });
     } catch (err) {
       next(err);
@@ -427,13 +561,37 @@ export function createApp({ store, production = false, serveStatic = false } = {
   app.post('/api/orders/track', trackLimiter, async (req, res, next) => {
     try {
       const { reference, phone, token } = TrackOrderSchema.parse(req.body);
-      const order = await store.trackOrder({ reference, phone, token });
+      let order = await store.trackOrder({ reference, phone, token });
       if (!order) {
         return res.status(404).json({
           error:
             'Aucune commande trouvée pour ces informations. Vérifiez votre référence ou scannez votre Code QR.',
         });
       }
+
+      // Filet de sécurité temps réel SasPay : si la commande est encore 'pending' et possède un
+      // saspaySessionId, vérifier directement `GET /checkout-sessions/{id}/status/` auprès de SasPay !
+      if (order.status === 'pending' && order.saspaySessionId && isSaspayEnabled()) {
+        const liveStatus = await fetchSaspayCheckoutStatus(order.saspaySessionId).catch(() => null);
+        if (
+          liveStatus &&
+          (liveStatus.status === 'PAID' || liveStatus.transactionStatus === 'SUCCESS')
+        ) {
+          const { order: fullConfirmed, newlyConfirmed } = await store.confirmSaspayPayment({
+            reference: order.reference,
+            sessionId: order.saspaySessionId,
+            paymentId: liveStatus.transactionId,
+            transactionRef: liveStatus.transactionReference || liveStatus.transactionId,
+            actor: 'saspay-live-verify',
+          });
+          if (fullConfirmed && newlyConfirmed) {
+            dispatchOrderAlert(fullConfirmed, 'payment.confirmed').catch(() => {});
+          }
+          const refreshed = await store.trackOrder({ reference, phone, token });
+          if (refreshed) order = refreshed;
+        }
+      }
+
       res.json({ order });
     } catch (err) {
       next(err);
@@ -564,6 +722,15 @@ export function createApp({ store, production = false, serveStatic = false } = {
         [promos, agents] = await Promise.all([store.listPromoCodes(), store.listAgents()]);
       }
 
+      const proto = isSecureRequest(req, production) ? 'https' : 'http';
+      const reqHost = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+        .split(',')[0]
+        .trim();
+      const origin = (process.env.PUBLIC_ORIGIN || (reqHost ? `${proto}://${reqHost}` : '')).replace(
+        /\/+$/,
+        ''
+      );
+
       res.json({
         user: req.user,
         stats,
@@ -572,6 +739,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
         settings,
         promos,
         agents,
+        paymentIntegration: getPaymentIntegrationStatus(origin),
       });
     } catch (err) {
       next(err);

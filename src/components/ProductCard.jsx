@@ -230,6 +230,11 @@ export function ProductDetailModal({
   whatsappNumber,
 }) {
   const [qty, setQty] = React.useState(1);
+  const [activeImageUrl, setActiveImageUrl] = React.useState(null);
+
+  React.useEffect(() => {
+    setActiveImageUrl(product?.imageUrl || null);
+  }, [product]);
 
   if (!product) return null;
   const outOfStock = product.stock <= 0;
@@ -241,6 +246,16 @@ export function ProductDetailModal({
 
   const zoneFee = selectedZone?.fee || 1000;
   const zoneName = selectedZone?.shortName || 'Daloa Commune';
+
+  const gallery =
+    Array.isArray(product.galleryUrls) && product.galleryUrls.length > 1
+      ? product.galleryUrls
+      : product.id === 'smart-cuisiniere-gaz-5-feux-inox'
+      ? [
+          product.imageUrl,
+          '/images/products/smart-plaque-5-bruleurs-laiton-dore-detail.jpg',
+        ]
+      : [product.imageUrl];
 
   return (
     <div
@@ -271,17 +286,37 @@ export function ProductDetailModal({
 
         {/* Mise en page 3 colonnes façon page produit Amazon */}
         <div className="p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Colonne 1 : Image produit grand format (5 cols) */}
-          <div className="lg:col-span-5 bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-6 flex items-center justify-center aspect-square">
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = '/images/products/placeholder.svg';
-              }}
-              className="max-w-full max-h-full object-contain"
-            />
+          {/* Colonne 1 : Image produit grand format + vignettes galerie éventuelles (5 cols) */}
+          <div className="lg:col-span-5 space-y-2.5">
+            <div className="bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-6 flex items-center justify-center aspect-square">
+              <img
+                src={activeImageUrl || product.imageUrl}
+                alt={product.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/products/placeholder.svg';
+                }}
+                className="max-w-full max-h-full object-contain"
+              />
+            </div>
+            {gallery.length > 1 && (
+              <div className="flex items-center gap-2">
+                {gallery.map((imgUrl, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveImageUrl(imgUrl)}
+                    className={`w-16 h-16 rounded border p-1 bg-[#F7F8F8] flex items-center justify-center cursor-pointer ${
+                      (activeImageUrl || product.imageUrl) === imgUrl
+                        ? 'border-2 border-[#C7511F] ring-1 ring-[#C7511F]'
+                        : 'border-[#D5D9D9]'
+                    }`}
+                  >
+                    <img src={imgUrl} alt="" className="max-w-full max-h-full object-contain" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Colonne 2 : Titre, notes, prix, caractéristiques "À propos de cet article" (4 cols) */}

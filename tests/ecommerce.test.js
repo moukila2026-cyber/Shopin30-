@@ -11,6 +11,7 @@ import { createApp } from '../server/app.js';
 process.env.ADMIN_PASSWORD = 'TestAdminStrongPassword!2026';
 process.env.SESSION_SECRET = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 process.env.WAVE_WEBHOOK_SECRET = 'whsec_test_wave_secret_2026';
+process.env.SASPAY_WEBHOOK_SECRET = 'whsec_test_saspay_secret_2026';
 
 let store;
 let server;
@@ -336,5 +337,129 @@ test('6. Webhook Wave Business 100% automatique : rejette une fausse signature e
   assert.equal(tracked.status, 200);
   assert.equal(tracked.data.order.status, 'preparing');
   assert.equal(tracked.data.order.waveTransactionRef, 'WAVE_AUTO_TX_998877');
+});
+
+test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix FCFA éditables dans /gestion) & Webhook signé SasPay', async () => {
+  // 1) Vérifier que les produits SMART TECHNOLOGY sont bien dans le catalogue public
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+  const smartFrigo = cat.data.products.find((p) => p.id === 'smart-frigo-4-portes-inverter-inox');
+  const smartFoutou = cat.data.products.find((p) => p.id === 'smart-broyeur-foutou-stpe-792');
+  const smartMicro = cat.data.products.find((p) => p.id === 'smart-micro-ondes-25l-stmw-25wg');
+  assert.ok(smartFrigo, 'Réfrigérateur 4 portes SMART présent');
+  assert.ok(smartFoutou, 'Machine à foutou SMART présente');
+  assert.ok(smartMicro, 'Micro-ondes 25L SMART présent');
+
+  // 2) Vérifier que l'administrateur peut modifier un prix SMART TECHNOLOGY à tout moment selon le fournisseur
+  const adminLogin = await reqJson('/api/admin/login', {
+    method: 'POST',
+    body: { credential: process.env.ADMIN_PASSWORD },
+  });
+  const adminToken = adminLogin.data.token;
+
+  const updatedRes = await reqJson(`/api/admin/products/${smartMicro.id}`, {
+    method: 'PUT',
+    token: adminToken,
+    body: {
+      name: smartMicro.name,
+      category: smartMicro.category,
+      price: 43500,
+      compareAtPrice: 65000,
+      stock: 12,
+      badge: smartMicro.badge,
+      featured: true,
+      active: true,
+      shortDescription: smartMicro.shortDescription,
+      description: smartMicro.description,
+      specs: smartMicro.specs,
+    },
+  });
+  assert.equal(updatedRes.status, 200);
+  assert.equal(updatedRes.data.product.price, 43500);
+
+  // 3) Créer une commande sur la machine à foutou SMART TECHNOLOGY
+  const created = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_saspay_webhook_smart_01',
+      customerName: 'Koné Mariam',
+      customerPhone: '0744556677',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Commerce',
+      deliverySlot: 'apres-midi',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0744556677',
+      waveTransactionRef: 'PENDING_SASPAY',
+      items: [{ productId: smartFoutou.id, quantity: 1 }],
+    },
+  });
+  assert.equal(created.status, 201);
+  const orderRef = created.data.order.reference;
+  const qrTok = created.data.order.trackingToken;
+
+  // 4) Rejeter un webhook SasPay avec un horodatage expiré (> 300s) ou une mauvaise signature
+  const saspayBody = JSON.stringify({
+    event: 'transaction.success',
+    data: {
+      id: '7c1a9988-saspay-tx',
+      reference: 'TXN-2026-SASPAY-001',
+      type: 'PAIEMENT',
+      status: 'SUCCESS',
+      amount: `${created.data.order.total}.00`,
+      net_amount: `${created.data.order.total}.00`,
+      currency: 'XOF',
+      country: 'CI',
+      network: 'wave_ci',
+      msisdn: '2250744556677',
+      metadata: { order_reference: orderRef },
+    },
+  });
+
+  const expiredTs = String(Math.floor(Date.now() / 1000) - 900);
+  const expiredSig = crypto
+    .createHmac('sha256', process.env.SASPAY_WEBHOOK_SECRET)
+    .update(`${expiredTs}.${saspayBody}`)
+    .digest('hex');
+
+  const expiredRes = await fetch(`${baseUrl}/api/webhooks/saspay`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Webhook-Timestamp': expiredTs,
+      'X-Webhook-Signature': expiredSig,
+      'X-Webhook-Event': 'transaction.success',
+    },
+    body: saspayBody,
+  });
+  assert.equal(expiredRes.status, 401, 'Doit rejeter un webhook SasPay de plus de 5 minutes');
+
+  // 5) Valider automatiquement avec un webhook SasPay authentique (< 300s + HMAC valide)
+  const freshTs = String(Math.floor(Date.now() / 1000));
+  const freshSig = crypto
+    .createHmac('sha256', process.env.SASPAY_WEBHOOK_SECRET)
+    .update(`${freshTs}.${saspayBody}`)
+    .digest('hex');
+
+  const validRes = await fetch(`${baseUrl}/api/webhooks/saspay`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Webhook-Timestamp': freshTs,
+      'X-Webhook-Signature': freshSig,
+      'X-Webhook-Event': 'transaction.success',
+    },
+    body: saspayBody,
+  });
+  assert.equal(validRes.status, 200);
+
+  // 6) Le suivi QR client doit afficher 'preparing' automatiquement
+  const tracked = await reqJson('/api/orders/track', {
+    method: 'POST',
+    body: { reference: orderRef, token: qrTok },
+  });
+  assert.equal(tracked.status, 200);
+  assert.equal(tracked.data.order.status, 'preparing');
+  assert.equal(tracked.data.order.paymentProvider, 'saspay');
+  assert.equal(tracked.data.order.waveTransactionRef, 'TXN-2026-SASPAY-001');
 });
 
