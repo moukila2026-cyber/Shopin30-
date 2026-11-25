@@ -1,90 +1,54 @@
-# Guide Étape par Étape — Mise en Production de Pèrôkadô (GitHub + Neon + Vercel)
+# Guide d’Exploitation & Architecture Production — Pèrôkadô (`perokado.com`)
 
-Tout le code de **Pèrôkadô** (boutique, logo, catalogue multi-catégories Daloa & alentours, API sécurisée, back-office `/admin` et tests) est prêt.
-
-De plus, votre projet Vercel existant **`perokado`** a déjà été pré-configuré avec :
-- Framework : **Vite** (`npm ci` → `npm run build` → dossier `dist` + API Serverless `/api`)
-- `SESSION_SECRET` : **déjà généré et enregistré en mode chiffré** sur Vercel
-- `WHATSAPP_NUMBER` : **déjà configuré** (`2250501303343`, modifiable à tout moment dans `/admin`)
-
-Voici **exactement ce qu’il vous reste à faire de votre côté**, dans l’ordre (environ **5 minutes** au total).
+Votre boutique e-commerce **Pèrôkadô** est déployée en production et 100% opérationnelle.
 
 ---
 
-## Étape 1 — GitHub : Fusionner la branche vers `main`
+## 1. Vos Adresses Officielles
 
-1. Poussez / ouvrez la **Pull Request** depuis Arena (ou ouvrez votre dépôt GitHub **`moukila2026-cyber/Shopin30-`**).
-2. Cliquez sur **Merge pull request** → **Confirm merge** pour basculer tout le code de la branche de travail sur votre branche principale **`main`**.
-
----
-
-## Étape 2 — Neon (Base de données PostgreSQL gratuite) : Créer la base et copier `DATABASE_URL`
-
-Vous avez **deux méthodes au choix** (choisissez la **Méthode A** si vous voulez aller au plus vite, ou la **Méthode B** directement sur Neon) :
-
-### Méthode A (Ultra-rapide depuis Vercel — 1 minute)
-1. Connectez-vous sur [https://vercel.com](https://vercel.com) et ouvrez votre projet **`perokado`**.
-2. Cliquez sur l’onglet **Storage** (en haut) → **Create Database** → choisissez **Neon (Serverless Postgres)**.
-3. Choisissez la région européenne la plus proche d’Abidjan/Daloa : **Paris (`eu-west-3`)** ou **Frankfurt (`eu-central-1`)**, nommez la base `perokado-db` et validez.
-4. Vercel injecte **automatiquement** `DATABASE_URL` dans votre projet `perokado` ! *(Passez directement à l’Étape 3.3).*
-
-### Méthode B (Depuis votre compte Neon — 2 minutes)
-1. Allez sur [https://console.neon.tech](https://console.neon.tech) et connectez-vous.
-2. Cliquez sur **New Project** :
-   - **Project name** : `perokado`
-   - **Region** : `AWS Europe (Paris) — eu-west-3` (ou Frankfurt)
-   - Cliquez sur **Create project**.
-3. Dans la fenêtre **Connection Details** qui s’affiche :
-   - Activez l’option **Connection pooling** (recommandé pour Vercel Serverless).
-   - Copiez l’URL complète qui commence par `postgresql://...` et se termine par `?sslmode=require`.
-   > **Sécurité :** Ne collez jamais cette URL dans un fichier du dépôt GitHub. Elle va uniquement dans Vercel à l’étape suivante.
+| Service | Adresse officielle | Rôle |
+| :--- | :--- | :--- |
+| **Boutique publique** | **[https://perokado.com](https://perokado.com)** *(et `www.perokado.com`)* | Catalogue client, Ventes Flash, Panier, Paiement SasPay/Wave & Suivi Code QR |
+| **Console Vendeur (Seller Central)** | **[https://perokado.com/gestion](https://perokado.com/gestion)** | Gestion des commandes, ajout/modification de produits & prix FCFA, codes promo, livreurs et paramètres |
+| **Santé API & Base Neon** | **[https://perokado.com/api/health](https://perokado.com/api/health)** | Vérification en direct de la connexion PostgreSQL Neon (`"durable": true`) |
+| **Webhook SasPay signé** | `https://perokado.com/api/webhooks/saspay` | Confirmation automatique instantanée des paiements (`transaction.success`) |
 
 ---
 
-## Étape 3 — Vercel : Relier GitHub, ajouter `ADMIN_PASSWORD` (et `DATABASE_URL`) puis Déployer
+## 2. Sécurité & Variables Chiffrées sur Vercel (Zéro clé dans le code)
 
-1. Ouvrez votre projet **`perokado`** sur [https://vercel.com](https://vercel.com).
-2. **Relier le dépôt GitHub `Shopin30-`** :
-   - Allez dans **Settings** → **Git**.
-   - Cliquez sur **Connect Git Repository** → sélectionnez **`moukila2026-cyber/Shopin30-`** (branche de production : `main`).
-   - Toujours dans **Settings → Git**, vérifiez que les déploiements automatiques lors d’un `git push` sont bien activés.
-3. **Ajouter vos variables secrètes** dans **Settings** → **Environment Variables** :
-   *(Note : `SESSION_SECRET` et `WHATSAPP_NUMBER` y sont déjà configurées !)*
+Aucune clé secrète n’est présente dans le dépôt GitHub (`.env` et `.env.*` sont ignorés). Tous vos secrets sont stockés en mode **`Sensitive` (chiffré)** dans **Vercel → Projet `perokado` → Settings → Environment Variables** :
 
-   Ajoutez ces variables en cochant **Production**, **Preview** et **Development** :
-
-   | Nom de la variable | Valeur à mettre | Obligatoire ? |
-   | :--- | :--- | :--- |
-   | `DATABASE_URL` | Collez l’URL `postgresql://...?sslmode=require` copiée depuis Neon *(inutile si vous avez utilisé la Méthode A)* | **OUI** |
-   | `ADMIN_PASSWORD` | Choisissez votre mot de passe secret Administrateur (ex. une phrase robuste de 12+ caractères) | **OUI** |
-
-4. **Lancer le déploiement de mise en ligne** :
-   - Allez dans l’onglet **Deployments** de votre projet `perokado`.
-   - Cliquez sur **Create Deployment** (sur la branche `main`) ou sur **Redeploy** si un déploiement vient de se lancer.
-
-> **Aucune commande SQL à exécuter !** Dès la toute première visite sur votre site en ligne, Pèrôkadô crée automatiquement toutes les tables PostgreSQL dans Neon (`products`, `product_photos`, `orders`, `promo_codes`, `agents`, `store_settings`, `audit_logs`) et pré-remplit le catalogue de départ sans jamais écraser vos futures modifications.
+- `DATABASE_URL` *(Sensitive)* : Base de données durable **Neon PostgreSQL**.
+- `ADMIN_PASSWORD` *(Sensitive)* : Mot de passe principal de connexion à `/gestion`.
+- `SESSION_SECRET` *(Sensitive)* : Clé HMAC-SHA256 de signature des sessions administrateur/agents.
+- `SASPAY_API_KEY` *(Sensitive)* : Clé Live SasPay (`PAYIN`) pour l’encaissement instantané Mobile Money / Wave CI.
+- `SASPAY_WEBHOOK_SECRET` *(Sensitive)* : Secret HMAC-SHA256 vérifiant l’authenticité et l’horodatage (`≤ 300s`) des webhooks SasPay.
+- `PUBLIC_ORIGIN` : `https://perokado.com`.
 
 ---
 
-## Étape 4 — Vérification Finale & Prise en Main (2 minutes)
+## 3. Gestion Quotidienne des Produits & Tarifs de Livraison
 
-Une fois le déploiement Vercel passé à **Ready** :
+### Modifier un prix ou ajouter un produit
+1. Connectez-vous sur **`https://perokado.com/gestion`** → onglet **Catalogue**.
+2. Cliquez sur **Modifier** sur n’importe quel article **SMART TECHNOLOGY** ou cliquez sur **+ Nouveau produit**.
+3. Téléversez directement la photo depuis votre téléphone ou ordinateur (vérification binaire anti-faux fichiers et sauvegarde durable dans Neon PostgreSQL).
 
-1. **Vérifier la connexion Neon** :
-   - Ouvrez `https://<votre-domaine-perokado>.vercel.app/api/health`
-   - Vous devez voir :
-     ```json
-     {
-       "ok": true,
-       "brand": "Pèrôkadô",
-       "storage": { "mode": "neon", "durable": true },
-       "adminConfigured": true
-     }
-     ```
-2. **Accéder à votre Back-Office sécurisé** :
-   - Ouvrez `https://<votre-domaine-perokado>.vercel.app/admin`
-   - Connectez-vous avec le `ADMIN_PASSWORD` que vous avez choisi à l’Étape 3.
-3. **Personnaliser votre boutique en direct** :
-   - **Onglet Catalogue** : remplacez ou ajoutez vos vrais articles, ajustez les prix FCFA, les stocks réels à Daloa et cliquez sur **Photo** pour téléverser les photos de vos produits (stockées directement dans Neon).
-   - **Onglet Zones & Paramètres** : renseignez votre **numéro Wave marchand** (et éventuellement votre lien de paiement Wave Business `https://pay.wave.com/...`), le numéro WhatsApp de votre **Service Client**, ainsi que vos tarifs de base (**1 000 F** Daloa Commune, **1 500 F** Périphérie, **2 000 F** Expédition Issia, Vavoua… — aucune livraison gratuite).
-   - **Onglet Équipe & Codes** : générez un code `PKD-XXXX-XXXX` pour vos vendeurs ou livreurs afin qu’ils vérifient les paiements Wave et mettent à jour le statut des colis (ce qui met à jour en direct le suivi **Code QR** du client).
+### Règles automatiques de livraison (Aucune livraison gratuite)
+- **Colis standards** *(petit électroménager, téléphones, mode, parfums…)* :
+  - Daloa Commune : **1 000 FCFA**
+  - Daloa Périphérie : **1 500 FCFA**
+  - Expédition hors de Daloa (Issia, Vavoua, Zoukougbeu, Bouaflé, Sinfra, Gagnoa…) : **2 000 FCFA**
+- **Produits lourds / volumineux** *(lave-linge, lavantes-séchantes, gazinières/cuisinières, réfrigérateurs, vitrines, congélateurs, climatiseurs, ou case **« Produit lourd / volumineux »** cochée dans `/gestion`)* :
+  - Livraison dans tout Daloa (Commune & Périphérie) : **2 500 FCFA**
+  - Expédition hors de Daloa : **5 000 FCFA**
+
+---
+
+## 4. Encaissements SasPay & Retraits Groupés vers Wave (`05 01 30 33 43`)
+
+1. **Côté client** : Lors de la validation du panier, le client est redirigé vers `pay.saspay.me`, règle en Francs CFA (`XOF`), puis revient automatiquement sur son reçu **Code QR** déjà validé en statut **« Préparation »**.
+2. **Côté commerçant (Retrait groupé recommandé)** :
+   - Les paiements nets s’accumulent en temps réel sur votre **Portefeuille XOF** dans **[https://app.saspay.me](https://app.saspay.me)**.
+   - Quand vous le souhaitez (ex. chaque soir), ouvrez **[app.saspay.me](https://app.saspay.me)** → **Portefeuille / Retraits** et transférez votre solde groupé vers votre numéro Wave **`+225 05 01 30 33 43`** (`wave_ci`).
