@@ -31,8 +31,9 @@ const PRICE_RANGES = [
   { id: 'all', label: 'Tous les prix', min: 0, max: Infinity },
   { id: 'u20', label: 'Moins de 20 000 FCFA', min: 0, max: 20000 },
   { id: '20to100', label: '20 000 F à 100 000 FCFA', min: 20000, max: 100000 },
-  { id: '100to300', label: '100 000 F à 300 000 FCFA', min: 100000, max: 300000 },
-  { id: 'o300', label: 'Plus de 300 000 FCFA', min: 300000, max: Infinity },
+  { id: '100to400', label: '100 000 F à 400 000 FCFA', min: 100000, max: 400000 },
+  { id: '400to900', label: '400 000 F à 900 000 FCFA', min: 400000, max: 900000 },
+  { id: 'o900', label: 'Plus de 900 000 FCFA', min: 900000, max: Infinity },
 ];
 
 function readJsonStorage(key, fallback) {

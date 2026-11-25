@@ -5,15 +5,15 @@
 
 export const BRAND = {
   name: 'Pèrôkadô',
-  tagline: 'Votre boutique Électroménager SMART TECHNOLOGY, High-Tech & Maison à Daloa',
+  tagline: 'Motos & Tricycles, Électroménager SMART TECHNOLOGY, High-Tech & Maison à Daloa',
   shortDescription:
-    'Électroménager SMART TECHNOLOGY garanti (réfrigérateurs Inverter, lave-linge BLDC, gazinières inox, cuisine), High-Tech, Mode et Cadeaux livrés à Daloa et expédiés vers Issia, Vavoua et les villes aux alentours.',
+    'Motos neuves & Tricycles Cargo (Apsonic, Haojue, Sanya, TVS, KTM, Royal), Électroménager SMART TECHNOLOGY garanti, High-Tech, Mode et Cadeaux livrés à Daloa et expédiés partout en Côte d’Ivoire.',
   city: 'Daloa, Côte d’Ivoire',
   defaultWhatsapp: '2250501303343',
   defaultWavePhone: '05 01 30 33 43',
   defaultWavePaymentUrl: '',
   shippingDisclaimer:
-    'Aucune livraison gratuite. Colis standards : Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition hors Daloa 2 000 F. Produits lourds & volumineux (lave-linge, gazinières, réfrigérateurs, vitrines, congélateurs…) : 2 500 F dans Daloa et 5 000 F en expédition hors de Daloa.',
+    'Aucune livraison gratuite. Colis standards : Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition hors Daloa 2 000 F. Produits lourds & volumineux (motos, tricycles, lave-linge, gazinières, réfrigérateurs, vitrines…) : 2 500 F dans Daloa et 5 000 F en expédition hors de Daloa.',
   studioCredit: {
     name: 'Shopin30',
     phoneDisplay: '+225 05 01 30 33 43',
@@ -27,6 +27,7 @@ export const BRAND = {
 
 export const CATEGORIES = [
   { id: 'all', label: 'Tous les produits', shortLabel: 'Tout' },
+  { id: 'motos-tricycles', label: 'Motos & Tricycles Cargo', shortLabel: 'Motos & Tricycles' },
   { id: 'froid', label: 'Réfrigérateurs & Vitrines SMART', shortLabel: 'Frigos & Froid' },
   { id: 'lavage-cuisson', label: 'Lave-linge & Cuisinières SMART', shortLabel: 'Lavage & Gazinières' },
   { id: 'maison', label: 'Petit Électroménager & Maison', shortLabel: 'Cuisine & Maison' },
@@ -555,7 +556,382 @@ export const SMART_TECHNOLOGY_PRODUCTS = [
   },
 ];
 
+// ==============================================================================
+// GAMME MOTOS & TRICYCLES CARGO PÈRÔKADÔ (16 MODÈLES OFFICIELS)
+// ==============================================================================
+export const MOTOS_TRICYCLES_PRODUCTS = [
+  {
+    id: 'moto-apsonic-125-30',
+    slug: 'moto-apsonic-125-30-aloba-125cc',
+    name: 'Moto Apsonic 125-30 (Aloba 125 cm³)',
+    category: 'motos-tricycles',
+    price: 550000,
+    compareAtPrice: null,
+    stock: 6,
+    badge: 'N°1 des ventes',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'La célèbre Apsonic AP125-30 « Aloba » : moteur 4 temps 125 cm³ ultra-endurant, jantes bâtons renforcées, frein à disque avant et porte-bagages arrière.',
+    description:
+      'Véritable référence sur les routes de Daloa et de toute la Côte d’Ivoire, la moto Apsonic 125-30 (Aloba) allie faible consommation d’essence, robustesse mécanique et confort de conduite au quotidien comme sur longues distances. Idéale pour les déplacements personnels et professionnels.',
+    specs: [
+      'Marque officielle APSONIC · Modèle AP125-30 (Aloba)',
+      'Moteur monocylindre 4 temps 125 cm³ refroidi par air',
+      'Démarrage électrique & kick · Frein avant à disque',
+      'Jantes alliage renforcées & porte-bagages acier robuste',
+    ],
+    imageUrl: '/images/products/moto-apsonic-125-30.jpg',
+  },
+  {
+    id: 'moto-sania-125-8',
+    slug: 'moto-sania-sanya-125-8-125cc',
+    name: 'Moto Sania 125-8 (Sanya SY125-8 — 125 cm³)',
+    category: 'motos-tricycles',
+    price: 550000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Ultra Robuste',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Routière 125 cm³ reconnue pour sa longévité exceptionnelle, double amortisseur arrière renforcé, grand porte-bagages chromé et consommation réduite.',
+    description:
+      'La Sania 125-8 (Sanya SY125-8) est appréciée dans toute la région du Haut-Sassandra pour sa fiabilité mécanique exemplaire, sa souplesse moteur et la disponibilité immédiate de ses pièces. Parfaite pour la ville, les pistes et le transport quotidien.',
+    specs: [
+      'Modèle Sania / Sanya SY125-8 · Moteur 4 temps 125 cm³',
+      'Double suspension arrière renforcée spécial routes & pistes',
+      'Porte-bagages chromé grand format & pare-chocs moteur',
+      'Démarrage électrique et au kick · Très faible consommation',
+    ],
+    imageUrl: '/images/products/moto-sanya-125-8.jpg',
+  },
+  {
+    id: 'moto-ktm',
+    slug: 'moto-ktm-urbaine-economique',
+    name: 'Moto KTM (Modèle Dame / Urbaine Économique)',
+    category: 'motos-tricycles',
+    price: 400000,
+    compareAtPrice: null,
+    stock: 8,
+    badge: 'Prix Choc',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Moto urbaine légère, maniable et économique à embrayage semi-automatique, jantes sport en alliage et frein avant à disque.',
+    description:
+      'Pratique, nerveuse et très simple à conduire sans levier d’embrayage complexe, la moto KTM urbaine est idéale pour les déplacements rapides en ville à Daloa, les courses quotidiennes, les étudiants et les travailleurs souhaitant réduire leur budget carburant.',
+    specs: [
+      'Modèle KTM Urbaine / Dame · Moteur 4 temps économique',
+      'Boîte semi-automatique souple & prise en main immédiate',
+      'Jantes sport en alliage léger + Frein à disque avant',
+      'Démarrage électrique & kick · Entretien économique',
+    ],
+    imageUrl: '/images/products/moto-ktm.jpg',
+  },
+  {
+    id: 'moto-apsonic-x1',
+    slug: 'moto-apsonic-x1-plus-urbaine',
+    name: 'Moto Apsonic X1 (Édition X1 Plus)',
+    category: 'motos-tricycles',
+    price: 400000,
+    compareAtPrice: null,
+    stock: 8,
+    badge: 'Meilleure vente',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'La citadine phare d’Apsonic : ligne sportive X1 Plus, boîte semi-automatique facile à piloter, frein à disque avant et très basse consommation.',
+    description:
+      'Best-seller des motos citadines en Côte d’Ivoire, l’Apsonic X1 séduit par son design dynamique, sa maniabilité en circulation urbaine et sa sobriété remarquable à la pompe. Parfaite pour aller au travail, au campus ou effectuer des livraisons rapides.',
+    specs: [
+      'Marque officielle APSONIC · Modèle X1 / X1 Plus',
+      'Moteur 4 temps nerveux et ultra-économique en carburant',
+      'Transmission semi-automatique confortable en ville',
+      'Jantes bâtons sport & frein avant à disque ventilé',
+    ],
+    imageUrl: '/images/products/moto-apsonic-x1.jpg',
+  },
+  {
+    id: 'moto-haojue-150',
+    slug: 'moto-haojue-150-routiere-sport-150cc',
+    name: 'Moto Haojue 150 (150 cm³)',
+    category: 'motos-tricycles',
+    price: 870000,
+    compareAtPrice: null,
+    stock: 4,
+    badge: 'Qualité Haojue',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Puissance 150 cm³ signée Haojue : moteur silencieux sans vibrations, finition premium, frein à disque et tenue de route irréprochable.',
+    description:
+      'Conçue pour les conducteurs exigeants, la Haojue 150 offre un couple généreux de 150 cm³, un silence de fonctionnement remarquable et une finition haut de gamme résistante à l’usure. Aussi à l’aise en ville que sur les axes interurbains.',
+    specs: [
+      'Marque officielle HAOJUE · Cylindrée 150 cm³ 4 temps',
+      'Moteur équilibré anti-vibrations haute durabilité',
+      'Frein avant à disque hydraulique & jantes alliage',
+      'Selle biplace ergonomique grand confort & porte-bagages',
+    ],
+    imageUrl: '/images/products/moto-haojue-150.jpg',
+  },
+  {
+    id: 'moto-haojue-dk',
+    slug: 'moto-haojue-dk-150-sport-urbaine',
+    name: 'Moto Haojue DK (Série DK 150)',
+    category: 'motos-tricycles',
+    price: 870000,
+    compareAtPrice: null,
+    stock: 4,
+    badge: 'Haut de Gamme',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Design racé Série DK, moteur TSR 150 cm³ souple et économique, tableau de bord digital complet et éclairage haute visibilité.',
+    description:
+      'La Haojue DK combine allure sportive moderne et ingénierie TSR reconnue pour réduire la consommation tout en maximisant les reprises. Son tableau de bord numérique et son assise confortable en font l’une des 150 cm³ les plus prisées de Côte d’Ivoire.',
+    specs: [
+      'Marque officielle HAOJUE · Série DK 150 TSR',
+      'Compteur digital multifonction (rapport engagé, jauge, vitesse)',
+      'Frein avant à disque + Suspension arrière réglable',
+      'Réservoir grande autonomie & finition peinture métallisée',
+    ],
+    imageUrl: '/images/products/moto-haojue-dk.jpg',
+  },
+  {
+    id: 'moto-haojue-dame',
+    slug: 'moto-haojue-dame-110-semi-automatique',
+    name: 'Moto Haojue Dame (110 cm³ Semi-Automatique)',
+    category: 'motos-tricycles',
+    price: 600000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Confort & Élégance',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Cadre bas facile à enfourcher (« Moto Dame »), moteur Haojue silencieux et économique, embrayage semi-automatique et jantes alliage.',
+    description:
+      'Élégante, fiable et très douce à piloter, la Haojue Dame dispose d’un cadre ouvert pratique, d’une protection de chaîne intégrale et de toute la fiabilité mécanique Haojue. Un choix privilégié pour circuler sereinement chaque jour à Daloa.',
+    specs: [
+      'Marque officielle HAOJUE · Format Dame (cadre bas)',
+      'Moteur 4 temps 110 cm³ silencieux à très faible consommation',
+      'Passage de vitesses semi-automatique sans levier d’embrayage',
+      'Porte-bagages arrière, démarrage électrique & kick',
+    ],
+    imageUrl: '/images/products/moto-haojue-dame.jpg',
+  },
+  {
+    id: 'moto-tvs-rock-z',
+    slug: 'moto-tvs-rock-z-125-mp3-fm',
+    name: 'Moto TVS Rock Z (125 cm³)',
+    category: 'motos-tricycles',
+    price: 770000,
+    compareAtPrice: null,
+    stock: 4,
+    badge: 'Style & Audio',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'La célèbre moto dame sportive TVS RockZ 125 cm³ avec système audio MP3/FM intégré, double mode embrayage (manuel + semi-auto) et frein à disque.',
+    description:
+      'Signée TVS Motor, la TVS Rock Z 125 se démarque par sa ligne sportive affûtée, son système musical MP3/USB/FM intégré d’origine et sa technologie Duralife 125 cm³ offrant puissance et économie de carburant.',
+    specs: [
+      'Marque officielle TVS MOTOR · Modèle RockZ 125 cm³',
+      'Système audio intégré (Radio FM / lecteur MP3 USB)',
+      'Double système de conduite : semi-automatique ou embrayage manuel',
+      'Frein avant à disque pétale & amortisseurs arrière à gaz (MIG)',
+    ],
+    imageUrl: '/images/products/moto-tvs-rock-z.jpg',
+  },
+  {
+    id: 'moto-apsonic-apache',
+    slug: 'moto-apsonic-apache-sport-pro',
+    name: 'Moto Apsonic Apache (Édition Sportive)',
+    category: 'motos-tricycles',
+    price: 1200000,
+    compareAtPrice: null,
+    stock: 3,
+    badge: 'Édition Sport',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Roadster sportif hautes performances : carénage musclé, motorisation surpuissante, freinage à disque avant/arrière et compteur digital.',
+    description:
+      'Pensée pour les passionnés de puissance et de prestance sur route, l’Apsonic Apache offre des accélérations franches, un châssis sport rigide, un éclairage LED percutant et un freinage haute sécurité pour dominer la route en ville comme sur autoroute.',
+    specs: [
+      'Marque APSONIC · Modèle Sportif Apache',
+      'Moteur 4 temps haute performance à fort couple',
+      'Freins à disque haute précision & fourche télescopique sport',
+      'Tableau de bord numérique & échappement sport racé',
+    ],
+    imageUrl: '/images/products/moto-apsonic-apache.jpg',
+  },
+  {
+    id: 'moto-apsonic-200-cross',
+    slug: 'moto-apsonic-200-cross-tout-terrain-200gy',
+    name: 'Moto Apsonic 200 Cross (Tout-Terrain 200 cm³)',
+    category: 'motos-tricycles',
+    price: 720000,
+    compareAtPrice: null,
+    stock: 4,
+    badge: 'Tout-Terrain',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Trail tout-terrain 200 cm³ (AP200GY) taillé pour les pistes rurales, plantations et routes difficiles : garde au sol haute et pneus crampons.',
+    description:
+      'Franchissez sans effort pistes sablonneuses, boueuses ou accidentées grâce à l’Apsonic 200 Cross. Son moteur 200 cm³ coupleux, sa suspension à grand débattement, ses protège-mains et son sabot moteur en font l’alliée numéro 1 des planteurs, techniciens terrain et aventuriers.',
+    specs: [
+      'Marque officielle APSONIC · Modèle 200 Cross (AP200GY)',
+      'Moteur 4 temps 200 cm³ fort couple en côte et sur piste',
+      'Suspension haute longue course + Pneus tout-terrain crantés',
+      'Protège-mains renforcés, frein à disque avant & porte-bagages',
+    ],
+    imageUrl: '/images/products/moto-apsonic-200-cross.jpg',
+  },
+  {
+    id: 'moto-apsonic-200-27',
+    slug: 'moto-apsonic-200-27-routiere-200cc',
+    name: 'Moto Apsonic 200-27 (AP200-27 — 200 cm³)',
+    category: 'motos-tricycles',
+    price: 750000,
+    compareAtPrice: null,
+    stock: 4,
+    badge: 'Puissance 200cc',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Routière musclée 200 cm³ (AP200-27) alliant vitesse de croisière élevée, jantes alliage bicolores, arceau pare-carter et confort biplace.',
+    description:
+      'Avec son moteur de 200 cm³ réactif et endurant, l’Apsonic AP200-27 offre une réserve de puissance idéale pour les trajets interurbains (Daloa, Issia, Vavoua, Bouaflé, Gagnoa) même avec passager et bagages.',
+    specs: [
+      'Marque officielle APSONIC · Modèle AP200-27 (200 cm³)',
+      'Moteur 4 temps 200 cm³ refroidi par air · 5 vitesses',
+      'Frein avant à disque ventilé & arceau de protection moteur',
+      'Jantes sport renforcées & porte-bagages arrière intégré',
+    ],
+    imageUrl: '/images/products/moto-apsonic-200-27.jpg',
+  },
+  {
+    id: 'moto-apsonic-125-8',
+    slug: 'moto-apsonic-125-8-utilitaire-125cc',
+    name: 'Moto Apsonic 125-8 (AP125-8 — 125 cm³)',
+    category: 'motos-tricycles',
+    price: 500000,
+    compareAtPrice: null,
+    stock: 7,
+    badge: 'Classique Robuste',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'L’indémodable utilitaire AP125-8 : châssis acier renforcé, grand porte-bagages chromé, entretien simple et fiabilité à toute épreuve.',
+    description:
+      'Plébiscitée par les commerçants, livreurs et particuliers partout en Côte d’Ivoire, l’Apsonic 125-8 supporte un usage intensif quotidien avec un coût d’entretien minimal et une consommation d’essence très faible.',
+    specs: [
+      'Marque officielle APSONIC · Modèle AP125-8 (125 cm³)',
+      'Cadre et porte-bagages chromé haute résistance',
+      'Double amortisseur arrière renforcé pour charges lourdes',
+      'Démarrage électrique + kick · Pièces disponibles partout',
+    ],
+    imageUrl: '/images/products/moto-apsonic-125-8.jpg',
+  },
+  {
+    id: 'moto-apsonic-125-12',
+    slug: 'moto-apsonic-125-12-routiere-125cc',
+    name: 'Moto Apsonic 125-12 (AP125-12 — 125 cm³)',
+    category: 'motos-tricycles',
+    price: 500000,
+    compareAtPrice: null,
+    stock: 6,
+    badge: 'Rapport Qualité/Prix',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Routière confortable AP125-12 à selle basse ergonomique, réservoir galbé type GN, jantes alliage et excellente stabilité routière.',
+    description:
+      'L’Apsonic 125-12 offre une position de conduite particulièrement détendue grâce à sa selle large et confortable et son centre de gravité équilibré. Robuste, économique et élégante pour tous vos trajets quotidiens.',
+    specs: [
+      'Marque officielle APSONIC · Modèle AP125-12 (125 cm³)',
+      'Style routier confortable · Selle biplace moelleuse',
+      'Frein avant à disque & jantes en alliage à bâtons',
+      'Moteur 4 temps sobre et endurant · Démarrage électrique & kick',
+    ],
+    imageUrl: '/images/products/moto-apsonic-125-12.jpg',
+  },
+  {
+    id: 'moto-royal-cross',
+    slug: 'moto-royal-cross-tout-terrain-200cc',
+    name: 'Moto Royal Cross (Tout-Terrain Haute Garde au Sol)',
+    category: 'motos-tricycles',
+    price: 900000,
+    compareAtPrice: null,
+    stock: 3,
+    badge: 'Cross Pro',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Moto cross tout-terrain robuste à grand débattement, châssis renforcé, protège-mains et pneus crampons pour pistes exigeantes.',
+    description:
+      'Taillée pour les terrains difficiles, zones agricoles et pistes en saison des pluies, la Royal Cross associe puissance de franchissement, suspension renforcée et endurance mécanique supérieure.',
+    specs: [
+      'Marque ROYAL · Modèle Cross Tout-Terrain',
+      'Motorisation 4 temps coupleuse adaptée aux fortes pentes',
+      'Fourche haute renforcée + Mono-amortisseur arrière',
+      'Frein à disque, protège-mains & porte-bagages arrière',
+    ],
+    imageUrl: '/images/products/moto-royal-cross.jpg',
+  },
+  {
+    id: 'moto-apsonic-tricycle-200-cargo',
+    slug: 'apsonic-tricycle-200-cargo-benne-radiateur',
+    name: 'Apsonic Tricycle 200 Cargo (200 cm³ avec Radiateur)',
+    category: 'motos-tricycles',
+    price: 1400000,
+    compareAtPrice: null,
+    stock: 3,
+    badge: 'Charge Lourde',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Tricycle utilitaire Apsonic 200 cm³ refroidi par eau (radiateur) avec grande benne métallique rabattable pour transport de marchandises et récoltes.',
+    description:
+      'Outil de travail rentable par excellence à Daloa et dans les zones agricoles : le Tricycle Apsonic 200 Cargo transporte ciment, matériaux, cacao, vivriers, bonbonnes de gaz ou marchandises volumineuses sans surchauffer grâce à son radiateur à eau et son pont arrière à lames renforcées.',
+    specs: [
+      'Marque officielle APSONIC · Tricycle Cargo 200 cm³',
+      'Refroidissement liquide par radiateur spécial longues tournées',
+      'Grande benne acier à ridelles rabattables + Marche arrière',
+      'Châssis double poutre & suspension arrière à lames charge lourde',
+    ],
+    imageUrl: '/images/products/moto-apsonic-tricycle-200-cargo.jpg',
+  },
+  {
+    id: 'moto-apsonic-tricycle-150-175',
+    slug: 'apsonic-tricycle-150-175-cargo-utilitaire',
+    name: 'Apsonic Tricycle 150-175 (Cargo Utilitaire)',
+    category: 'motos-tricycles',
+    price: 1250000,
+    compareAtPrice: null,
+    stock: 3,
+    badge: 'Pro & Transport',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Tricycle motorisé Apsonic 150–175 cm³ polyvalent et économique avec benne acier robuste, boîte avec marche arrière et auvent conducteur.',
+    description:
+      'Idéal pour les commerçants, distributeurs de boissons, dépôts, quincailleries et coopératives agricoles souhaitant un tricycle robuste, maniable en ville comme sur piste et économique en carburant.',
+    specs: [
+      'Marque officielle APSONIC · Modèle Cargo 150–175 cm³',
+      'Benne utilitaire en acier renforcé à ridelles ouvrantes',
+      'Boîte de vitesses avec marche arrière & réducteur de couple',
+      'Suspension avant double ressort renforcé & lames arrière',
+    ],
+    imageUrl: '/images/products/moto-apsonic-tricycle-150-175.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
+  ...MOTOS_TRICYCLES_PRODUCTS,
   ...SMART_TECHNOLOGY_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
@@ -853,9 +1229,9 @@ export function formatPhoneDisplay(raw) {
 export const HEAVY_DALOA_DELIVERY_FEE = 2500;
 export const HEAVY_EXPEDITION_DELIVERY_FEE = 5000;
 
-const HEAVY_PRODUCT_CATEGORIES = new Set(['froid', 'lavage-cuisson']);
+const HEAVY_PRODUCT_CATEGORIES = new Set(['froid', 'lavage-cuisson', 'motos-tricycles']);
 const HEAVY_PRODUCT_KEYWORDS_RE =
-  /\b(lave[\s-]?linge|lavante|machine\s+[aà]\s+laver|gazini[eè]re|cuisini[eè]re|r[eé]frig[eé]rateur|frigo|cong[eé]lateur|vitrine\s+r[eé]frig[eé]r[eé]e|climatiseur|split\s+\d|lave[\s-]?vaisselle)\b/i;
+  /\b(moto|motos|tricycle|tricycles|scooter|lave[\s-]?linge|lavante|machine\s+[aà]\s+laver|gazini[eè]re|cuisini[eè]re|r[eé]frig[eé]rateur|frigo|cong[eé]lateur|vitrine\s+r[eé]frig[eé]r[eé]e|climatiseur|split\s+\d|lave[\s-]?vaisselle)\b/i;
 
 export function inferHeavyShipping(product = {}) {
   if (!product) return false;
