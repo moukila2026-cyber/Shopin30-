@@ -23,7 +23,7 @@ import {
   Check,
   QrCode,
 } from 'lucide-react';
-import { CATEGORIES, formatFcfa } from '../../shared/catalog.js';
+import { CATEGORIES, formatFcfa, inferHeavyShipping } from '../../shared/catalog.js';
 import {
   apiFetch,
   buildCustomerWhatsappLink,
@@ -202,6 +202,8 @@ export default function AdminApp() {
       badge: '',
       featured: false,
       active: true,
+      isHeavy: false,
+      isHeavyTouched: false,
       shortDescription: '',
       description: '',
       specsText: '',
@@ -220,6 +222,8 @@ export default function AdminApp() {
       badge: p.badge || '',
       featured: Boolean(p.featured),
       active: Boolean(p.active),
+      isHeavy: inferHeavyShipping(p),
+      isHeavyTouched: true,
       shortDescription: p.shortDescription || '',
       description: p.description || '',
       specsText: (p.specs || []).join('\n'),
@@ -242,6 +246,7 @@ export default function AdminApp() {
         badge: editingProduct.badge.trim(),
         featured: Boolean(editingProduct.featured),
         active: Boolean(editingProduct.active),
+        isHeavy: Boolean(editingProduct.isHeavy),
         shortDescription: editingProduct.shortDescription.trim(),
         description: editingProduct.description.trim(),
         specs: editingProduct.specsText
@@ -913,9 +918,16 @@ export default function AdminApp() {
                       className="w-20 h-24 rounded-2xl object-cover bg-[#FAF7F0] shrink-0 border border-[#EFE9D8]"
                     />
                     <div className="min-w-0 flex-1">
-                      <span className="text-[10px] uppercase font-bold text-[#D95D24]">
-                        {p.category} {!p.active ? '· MASQUÉ' : ''}
-                      </span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] uppercase font-bold text-[#D95D24]">
+                          {p.category} {!p.active ? '· MASQUÉ' : ''}
+                        </span>
+                        {inferHeavyShipping(p) && (
+                          <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold">
+                            Colis lourd (2 500 F / 5 000 F)
+                          </span>
+                        )}
+                      </div>
                       <h3 className="text-sm font-bold text-[#14231F] line-clamp-2">{p.name}</h3>
                       <p className="text-base font-extrabold text-[#0F443E] mt-1">
                         {formatFcfa(p.price)}
@@ -1492,7 +1504,13 @@ export default function AdminApp() {
                 type="text"
                 required
                 value={editingProduct.name}
-                onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                onChange={(e) => {
+                  const nextName = e.target.value;
+                  const autoHeavy = editingProduct.isHeavyTouched
+                    ? editingProduct.isHeavy
+                    : inferHeavyShipping({ category: editingProduct.category, name: nextName });
+                  setEditingProduct({ ...editingProduct, name: nextName, isHeavy: autoHeavy });
+                }}
                 className="w-full px-3.5 py-2 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm"
               />
             </div>
@@ -1502,9 +1520,13 @@ export default function AdminApp() {
                 <label className="block text-xs font-bold mb-1">Catégorie *</label>
                 <select
                   value={editingProduct.category}
-                  onChange={(e) =>
-                    setEditingProduct({ ...editingProduct, category: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const nextCat = e.target.value;
+                    const autoHeavy = editingProduct.isHeavyTouched
+                      ? editingProduct.isHeavy
+                      : inferHeavyShipping({ category: nextCat, name: editingProduct.name });
+                    setEditingProduct({ ...editingProduct, category: nextCat, isHeavy: autoHeavy });
+                  }}
                   className="w-full px-3 py-2 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm"
                 >
                   {CATEGORIES.filter((c) => c.id !== 'all').map((c) => (
@@ -1601,7 +1623,7 @@ export default function AdminApp() {
               />
             </div>
 
-            <div className="flex items-center gap-5 pt-1">
+            <div className="flex flex-wrap items-center gap-5 pt-1">
               <label className="inline-flex items-center gap-2 text-xs font-bold">
                 <input
                   type="checkbox"
@@ -1621,6 +1643,20 @@ export default function AdminApp() {
                   }
                 />
                 <span>Mettre en avant (Coup de cœur)</span>
+              </label>
+              <label className="inline-flex items-center gap-2 text-xs font-bold text-amber-900 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
+                <input
+                  type="checkbox"
+                  checked={Boolean(editingProduct.isHeavy)}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      isHeavy: e.target.checked,
+                      isHeavyTouched: true,
+                    })
+                  }
+                />
+                <span>Produit lourd / volumineux (Livraison Daloa 2 500 F · Expédition 5 000 F)</span>
               </label>
             </div>
 

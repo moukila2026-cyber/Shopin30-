@@ -9,6 +9,8 @@ import {
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
   SMART_TECHNOLOGY_PRODUCTS,
+  computeZoneDeliveryFee,
+  inferHeavyShipping,
   normalizeIvorianPhone,
 } from '../shared/catalog.js';
 import {
@@ -148,6 +150,12 @@ function mapProductRow(row) {
     badge: row.badge || '',
     featured: Boolean(row.featured),
     active: Boolean(row.active),
+    isHeavy: inferHeavyShipping({
+      is_heavy: row.is_heavy,
+      category: row.category,
+      name: row.name,
+      slug: row.slug,
+    }),
     shortDescription: row.short_description || '',
     description: row.description || '',
     specs: Array.isArray(row.specs) ? row.specs : [],
@@ -419,6 +427,10 @@ export function createStore(adapterPromiseOrInstance) {
     const slug = slugify(input.name) + '-' + id.slice(-4);
     const compareAt =
       input.compareAtPrice && input.compareAtPrice > input.price ? input.compareAtPrice : null;
+    const isHeavy =
+      typeof input.isHeavy === 'boolean'
+        ? input.isHeavy
+        : inferHeavyShipping({ category: input.category, name: input.name, slug });
 
     const existing = await db.query(`SELECT id, slug, image_url FROM products WHERE id = $1`, [id]);
     if (existing.rows.length > 0) {
@@ -437,6 +449,7 @@ export function createStore(adapterPromiseOrInstance) {
           description = $11,
           specs = $12::jsonb,
           image_url = $13,
+          is_heavy = $14,
           updated_at = NOW()
         WHERE id = $1
         RETURNING *`,
@@ -454,17 +467,18 @@ export function createStore(adapterPromiseOrInstance) {
           input.description || '',
           JSON.stringify(input.specs || []),
           imageUrl,
+          isHeavy,
         ]
       );
-      await logAudit(actor, 'product.update', id, { price: input.price, stock: input.stock });
+      await logAudit(actor, 'product.update', id, { price: input.price, stock: input.stock, isHeavy });
       return mapProductRow(rows[0]);
     }
 
     const { rows } = await db.query(
       `INSERT INTO products (
         id, slug, name, category, price, compare_at_price, stock,
-        badge, featured, active, short_description, description, specs, image_url
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14)
+        badge, featured, active, short_description, description, specs, image_url, is_heavy
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14,$15)
       RETURNING *`,
       [
         id,
@@ -481,9 +495,10 @@ export function createStore(adapterPromiseOrInstance) {
         input.description || '',
         JSON.stringify(input.specs || []),
         input.imageUrl || '/images/products/placeholder.svg',
+        isHeavy,
       ]
     );
-    await logAudit(actor, 'product.create', id, { name: input.name, price: input.price });
+    await logAudit(actor, 'product.create', id, { name: input.name, price: input.price, isHeavy });
     return mapProductRow(rows[0]);
   }
 
@@ -684,6 +699,7 @@ export function createStore(adapterPromiseOrInstance) {
       const prodMap = new Map(prodRows.map((r) => [r.id, r]));
 
       let subtotal = 0;
+      let hasHeavyItem = false;
       const orderItems = [];
 
       for (const [productId, quantity] of qtyByProduct.entries()) {
@@ -704,15 +720,24 @@ export function createStore(adapterPromiseOrInstance) {
             'OUT_OF_STOCK'
           );
         }
+        const prodHeavy = inferHeavyShipping({
+          is_heavy: prod.is_heavy,
+          category: prod.category,
+          name: prod.name,
+          slug: prod.slug,
+        });
+        if (prodHeavy) hasHeavyItem = true;
+
         const unitPrice = Number(prod.price);
         const lineTotal = unitPrice * quantity;
         subtotal += lineTotal;
         orderItems.push({
           productId: prod.id,
-          name: prod.name,
+          name: String(prod.name || '').replace(/`/g, ''),
           unitPrice,
           quantity,
           lineTotal,
+          isHeavy: prodHeavy,
         });
 
         // Décrémenter le stock atomiquement
@@ -743,8 +768,8 @@ export function createStore(adapterPromiseOrInstance) {
       }
 
       const netSubtotal = Math.max(0, subtotal - discountAmount);
-      // Aucune livraison gratuite : le tarif de base de la zone s'applique systématiquement
-      const deliveryFee = Math.max(100, Number(zone.fee));
+      // Aucune livraison gratuite : tarif standard (1000/1500/2000 F) ou tarif Produit Lourd (2500 F Daloa / 5000 F hors Daloa)
+      const deliveryFee = computeZoneDeliveryFee(zone, { hasHeavyItem });
       const total = netSubtotal + deliveryFee;
 
       // Générer une référence unique PKD-XXXXXX + jeton secret pour le Code QR de suivi en direct

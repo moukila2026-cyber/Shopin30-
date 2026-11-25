@@ -13,7 +13,7 @@ export const BRAND = {
   defaultWavePhone: '05 01 30 33 43',
   defaultWavePaymentUrl: '',
   shippingDisclaimer:
-    'Aucune livraison gratuite. Les tarifs affichés sont les tarifs de base : le coût final dépend de la taille et du poids de la marchandise. Pour les appareils volumineux (réfrigérateurs, lave-linge, cuisinières), contactez notre service client.',
+    'Aucune livraison gratuite. Colis standards : Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition hors Daloa 2 000 F. Produits lourds & volumineux (lave-linge, gazinières, réfrigérateurs, vitrines, congélateurs…) : 2 500 F dans Daloa et 5 000 F en expédition hors de Daloa.',
   studioCredit: {
     name: 'Shopin30',
     phoneDisplay: '+225 05 01 30 33 43',
@@ -841,3 +841,45 @@ export function formatPhoneDisplay(raw) {
   }
   return String(raw || '').trim();
 }
+
+// ==============================================================================
+// LOGIQUE DE TARIFICATION LIVRAISON : COLIS STANDARDS VS PRODUITS LOURDS
+// - Produits lourds (lave-linge, gazinières/cuisinières, réfrigérateurs, vitrines,
+//   congélateurs, climatiseurs, ou case `isHeavy` cochée dans /gestion) :
+//   -> 2 500 FCFA dans Daloa (Commune & Périphérie)
+//   -> 5 000 FCFA en expédition hors de Daloa (Issia, Vavoua, Bouaflé, Gagnoa…)
+// - Colis standards : tarif de la zone (1 000 F / 1 500 F / 2 000 F)
+// ==============================================================================
+export const HEAVY_DALOA_DELIVERY_FEE = 2500;
+export const HEAVY_EXPEDITION_DELIVERY_FEE = 5000;
+
+const HEAVY_PRODUCT_CATEGORIES = new Set(['froid', 'lavage-cuisson']);
+const HEAVY_PRODUCT_KEYWORDS_RE =
+  /\b(lave[\s-]?linge|lavante|machine\s+[aà]\s+laver|gazini[eè]re|cuisini[eè]re|r[eé]frig[eé]rateur|frigo|cong[eé]lateur|vitrine\s+r[eé]frig[eé]r[eé]e|climatiseur|split\s+\d|lave[\s-]?vaisselle)\b/i;
+
+export function inferHeavyShipping(product = {}) {
+  if (!product) return false;
+  if (typeof product.isHeavy === 'boolean') return product.isHeavy;
+  if (typeof product.is_heavy === 'boolean') return product.is_heavy;
+  const cat = String(product.category || '').toLowerCase();
+  if (HEAVY_PRODUCT_CATEGORIES.has(cat)) return true;
+  const text = `${product.name || ''} ${product.slug || ''}`;
+  return HEAVY_PRODUCT_KEYWORDS_RE.test(text);
+}
+
+export function isDaloaZone(zoneOrId) {
+  const id = typeof zoneOrId === 'string' ? zoneOrId : String(zoneOrId?.id || '');
+  return id.toLowerCase().startsWith('daloa');
+}
+
+export function computeZoneDeliveryFee(zone, { hasHeavyItem = false } = {}) {
+  const baseFee = Math.max(100, Number(zone?.fee || 1000));
+  if (!hasHeavyItem) return baseFee;
+  const minHeavyFee = isDaloaZone(zone) ? HEAVY_DALOA_DELIVERY_FEE : HEAVY_EXPEDITION_DELIVERY_FEE;
+  return Math.max(baseFee, minHeavyFee);
+}
+
+export function computeProductDeliveryFee(product, zone) {
+  return computeZoneDeliveryFee(zone, { hasHeavyItem: inferHeavyShipping(product) });
+}
+

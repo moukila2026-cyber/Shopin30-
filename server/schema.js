@@ -25,9 +25,12 @@ CREATE TABLE IF NOT EXISTS products (
   specs JSONB NOT NULL DEFAULT '[]'::jsonb,
   image_url TEXT NOT NULL DEFAULT '/images/products/placeholder.svg',
   has_uploaded_photo BOOLEAN NOT NULL DEFAULT FALSE,
+  is_heavy BOOLEAN,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE products ADD COLUMN IF NOT EXISTS is_heavy BOOLEAN;
 
 CREATE TABLE IF NOT EXISTS product_photos (
   product_id TEXT PRIMARY KEY REFERENCES products(id) ON DELETE CASCADE,

@@ -463,3 +463,117 @@ test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix
   assert.equal(tracked.data.order.waveTransactionRef, 'TXN-2026-SASPAY-001');
 });
 
+test('8. Produits lourds (lave-linge, gazinières, frigos & nouveaux produits) : 2 500 F dans Daloa et 5 000 F hors Daloa', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  const laveLinge = cat.data.products.find((p) => p.id === 'smart-lave-linge-10kg-stml-108m');
+  const gaziniere = cat.data.products.find((p) => p.id === 'smart-cuisiniere-gaz-5-feux-inox');
+  const frigo = cat.data.products.find((p) => p.id === 'smart-frigo-combine-2-portes-led');
+  const ferSec = cat.data.products.find((p) => p.id === 'smart-fer-sec-stpfr-5103');
+
+  assert.equal(laveLinge.isHeavy, true, 'Lave-linge détecté comme produit lourd');
+  assert.equal(gaziniere.isHeavy, true, 'Gazinière détectée comme produit lourd');
+  assert.equal(frigo.isHeavy, true, 'Réfrigérateur détecté comme produit lourd');
+  assert.equal(ferSec.isHeavy, false, 'Fer à repasser reste un colis standard');
+
+  // 1) Lave-linge livré dans Daloa Commune -> 2 500 FCFA (au lieu de 1 000 FCFA)
+  const orderDaloa = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_heavy_daloa_01',
+      customerName: 'Bamba Souleymane',
+      customerPhone: '0708091011',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Tazibouo',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0708091011',
+      waveTransactionRef: 'WV_HEAVY_DALOA',
+      items: [{ productId: laveLinge.id, quantity: 1 }],
+    },
+  });
+  assert.equal(orderDaloa.status, 201);
+  assert.equal(orderDaloa.data.order.deliveryFee, 2500);
+  assert.equal(orderDaloa.data.order.total, laveLinge.price + 2500);
+
+  // 2) Gazinière livrée en Périphérie de Daloa -> 2 500 FCFA (au lieu de 1 500 FCFA)
+  const orderPeripherie = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_heavy_periph_01',
+      customerName: 'Kouadio Aya',
+      customerPhone: '0504030201',
+      cityZoneId: 'daloa-peripherie',
+      neighborhood: 'Bribouo',
+      deliverySlot: 'apres-midi',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0504030201',
+      waveTransactionRef: 'WV_HEAVY_PERIPH',
+      items: [{ productId: gaziniere.id, quantity: 1 }],
+    },
+  });
+  assert.equal(orderPeripherie.status, 201);
+  assert.equal(orderPeripherie.data.order.deliveryFee, 2500);
+
+  // 3) Gazinière expédiée hors de Daloa (Issia) -> 5 000 FCFA (au lieu de 2 000 FCFA)
+  const orderExpedition = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_heavy_issia_01',
+      customerName: 'Yao Koffi',
+      customerPhone: '0102030405',
+      cityZoneId: 'expedition-issia',
+      neighborhood: 'Quartier Commerce Issia',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0102030405',
+      waveTransactionRef: 'WV_HEAVY_ISSIA',
+      items: [{ productId: gaziniere.id, quantity: 1 }],
+    },
+  });
+  assert.equal(orderExpedition.status, 201);
+  assert.equal(orderExpedition.data.order.deliveryFee, 5000);
+  assert.equal(orderExpedition.data.order.total, gaziniere.price + 5000);
+
+  // 4) Nouveau produit lourd ajouté plus tard par l'administrateur dans /gestion
+  const adminLogin = await reqJson('/api/admin/login', {
+    method: 'POST',
+    body: { credential: process.env.ADMIN_PASSWORD },
+  });
+  const newProdRes = await reqJson('/api/admin/products', {
+    method: 'POST',
+    token: adminLogin.data.token,
+    body: {
+      name: 'Congélateur Horizontal Coffre SMART TECHNOLOGY 300L',
+      category: 'maison', // Même classé dans 'maison', son nom "Congélateur" ou isHeavy le rend lourd automatiquement !
+      price: 175000,
+      stock: 4,
+      badge: 'Nouveau',
+      featured: true,
+      active: true,
+    },
+  });
+  assert.equal(newProdRes.status, 201);
+  assert.equal(newProdRes.data.product.isHeavy, true, 'Nouveau congélateur auto-détecté lourd');
+
+  const orderFutureHeavy = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_heavy_vavoua_future_01',
+      customerName: 'Traoré Moussa',
+      customerPhone: '0799887766',
+      cityZoneId: 'expedition-vavoua',
+      neighborhood: 'Centre Vavoua',
+      deliverySlot: 'soir',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0799887766',
+      waveTransactionRef: 'WV_FUTURE_HEAVY',
+      items: [{ productId: newProdRes.data.product.id, quantity: 1 }],
+    },
+  });
+  assert.equal(orderFutureHeavy.status, 201);
+  assert.equal(orderFutureHeavy.data.order.deliveryFee, 5000);
+});
+
+

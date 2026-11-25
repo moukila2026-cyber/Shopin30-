@@ -16,6 +16,12 @@ import { ProductCard, ProductDetailModal } from './components/ProductCard.jsx';
 import { CartDrawer } from './components/CartDrawer.jsx';
 import { OrderTrackerModal } from './components/OrderTrackerModal.jsx';
 import { Footer } from './components/Footer.jsx';
+import {
+  CookieConsentBanner,
+  LegalModal,
+  readCookieConsent,
+  saveCookieConsent,
+} from './components/LegalAndCookies.jsx';
 
 const CART_STORAGE_KEY = 'pkd_cart_v1';
 const FAV_STORAGE_KEY = 'pkd_favs_v1';
@@ -76,6 +82,9 @@ export default function App() {
   const [cartInitialStep, setCartInitialStep] = React.useState('cart');
   const [trackOpen, setTrackOpen] = React.useState(false);
   const [initialTrack, setInitialTrack] = React.useState(null);
+  const [legalTab, setLegalTab] = React.useState(null);
+  const [cookieConsent, setCookieConsent] = React.useState(() => readCookieConsent());
+  const [forceCookieBanner, setForceCookieBanner] = React.useState(false);
 
   // Détection automatique d'un scan de Code QR de suivi en direct (?track=PKD-XXXXXX&token=...)
   React.useEffect(() => {
@@ -513,11 +522,34 @@ export default function App() {
         shippingDisclaimer={catalogData.settings.shippingDisclaimer}
         deliveryZones={zones}
         onOpenTrack={() => setTrackOpen(true)}
+        onOpenLegal={(tabId) => setLegalTab(tabId || 'mentions')}
+        onManageCookies={() => setForceCookieBanner(true)}
         onSelectCategory={(catId) => {
           setOnlyFavorites(false);
           setOnlyPromos(false);
           setActiveCategory(catId);
         }}
+      />
+
+      <LegalModal
+        openTab={legalTab}
+        onClose={() => setLegalTab(null)}
+        onSelectTab={setLegalTab}
+        whatsappNumber={catalogData.settings.whatsappNumber}
+        onResetCookies={() => setForceCookieBanner(true)}
+      />
+
+      <CookieConsentBanner
+        visible={!cookieConsent || forceCookieBanner}
+        onAcceptAll={() => {
+          setCookieConsent(saveCookieConsent('all'));
+          setForceCookieBanner(false);
+        }}
+        onEssentialOnly={() => {
+          setCookieConsent(saveCookieConsent('essential'));
+          setForceCookieBanner(false);
+        }}
+        onOpenPolicy={() => setLegalTab('cookies')}
       />
 
       <ProductDetailModal
