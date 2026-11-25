@@ -167,7 +167,7 @@ export function Header({
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => setTimeout(() => setSearchFocused(false), 180)}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    placeholder="Rechercher sur Pèrôkadô (smartphone, air fryer, parfum, montre, ventilateur…)"
+                    placeholder="Rechercher sur Pèrôkadô (moto Apsonic, Haojue, tricycle, frigo SMART, smartphone…)"
                     className="w-full h-full px-3.5 text-sm text-[#0F1111] placeholder:text-[#6F7373] focus:outline-none"
                   />
                 </div>

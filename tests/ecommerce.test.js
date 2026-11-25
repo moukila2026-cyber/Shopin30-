@@ -576,4 +576,60 @@ test('8. Produits lourds (lave-linge, gazinières, frigos & nouveaux produits) :
   assert.equal(orderFutureHeavy.data.order.deliveryFee, 5000);
 });
 
+test('9. Rayon dédié Motos & Tricycles Cargo (16 modèles officiels, prix FCFA exacts & livraison lourde 2 500 F / 5 000 F)', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  const motosCategory = cat.data.categories.find((c) => c.id === 'motos-tricycles');
+  assert.ok(motosCategory, 'La catégorie dédiée motos-tricycles est présente');
+
+  const expectedMotos = [
+    ['moto-apsonic-125-30', 550000],
+    ['moto-sania-125-8', 550000],
+    ['moto-ktm', 400000],
+    ['moto-apsonic-x1', 400000],
+    ['moto-haojue-150', 870000],
+    ['moto-haojue-dk', 870000],
+    ['moto-haojue-dame', 600000],
+    ['moto-tvs-rock-z', 770000],
+    ['moto-apsonic-apache', 1200000],
+    ['moto-apsonic-200-cross', 720000],
+    ['moto-apsonic-200-27', 750000],
+    ['moto-apsonic-125-8', 500000],
+    ['moto-apsonic-125-12', 500000],
+    ['moto-royal-cross', 900000],
+    ['moto-apsonic-tricycle-200-cargo', 1400000],
+    ['moto-apsonic-tricycle-150-175', 1250000],
+  ];
+
+  for (const [id, expectedPrice] of expectedMotos) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'motos-tricycles');
+    assert.equal(prod.price, expectedPrice, `Prix exact pour ${id}`);
+    assert.equal(prod.isHeavy, true, `${id} est marqué produit lourd`);
+  }
+
+  // Commande d'une moto Apsonic 125-30 à Daloa Commune -> livraison produit lourd 2 500 FCFA
+  const motoOrderDaloa = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_moto_daloa_01',
+      customerName: 'Bamba Seydou',
+      customerPhone: '0708091011',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Tazibouo',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0708091011',
+      waveTransactionRef: 'WV_MOTO_DALOA',
+      items: [{ productId: 'moto-apsonic-125-30', quantity: 1 }],
+    },
+  });
+  assert.equal(motoOrderDaloa.status, 201);
+  assert.equal(motoOrderDaloa.data.order.deliveryFee, 2500);
+  assert.equal(motoOrderDaloa.data.order.total, 552500);
+});
+
+
 

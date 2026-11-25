@@ -14,6 +14,17 @@ import { buildWhatsappServiceUrl } from '../lib/api.js';
 
 const BANNERS = [
   {
+    id: 'motos-tricycles',
+    image: '/images/banners/banner-motos.jpg',
+    tag: 'NOUVEAU RAYON MOTOS & TRICYCLES — DALOA & CÔTE D’IVOIRE',
+    title: 'Apsonic, Haojue, Sania, TVS Rock Z, KTM, Royal Cross & Tricycles Cargo',
+    subtitle:
+      'Motos urbaines dès 400 000 FCFA, routières 125–200 cm³, Cross tout-terrain et Tricycles Cargo Apsonic. Paiement sécurisé Wave / Mobile Money & Suivi Code QR.',
+    ctaLabel: 'Voir les 16 Motos & Tricycles',
+    targetCategory: 'motos-tricycles',
+    darkText: true,
+  },
+  {
     id: 'froid-lavage',
     image: '/images/banners/banner-maison.jpg',
     tag: 'OFFICIEL SMART TECHNOLOGY — DALOA & CÔTE D’IVOIRE',
@@ -71,6 +82,8 @@ export function Hero({
   const pickByCategory = (catId, count = 4) =>
     products.filter((p) => p.category === catId).slice(0, count);
 
+  const motosItems = pickByCategory('motos-tricycles', 4);
+  const allMotos = products.filter((p) => p.category === 'motos-tricycles');
   const froidItems = pickByCategory('froid', 4);
   const lavageCuissonItems = pickByCategory('lavage-cuisson', 4);
   const maisonItems = pickByCategory('maison', 4);
@@ -181,7 +194,50 @@ export function Hero({
 
         {/* 2. RANGÉE DE 4 CARTES CATÉGORIES CHEVAUCHANT LA BANNIÈRE (-mt-16 / -mt-28) COMME SUR AMAZON */}
         <div className="relative z-10 -mt-14 sm:-mt-24 px-3 sm:px-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {/* CARTE 1 : Réfrigérateurs & Vitrines SMART TECHNOLOGY */}
+          {/* CARTE 1 : Motos & Tricycles Cargo */}
+          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <h2 className="text-lg font-bold text-[#0F1111]">Motos & Tricycles Cargo</h2>
+                <span className="px-2 py-0.5 rounded-xs bg-[#CC0C39] text-white text-[10px] font-extrabold shrink-0">
+                  NOUVEAU
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {motosItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => onSelectProduct?.(item)}
+                    className="text-left group cursor-pointer"
+                  >
+                    <div className="aspect-square bg-[#F7F8F8] rounded-xs p-2 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="w-full h-full object-contain group-hover:scale-105 transition duration-200 mix-blend-multiply"
+                      />
+                    </div>
+                    <p className="text-[11px] text-[#0F1111] mt-1 line-clamp-1 font-medium group-hover:text-[#C7511F]">
+                      {item.name}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                onSelectCategory?.('motos-tricycles');
+                scrollToCatalog();
+              }}
+              className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
+            >
+              Voir les {allMotos.length || 16} Motos & Tricycles
+            </button>
+          </div>
+
+          {/* CARTE 2 : Réfrigérateurs & Vitrines SMART TECHNOLOGY */}
           <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-bold text-[#0F1111] mb-3">Réfrigérateurs & Vitrines SMART</h2>
@@ -219,7 +275,7 @@ export function Hero({
             </button>
           </div>
 
-          {/* CARTE 2 : Lave-linge & Gazinières SMART TECHNOLOGY */}
+          {/* CARTE 3 : Lave-linge & Gazinières SMART TECHNOLOGY */}
           <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-bold text-[#0F1111] mb-3">Lave-Linge & Gazinières Inox</h2>
@@ -254,44 +310,6 @@ export function Hero({
               className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
             >
               Voir Lavage & Cuisinières SMART
-            </button>
-          </div>
-
-          {/* CARTE 3 : Petit Électroménager Cuisine & Maison SMART */}
-          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-[#0F1111] mb-3">Cuisine, Foutou & Protection CIE</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {maisonItems.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => onSelectProduct?.(item)}
-                    className="text-left group cursor-pointer"
-                  >
-                    <div className="aspect-square bg-[#F7F8F8] rounded-xs p-2 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition duration-200"
-                      />
-                    </div>
-                    <p className="text-[11px] text-[#0F1111] mt-1 line-clamp-1 font-medium group-hover:text-[#C7511F]">
-                      {item.name}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                onSelectCategory?.('maison');
-                scrollToCatalog();
-              }}
-              className="mt-4 text-xs font-semibold text-[#007185] hover:text-[#C7511F] hover:underline text-left cursor-pointer"
-            >
-              Découvrir Cuisine & Maison SMART
             </button>
           </div>
 
@@ -340,12 +358,12 @@ export function Hero({
                     <strong className="font-bold">2 000 FCFA</strong>
                   </li>
                   <li className="flex justify-between pt-0.5 text-[#B12704]">
-                    <span className="font-semibold">Frigos, Lave-linge & Gazinières</span>
+                    <span className="font-semibold">Motos, Frigos & Lave-linge</span>
                     <strong className="font-bold">2 500 F / 5 000 F</strong>
                   </li>
                 </ul>
                 <p className="text-[11px] text-[#565959] mt-2 leading-snug">
-                  Aucune livraison gratuite. Appareils lourds : 2 500 F (Daloa) · 5 000 F (Expédition).
+                  Aucune livraison gratuite. Produits lourds : 2 500 F (Daloa) · 5 000 F (Expédition).
                 </p>
               </div>
               <a
@@ -361,6 +379,72 @@ export function Hero({
           </div>
         </div>
       </div>
+
+      {/* 2B. SECTION DÉDIÉE MOTOS & TRICYCLES CARGO PÈRÔKADÔ */}
+      {allMotos.length > 0 && (
+        <div id="section-motos" className="mt-5 px-3 sm:px-6">
+          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="bg-[#232F3E] text-[#FF9900] text-[11px] font-extrabold px-2 py-0.5 rounded-xs tracking-wide">
+                  ESPACE MOTOS & TRICYCLES
+                </span>
+                <h2 className="text-lg sm:text-xl font-bold text-[#0F1111]">
+                  Motos Neuves & Tricycles Cargo (Apsonic, Haojue, Sania, TVS, KTM & Royal)
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectCategory?.('motos-tricycles');
+                  scrollToCatalog();
+                }}
+                className="text-xs sm:text-sm font-semibold text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+              >
+                Ouvrir tout le rayon Motos & Tricycles ({allMotos.length}) →
+              </button>
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+              {allMotos.map((moto) => (
+                <button
+                  key={moto.id}
+                  type="button"
+                  onClick={() => onSelectProduct?.(moto)}
+                  className="w-48 sm:w-56 shrink-0 text-left group border border-[#EAEDED] hover:border-[#FF9900] rounded-md p-3 bg-white transition cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="h-40 sm:h-44 bg-[#F7F8F8] rounded-xs p-2.5 flex items-center justify-center overflow-hidden mb-2.5 relative">
+                      {moto.badge && (
+                        <span className="absolute top-1.5 left-1.5 bg-[#232F3E] text-white text-[10px] font-bold px-2 py-0.5 rounded-xs">
+                          {moto.badge}
+                        </span>
+                      )}
+                      <img
+                        src={moto.imageUrl}
+                        alt={moto.name}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-200 mix-blend-multiply"
+                      />
+                    </div>
+                    <p className="text-xs font-semibold text-[#0F1111] line-clamp-2 group-hover:text-[#C7511F] leading-snug">
+                      {moto.name}
+                    </p>
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-[#F0F2F2]">
+                    <span className="block text-sm font-extrabold text-[#B12704]">
+                      {formatFcfa(moto.price)}
+                    </span>
+                    <span className="block text-[11px] text-[#007600] font-medium mt-0.5">
+                      En stock · Livraison Daloa & CI
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 3. RAIL HORIZONTAL "VENTES FLASH DU JOUR" STYLE AMAZON */}
       {topDeals.length > 0 && (

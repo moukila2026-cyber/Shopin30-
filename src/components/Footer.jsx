@@ -80,8 +80,8 @@ export function Footer({
             <h3 className="font-bold text-base text-white">À propos de Pèrôkadô</h3>
             <p className="text-xs text-[#DDDDDD] leading-relaxed">
               Votre boutique e-commerce de référence basée à <strong>Daloa (Haut-Sassandra)</strong>,
-              spécialisée dans l’Électroménager <strong>SMART TECHNOLOGY</strong>, le High-Tech, la
-              Mode, la Beauté et la Maison.
+              spécialisée dans les <strong>Motos & Tricycles</strong>, l’Électroménager{' '}
+              <strong>SMART TECHNOLOGY</strong>, le High-Tech, la Mode et la Maison.
             </p>
             <div className="pt-1 space-y-1.5 text-xs text-[#FF9900] font-semibold">
               <p className="flex items-center gap-2">
@@ -100,6 +100,7 @@ export function Footer({
             <h3 className="font-bold text-base text-white">Nos Rayons</h3>
             <ul className="space-y-1.5 text-xs text-[#DDDDDD]">
               {[
+                { id: 'motos-tricycles', label: 'Motos & Tricycles Cargo' },
                 { id: 'froid', label: 'Réfrigérateurs & Vitrines SMART' },
                 { id: 'lavage-cuisson', label: 'Lave-linge & Gazinières SMART' },
                 { id: 'maison', label: 'Petit Électroménager & Maison' },

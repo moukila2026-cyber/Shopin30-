@@ -8,6 +8,7 @@ import {
   DELIVERY_ZONES,
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
+  MOTOS_TRICYCLES_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
   computeZoneDeliveryFee,
   inferHeavyShipping,
@@ -249,8 +250,8 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO products (
                 id, slug, name, category, price, compare_at_price, stock,
-                badge, featured, active, short_description, description, specs, image_url
-              ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13)
+                badge, featured, active, short_description, description, specs, image_url, is_heavy
+              ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
               ON CONFLICT (id) DO NOTHING`,
               [
                 p.id,
@@ -266,12 +267,18 @@ export function createStore(adapterPromiseOrInstance) {
                 p.description || '',
                 JSON.stringify(p.specs || []),
                 p.imageUrl,
+                inferHeavyShipping(p),
               ]
             );
           }
           await adapter.query(
             `INSERT INTO store_settings (key, value)
              VALUES ('catalog_smart_v1_synced', '{"done":true}'::jsonb)
+             ON CONFLICT (key) DO NOTHING`
+          );
+          await adapter.query(
+            `INSERT INTO store_settings (key, value)
+             VALUES ('catalog_motos_v1_synced', '{"done":true}'::jsonb)
              ON CONFLICT (key) DO NOTHING`
           );
         } else {
@@ -283,8 +290,8 @@ export function createStore(adapterPromiseOrInstance) {
               await adapter.query(
                 `INSERT INTO products (
                   id, slug, name, category, price, compare_at_price, stock,
-                  badge, featured, active, short_description, description, specs, image_url
-                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13)
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
                 ON CONFLICT (id) DO NOTHING`,
                 [
                   p.id,
@@ -300,6 +307,7 @@ export function createStore(adapterPromiseOrInstance) {
                   p.description || '',
                   JSON.stringify(p.specs || []),
                   p.imageUrl,
+                  inferHeavyShipping(p),
                 ]
               );
             }
@@ -309,6 +317,44 @@ export function createStore(adapterPromiseOrInstance) {
                ON CONFLICT (key) DO NOTHING`
             );
           }
+
+          // Synchronisation idempotente de la gamme Motos & Tricycles sur une base Neon existante
+          const { rows: motosSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_motos_v1_synced'`
+          );
+          if (motosSyncRows.length === 0) {
+            for (const p of MOTOS_TRICYCLES_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_motos_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
           await adapter.query(
             `UPDATE products SET name = REPLACE(name, '\`', '') WHERE name LIKE '%\`%'`
           );
