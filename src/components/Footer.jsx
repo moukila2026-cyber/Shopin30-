@@ -231,6 +231,14 @@ export function Footer({
               </li>
               <li>Siège : Daloa, Haut-Sassandra (CI)</li>
               <li>Ouvert : Lun – Sam (08h00 – 19h30)</li>
+              <li>
+                <a
+                  href="mailto:perokado.com@gmail.com"
+                  className="hover:underline hover:text-white"
+                >
+                  perokado.com@gmail.com
+                </a>
+              </li>
             </ul>
             <a
               href={waHref}

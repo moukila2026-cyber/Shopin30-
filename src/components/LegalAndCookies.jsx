@@ -128,6 +128,12 @@ export function LegalModal({ openTab, onClose, onSelectTab, whatsappNumber, onRe
                   TECHNOLOGY, High-Tech, Mode, Beauté & Maison
                 </p>
                 <p>
+                  <strong>Site officiel :</strong> https://perokado.com
+                </p>
+                <p>
+                  <strong>E-mail officiel :</strong> perokado.com@gmail.com
+                </p>
+                <p>
                   <strong>Siège d’exploitation & expédition :</strong> Daloa, Haut-Sassandra, Côte
                   d’Ivoire
                 </p>
