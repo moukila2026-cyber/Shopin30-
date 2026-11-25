@@ -339,9 +339,13 @@ export function Hero({
                     <span className="text-[#565959]">Issia, Vavoua & alentours</span>
                     <strong className="font-bold">2 000 FCFA</strong>
                   </li>
+                  <li className="flex justify-between pt-0.5 text-[#B12704]">
+                    <span className="font-semibold">Frigos, Lave-linge & Gazinières</span>
+                    <strong className="font-bold">2 500 F / 5 000 F</strong>
+                  </li>
                 </ul>
                 <p className="text-[11px] text-[#565959] mt-2 leading-snug">
-                  Aucune livraison gratuite. Tarif selon taille et poids du colis.
+                  Aucune livraison gratuite. Appareils lourds : 2 500 F (Daloa) · 5 000 F (Expédition).
                 </p>
               </div>
               <a

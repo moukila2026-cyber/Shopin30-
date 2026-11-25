@@ -91,6 +91,7 @@ export const ProductUpsertSchema = z.object({
   badge: z.string().trim().max(40).optional().default(''),
   featured: z.boolean().optional().default(false),
   active: z.boolean().optional().default(true),
+  isHeavy: z.boolean().optional(),
   shortDescription: z.string().trim().max(260).optional().default(''),
   description: z.string().trim().max(2500).optional().default(''),
   specs: z.array(z.string().trim().min(1).max(160)).max(10).optional().default([]),

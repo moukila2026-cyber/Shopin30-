@@ -19,7 +19,13 @@ import {
   Info,
   Lock,
 } from 'lucide-react';
-import { formatFcfa, DELIVERY_SLOTS, BRAND } from '../../shared/catalog.js';
+import {
+  formatFcfa,
+  DELIVERY_SLOTS,
+  BRAND,
+  computeZoneDeliveryFee,
+  inferHeavyShipping,
+} from '../../shared/catalog.js';
 import {
   apiFetch,
   buildOrderTrackingUrl,
@@ -136,10 +142,11 @@ export function CartDrawer({
   const subtotal = detailedItems.reduce((acc, item) => acc + item.lineTotal, 0);
   const discountAmount = appliedPromo ? Math.min(appliedPromo.discountAmount, subtotal) : 0;
   const netSubtotal = Math.max(0, subtotal - discountAmount);
+  const hasHeavyItem = detailedItems.some((item) => inferHeavyShipping(item.product));
   const selectedZone =
     zones.find((z) => z.id === cityZoneId) ||
-    zones[0] || { fee: 1000, shortName: 'Daloa Commune' };
-  const deliveryFee = Math.max(100, Number(selectedZone?.fee || 1000));
+    zones[0] || { id: 'daloa-commune', fee: 1000, shortName: 'Daloa Commune' };
+  const deliveryFee = computeZoneDeliveryFee(selectedZone, { hasHeavyItem });
   const grandTotal = netSubtotal + deliveryFee;
 
   const waveMerchantNumber = settings?.wavePhone || BRAND.defaultWavePhone;
@@ -286,27 +293,32 @@ export function CartDrawer({
                 </div>
               ) : (
                 <>
-                  {/* Encadré Tarifs Livraison sans gratuité */}
+                  {/* Encadré Tarifs Livraison sans gratuité (Standard vs Produit Lourd) */}
                   <div className="bg-white rounded-md p-3.5 border border-[#D5D9D9] text-xs space-y-1.5">
                     <p className="font-bold text-[#0F1111] flex items-center gap-1.5">
                       <Truck className="w-4 h-4 text-[#C7511F]" />
                       <span>Livraison & Expédition (aucune livraison gratuite)</span>
                     </p>
                     <p className="text-[#333333] leading-relaxed">
-                      • <strong>Daloa Commune :</strong> 1 000 FCFA · <strong>Périphérie :</strong>{' '}
-                      1 500 FCFA
-                      <br />• <strong>Expédition Issia, Vavoua & alentours :</strong> 2 000 FCFA
+                      • <strong>Colis standards :</strong> Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition 2 000 F
+                      <br />• <strong>Produits lourds (lave-linge, gazinières, frigos…) :</strong>{' '}
+                      <strong>2 500 FCFA</strong> dans Daloa · <strong>5 000 FCFA</strong> hors Daloa
                     </p>
+                    {hasHeavyItem && (
+                      <p className="text-[11px] font-bold text-[#B12704] bg-[#FEF8F2] px-2.5 py-1.5 rounded border border-[#F5D3B3]">
+                        ✓ Votre panier contient un produit lourd/volumineux : le tarif spécial
+                        manutention ({formatFcfa(deliveryFee)} pour {selectedZone.shortName}) est appliqué automatiquement.
+                      </p>
+                    )}
                     <p className="text-[11px] text-[#565959]">
-                      Le tarif dépend de la taille et du poids de la marchandise. Pour plus
-                      d’informations,{' '}
+                      Besoin d’un renseignement transport ?{' '}
                       <a
                         href={buildWhatsappServiceUrl(settings?.whatsappNumber)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#007185] hover:text-[#C7511F] font-semibold underline"
                       >
-                        contactez le service client
+                        Contactez le service client
                       </a>
                       .
                     </p>
@@ -441,7 +453,10 @@ export function CartDrawer({
                     </div>
                   )}
                   <div className="flex justify-between text-xs text-[#565959]">
-                    <span>Livraison estimée ({selectedZone.shortName})</span>
+                    <span>
+                      Livraison ({selectedZone.shortName}
+                      {hasHeavyItem ? ' · Colis lourd' : ''})
+                    </span>
                     <span>+{formatFcfa(deliveryFee)}</span>
                   </div>
                 </div>
@@ -524,11 +539,15 @@ export function CartDrawer({
                     }}
                     className="w-full px-3 py-2 rounded bg-[#F0F2F2] border border-[#888C8C] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#007185]"
                   >
-                    {zones.map((z) => (
-                      <option key={z.id} value={z.id}>
-                        {z.shortName} — {formatFcfa(z.fee)}
-                      </option>
-                    ))}
+                    {zones.map((z) => {
+                      const effectiveFee = computeZoneDeliveryFee(z, { hasHeavyItem });
+                      return (
+                        <option key={z.id} value={z.id}>
+                          {z.shortName} — {formatFcfa(effectiveFee)}
+                          {hasHeavyItem ? ' (tarif colis lourd)' : ''}
+                        </option>
+                      );
+                    })}
                   </select>
                   {selectedZone?.eta && (
                     <p className="text-[11px] text-[#007600] mt-1 font-medium">

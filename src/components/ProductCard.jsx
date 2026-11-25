@@ -10,7 +10,11 @@ import {
   MessageCircle,
   Lock,
 } from 'lucide-react';
-import { formatFcfa } from '../../shared/catalog.js';
+import {
+  formatFcfa,
+  computeProductDeliveryFee,
+  inferHeavyShipping,
+} from '../../shared/catalog.js';
 import { buildWhatsappServiceUrl } from '../lib/api.js';
 
 // Note et nombre d'avis déterministes et réalistes par produit pour un rendu e-commerce authentique
@@ -71,7 +75,8 @@ export function ProductCard({
       : null;
 
   const { rating, count, boughtMonth } = getProductRatingMeta(product.id);
-  const zoneFee = selectedZone?.fee || 1000;
+  const isHeavy = inferHeavyShipping(product);
+  const zoneFee = computeProductDeliveryFee(product, selectedZone);
   const zoneName = selectedZone?.shortName || 'Daloa Commune';
 
   const isTopSeller =
@@ -172,11 +177,13 @@ export function ProductCard({
             )}
           </div>
 
-          {/* Info livraison selon la zone choisie dans le Header */}
+          {/* Info livraison selon la zone choisie et le gabarit (standard ou lourd) */}
           <p className="text-[11px] text-[#0F1111] leading-snug pt-0.5">
-            Livraison <strong>{zoneName}</strong> dès{' '}
+            Livraison <strong>{zoneName}</strong> :{' '}
             <strong className="text-[#0F1111]">{formatFcfa(zoneFee)}</strong>{' '}
-            <span className="text-[#565959]">(selon taille/poids)</span>
+            <span className="text-[#565959]">
+              {isHeavy ? '(colis lourd/volumineux)' : '(tarif standard)'}
+            </span>
           </p>
 
           {!outOfStock && product.stock <= 6 ? (
@@ -244,7 +251,8 @@ export function ProductDetailModal({
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
       : null;
 
-  const zoneFee = selectedZone?.fee || 1000;
+  const isHeavy = inferHeavyShipping(product);
+  const zoneFee = computeProductDeliveryFee(product, selectedZone);
   const zoneName = selectedZone?.shortName || 'Daloa Commune';
 
   const gallery =
@@ -394,10 +402,17 @@ export function ProductDetailModal({
                 Livraison vers <strong>{zoneName}</strong> :{' '}
                 <strong className="text-[#B12704]">{formatFcfa(zoneFee)}</strong>
               </p>
-              <p className="text-[11px] text-[#565959]">
-                Aucune livraison gratuite. Tarif de base : varie selon la taille et le poids du
-                colis (Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua… 2 000 F).
-              </p>
+              {isHeavy ? (
+                <p className="text-[11px] text-[#B12704] font-semibold bg-[#FEF8F2] p-2 rounded border border-[#F5D3B3]">
+                  Produit lourd / grand gabarit : livraison <strong>2 500 FCFA</strong> dans Daloa
+                  et expédition <strong>5 000 FCFA</strong> hors de Daloa.
+                </p>
+              ) : (
+                <p className="text-[11px] text-[#565959]">
+                  Aucune livraison gratuite. Colis standard : Daloa Commune 1 000 F · Périphérie
+                  1 500 F · Expédition hors Daloa 2 000 F.
+                </p>
+              )}
             </div>
 
             <p className={`text-sm font-bold ${outOfStock ? 'text-[#CC0C39]' : 'text-[#007600]'}`}>
