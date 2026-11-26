@@ -10,6 +10,7 @@ import {
   INITIAL_PROMO_CODES,
   JOUETS_ENFANTS_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
+  CUISINE_MAISON_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   QUINCAILLERIE_BTP_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
@@ -292,6 +293,11 @@ export function createStore(adapterPromiseOrInstance) {
              VALUES ('catalog_arrivage_nov2026_v1_synced', '{"done":true}'::jsonb)
              ON CONFLICT (key) DO NOTHING`
           );
+          await adapter.query(
+            `INSERT INTO store_settings (key, value)
+             VALUES ('catalog_cuisine_v1_synced', '{"done":true}'::jsonb)
+             ON CONFLICT (key) DO NOTHING`
+          );
         } else {
           const { rows: syncRows } = await adapter.query(
             `SELECT 1 FROM store_settings WHERE key = 'catalog_smart_v1_synced'`
@@ -446,6 +452,46 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_arrivage_nov2026_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente du rayon Cuisine & Art de la table (8 produits,
+          // photos showroom du 25/11/2026) : sucriers inox/dore SUS 304, soupieres,
+          // bocaux bambou, pub Pasabahce, bonbonniere et presentoir a gateau.
+          // ON CONFLICT DO NOTHING : n'ecrase jamais un prix/stock modifie dans /gestion.
+          const { rows: cuisineSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_cuisine_v1_synced'`
+          );
+          if (cuisineSyncRows.length === 0) {
+            for (const p of CUISINE_MAISON_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_cuisine_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

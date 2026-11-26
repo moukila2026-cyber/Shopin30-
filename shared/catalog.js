@@ -32,7 +32,7 @@ export const CATEGORIES = [
   { id: 'motos-tricycles', label: 'Motos & Tricycles Cargo', shortLabel: 'Motos & Tricycles' },
   { id: 'froid', label: 'Réfrigérateurs, Congélateurs & Fontaines SMART', shortLabel: 'Frigos & Froid' },
   { id: 'lavage-cuisson', label: 'Lave-linge & Cuisinières SMART', shortLabel: 'Lavage & Gazinières' },
-  { id: 'maison', label: 'Petit Électroménager, Mobilier & Maison', shortLabel: 'Maison & Mobilier' },
+  { id: 'maison', label: 'Cuisine, Maison, Petit Électroménager & Mobilier', shortLabel: 'Cuisine & Maison' },
   { id: 'high-tech', label: 'Google TV, Audio, High-Tech & Téléphonie', shortLabel: 'TV, Son & High-Tech' },
   { id: 'mode', label: 'Mode & Accessoires', shortLabel: 'Mode' },
   { id: 'beaute-cadeaux', label: 'Beauté, Parfums & Cadeaux', shortLabel: 'Beauté & Cadeaux' },
@@ -2144,12 +2144,204 @@ export const NOUVEAUTES_SMART_MOBILIER_PRODUCTS = [
   },
 ];
 
+// ==============================================================================
+// RAYON CUISINE & ART DE LA TABLE (8 PRODUITS — arrivage showroom Nov. 2026)
+// Prix Pèrôkadô = prix étiquette showroom + marge magasin (conforme politique <= 2 000 F)
+// ==============================================================================
+export const CUISINE_MAISON_PRODUCTS = [
+  {
+    id: 'cuisine-sucrier-inox-sus304-argente',
+    slug: 'sucrier-inox-sus-304-couvercle-verre-cuillere-argente',
+    name: 'Sucrier Inox SUS 304 Couvercle Verre & Cuillère — Argenté',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Inox SUS 304',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Élégant sucrier en acier inoxydable SUS 304 finition argentée, couvercle en verre intégré et cuillère de service incluse.',
+    description:
+      'Sublimez votre table de petit-déjeuner et votre pause café ! Ce sucrier en inox SUS 304 alimentaire (le meilleur grade anti-corrosion) conserve sucre, sel et épices à l’abri de l’humidité. Son couvercle en verre laisse voir le contenu et la cuillère assortie est incluse.',
+    specs: [
+      'Inox alimentaire SUS 304 anti-rouille, finition argentée brossée',
+      'Couvercle en verre transparent avec bouton de préhension',
+      'Cuillère de service assortie incluse dans la boîte',
+      'Idéal sucre, sel, épices, café · Facile à laver'
+    ],
+    imageUrl: '/images/products/cuisine-sucrier-inox-sus304-argente.jpg',
+  },
+  {
+    id: 'cuisine-sucrier-inox-dore',
+    slug: 'sucrier-inox-dore-couvercle-verre-cuillere',
+    name: 'Sucrier Inox Doré Couvercle Verre & Cuillère — Édition Prestige',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Finition Dorée',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Sucrier doré en inox avec couvercle en verre et cuillère assortie : la touche luxe pour vos tables de café et de réception.',
+    description:
+      'Version dorée prestige de notre sucrier inox : un fini doré éclatant qui illumine la table, un couvercle verre pour voir le niveau de sucre en un coup d’œil et une cuillère dorée assortie. Parfait pour le café, le thé et les réceptions à Daloa.',
+    specs: [
+      'Inox alimentaire finition dorée haut de gamme',
+      'Couvercle en verre transparent avec bouton doré',
+      'Cuillère de service dorée assortie incluse',
+      'Sucre, sel, épices, bonbons · Entretien facile'
+    ],
+    imageUrl: '/images/products/cuisine-sucrier-inox-dore.jpg',
+  },
+  {
+    id: 'cuisine-complet-soupiere-3-bols-bleu',
+    slug: 'complet-soupiere-ceramique-3-bols-rebord-bleu-ciel',
+    name: 'Complet Soupière Céramique 3 Bols Gigognes — Rebord Bleu Ciel (Existe aussi en Rouge)',
+    category: 'maison',
+    price: 18500,
+    compareAtPrice: 23500,
+    stock: 8,
+    badge: 'Set de 3 Bols',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Service de 3 grands bols soupière en céramique blanche texturée avec rebords ondulés bleu ciel et couvercle à bouton argenté.',
+    description:
+      'Servez vos soupes, sauces, riz et plats en sauce avec élégance ! Ce complet de 3 soupières gigognes en céramique à la texture finement pois et aux rebords ondulés bleu ciel s’empile pour un rangement malin. Couvercle avec bouton argenté inclus. Coloris rouge également disponible au showroom — précisez votre préférence dans la commande.',
+    specs: [
+      '3 bols gigognes en céramique émaillée blanche texturée',
+      'Rebords ondulés bleu ciel (variante rouge disponible)',
+      'Couvercle du grand bol avec bouton argenté inclus',
+      'Soupes, sauces, salades, riz · S’empilent pour gagner de la place'
+    ],
+    imageUrl: '/images/products/cuisine-soupiere-ceramique-bleue-3bols.jpg',
+  },
+  {
+    id: 'cuisine-set-3-bocaux-bamboo',
+    slug: 'set-3-bocaux-borosilicate-couvercles-bamboo-1000-850-700',
+    name: 'Set de 3 Bocaux Borosilicate Couvercles Bambou — 1000 / 850 / 700 ml',
+    category: 'maison',
+    price: 11500,
+    compareAtPrice: 14500,
+    stock: 10,
+    badge: 'Set de 3 Bocaux',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Trio de bocaux en verre borosilicate hautement transparent avec couvercles hermétiques en bambou naturel : 1000 ml, 850 ml et 700 ml.',
+    description:
+      'Rangez chic et sainement pâtes, riz, café, sucre et céréales ! En verre borosilicate résistant et 100 % transparent, ces 3 bocaux aux couvercles en bambou naturel ferment hermétiquement (joint silicone) pour préserver fraîcheur et arômes, tout en décorant votre cuisine.',
+    specs: [
+      '3 contenances : 1000 ml · 850 ml · 700 ml',
+      'Verre borosilicate premium ultra transparent',
+      'Couvercles en bambou naturel avec joint silicone hermétique',
+      'Riz, pâtes, café, sucre, thé, céréales · Empilables'
+    ],
+    imageUrl: '/images/products/cuisine-set-3-bocaux-bamboo.jpg',
+  },
+  {
+    id: 'cuisine-bocal-syder-carre-1800ml',
+    slug: 'grand-bocal-carre-syder-1800ml-couvercle-bamboo',
+    name: 'Grand Bocal Carré Syder 1800 ml Couvercle Bambou',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6900,
+    stock: 12,
+    badge: 'Format 1800 ml',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Très grand bocal carré de 1,8 litre en verre borosilicate avec couvercle plat en bambou : parfait pour farine, riz et pâtes longues.',
+    description:
+      'Le format familial pour une cuisine toujours organisée ! Ce bocal carré Syder de 1800 ml en verre borosilicate hautement transparent stocke farine, riz, sucre et céréales en grande quantité. Son couvercle plat en bambou ferme hermétiquement et sa forme carrée optimise chaque centimètre du placard.',
+    specs: [
+      'Capacité généreuse 1800 ml · Format carré gain de place',
+      'Verre borosilicate hautement transparent (Syder)',
+      'Couvercle plat en bambou avec joint silicone hermétique',
+      'Farine, riz, pâtes, sucre, légumineuses'
+    ],
+    imageUrl: '/images/products/cuisine-bocal-syder-carre-1800ml.jpg',
+  },
+  {
+    id: 'cuisine-pub-pasabahce-380cc-x2',
+    slug: 'lot-2-pub-a-biere-pasabahce-pub-380cc',
+    name: 'Lot de 2 pub à Bière Paşabahçe PUB 380 cc en Verre Épais',
+    category: 'maison',
+    price: 5500,
+    compareAtPrice: 7500,
+    stock: 14,
+    badge: 'Verre Paşabahçe',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      '2 grandes pub en verre épais turc (12¾ oz / 380 cc) avec anse renforcée : bières, jus et cocktails toujours bien frais.',
+    description:
+      'La qualité turque Paşabahçe pour vos moments de détente ! Ces 2 pub de 380 cc en verre épais à base renforcée gardent la boisson bien fraîche et offrent une prise en main parfaite pour bière, jus de fruits ou cocktails glacés.',
+    specs: [
+      'Marque Paşabahçe (Turquie) · Gamme PUB 55109',
+      'Lot de 2 pub · 380 cc (12¾ oz) chacune',
+      'Verre épais professionnel à base lourde renforcée',
+      'Passent au lave-vaisselle · Bière, jus, cocktails'
+    ],
+    imageUrl: '/images/products/cuisine-pub-pasabahce-380cc-x2.jpg',
+  },
+  {
+    id: 'cuisine-bonbonniere-verre-tresse',
+    slug: 'bonbonniere-bonbonniere-verre-tresse-couvercle-dome',
+    name: 'Bonbonnière Bonbonnière en Verre Tressé avec Couvercle Dôme',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 12,
+    badge: 'Verre Sculpté',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bonbonnière décorative en verre transparent au motif tressé vannerie, avec couvercle dôme et bouton cristal.',
+    description:
+      'Un écrin de verre pour vos bonbons, chocolats et douceurs ! Cette bonbonnière au superbe motif tressé façon vannerie attire la lumière et décore la table basse ou le buffet. Son couvercle en dôme à bouton sphérique conserve et met en valeur vos gourmandises.',
+    specs: [
+      'Verre moulé transparent motif tressé vannerie',
+      'Couvercle dôme avec bouton sphérique en verre',
+      'Bonbons, chocolats, biscuits, décor de table',
+      'Référence showroom DS26040'
+    ],
+    imageUrl: '/images/products/cuisine-bonbonniere-verre-tresse.jpg',
+  },
+  {
+    id: 'cuisine-presentoir-gateau-cloche',
+    slug: 'presentoir-a-gateau-sur-pied-cloche-home-sweet-home',
+    name: 'Présentoir à Gâteau sur Pied avec Cloche « Home Sweet Home »',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 8,
+    badge: 'Home Sweet Home',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Présentoir à gâteau transparent sur pied évasé, avec cloche de protection décor dentelle « Home Sweet Home ».',
+    description:
+      'Présentez et protégez vos gâteaux, tartes et viennoiseries comme dans une vitrine de pâtisserie ! Ce présentoir sur pied transparent est coiffé d’une grande cloche décorée d’un motif dentelle « Home Sweet Home » avec bouton facetté. Indispensable pour anniversaires, mariages, buffets et pâtisseries maison à Daloa.',
+    specs: [
+      'Présentoir sur pied transparent (format familial)',
+      'Cloche de protection motif dentelle « Home Sweet Home »',
+      'Bouton de préhension facetté façon cristal',
+      'Gâteaux, tartes, viennoiseries · Fêtes & réceptions'
+    ],
+    imageUrl: '/images/products/cuisine-presentoir-gateau-cloche.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   ...MOTOS_TRICYCLES_PRODUCTS,
   ...SMART_TECHNOLOGY_PRODUCTS,
   ...JOUETS_ENFANTS_PRODUCTS,
+  ...CUISINE_MAISON_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',

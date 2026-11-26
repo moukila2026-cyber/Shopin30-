@@ -808,3 +808,55 @@ test('10. Arrivage Nov. 2026 : Quincaillerie INGCO/FRENCIA (27), Nouveautés SMA
   assert.equal(tvOrder.data.order.deliveryFee, 2500);
   assert.equal(tvOrder.data.order.total, 667500);
 });
+
+test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupieres, bocaux, pub), prix Pèrôkadô = étiquette + marge <= 2 000 F, livraison standard', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  const maisonCategory = cat.data.categories.find((c) => c.id === 'maison');
+  assert.ok(maisonCategory, 'La catégorie maison est presente');
+
+  // [id, prix etquette showroom, prix Pèrôkadô attendu]
+  const expectedCuisine = [
+    ['cuisine-sucrier-inox-sus304-argente', 3000, 3500],
+    ['cuisine-sucrier-inox-dore', 3000, 3500],
+    ['cuisine-complet-soupiere-3-bols-bleu', 17000, 18500],
+    ['cuisine-set-3-bocaux-bamboo', 10000, 11500],
+    ['cuisine-bocal-syder-carre-1800ml', 4500, 5000],
+    ['cuisine-pub-pasabahce-380cc-x2', 5000, 5500],
+    ['cuisine-bonbonniere-verre-tresse', 3000, 3500],
+    ['cuisine-presentoir-gateau-cloche', 0, 9500],
+  ];
+  for (const [id, labelPrice, expectedSellPrice] of expectedCuisine) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit cuisine ${id} present dans le catalogue`);
+    assert.equal(prod.category, 'maison');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    if (labelPrice > 0) {
+      const margin = prod.price - labelPrice;
+      assert.ok(margin >= 200 && margin <= 2000, `Marge ${margin} FCFA conforme pour ${id}`);
+    }
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+    assert.ok(prod.imageUrl && prod.imageUrl.includes('/images/products/cuisine-'), `Photo studio pour ${id}`);
+  }
+
+  // Commande d'un sucrier a Daloa Commune -> livraison standard 1 000 FCFA (et non 2 500 F !)
+  const sugarOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_sucrier_daloa_01',
+      customerName: 'Kouadio Aya',
+      customerPhone: '0506070809',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Lobia',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0506070809',
+      waveTransactionRef: 'WV_SUCRIER_DALOA_01',
+      items: [{ productId: 'cuisine-sucrier-inox-dore', quantity: 1 }],
+    },
+  });
+  assert.equal(sugarOrder.status, 201);
+  assert.equal(sugarOrder.data.order.deliveryFee, 1000);
+  assert.equal(sugarOrder.data.order.total, 4500);
+});
