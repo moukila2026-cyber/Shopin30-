@@ -14,6 +14,17 @@ import { buildWhatsappServiceUrl } from '../lib/api.js';
 
 const BANNERS = [
   {
+    id: 'quincaillerie-btp',
+    image: '/images/banners/banner-quincaillerie-btp.jpg',
+    tag: 'NOUVEL ARRIVAGE QUINCAILLERIE, OUTILLAGE INGCO & SANITAIRES FRENCIA',
+    title: 'Coupe-Carreaux, Perceuses, Pompes de Forage INGCO & Packs WC FRENCIA',
+    subtitle:
+      'Équipez vos chantiers à Daloa : outillage INGCO/DINGQI dès 2 500 FCFA, pompes immergées de forage avec boîtier et sanitaires céramique FRENCIA. Paiement Wave & Suivi QR.',
+    ctaLabel: 'Voir Quincaillerie, Outillage & Sanitaires',
+    targetCategory: 'quincaillerie-btp',
+    darkText: true,
+  },
+  {
     id: 'jouets-enfants',
     image: '/images/banners/banner-jouets-enfants.jpg',
     tag: 'NOUVEAU RAYON JOUETS, JEUX & ENFANTS — DALOA & CÔTE D’IVOIRE',
@@ -96,6 +107,7 @@ export function Hero({
   const motosItems = pickByCategory('motos-tricycles', 4);
   const allMotos = products.filter((p) => p.category === 'motos-tricycles');
   const allJouets = products.filter((p) => p.category === 'jouets-enfants');
+  const allQuincaillerie = products.filter((p) => p.category === 'quincaillerie-btp');
   const froidItems = pickByCategory('froid', 4);
   const lavageCuissonItems = pickByCategory('lavage-cuisson', 4);
   const maisonItems = pickByCategory('maison', 4);
@@ -370,7 +382,7 @@ export function Hero({
                     <strong className="font-bold">2 000 FCFA</strong>
                   </li>
                   <li className="flex justify-between pt-0.5 text-[#B12704]">
-                    <span className="font-semibold">Motos, Frigos & Lave-linge</span>
+                    <span className="font-semibold">Motos, Frigos, WC & TV Géantes</span>
                     <strong className="font-bold">2 500 F / 5 000 F</strong>
                   </li>
                 </ul>
@@ -391,6 +403,81 @@ export function Hero({
           </div>
         </div>
       </div>
+
+      {/* 2A. SECTION DÉDIÉE QUINCAILLERIE, OUTILLAGE INGCO & SANITAIRES FRENCIA */}
+      {allQuincaillerie.length > 0 && (
+        <div id="section-quincaillerie" className="mt-5 px-3 sm:px-6">
+          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="bg-[#FF9900] text-[#131921] text-[11px] font-extrabold px-2 py-0.5 rounded-xs tracking-wide">
+                  NOUVEL ARRIVAGE CHANTIER & BTP
+                </span>
+                <h2 className="text-lg sm:text-xl font-bold text-[#0F1111]">
+                  Quincaillerie INGCO/DINGQI, Pompes de Forage & Sanitaires FRENCIA
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectCategory?.('quincaillerie-btp');
+                  scrollToCatalog();
+                }}
+                className="text-xs sm:text-sm font-semibold text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+              >
+                Ouvrir tout le rayon Quincaillerie & BTP ({allQuincaillerie.length}) →
+              </button>
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+              {allQuincaillerie.map((tool) => (
+                <button
+                  key={tool.id}
+                  type="button"
+                  onClick={() => onSelectProduct?.(tool)}
+                  className="w-48 sm:w-56 shrink-0 text-left group border border-[#EAEDED] hover:border-[#FF9900] rounded-md p-3 bg-white transition cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="h-40 sm:h-44 bg-[#F7F8F8] rounded-xs p-2.5 flex items-center justify-center overflow-hidden mb-2.5 relative">
+                      {tool.badge && (
+                        <span className="absolute top-1.5 left-1.5 bg-[#232F3E] text-white text-[10px] font-bold px-2 py-0.5 rounded-xs">
+                          {tool.badge}
+                        </span>
+                      )}
+                      <img
+                        src={tool.imageUrl}
+                        alt={tool.name}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-200 mix-blend-multiply"
+                      />
+                    </div>
+                    <p className="text-xs font-semibold text-[#0F1111] line-clamp-2 group-hover:text-[#C7511F] leading-snug">
+                      {tool.name}
+                    </p>
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-[#F0F2F2]">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-sm font-extrabold text-[#B12704]">
+                        {formatFcfa(tool.price)}
+                      </span>
+                      {tool.compareAtPrice > tool.price && (
+                        <span className="text-[11px] text-[#565959] line-through">
+                          {formatFcfa(tool.compareAtPrice)}
+                        </span>
+                      )}
+                    </div>
+                    <span className="block text-[11px] text-[#007600] font-medium mt-0.5">
+                      {tool.isHeavy
+                        ? 'En stock · Produit lourd 2 500 F / 5 000 F'
+                        : 'En stock · Livraison dès 1 000 F'}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 2B. SECTION DÉDIÉE JOUETS, JEUX & UNIVERS ENFANTS PÈRÔKADÔ */}
       {allJouets.length > 0 && (

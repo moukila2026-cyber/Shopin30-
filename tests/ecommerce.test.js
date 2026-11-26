@@ -686,3 +686,125 @@ test('Rayon Jouets & Enfants : 14 produits identifiés avec marges conformes (<=
 
 
 
+test('10. Arrivage Nov. 2026 : Quincaillerie INGCO/FRENCIA (27), Nouveautés SMART & Mobilier (11), prix exacts et livraison lourde/standard', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  const quinCategory = cat.data.categories.find((c) => c.id === 'quincaillerie-btp');
+  assert.ok(quinCategory, 'La catégorie dédiée quincaillerie-btp est présente');
+
+  const expectedQuin = [
+    ['frencia-wc001', 52000, true],
+    ['frencia-wc045', 58000, true],
+    ['frencia-wc129', 55000, true],
+    ['ingco-coupe-carreaux-800mm', 76500, false],
+    ['ingco-coupe-carreaux-600mm-htc04600', 31500, false],
+    ['ingco-perceuse-percussion-1100w', 46500, false],
+    ['ingco-cle-a-chocs-sans-fil-20v', 66500, false],
+    ['ingco-rabot-electrique-1050w-pl10508', 56500, false],
+    ['dingqi-rabot-electrique-500w', 39500, false],
+    ['ingco-pompe-immergee-forage-dwp37062', 107000, false],
+    ['ingco-pompe-immergee-forage-dwp55062', 122000, false],
+    ['ingco-pompe-immergee-forage-dwp75062', 142000, false],
+    ['ingco-coupe-boulons-36-hbc0836', 29000, false],
+    ['ingco-coupe-boulons-24-hbc0824', 17000, false],
+    ['ingco-niveau-100cm-hsl08100', 5500, false],
+    ['ingco-scie-egoine-hhas08550', 4000, false],
+    ['ingco-marteau-hch80816', 8500, false],
+    ['ingco-metre-ruban-hsmt0810', 3500, false],
+    ['ingco-truelle-hbt818', 3000, false],
+    ['ingco-spatule-hput08100', 2500, false],
+  ];
+  for (const [id, expectedPrice, expectedHeavy] of expectedQuin) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit quincaillerie ${id} présent`);
+    assert.equal(prod.category, 'quincaillerie-btp');
+    assert.equal(prod.price, expectedPrice, `Prix exact pour ${id}`);
+    assert.equal(prod.isHeavy, expectedHeavy, `isHeavy pour ${id}`);
+    assert.ok(prod.imageUrl && !prod.imageUrl.includes('placeholder'), `Photo studio pour ${id}`);
+  }
+
+  const expectedNouv = [
+    ['salon-angle-resine-tressee-table-basse', 'maison', 275000, true],
+    ['smart-congelateur-horizontal-silver-stcc-320', 'froid', 152000, true],
+    ['smart-congelateur-horizontal-vitre-stccv-313', 'froid', 165000, true],
+    ['smart-fontaine-eau-3-robinets-or-stfo-br538', 'froid', 79000, true],
+    ['smart-fontaine-eau-noire-stfo-599a', 'froid', 69000, true],
+    ['smart-fontaine-eau-inox-stfo-by601s', 'froid', 85000, true],
+    ['smart-cuisiniere-gaz-4-feux-50x50-stc5050b', 'lavage-cuisson', 86900, true],
+    ['smart-google-tv-58-4k-stt5880k', 'high-tech', 215000, true],
+    ['smart-google-tv-85-4k-stt8580k', 'high-tech', 665000, true],
+    ['smart-home-cinema-karaoke-2000w-sthp2100e', 'high-tech', 109000, false],
+    ['smart-enceinte-colonne-1000w-sthp0100e', 'high-tech', 115000, false],
+  ];
+  for (const [id, expectedCat, expectedPrice, expectedHeavy] of expectedNouv) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Nouveauté ${id} présente`);
+    assert.equal(prod.category, expectedCat);
+    assert.equal(prod.price, expectedPrice, `Prix exact pour ${id}`);
+    assert.equal(prod.isHeavy, expectedHeavy, `isHeavy pour ${id}`);
+  }
+
+  const quinCount = cat.data.products.filter((p) => p.category === 'quincaillerie-btp').length;
+  assert.equal(quinCount, 27, '27 produits dans le rayon Quincaillerie & BTP');
+
+  // Outil standard INGCO à Daloa Commune -> livraison standard 1 000 FCFA
+  const toolOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_ingco_daloa_01',
+      customerName: 'Nguessan Yao',
+      customerPhone: '0708091011',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Commerce',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0708091011',
+      waveTransactionRef: 'WV_INGCO_DALOA',
+      items: [{ productId: 'ingco-perceuse-percussion-1100w', quantity: 1 }],
+    },
+  });
+  assert.equal(toolOrder.status, 201);
+  assert.equal(toolOrder.data.order.deliveryFee, 1000);
+  assert.equal(toolOrder.data.order.total, 47500);
+
+  // Pack WC FRENCIA (lourd) expédié à Issia -> livraison lourde 5 000 FCFA
+  const wcOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_wc_issia_01',
+      customerName: 'Kone Fatou',
+      customerPhone: '0504030201',
+      cityZoneId: 'expedition-issia',
+      neighborhood: 'Issia Centre',
+      deliverySlot: 'apres-midi',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0504030201',
+      waveTransactionRef: 'WV_WC_ISSIA',
+      items: [{ productId: 'frencia-wc001', quantity: 1 }],
+    },
+  });
+  assert.equal(wcOrder.status, 201);
+  assert.equal(wcOrder.data.order.deliveryFee, 5000);
+  assert.equal(wcOrder.data.order.total, 57000);
+
+  // TV 85" (lourde) à Daloa Commune -> livraison lourde 2 500 FCFA
+  const tvOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_tv85_daloa_01',
+      customerName: 'Diallo Amara',
+      customerPhone: '0102030405',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Kennedy',
+      deliverySlot: 'soir',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0102030405',
+      waveTransactionRef: 'WV_TV85_DALOA',
+      items: [{ productId: 'smart-google-tv-85-4k-stt8580k', quantity: 1 }],
+    },
+  });
+  assert.equal(tvOrder.status, 201);
+  assert.equal(tvOrder.data.order.deliveryFee, 2500);
+  assert.equal(tvOrder.data.order.total, 667500);
+});
