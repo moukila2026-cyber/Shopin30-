@@ -2145,7 +2145,7 @@ export const NOUVEAUTES_SMART_MOBILIER_PRODUCTS = [
 ];
 
 // ==============================================================================
-// RAYON CUISINE & ART DE LA TABLE (30 PRODUITS — arrivage showroom Nov. 2026)
+// RAYON CUISINE & ART DE LA TABLE (54 PRODUITS — arrivage showroom Nov. 2026)
 // Prix Pèrôkadô = prix étiquette showroom + marge magasin (conforme politique <= 2 000 F)
 // ==============================================================================
 export const CUISINE_MAISON_PRODUCTS = [
@@ -2821,8 +2821,8 @@ export const CUISINE_MAISON_PRODUCTS = [
     slug: 'balance-de-cuisine-digitale-decakila-5kg-bol-transparent-kmtt092w',
     name: 'Balance de Cuisine Digitale Decakila 5 kg avec Bol Transparent — KMTT092W',
     category: 'maison',
-    price: 8500,
-    compareAtPrice: 11500,
+    price: 14000,
+    compareAtPrice: 17500,
     stock: 10,
     badge: 'Précision 1g',
     featured: true,
@@ -2838,6 +2838,558 @@ export const CUISINE_MAISON_PRODUCTS = [
       'Bol transparent amovible inclus · Pâtisserie & cuisine quotidienne'
     ],
     imageUrl: '/images/products/cuisine-balance-digitale-decakila-5kg.jpg',
+  },
+  {
+    id: 'cuisine-balance-decakila-kmtt091w-5kg',
+    slug: 'balance-de-cuisine-digitale-decakila-5kg-plateau-plat-kmtt091w',
+    name: 'Balance de Cuisine Digitale Decakila 5 kg Plateau Plat — KMTT091W',
+    category: 'maison',
+    price: 8000,
+    compareAtPrice: 10500,
+    stock: 14,
+    badge: 'Précision 1g',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Balance électronique compacte Decakila KMTT091W (2 g à 5 000 g) à plateau plat, écran LCD et fonction Tare.',
+    description:
+      'Compacte, fiable et facile à ranger ! La balance digitale Decakila KMTT091W pèse tous vos ingrédients de 2 g à 5 kg avec une précision au gramme près, conversion g/oz et fonction Tare.',
+    specs: [
+      'Marque Decakila · Modèle KMTT091W · Portée 2 g à 5 000 g',
+      'Précision 1 g · Fonction Tare et conversion d’unités',
+      'Plateau de pesée plat compatible avec tous vos bols',
+      'Design compact blanc et bleu · Facile à nettoyer'
+    ],
+    imageUrl: '/images/products/cuisine-balance-decakila-kmtt091w-5kg.jpg',
+  },
+  {
+    id: 'cuisine-machine-popcorn-decakila-kett009r',
+    slug: 'machine-a-popcorn-air-chaud-decakila-2-minutes-kett009r',
+    name: 'Machine à Pop-Corn à Air Chaud Decakila — Prêt en 2 Minutes (KETT009R)',
+    category: 'maison',
+    price: 14500,
+    compareAtPrice: 18500,
+    stock: 10,
+    badge: 'Sans Huile',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Préparez du pop-corn chaud, croustillant et sain sans huile en 2 minutes chrono pour toute la famille !',
+    description:
+      'Transformez vos soirées films en vrai cinéma à la maison ! La machine à pop-corn Decakila KETT009R fonctionne par circulation d’air chaud rapide sans aucune matière grasse, avec doseur intégré sur le couvercle.',
+    specs: [
+      'Marque Decakila · Modèle KETT009R (Rouge & Noir)',
+      'Cuisson ultra rapide par air chaud en 2 minutes',
+      'Sans huile ni beurre : pop-corn léger et sain',
+      'Gobelet doseur intégré dans le couvercle supérieur'
+    ],
+    imageUrl: '/images/products/cuisine-machine-popcorn-decakila-kett009r.jpg',
+  },
+  {
+    id: 'cuisine-hachoir-manuel-decakila-400ml',
+    slug: 'hachoir-manuel-ficelle-decakila-400ml-ail-oignons-kmtt084w',
+    name: 'Hachoir Manuel à Ficelle Decakila 400 ml — Ail, Oignons & Légumes (KMTT084W)',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 18,
+    badge: 'Sans Électricité',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Hachez ail, oignons, piment, persil et tomates en quelques secondes sans électricité grâce aux lames inox ultra tranchantes.',
+    description:
+      'Fini les larmes en coupant les oignons ! Tirez simplement sur la poignée verte du hachoir manuel Decakila 400 ml pour émincer ail, oignons, piments, herbes ou légumes en un clin d’œil, même en cas de coupure de courant.',
+    specs: [
+      'Marque Decakila · Modèle KMTT084W · Bol 400 ml sans BPA',
+      'Lames en acier inoxydable 420 J2 ultra résistantes',
+      'Fonctionnement 100 % manuel à ficelle, zéro électricité',
+      'Démontable et facile à rincer · Idéal ail, oignon, piment'
+    ],
+    imageUrl: '/images/products/cuisine-hachoir-manuel-decakila-400ml.jpg',
+  },
+  {
+    id: 'beaute-tondeuse-rowenta-nomad-tn1410f0',
+    slug: 'tondeuse-cheveux-sans-fil-rowenta-nomad-tn1410f0',
+    name: 'Tondeuse à Cheveux Sans Fil Rowenta Nomad — 20 Hauteurs (TN1410F0)',
+    category: 'beaute-cadeaux',
+    price: 24500,
+    compareAtPrice: 29500,
+    stock: 8,
+    badge: 'Rowenta Original',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Tondeuse cheveux de haute précision Rowenta Nomad : lames inox conçues pour durer 15 ans, 20 hauteurs de coupe (1 à 30 mm) et 40 min d’autonomie.',
+    description:
+      'La fiabilité allemande Rowenta pour des coupes nettes à domicile ! La tondeuse Nomad TN1410F0 offre 20 réglages précis de 1 mm à 30 mm grâce à ses 2 sabots réglables et ses lames en acier inoxydable haute durabilité.',
+    specs: [
+      'Marque Rowenta · Modèle Nomad TN1410F0 (Original)',
+      '20 hauteurs de coupe de haute précision (1 mm à 30 mm)',
+      'Lames acier inoxydable conçues pour durer 15 ans',
+      'Autonomie jusqu’à 40 min · 2 sabots réglables inclus'
+    ],
+    imageUrl: '/images/products/beaute-tondeuse-rowenta-nomad-tn1410f0.jpg',
+  },
+  {
+    id: 'cuisine-set-7-ustensiles-decakila-kmtt046b',
+    slug: 'set-7-ustensiles-de-cuisine-pot-rangement-decakila-kmtt046b',
+    name: 'Set de 7 Ustensiles de Cuisine avec Pot de Rangement Decakila — KMTT046B',
+    category: 'maison',
+    price: 8000,
+    compareAtPrice: 10500,
+    stock: 14,
+    badge: 'Set 7 Pièces',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coffret complet de 6 ustensiles anti-rayures (louche, écumoire, spatule, cuillère à pâtes, pince, pinceau) + pot de rangement Decakila.',
+    description:
+      'Tout le nécessaire de cuisine toujours à portée de main ! Ce set Decakila 7 pièces réunit des ustensiles résistants à la chaleur qui n’abîment pas vos poêles antiadhésives, rangés dans un joli pot vert d’eau.',
+    specs: [
+      'Marque Decakila · Modèle KMTT046B (7 pièces au total)',
+      'Louche, écumoire, spatule ajourée, cuillère à spaghettis, pince, pinceau + pot',
+      'Poignées ergonomiques multicolores confortables',
+      'Protège les revêtements antiadhésifs · Facile à laver'
+    ],
+    imageUrl: '/images/products/cuisine-set-7-ustensiles-decakila-kmtt046b.jpg',
+  },
+  {
+    id: 'maison-defroisseur-vapeur-decakila-1500w',
+    slug: 'defroisseur-vapeur-main-decakila-1500w-keen003w',
+    name: 'Défroisseur Vapeur à Main Decakila 1500 W — 25 g/min (KEEN003W)',
+    category: 'maison',
+    price: 18500,
+    compareAtPrice: 23500,
+    stock: 10,
+    badge: 'Vapeur 1500W',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Défroissez chemises, robes, boubous, costumes et rideaux directement sur cintre grâce à sa puissance 1500 W et son débit vapeur 25 g/min.',
+    description:
+      'Plus besoin de sortir la table à repasser ! Le défroisseur vapeur portable Decakila KEEN003W chauffe rapidement grâce à ses 1500 W et projette une vapeur puissante de 25 g/min qui lisse et rafraîchit tous les textiles délicats en quelques instants.',
+    specs: [
+      'Marque Decakila · Modèle KEEN003W · Puissance 1500 W',
+      'Débit vapeur puissant 25 g/min · Préchauffage rapide',
+      'Tête vapeur en acier inoxydable pour tous textiles',
+      'Idéal chemises, robes, costumes, pagnes et rideaux'
+    ],
+    imageUrl: '/images/products/maison-defroisseur-vapeur-decakila-1500w.jpg',
+  },
+  {
+    id: 'cuisine-contact-grill-decakila-2000w',
+    slug: 'contact-grill-panini-barbecue-decakila-2000w-keec079m',
+    name: 'Contact Grill & Panini Decakila 2000 W — Ouverture 180° Barbecue (KEEC079M)',
+    category: 'maison',
+    price: 47000,
+    compareAtPrice: 54000,
+    stock: 6,
+    badge: '2000W · 180°',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Puissant grill électrique 2000 W avec grandes plaques antiadhésives 29×24 cm, thermostat réglable, minuterie et ouverture à plat 180° façon barbecue.',
+    description:
+      'Préparez paninis dorés, steaks juteux, poulet grillé, poissons et légumes rôtis à la maison ! Le Contact Grill Decakila KEEC079M développe 2000 W pour une saisie rapide, s’ouvre à 180° pour doubler la surface en mode barbecue de table, et intègre un thermostat multi-niveaux ainsi qu’une minuterie réglable.',
+    specs: [
+      'Marque Decakila · Modèle KEEC079M · Puissance 2000 W',
+      'Grandes plaques antiadhésives 290 × 240 mm faciles à nettoyer',
+      'Ouverture à plat 180° pour mode barbecue familial',
+      'Thermostat réglable + minuterie intégrée + témoins lumineux'
+    ],
+    imageUrl: '/images/products/cuisine-contact-grill-decakila-2000w.jpg',
+  },
+  {
+    id: 'maison-fer-vapeur-tefal-express-steam-2400w',
+    slug: 'fer-a-repasser-vapeur-tefal-express-steam-2400w-fv2839e0',
+    name: 'Fer à Repasser Vapeur Tefal Express Steam 2400 W — Semelle Céramique (FV2839E0)',
+    category: 'maison',
+    price: 28500,
+    compareAtPrice: 34000,
+    stock: 8,
+    badge: 'Tefal 2400W',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Fer vapeur Tefal Express Steam 2400 W : semelle céramique Xglide ultra glissante, défroissage vertical, système anti-goutte et remplissage XL.',
+    description:
+      'Gagnez du temps sur votre repassage avec la référence Tefal ! Le Express Steam FV2839E0 allie 2400 W de puissance, une semelle céramique Xglide résistante aux rayures, une fonction défroissage vertical et un système anti-goutte pour un linge impeccable sans taches d’eau.',
+    specs: [
+      'Marque Tefal · Modèle Express Steam FV2839E0 · 2400 W',
+      'Semelle céramique Xglide Diffusion anti-rayures',
+      'Système anti-goutte + défroissage vertical efficace',
+      'Large ouverture de remplissage XL · Réparable 10 ans'
+    ],
+    imageUrl: '/images/products/maison-fer-vapeur-tefal-express-steam-2400w.jpg',
+  },
+  {
+    id: 'maison-fer-vapeur-ilux-il1688a',
+    slug: 'fer-a-repasser-vapeur-ilux-il-1688a-bleu-blanc',
+    name: 'Fer à Repasser Vapeur iLUX IL-1688A — Bleu & Blanc (Italian Design)',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 15,
+    badge: 'Petit prix',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Fer à repasser vapeur iLUX IL-1688A léger et maniable avec thermostat réglable, jet d’eau spray et semelle antiadhésive.',
+    description:
+      'Le luxe pas cher au quotidien ! Le fer à repasser vapeur iLUX IL-1688A offre un repassage fluide sur coton, lin, synthétique et pagnes grâce à son thermostat précis, son réservoir transparent bleu et sa fonction spray.',
+    specs: [
+      'Marque iLUX · Modèle IL-1688A (Italian Design)',
+      'Fonctions vapeur réglable, spray et repassage à sec',
+      'Thermostat multi-textiles + témoin lumineux de chauffe',
+      'Semelle antiadhésive glisse facile'
+    ],
+    imageUrl: '/images/products/maison-fer-vapeur-ilux-il1688a.jpg',
+  },
+  {
+    id: 'smart-fer-vapeur-stpfr-5101-2200w',
+    slug: 'fer-a-repasser-vapeur-smart-technology-2200w-stpfr-5101',
+    name: 'Fer à Repasser Vapeur SMART TECHNOLOGY 2200 W — STPFR-5101',
+    category: 'maison',
+    price: 12000,
+    compareAtPrice: 16000,
+    stock: 14,
+    badge: 'SMART 2200W',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Fer à repasser vapeur puissant 2200 W SMART TECHNOLOGY STPFR-5101 avec grand réservoir bleu translucide, fonction spray et glisse rapide.',
+    description:
+      'Fini les plis, place à la perfection ! Ce fer à repasser vapeur SMART TECHNOLOGY de 2200 W chauffe vite et élimine les plis tenaces sur tous vos vêtements grâce à son débit vapeur régulier et sa prise en main ergonomique.',
+    specs: [
+      'Marque SMART TECHNOLOGY · Modèle STPFR-5101 · 2200 W',
+      'Repassage vapeur, spray et à sec · Thermostat réglable',
+      'Réservoir d’eau bleu translucide avec niveau MAX visible',
+      'Cordon rotatif souple · Nouveau design ergonomique'
+    ],
+    imageUrl: '/images/products/smart-fer-vapeur-stpfr-5101-2200w.jpg',
+  },
+  {
+    id: 'smart-bouilloire-verre-1-8l-stpe-991vl',
+    slug: 'bouilloire-electrique-verre-smart-technology-1-8l-1500w-stpe-991vl',
+    name: 'Bouilloire Électrique en Verre SMART TECHNOLOGY 1,8 L — 1500 W (STPE-991VL)',
+    category: 'maison',
+    price: 13500,
+    compareAtPrice: 17500,
+    stock: 12,
+    badge: 'Verre 1,8L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Élégante bouilloire électrique en verre borosilicate gradué 1,8 L (1500 W) avec base pivotante 360°, témoin lumineux et arrêt automatique.',
+    description:
+      'Alliez design moderne et ébullition rapide ! La bouilloire en verre SMART TECHNOLOGY STPE-991VL (1,8 L · 1500 W) dispose d’un corps en verre transparent gradué sain, d’une résistance cachée en acier inoxydable facile à nettoyer et d’une double sécurité anti-chauffe à sec.',
+    specs: [
+      'Marque SMART TECHNOLOGY · Modèle STPE-991VL · 1,8 L · 1500 W',
+      'Corps en verre haute qualité gradué (0,5 L à 1,8 L)',
+      'Élément chauffant dissimulé en acier inoxydable',
+      'Arrêt automatique + protection anti-surchauffe + base 360°'
+    ],
+    imageUrl: '/images/products/smart-bouilloire-verre-1-8l-stpe-991vl.jpg',
+  },
+  {
+    id: 'cuisine-bouilloire-ilux-lxk520-2l',
+    slug: 'bouilloire-electrique-inox-ilux-2l-1500w-lxk-520',
+    name: 'Bouilloire Électrique Inox iLUX 2,0 L — 1500 W (LXK-520)',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 16,
+    badge: 'Inox 2,0L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bouilloire familiale 2,0 L en acier inoxydable iLUX (1500 W) avec base pivotante 360°, arrêt automatique et protection anti-sec.',
+    description:
+      'Robuste, rapide et économique ! La bouilloire électrique iLUX LXK-520 de 2 litres en acier inoxydable fait bouillir votre eau en quelques minutes pour le café, le thé ou la cuisine quotidienne.',
+    specs: [
+      'Marque iLUX · Modèle LXK-520 · 2,0 L · 1500 W',
+      'Corps en acier inoxydable avec résistance cachée',
+      'Base pivotante 360° sans fil + arrêt automatique',
+      'Protection anti-chauffe à sec · Touche d’ouverture couvercle'
+    ],
+    imageUrl: '/images/products/cuisine-bouilloire-ilux-lxk520-2l.jpg',
+  },
+  {
+    id: 'cuisine-bouilloire-ilux-lxkbx180-1-8l',
+    slug: 'bouilloire-electrique-sans-fil-ilux-inox-noir-1-8l-lxk-bx180',
+    name: 'Bouilloire Électrique Sans Fil Inox & Noir iLUX 1,8 L — 1500 W (LXK-BX180)',
+    category: 'maison',
+    price: 10500,
+    compareAtPrice: 13500,
+    stock: 14,
+    badge: 'Design Bicolore',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bouilloire sans fil 1,8 L au design moderne bicolore inox & noir mat (1500 W), base 360°, arrêt auto et protection anti-sec.',
+    description:
+      'Une touche d’élégance sur votre plan de travail ! La bouilloire iLUX LXK-BX180 marie acier inoxydable et finition noire mate, avec une puissance de 1500 W pour une ébullition rapide et sécurisée.',
+    specs: [
+      'Marque iLUX · Modèle LXK-BX180 · 1,8 L · 1500 W',
+      'Corps en acier inoxydable + finition noire mate élégante',
+      'Base pivotante 360° + mise hors tension automatique',
+      'Protection anti-sec + résistance cachée facile à nettoyer'
+    ],
+    imageUrl: '/images/products/cuisine-bouilloire-ilux-lxkbx180-1-8l.jpg',
+  },
+  {
+    id: 'cuisine-robot-sans-fil-decakila-kmmg005b',
+    slug: 'robot-culinaire-sans-fil-decakila-decaprime-200w-1-25l-kmmg005b',
+    name: 'Robot Culinaire Sans Fil Decakila DecaPrime 200 W — 1,25 L Batterie 2000 mAh (KMMG005B)',
+    category: 'maison',
+    price: 42000,
+    compareAtPrice: 49000,
+    stock: 6,
+    badge: 'Sans Fil 2000mAh',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Robot multifonction sans fil rechargeable (batterie 2000 mAh) : hache, râpe, tranche et mixe partout même sans courant ! Grand bol 1,25 L.',
+    description:
+      'La liberté totale en cuisine, même en cas de coupure d’électricité ! Le robot culinaire sans fil Decakila DecaPrime KMMG005B (200 W · batterie longue durée 2000 mAh) dispose d’un grand bol familial de 1,25 L, d’une lame hachoir inox, d’un disque râpeur/trancheur et d’un disque émulsionneur.',
+    specs: [
+      'Marque Decakila DecaPrime · Modèle KMMG005B · 200 W',
+      '100 % sans fil : batterie rechargeable haute capacité 2000 mAh',
+      'Grand bol familial 1,25 L avec cheminée d’alimentation',
+      'Livré avec lame hachoir inox, disque à râper/trancher et émulsionneur'
+    ],
+    imageUrl: '/images/products/cuisine-robot-sans-fil-decakila-kmmg005b.jpg',
+  },
+  {
+    id: 'cuisine-machine-popcorn-ilux-lxpm912',
+    slug: 'machine-a-popcorn-electrique-ilux-2-5l-450w-lx-pm912',
+    name: 'Machine à Pop-Corn Électrique iLUX 2,5 L — 450 W avec Bol de Service (LX-PM912)',
+    category: 'maison',
+    price: 16500,
+    compareAtPrice: 21000,
+    stock: 8,
+    badge: 'Grand Bol 2,5L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Machine à pop-corn familiale 2,5 L à plaque antiadhésive avec bras mélangeur motorisé et couvercle retournable servant de saladier.',
+    description:
+      'Des pop-corns gourmands sucrés ou salés comme à la fête foraine ! La machine iLUX LX-PM912 (450 W) cuit à l’huile avec son bras mélangeur motorisé anti-brûlure ; il suffit ensuite de retourner le couvercle transparent de 2,5 L pour servir directement !',
+    specs: [
+      'Marque iLUX · Modèle LX-PM912 · 450 W · Capacité 2,5 L',
+      'Cuisson à l’huile sur plaque antiadhésive + bras mélangeur motorisé',
+      'Couvercle transparent 2-en-1 servant de bol de service',
+      'Pieds caoutchouc antidérapants · Nettoyage facile'
+    ],
+    imageUrl: '/images/products/cuisine-machine-popcorn-ilux-lxpm912.jpg',
+  },
+  {
+    id: 'smart-mixeur-blender-incassable-2-5l-600w',
+    slug: 'mixeur-blender-pro-incassable-smart-technology-2-5l-600w',
+    name: 'Mixeur Blender Pro Incassable SMART TECHNOLOGY 2,5 L — 600 W Turbo',
+    category: 'maison',
+    price: 24500,
+    compareAtPrice: 29500,
+    stock: 10,
+    badge: 'Bol Incassable 2,5L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Blender puissant 600 W Turbo avec grand bol carré 2,5 L 100 % incassable, 6 lames inox ultra tranchantes et poussoir inclus.',
+    description:
+      'Conçu pour les préparations exigeantes du quotidien : smoothies, jus de gingembre, bissap, purées, pâtes et glace pilée ! Son moteur 600 W Turbo, ses 2 vitesses + fonction Pulse et son bol 2,5 L incassable en font un allié durable.',
+    specs: [
+      'Marque SMART TECHNOLOGY · Puissance Turbo 600 W',
+      'Grand bol carré 2,5 L incassable avec bâton poussoir',
+      '6 lames amovibles en acier inoxydable haute performance',
+      '2 vitesses + fonction Pulse · Système de sécurité intégré'
+    ],
+    imageUrl: '/images/products/smart-mixeur-blender-incassable-2-5l-600w.jpg',
+  },
+  {
+    id: 'cuisine-mixeur-ilux-lx375-2en1',
+    slug: 'mixeur-blender-2en1-ilux-lx-375-1-5l-bol-incassable-moulin',
+    name: 'Mixeur Blender 2-en-1 iLUX LX-375 — 1,5 L Bol Incassable + Moulin à Café (300 W)',
+    category: 'maison',
+    price: 15500,
+    compareAtPrice: 19000,
+    stock: 12,
+    badge: '2-en-1 + Moulin',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Blender 2-en-1 iLUX LX-375 finition moderne : bol incassable 1,5 L, moulin à café/épices inclus, 4 vitesses + Pulse (300 W).',
+    description:
+      'Mixez vos jus et soupes et moulez vos épices ou grains de café avec un seul appareil ! Le mixeur 2-en-1 iLUX LX-375 dispose d’un bol incassable de 1,5 L, de 4 vitesses + mode Pulse et de pieds antidérapants.',
+    specs: [
+      'Marque iLUX · Modèle LX-375 · 300 W (Italian Design)',
+      '2-en-1 : Bol blender incassable 1,5 L + Moulin à café/épices',
+      '4 vitesses + fonction Pulse · Lames inox ultra tranchantes',
+      'Couvercle anti-fuite avec bouchon doseur amovible'
+    ],
+    imageUrl: '/images/products/cuisine-mixeur-ilux-lx375-2en1.jpg',
+  },
+  {
+    id: 'cuisine-blender-ilux-lx316-rouge',
+    slug: 'blender-broyeur-2en1-ilux-lx-316-poignee-rouge-moulin',
+    name: 'Blender & Broyeur 2-en-1 iLUX LX-316 — Bol Incassable Poignée Rouge + Moulin',
+    category: 'maison',
+    price: 14500,
+    compareAtPrice: 18500,
+    stock: 14,
+    badge: '2-en-1 Incassable',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Mélangeur et broyeur 2-en-1 iLUX LX-316 (300 W) avec bol incassable à poignée rouge, moulin broyeur inclus et 2 vitesses + Pulse.',
+    description:
+      'Pratique et dynamique avec sa poignée rouge ergonomique ! Le blender & broyeur iLUX LX-316 réunit un grand bol incassable et un moulin sec pour broyer épices, arachides, café et préparer tous vos smoothies.',
+    specs: [
+      'Marque iLUX · Modèle LX-316 · 300 W (220-240 V)',
+      '2-en-1 : Bol mélangeur incassable + Moulin broyeur inclus',
+      '2 vitesses avec mode Impulsion (Pulse)',
+      'Lame croisée en acier inoxydable'
+    ],
+    imageUrl: '/images/products/cuisine-blender-ilux-lx316-rouge.jpg',
+  },
+  {
+    id: 'cuisine-mixeur-ilux-lx378-inox',
+    slug: 'mixeur-2en1-finition-inox-ilux-lx-378-1-5l-moulin',
+    name: 'Mixeur 2-en-1 Finition Inox iLUX LX-378 — 1,5 L Bol Incassable + Moulin (300 W)',
+    category: 'maison',
+    price: 16500,
+    compareAtPrice: 21000,
+    stock: 10,
+    badge: 'Finition Inox',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Mixeur élégant finition inox brossé iLUX LX-378 à boutons poussoirs (4 vitesses + Pulse), bol incassable 1,5 L et moulin à café inclus.',
+    description:
+      'Alliez style inox et polyvalence en cuisine ! Le mixeur iLUX LX-378 offre 4 vitesses à boutons poussoirs + Pulse, un bol incassable de 1,5 L avec couvercle anti-fuite et un moulin à café/épices.',
+    specs: [
+      'Marque iLUX · Modèle LX-378 · 300 W · Finition Inox',
+      'Bol transparent incassable 1,5 L + Moulin à café inclus',
+      '4 vitesses + fonction Pause/Pulse à boutons poussoirs',
+      'Lames ultra tranchantes + pieds antidérapants'
+    ],
+    imageUrl: '/images/products/cuisine-mixeur-ilux-lx378-inox.jpg',
+  },
+  {
+    id: 'cuisine-blender-ilux-lx815p-1-5l',
+    slug: 'blender-multifonction-ilux-lx-815p-1-5l-300w',
+    name: 'Blender Multifonction iLUX LX-815P — 1,5 L · 300 W (Blanc & Gris)',
+    category: 'maison',
+    price: 12500,
+    compareAtPrice: 16000,
+    stock: 15,
+    badge: 'Petit prix',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Blender simple, efficace et abordable : bol 1,5 L, 2 vitesses + fonction Pulse, lames inox amovibles faciles à nettoyer (300 W).',
+    description:
+      'L’essentiel pour réussir smoothies, jus frais, purées et sauces à petit prix ! Le blender iLUX LX-815P (1,5 L · 300 W) est équipé de lames amovibles en acier inoxydable pour un nettoyage ultra rapide.',
+    specs: [
+      'Marque iLUX · Modèle LX-815P · Capacité 1,5 L · 300 W',
+      '2 vitesses + fonction Pulse',
+      'Lames amovibles en acier inoxydable faciles à nettoyer',
+      'Design sobre blanc & gris · Format compact'
+    ],
+    imageUrl: '/images/products/cuisine-blender-ilux-lx815p-1-5l.jpg',
+  },
+  {
+    id: 'cuisine-blender-ilux-lx926-10vitesses',
+    slug: 'blender-broyeur-10-vitesses-ilux-lx-926-inox-moulin',
+    name: 'Blender & Broyeur 10 Vitesses iLUX LX-926 — Corps Inox + Moulin',
+    category: 'maison',
+    price: 19500,
+    compareAtPrice: 24500,
+    stock: 10,
+    badge: '10 Vitesses Inox',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Blender puissant 10 vitesses + Pulse au corps en acier inoxydable brossé, livré avec son moulin broyeur pour café, épices et noix.',
+    description:
+      'Un contrôle parfait sur toutes vos textures grâce aux 10 vitesses à boutons poussoirs + mode Pulse ! Le blender iLUX LX-926 en finition acier inoxydable brossé est accompagné d’un moulin broyeur dédié pour les ingrédients secs.',
+    specs: [
+      'Marque iLUX · Modèle LX-926 (Italian Design)',
+      '10 vitesses + fonction Pulse à boutons poussoirs',
+      'Corps robuste finition acier inoxydable brossé',
+      'Livré avec moulin broyeur (épices, café, arachides)'
+    ],
+    imageUrl: '/images/products/cuisine-blender-ilux-lx926-10vitesses.jpg',
+  },
+  {
+    id: 'cuisine-mixeur-plongeant-4en1-ilux-lx05',
+    slug: 'mixeur-plongeant-4en1-ilux-lx-05-fouet-hachoir-bol-doseur',
+    name: 'Mixeur Plongeant 4-en-1 iLUX LX-05 — Hachoir, Fouet, Bol Doseur & Support Mural',
+    category: 'maison',
+    price: 15500,
+    compareAtPrice: 19500,
+    stock: 12,
+    badge: 'Kit 4-en-1',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coffret mixeur plongeant multifonction 4-en-1 iLUX LX-05 : pied mixeur inox, bol hachoir, fouet pâtisserie, verre doseur et support mural.',
+    description:
+      'Préparez soupes veloutées, mayonnaise maison, purées pour bébé, chantilly et légumes hachés avec un seul kit compact ! Le mixeur plongeant 4-en-1 iLUX LX-05 dispose de 2 vitesses, d’une lame en acier inoxydable et d’un pied détachable facile à laver.',
+    specs: [
+      'Marque iLUX · Modèle LX-05 (4-en-1, Italian Design)',
+      'Moteur 2 vitesses rapide + lame en acier inoxydable',
+      'Inclus : pied mixeur, bol hachoir, fouet inox, verre doseur, support mural',
+      'Accessoires détachables · Prise en main ergonomique'
+    ],
+    imageUrl: '/images/products/cuisine-mixeur-plongeant-4en1-ilux-lx05.jpg',
+  },
+  {
+    id: 'cuisine-batteur-main-decakila-7vitesses-kemx016w',
+    slug: 'batteur-electrique-main-decakila-7-vitesses-120w-kemx016w',
+    name: 'Batteur Électrique à Main Decakila 7 Vitesses — 120 W (KEMX016W)',
+    category: 'maison',
+    price: 14000,
+    compareAtPrice: 17500,
+    stock: 12,
+    badge: '7 Vitesses',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Batteur pâtissier 7 vitesses Decakila 120 W livré avec 2 fouets inox + 2 crochets pétrisseurs et bouton d’éjection rapide.',
+    description:
+      'Réussissez vos génoises, blancs en neige, crèmes fouettées et pâtes à gâteaux sans effort ! Léger et stable grâce à son design à poser debout, le batteur Decakila KEMX016W offre 7 vitesses progressives et 2 paires de tiges en acier inoxydable.',
+    specs: [
+      'Marque Decakila · Modèle KEMX016W · 120 W (220-240 V)',
+      '7 vitesses réglables + bouton d’éjection rapide des fouets',
+      '2 paires d’accessoires inox : fouets + crochets pétrisseurs',
+      'Design stable à poser debout sur le plan de travail'
+    ],
+    imageUrl: '/images/products/cuisine-batteur-main-decakila-7vitesses-kemx016w.jpg',
+  },
+  {
+    id: 'cuisine-batteur-socle-decakila-3-5l-kemx012b',
+    slug: 'batteur-sur-socle-bol-inox-3-5l-decakila-250w-kemx012b',
+    name: 'Batteur sur Socle avec Bol Inox 3,5 L Decakila 250 W — Noir (KEMX012B)',
+    category: 'maison',
+    price: 32000,
+    compareAtPrice: 38000,
+    stock: 8,
+    badge: 'Bol Inox 3,5L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Robot batteur pâtissier sur socle Decakila 250 W avec grand bol inox 3,5 L, 5 vitesses + Turbo, 2 fouets et 2 crochets pétrisseurs.',
+    description:
+      'Gardez les mains libres pendant que vos pâtes à gâteaux, brioches, crèmes et meringues montent à la perfection ! Le batteur sur socle Decakila KEMX012B (250 W) combine un grand bol en acier inoxydable de 3,5 L, 5 vitesses + Turbo et un batteur détachable utilisable aussi à la main.',
+    specs: [
+      'Marque Decakila · Modèle KEMX012B · 250 W · Coloris Noir',
+      'Grand bol pâtissier en acier inoxydable 3,5 Litres',
+      '5 vitesses + fonction Turbo · Bouton d’éjection facile',
+      'Livré avec 2 fouets inox + 2 crochets pétrisseurs'
+    ],
+    imageUrl: '/images/products/cuisine-batteur-socle-decakila-3-5l-kemx012b.jpg',
   },
 ];
 
