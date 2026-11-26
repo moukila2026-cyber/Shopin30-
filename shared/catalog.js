@@ -2145,7 +2145,7 @@ export const NOUVEAUTES_SMART_MOBILIER_PRODUCTS = [
 ];
 
 // ==============================================================================
-// RAYON CUISINE & ART DE LA TABLE (8 PRODUITS — arrivage showroom Nov. 2026)
+// RAYON CUISINE & ART DE LA TABLE (30 PRODUITS — arrivage showroom Nov. 2026)
 // Prix Pèrôkadô = prix étiquette showroom + marge magasin (conforme politique <= 2 000 F)
 // ==============================================================================
 export const CUISINE_MAISON_PRODUCTS = [
@@ -2332,6 +2332,512 @@ export const CUISINE_MAISON_PRODUCTS = [
       'Gâteaux, tartes, viennoiseries · Fêtes & réceptions'
     ],
     imageUrl: '/images/products/cuisine-presentoir-gateau-cloche.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-cheqs-1-3l',
+    slug: 'carafe-frigo-luminarc-cheqs-verre-1-3l-couvercle-blanc',
+    name: 'Carafe Frigo Luminarc Cheqs 1,3 L en Verre — Couvercle Blanc',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 14,
+    badge: 'Luminarc 1,3L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe réfrigérateur Luminarc Cheqs 1,3 L en verre transparent à motif quadrillé en relief, anse ergonomique et couvercle blanc.',
+    description:
+      'Conçue pour se glisser facilement dans la porte du réfrigérateur ! Cette carafe Luminarc Cheqs de 1,3 L en verre résistant arbore un élégant motif quadrillé en bas et un couvercle blanc pratique qui protège eau, jus naturels et bissap des odeurs du frigo.',
+    specs: [
+      'Marque Luminarc · Modèle Cheqs Fridge Jug 1,3 L',
+      'Verre transparent haute qualité avec relief quadrillé',
+      'Couvercle blanc hermétique anti-odeurs',
+      'Format spécial porte de réfrigérateur · Lavable au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-cheqs-1-3l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-arc-1-3l',
+    slug: 'carafe-luminarc-arc-verre-1-3l-avec-couvercle',
+    name: 'Carafe Luminarc Arc 1,3 L en Verre Transparent avec Couvercle',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 16,
+    badge: 'Luminarc Arc',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Grand classique de la table : pichet Luminarc Arc 1,3 L en verre transparent évasé avec anse robuste et couvercle inclus.',
+    description:
+      'Indispensable au quotidien pour servir eau fraîche, jus de fruits ou thé glacé à table ! La carafe Luminarc Arc 1,3 L séduit par sa ligne évasée intemporelle, son bec verseur précis et son couvercle assorti.',
+    specs: [
+      'Marque Luminarc · Gamme Arc Jug 1,3 L (Réf. N1103)',
+      'Verre transparent solide à base large très stable',
+      'Couvercle de protection inclus',
+      'Eau, jus, bissap, gingembre · Entretien facile'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-arc-1-3l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-verre-motifs-yzh36',
+    slug: 'carafe-verre-transparent-motifs-geometriques-couvercle',
+    name: 'Carafe en Verre Transparent à Motifs Géométriques & Couvercle',
+    category: 'maison',
+    price: 4000,
+    compareAtPrice: 5500,
+    stock: 18,
+    badge: 'Petit prix',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Pichet en verre transparent décoré de motifs géométriques côtelés sur la base, avec anse confortable et couvercle.',
+    description:
+      'Une carafe lumineuse et pratique à petit prix pour tous les repas de la famille. Son verre moulé à motifs géométriques capte la lumière sur la table et offre une excellente prise en main.',
+    specs: [
+      'Verre transparent épais avec motifs géométriques en relief',
+      'Anse ergonomique et bec verseur anti-goutte',
+      'Couvercle de protection inclus · Réf. YZH-36',
+      'Idéale eau fraîche, jus maison et boissons de table'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-verre-motifs-yzh36.jpg',
+  },
+  {
+    id: 'cuisine-carafe-verre-poire-couvercle',
+    slug: 'carafe-verre-forme-poire-couvercle-bec-verseur',
+    name: 'Carafe en Verre Forme Poire avec Couvercle Bec Verseur',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 12,
+    badge: 'Couvercle Pratique',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Carafe galbée forme poire en verre transparent avec grande anse et couvercle translucide à bec verseur intégré.',
+    description:
+      'Élégante et fonctionnelle, cette carafe galbée en verre transparent dispose d’un couvercle ajusté qui retient les glaçons et tranches de citron lorsque vous versez. Parfaite pour les tables familiales et les réceptions.',
+    specs: [
+      'Verre transparent haute clarté, silhouette poire élégante',
+      'Couvercle blanc translucide avec bec verseur pratique',
+      'Grande anse en verre facile à saisir',
+      'Eau fraîche, citronnade, jus de fruits et cocktails'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-verre-poire-couvercle.jpg',
+  },
+  {
+    id: 'cuisine-bouteille-verre-1l-agrumes',
+    slug: 'bouteille-eau-verre-1l-imprime-agrumes-sirio-zagara',
+    name: 'Bouteille à Eau en Verre 1 L Imprimé Agrumes « Fresh from the Market »',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Design Italie',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Bouteille 1 litre en verre italien Decover au décor estival citrons & quadrillage bleu, avec bouchon métallique blanc à vis.',
+    description:
+      'Apportez une touche de fraîcheur méditerranéenne sur votre table ! Cette bouteille en verre de 1 litre (gamme Sirio Zagara Agrumes) ferme hermétiquement grâce à son bouchon métal à vis pour conserver eau fraîche, jus de citron, bissap ou lait au réfrigérateur.',
+    specs: [
+      'Contenance 1 Litre · Verre imprimé Sirio Zagara Agrumes (Decover)',
+      'Bouchon métallique blanc à vis hermétique',
+      'Décor citrons jaunes & quadrillage bleu « Fresh from the Market »',
+      'Format fin idéal pour la porte du réfrigérateur'
+    ],
+    imageUrl: '/images/products/cuisine-bouteille-verre-1l-agrumes.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-1l-liege',
+    slug: 'carafe-luminarc-verre-1l-bouchon-liege-naturel',
+    name: 'Carafe Luminarc 1 L en Verre avec Bouchon en Liège Naturel',
+    category: 'maison',
+    price: 10500,
+    compareAtPrice: 13500,
+    stock: 10,
+    badge: 'Made in France',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe cylindrique design Luminarc 1 L fabriquée en France, coiffée d’un authentique bouchon en liège naturel.',
+    description:
+      'Le chic minimaliste pour les belles tables ! Fabriquée en France par Luminarc, cette carafe cylindrique en verre cristallin de 1 litre s’accompagne d’un gros bouchon en liège naturel qui protège vos boissons avec style. Idéale aussi en idée cadeau.',
+    specs: [
+      'Marque Luminarc · Fabriquée en France (Réf. N3941)',
+      'Contenance 1 Litre · Verre transparent haute brillance',
+      'Bouchon épais en liège naturel amovible',
+      'Eau détox, jus frais, service de table haut de gamme'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-1l-liege.jpg',
+  },
+  {
+    id: 'cuisine-carafe-pasabahce-couvercle-violet',
+    slug: 'carafe-pasabahce-verre-col-evase-couvercle-violet',
+    name: 'Carafe Paşabahçe en Verre Col Évasé — Couvercle Violet',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 12,
+    badge: 'Verre Paşabahçe',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Carafe élégante Paşabahçe en verre épais à col évasé, livrée avec son couvercle souple violet anti-poussière.',
+    description:
+      'Alliez la solidité du verre Paşabahçe à une touche de couleur moderne ! Sa silhouette élancée se prend facilement en main par le col et son couvercle souple violet préserve la fraîcheur de vos boissons au réfrigérateur comme sur la table.',
+    specs: [
+      'Marque Paşabahçe · Verre épais transparent (Réf. DS26629)',
+      'Col évasé ergonomique facile à verser',
+      'Couvercle souple violet ajusté inclus',
+      'Eau, jus de fruits, boissons glacées · Passe au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-pasabahce-couvercle-violet.jpg',
+  },
+  {
+    id: 'cuisine-pichet-polycarbonate-1-4l-incassable',
+    slug: 'pichet-1-4l-polycarbonate-incassable-transparent-orca',
+    name: 'Pichet 1,4 L en Polycarbonate Incassable Transparent — Design Épuré',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 16,
+    badge: 'Incassable',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pichet 1,4 L aspect cristal en polycarbonate incassable ultra léger : idéal familles avec enfants, terrasses et restaurants.',
+    description:
+      'Toute la transparence du verre sans aucun risque de casse ! Ce pichet Orca de 1,4 L en polycarbonate alimentaire incassable affiche une ligne moderne à taille cintrée et un bec verseur précis. Parfait pour la maison, le jardin, les enfants ou la restauration.',
+    specs: [
+      'Contenance 1,4 Litre · Dimensions : Ø 11,2 × H 29 cm (Réf. 8832)',
+      'Polycarbonate alimentaire transparent 100 % incassable',
+      'Léger, prise en main facile par la taille cintrée',
+      'Idéal familles, enfants, terrasses, maquis & restaurants'
+    ],
+    imageUrl: '/images/products/cuisine-pichet-polycarbonate-1-4l-incassable.jpg',
+  },
+  {
+    id: 'cuisine-carafe-plastique-martele-1-9l',
+    slug: 'carafe-plastique-transparent-1-9l-effet-martele-couvercle',
+    name: 'Carafe Grande Capacité 1,9 L Effet Verre Martelé — Vert d’Eau ou Transparent',
+    category: 'maison',
+    price: 7000,
+    compareAtPrice: 9000,
+    stock: 12,
+    badge: 'Format XXL 1,9L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Très grand pichet de 1,9 L (64 oz) en plastique cristallin effet martelé, léger et résistant, avec anse et couvercle.',
+    description:
+      'Servez toute la famille ou vos invités sans recharger sans cesse ! Cette grande carafe de 1,9 litre imite à merveille le verre martelé tout en restant légère et résistante aux chocs. Disponible en teinte vert d’eau ou cristal transparent (précisez votre choix dans la commande).',
+    specs: [
+      'Très grande capacité 1,9 Litre (64,25 oz) · Réf. 179650940',
+      'Plastique cristallin épais effet verre martelé',
+      'Couvercle ajusté + grande anse robuste',
+      'Coloris au choix : Vert d’eau ou Transparent'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-plastique-martele-1-9l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-plastique-1-5l-bleu-barok',
+    slug: 'carafe-plastique-1-5l-bleu-marine-barok-strie',
+    name: 'Carafe 1,5 L Bleu Marine Barok Striée avec Couvercle',
+    category: 'maison',
+    price: 6000,
+    compareAtPrice: 7900,
+    stock: 14,
+    badge: 'Style Barok 1,5L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Pichet élancé 1,5 L en plastique translucide bleu marine à fines stries verticales, avec anse et couvercle assorti.',
+    description:
+      'Une note de fraîcheur bleu marine sur votre table ! Légère, incassable et facile à manipuler même par les enfants, cette carafe Barok de 1,5 L aux stries verticales modernes s’emporte partout : salle à manger, terrasse ou pique-nique.',
+    specs: [
+      'Capacité 1,5 Litre · Modèle Barok Réf. 6850',
+      'Plastique alimentaire translucide bleu marine résistant aux chocs',
+      'Fines stries verticales modernes · Anse et couvercle assortis',
+      'Légère et pratique pour toute la famille'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-plastique-1-5l-bleu-barok.jpg',
+  },
+  {
+    id: 'cuisine-lot-4-mini-bocaux-hexagonaux',
+    slug: 'lot-4-mini-bocaux-hexagonaux-verre-couvercles-noir-rouge',
+    name: 'Lot de 4 Mini Bocaux Hexagonaux en Verre — Couvercles Noir & Rouge',
+    category: 'maison',
+    price: 2500,
+    compareAtPrice: 3500,
+    stock: 20,
+    badge: 'Lot de 4',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      '4 petits bocaux hexagonaux en verre transparent avec couvercles métalliques à vis (2 noirs + 2 rouges) pour épices, miel et confitures.',
+    description:
+      'Idéaux pour organiser vos épices, poivre, piment, miel, confitures maison ou graines ! Ce lot de 4 mini bocaux hexagonaux en verre épais (Réf. DS26641) assure une fermeture hermétique grâce à leurs couvercles métalliques à vis.',
+    specs: [
+      'Lot de 4 mini bocaux hexagonaux en verre transparent',
+      'Couvercles métalliques hermétiques à vis (2 noirs + 2 rouges)',
+      'Parfaits pour épices, miel, confitures, herbes & sauces',
+      'Référence showroom DS26641'
+    ],
+    imageUrl: '/images/products/cuisine-lot-4-mini-bocaux-hexagonaux.jpg',
+  },
+  {
+    id: 'cuisine-bocal-boule-verre-3l-bleu',
+    slug: 'grand-bocal-boule-verre-3-litres-couvercle-bleu',
+    name: 'Grand Bocal Boule en Verre 3 Litres — Couvercle Métal Bleu',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 14,
+    badge: 'Format 3 L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Très grand bocal rond façon bonbonnière en verre épais de 3 litres avec large ouverture et couvercle métallique bleu.',
+    description:
+      'Un bocal généreux de 3 litres au format boule classique, parfait pour conserver biscuits, gâteaux secs, bonbons, arachides, gari, sucre ou pâtes tout en gardant le contenu bien visible.',
+    specs: [
+      'Grande capacité 3 Litres · Verre transparent épais',
+      'Large ouverture pratique pour servir facilement',
+      'Couvercle métallique bleu à vis · Réf. VAI0162',
+      'Idéal biscuits, bonbons, céréales, arachides et conserves sèches'
+    ],
+    imageUrl: '/images/products/cuisine-bocal-boule-verre-3l-bleu.jpg',
+  },
+  {
+    id: 'maison-corbeille-mandala-orange',
+    slug: 'corbeille-poubelle-deco-mandala-multicolore-rebord-orange',
+    name: 'Corbeille Déco Motif Mandala Multicolore — Rebord Orange',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Déco Maison',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Corbeille à papier décorative en plastique robuste imprimé mosaïque mandala colorée avec rebord orange.',
+    description:
+      'Ajoutez une note chaleureuse et artistique à votre bureau, chambre ou salon ! Cette corbeille légère et lavable en un coup d’éponge habille votre intérieur de motifs mandalas colorés.',
+    specs: [
+      'Plastique rigide résistant et facile à nettoyer',
+      'Imprimé mosaïque mandala multicolore + rebord orange',
+      'Format idéal chambre, bureau, salon ou salle de bain',
+      'Légère et empilable'
+    ],
+    imageUrl: '/images/products/maison-corbeille-mandala-orange.jpg',
+  },
+  {
+    id: 'maison-corbeille-pat-patrouille-bleue',
+    slug: 'corbeille-chambre-enfant-pat-patrouille-bleue',
+    name: 'Corbeille Chambre Enfant Pat’Patrouille (Paw Patrol) — Bleue',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Chambre Enfant',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Corbeille à papier bleue illustrée des héros Pat’Patrouille : parfaite pour apprendre le rangement aux enfants.',
+    description:
+      'Les petits fans de Pat’Patrouille vont adorer ! Cette corbeille solide en plastique lisse aux couleurs vives décore la chambre d’enfant ou le coin bureau tout en restant ultra facile à laver.',
+    specs: [
+      'Décor officiel Pat’Patrouille (Chase, Stella, Marcus, Ruben, Everest)',
+      'Plastique robuste sans bords coupants, rebord bleu',
+      'Idéale chambre d’enfant, salle de jeux ou bureau d’écolier',
+      'Nettoyage facile à l’eau savonneuse'
+    ],
+    imageUrl: '/images/products/maison-corbeille-pat-patrouille-bleue.jpg',
+  },
+  {
+    id: 'maison-organisateur-placard-plastart-4-7l',
+    slug: 'organisateur-placard-suspendu-plastart-4-7l-blanc',
+    name: 'Organisateur de Placard Suspendu Plastart 4,7 L — Blanc (25×14×36 cm)',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 16,
+    badge: 'Gain de place',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Panier de rangement suspendu ajouré Plastart 4,7 L à accrocher sur porte de placard (cuisine ou salle de bain), sans perçage.',
+    description:
+      'Optimisez l’intérieur de vos placards sans aucun trou ni vis ! Cet organisateur suspendu Plastart (fabriqué en Turquie) s’accroche simplement sur la porte d’un meuble de cuisine ou de salle de bain pour ranger produits ménagers, éponges, sacs ou flacons.',
+    specs: [
+      'Marque Plastart (Irak Plastik, Turquie) · Réf. TE-550 / VAI0123',
+      'Capacité 4,7 Litres · Dimensions : 25 × 14 × 36 cm',
+      'Installation instantanée sur porte de placard sans perçage',
+      'Parois ajourées respirantes · Cuisine & salle de bain'
+    ],
+    imageUrl: '/images/products/maison-organisateur-placard-plastart-4-7l.jpg',
+  },
+  {
+    id: 'maison-nappe-hevoa-150x250-florale',
+    slug: 'nappe-de-table-hevoa-150x250-motif-floral-pastel',
+    name: 'Nappe de Table Hevoa Home & Co. 150×250 cm — Motif Floral Pastel',
+    category: 'maison',
+    price: 16500,
+    compareAtPrice: 21000,
+    stock: 8,
+    badge: 'Grand Format',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grande nappe rectangulaire 150×250 cm (6 à 8 couverts) fond blanc à imprimé floral aquarelle rose poudré, beige et jaune doux.',
+    description:
+      'Habillez votre salle à manger avec raffinement ! Cette grande nappe Hevoa Home & Co. de 150 × 250 cm illumine la table grâce à ses motifs floraux aquarelle très doux. Parfaite pour les repas de famille, réceptions et fêtes.',
+    specs: [
+      'Marque Hevoa Home & Co. · Dimensions : 150 × 250 cm',
+      'Convient aux grandes tables rectangulaires de 6 à 8 personnes',
+      'Motif floral aquarelle pastel (rose poudré, beige doré, jaune)',
+      'Finitions ourlées soignées · Entretien facile'
+    ],
+    imageUrl: '/images/products/maison-nappe-hevoa-150x250-florale.jpg',
+  },
+  {
+    id: 'maison-rideau-orca-140x270-taupe',
+    slug: 'rideau-orca-creations-140x270cm-taupe-raye',
+    name: 'Rideau Orca Créations 140×270 cm — Taupe à Fines Rayures',
+    category: 'maison',
+    price: 8500,
+    compareAtPrice: 11500,
+    stock: 12,
+    badge: '140×270 cm',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Panneau de rideau prêt-à-poser Orca Créations 140×270 cm coloris taupe chic avec fines rayures verticales lumineuses.',
+    description:
+      'Apportez une atmosphère chaleureuse et moderne à votre salon ou chambre ! Ce rideau grande hauteur 140 × 270 cm de la gamme Orca Créations offre un tombé fluide dans une teinte taupe intemporelle facile à assortir.',
+    specs: [
+      'Marque Orca Créations · Dimensions : 140 × 270 cm',
+      'Coloris taupe élégant à fines rayures verticales',
+      'Prêt-à-poser pour fenêtres et baies vitrées',
+      'Salon, chambre, bureau · Entretien facile'
+    ],
+    imageUrl: '/images/products/maison-rideau-orca-140x270-taupe.jpg',
+  },
+  {
+    id: 'cuisine-lot-4-serviettes-table-coton',
+    slug: 'lot-4-serviettes-de-table-coton-40x40cm-blanc-casse',
+    name: 'Lot de 4 Serviettes de Table en Coton 40×40 cm — Blanc Cassé',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 16,
+    badge: '100% Coton',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Coffret rubané de 4 serviettes de table 40×40 cm en coton demi-blanc (blanc cassé) : élégance intemporelle pour vos repas.',
+    description:
+      'Complétez votre art de la table avec ce lot de 4 serviettes en coton blanc cassé (Réf. TC-5083J), présentées nouées d’un ruban assorti. Douces, absorbantes et lavables en machine, elles subliment vos dîners et réceptions.',
+    specs: [
+      'Lot de 4 serviettes de table · Dimensions : 40 × 40 cm',
+      'Tissu coton demi-blanc (blanc cassé) doux et résistant',
+      'Présentation élégante avec ruban · Réf. TC-5083J',
+      'Lavables en machine · Idéal réceptions & usage quotidien'
+    ],
+    imageUrl: '/images/products/cuisine-lot-4-serviettes-table-coton.jpg',
+  },
+  {
+    id: 'cuisine-lot-4-sets-table-ningxin',
+    slug: 'lot-4-sets-de-table-tresses-ningxin-45x30cm-blanc-noir',
+    name: 'Lot de 4 Sets de Table Tressés Ningxin 45×30 cm — Blanc & Rayures Noires',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 14,
+    badge: 'Lot de 4 Sets',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      '4 sets de table tressés lavables 45×30 cm blancs à fines rayures noires pointillées : protègent et décorent votre table.',
+    description:
+      'Protégez votre table des taches et de la chaleur avec style ! Ces 4 sets de table Ningxin (45 × 30 cm) au tissage moderne blanc et noir s’essuient d’un simple coup d’éponge et s’accordent à toute votre vaisselle.',
+    specs: [
+      'Lot de 4 sets de table · Dimensions : 45 × 30 cm chacun',
+      'Matière tressée résistante à la chaleur et anti-taches',
+      'Design sobre blanc à fines rayures noires',
+      'Nettoyage express à l’éponge humide'
+    ],
+    imageUrl: '/images/products/cuisine-lot-4-sets-table-ningxin.jpg',
+  },
+  {
+    id: 'maison-lot-4-serviettes-bain-julie',
+    slug: 'lot-4-serviettes-de-bain-eponge-julie-50x90cm',
+    name: 'Lot de 4 Serviettes de Bain Éponge Julie (50×90 cm) — Dégradé Rose & Blanc',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 10,
+    badge: 'Lot de 4 Éponge',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pack cadeau de 4 serviettes de toilette éponge épaisse 50×90 cm (gamme Julie) aux tons doux rose poudré, mauve et blanc.',
+    description:
+      'Offrez-vous la douceur d’un linge de bain de qualité ! Ce pack de 4 serviettes de toilette Julie (50 × 90 cm) en éponge moelleuse et très absorbante est présenté noué d’un ruban satin — parfait pour la salle de bain ou comme cadeau de mariage / pendaison de crémaillère.',
+    specs: [
+      'Lot de 4 serviettes de toilette · Dimensions : 50 × 90 cm',
+      'Éponge épaisse, douce et hautement absorbante (gamme Julie)',
+      'Assortiment harmonieux tons rose poudré / mauve / blanc',
+      'Présentation ruban satin · Idéal maison ou cadeau'
+    ],
+    imageUrl: '/images/products/maison-lot-4-serviettes-bain-julie.jpg',
+  },
+  {
+    id: 'cuisine-lot-3-bocaux-verre-argente',
+    slug: 'lot-3-bocaux-verre-couvercle-metal-argente-gradues',
+    name: 'Lot de 3 Bocaux en Verre Couvercle Métal Argenté à Vis (Grand, Moyen, Petit)',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 14,
+    badge: 'Trio de Bocaux',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Trio pratique de 3 bocaux en verre transparent de tailles graduées avec couvercles métalliques argentés hermétiques à vis.',
+    description:
+      'Un trio malin pour tout ranger dans la cuisine ! Ce lot réunit 3 bocaux en verre transparent (grand, moyen et petit format) munis de couvercles métalliques argentés brossés à vis pour garder café, sucre, pâtes, épices ou biscuits bien au sec.',
+    specs: [
+      'Lot de 3 tailles graduées : Grand + Moyen + Petit',
+      'Verre transparent solide à large ouverture',
+      'Couvercles métalliques argentés brossés à vis',
+      'Café, sucre, riz, épices, biscuits · Faciles à laver'
+    ],
+    imageUrl: '/images/products/cuisine-lot-3-bocaux-verre-argente.jpg',
+  },
+  {
+    id: 'cuisine-balance-digitale-decakila-5kg',
+    slug: 'balance-de-cuisine-digitale-decakila-5kg-bol-transparent-kmtt092w',
+    name: 'Balance de Cuisine Digitale Decakila 5 kg avec Bol Transparent — KMTT092W',
+    category: 'maison',
+    price: 8500,
+    compareAtPrice: 11500,
+    stock: 10,
+    badge: 'Précision 1g',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Balance électronique de précision Decakila (2 g à 5 000 g) avec grand écran LCD rétroéclairé vert, fonction Tare et bol transparent inclus.',
+    description:
+      'Réussissez toutes vos pâtisseries, recettes et portions au gramme près ! La balance digitale Decakila KMTT092W pèse de 2 g jusqu’à 5 kg avec une précision de 1 g, dispose d’un écran LCD vert ultra lisible, de la fonction Tare et est livrée avec son bol doseur transparent amovible.',
+    specs: [
+      'Marque Decakila · Modèle KMTT092W · Portée 2 g à 5 000 g (5 kg)',
+      'Haute précision au gramme près (1 g) · Fonction Tare',
+      'Grand écran LCD rétroéclairé vert très lisible',
+      'Bol transparent amovible inclus · Pâtisserie & cuisine quotidienne'
+    ],
+    imageUrl: '/images/products/cuisine-balance-digitale-decakila-5kg.jpg',
   },
 ];
 
