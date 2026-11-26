@@ -151,7 +151,6 @@ export function CartDrawer({
 
   const waveMerchantNumber = settings?.wavePhone || BRAND.defaultWavePhone;
   const wavePaymentUrl = settings?.wavePaymentUrl || '';
-  const saspayEnabled = Boolean(settings?.saspayEnabled);
   const waveAutoCheckout = Boolean(settings?.waveAutoCheckout);
   const shippingDisclaimer = settings?.shippingDisclaimer || BRAND.shippingDisclaimer;
 
@@ -207,8 +206,8 @@ export function CartDrawer({
       setRequestId(makeRequestId());
       if (onOrderSuccess) onOrderSuccess();
 
-      // Si SasPay ou l'API Wave Business Checkout est active, rediriger instantanément vers la page de paiement !
-      const redirectUrl = res.checkoutUrl || res.waveCheckoutUrl;
+      // Si l'API Wave Business Checkout est active, ouvrir automatiquement l'application Wave !
+      const redirectUrl = res.waveCheckoutUrl || res.checkoutUrl;
       if (redirectUrl && typeof window !== 'undefined') {
         window.location.href = redirectUrl;
         return;
@@ -619,43 +618,23 @@ export function CartDrawer({
                 </div>
               </div>
 
-              {/* Bloc 2 : Paiement en ligne instantané (SasPay ou Wave) */}
+              {/* Bloc 2 : Paiement en ligne 100% Wave Côte d'Ivoire */}
               <div className="bg-white rounded-md border-2 border-[#009EE3] p-4 space-y-3">
                 <div className="flex items-center justify-between border-b border-[#EAEDED] pb-2">
                   <h3 className="text-sm font-bold text-[#0F1111] flex items-center gap-2">
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#009EE3] text-white font-extrabold text-xs">
-                      {saspayEnabled ? 'S' : 'W'}
+                      W
                     </span>
-                    <span>
-                      {saspayEnabled
-                        ? '2. Paiement en ligne instantané sécurisé (SasPay)'
-                        : '2. Paiement en ligne Wave uniquement'}
-                    </span>
+                    <span>2. Paiement sécurisé Wave Côte d’Ivoire uniquement</span>
                   </h3>
                   <Lock className="w-4 h-4 text-[#009EE3]" />
                 </div>
 
-                {saspayEnabled ? (
+                {waveAutoCheckout ? (
                   <div className="bg-[#EBF8FF] rounded p-3.5 border border-[#B3E5FC] text-xs text-[#053B54] space-y-1.5">
                     <p className="font-bold flex items-center gap-1.5">
                       <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
-                      <span>
-                        Paiement instantané 100% automatisé (Wave, Orange Money, MTN, Moov & Carte)
-                      </span>
-                    </p>
-                    <p>
-                      En cliquant sur le bouton ci-dessous, vous serez redirigé vers le portail
-                      sécurisé <strong>SasPay</strong> pour régler exactement{' '}
-                      <strong>{formatFcfa(grandTotal)}</strong>. Dès confirmation du paiement, votre
-                      commande passe automatiquement en préparation avec votre{' '}
-                      <strong>Code QR de suivi en direct</strong> !
-                    </p>
-                  </div>
-                ) : waveAutoCheckout ? (
-                  <div className="bg-[#EBF8FF] rounded p-3.5 border border-[#B3E5FC] text-xs text-[#053B54] space-y-1.5">
-                    <p className="font-bold flex items-center gap-1.5">
-                      <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
-                      <span>Paiement Wave Business 100% Automatique</span>
+                      <span>Paiement Wave Business 100% Automatique (0 F de surcoût)</span>
                     </p>
                     <p>
                       En cliquant sur le bouton ci-dessous, votre application{' '}
@@ -671,16 +650,19 @@ export function CartDrawer({
                       <div className="flex items-center justify-between gap-2">
                         <div>
                           <span className="text-[11px] text-[#565959] block">
-                            Envoyez <strong>{formatFcfa(grandTotal)}</strong> au n° Wave Pèrôkadô :
+                            Envoyez exactement <strong>{formatFcfa(grandTotal)}</strong> au n° Wave Paiements Pèrôkadô :
                           </span>
                           <strong className="text-base font-extrabold text-[#053B54] tracking-wide">
                             {waveMerchantNumber}
                           </strong>
+                          <span className="block text-[10px] text-[#053B54]/80 mt-0.5">
+                            (Numéro dédié uniquement aux encaissements Wave — Assistance WhatsApp au +225 05 01 30 33 43)
+                          </span>
                         </div>
                         <button
                           type="button"
                           onClick={copyWaveNumber}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white text-xs font-bold cursor-pointer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-[#009EE3] hover:bg-[#0086C3] text-white text-xs font-bold cursor-pointer shrink-0"
                         >
                           {copiedWave ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                           <span>{copiedWave ? 'Copié' : 'Copier'}</span>

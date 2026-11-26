@@ -266,7 +266,7 @@ export function Footer({
               <img
                 src="/images/icon-512.png"
                 alt="Pèrôkadô"
-                className="w-7 h-7 rounded bg-white p-0.5 object-cover"
+                className="w-8 h-8 rounded-lg object-contain shrink-0"
               />
               <span>
                 © {new Date().getFullYear()} <strong>Pèrôkadô</strong> — Commerce électronique à
@@ -276,10 +276,7 @@ export function Footer({
 
             <div className="flex flex-wrap items-center justify-center gap-2 text-[11px]">
               <span className="px-2.5 py-1 rounded bg-[#009EE3] text-white font-extrabold">
-                WAVE CI
-              </span>
-              <span className="px-2.5 py-1 rounded bg-[#232F3E] border border-white/15 text-white font-semibold">
-                Mobile Money (SasPay)
+                PAIEMENT 100% WAVE CI (+225 05 46 69 74 78)
               </span>
               <span className="px-2.5 py-1 rounded bg-[#232F3E] border border-white/15 text-[#25D366] font-semibold">
                 HTTPS / TLS Chiffré
