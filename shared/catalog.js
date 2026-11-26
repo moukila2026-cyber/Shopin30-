@@ -3237,6 +3237,129 @@ export const CUISINE_MAISON_LOT3_PRODUCTS = [
   },
 ];
 
+export const CUISINE_MAISON_LOT4_PRODUCTS = [
+  {
+    id: 'vaisselle-mug-maison-pain-epices',
+    slug: 'mug-maison-pain-epices-noel',
+    name: 'Mug « Maison en Pain d’Épices » — Céramique Relief, Anse Sucre d’Orge',
+    category: 'maison',
+    price: 2500,
+    compareAtPrice: 3400,
+    stock: 10,
+    badge: 'Édition Noël',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug en céramique en forme de maison en pain d’épices, anse rayée sucre d’orge : le cadeau de Noël qui fait sourire.',
+    description:
+      'Une maison en pain d’épices sculptée dans la céramique : toit enneigé, fenêtre, sucre d’orge et anse rayée rouge et blanc. Le relief se voit et se touche, l’intérieur émaillé garde le chocolat chaud, le café ou le lait de Noël à température. Un objet déco à poser sur l’étagère et un cadeau original pour les fêtes.',
+    specs: [
+      'Mug en céramique émaillée — décor maison en pain d’épices',
+      'Anse rayée rouge & blanc façon sucre d’orge',
+      'Contenance 300 ml environ · décor en relief',
+      'Intérieur émaillé brun, facile à laver',
+      'Lavage à la main conseillé pour préserver le relief'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-maison-pain-epices.jpg',
+  },
+  {
+    id: 'vaisselle-mug-ceramique-2-tons-menthe-bleu-280ml',
+    slug: 'mug-ceramique-2-tons-menthe-bleu-280ml',
+    name: 'Mug Céramique 2 Tons — Menthe & Bleu, Anse Ronde 280 ml',
+    category: 'maison',
+    price: 1700,
+    compareAtPrice: 2300,
+    stock: 20,
+    badge: '2 tons',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug en céramique vert menthe à anse ronde bleu ciel : le contraste 2 tons qui colore le café du matin.',
+    description:
+      'Un mug en céramique émaillée vert menthe, rehaussé d’une anse ronde bleu ciel qui fait tout le charme. Format 280 ml idéal pour le café, le thé ou le chocolat chaud, paroi épaisse qui garde la boisson chaude. Sa couleur pastel s’accorde avec toutes les cuisines.',
+    specs: [
+      'Mug en céramique émaillée — vert menthe & bleu ciel',
+      'Contenance 280 ml · réf. GB833-K0650',
+      'Anse ronde pleine, prise en main facile',
+      'Paroi épaisse qui conserve la chaleur',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-ceramique-2-tons-menthe-bleu-280ml.jpg',
+  },
+  {
+    id: 'vaisselle-mug-ceramique-420ml-motif-geometrique',
+    slug: 'mug-ceramique-420ml-motif-geometrique-terracotta',
+    name: 'Mug Céramique 420 ml Motif Géométrique — Terracotta & Anse Bleu',
+    category: 'maison',
+    price: 2900,
+    compareAtPrice: 3900,
+    stock: 12,
+    badge: '420 ml',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grand mug en céramique terracotta à rayures blanches peintes et anse bleu pastel : 42 cl pour les grandes soifs de café.',
+    description:
+      'Un mug généreux de 420 ml au corps terracotta, décoré de rayures blanches peintes à la main, avec une anse ronde bleu pastel. Le contraste terre cuite et bleu en fait une pièce déco autant qu’un mug du quotidien. Paroi épaisse, base stable, parfait pour le thé, le café au lait ou le chocolat chaud.',
+    specs: [
+      'Mug en céramique émaillée — terracotta, rayures blanches',
+      'Contenance 420 ml · réf. GB659-SU2423',
+      'Anse ronde bleu pastel, base stable',
+      'Grand format pour thé et café au lait',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-ceramique-420ml-motif-geometrique.jpg',
+  },
+  {
+    id: 'vaisselle-mug-gres-motif-cafe-terracotta',
+    slug: 'mug-gres-motif-cafe-terracotta-1400',
+    name: 'Mug en Grès Motif « Coffee » — Terracotta, 9 × 7,6 × 10 cm',
+    category: 'maison',
+    price: 1400,
+    compareAtPrice: 1900,
+    stock: 24,
+    badge: 'Grès',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug en grès terracotta avec l’inscription « Coffee » en blanc : simple, solide et à petit prix.',
+    description:
+      'Un mug en grès couleur terracotta, orné de l’inscription « Coffee » manuscrite en blanc. Dimensions 9 × 7,6 × 10 cm, contenance confortable pour un café ou un thé. Le grès émaillé est robuste, garde la chaleur et vieillit sans perdre sa couleur : le mug du quotidien, à prix doux.',
+    specs: [
+      'Mug en grès émaillé — terracotta, inscription « Coffee »',
+      'Dimensions 9 × 7,6 × 10 cm · réf. KLU9A-V318',
+      'Contenance 300 ml environ',
+      'Grès robuste, intérieur émaillé blanc',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-gres-motif-cafe-terracotta.jpg',
+  },
+  {
+    id: 'vaisselle-duo-mugs-visages-ligne-blanche',
+    slug: 'duo-mugs-visages-trait-blanc-bleu-terracotta',
+    name: 'Duo de Mugs Décor Visage au Trait — Bleu & Terracotta',
+    category: 'maison',
+    price: 2800,
+    compareAtPrice: 3700,
+    stock: 10,
+    badge: 'Duo design',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Deux mugs en céramique mate, l’un bleu grisé l’autre terracotta, ornés d’un visage dessiné au trait blanc.',
+    description:
+      'Un duo de mugs en céramique mate au décor minimaliste : un visage dessiné d’un seul trait blanc, comme une illustration d’artiste. L’un bleu grisé, l’autre terracotta, ils forment un contraste doux et moderne sur une étagère ou une table. Paroi épaisse, base large stable, prise en main confortable grâce à l’anse carrée.',
+    specs: [
+      'Duo de mugs en céramique mate — bleu grisé & terracotta',
+      'Décor visage au trait blanc, style illustration',
+      'Contenance 300 ml environ par mug',
+      'Anse carrée, base large stable',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-visages-ligne-blanche.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -3247,6 +3370,7 @@ export const INITIAL_PRODUCTS = [
   ...VAISSELLE_ART_TABLE_PRODUCTS,
   ...CUISINE_MAISON_LOT2_PRODUCTS,
   ...CUISINE_MAISON_LOT3_PRODUCTS,
+  ...CUISINE_MAISON_LOT4_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',

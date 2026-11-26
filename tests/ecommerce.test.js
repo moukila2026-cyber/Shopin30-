@@ -1036,3 +1036,55 @@ test('14. Troisième arrivage Maison — tasses & mugs : 12 produits (coffrets d
   assert.equal(mugsOrder.data.order.deliveryFee, 1000);
   assert.equal(mugsOrder.data.order.total, 4950);
 });
+
+test('15. Quatrième arrivage Maison — mugs déco : 5 produits (maison pain d’épices, mug 2 tons, mug géométrique 420 ml, mug grès « Coffee », duo visages)', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  // [id, prix etiquette showroom (0 = prix suggere par la boutique), prix Pèrôkadô attendu]
+  const expectedDeco = [
+    ['vaisselle-mug-maison-pain-epices', 0, 2500],
+    ['vaisselle-mug-ceramique-2-tons-menthe-bleu-280ml', 1700, 1700],
+    ['vaisselle-mug-ceramique-420ml-motif-geometrique', 2900, 2900],
+    ['vaisselle-mug-gres-motif-cafe-terracotta', 1400, 1400],
+    ['vaisselle-duo-mugs-visages-ligne-blanche', 0, 2800],
+  ];
+
+  for (const [id, labelPrice, expectedSellPrice] of expectedDeco) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit lot 4 ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'maison');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    if (labelPrice > 0) {
+      const margin = prod.price - labelPrice;
+      assert.ok(margin >= 0 && margin <= 2000, `Marge ${margin} FCFA conforme pour ${id}`);
+    }
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+    assert.ok(prod.imageUrl.startsWith('/images/products/'), `Photo studio pour ${id}`);
+    assert.ok(prod.specs.length >= 4, `${id} dispose de specs détaillées`);
+    assert.ok(prod.compareAtPrice > prod.price, `${id} affiche un prix barré cohérent`);
+  }
+
+  // Deux mugs grès « Coffee » (1 400 F) + une maison pain d’épices (2 500 F) : 5 300 F + 1 000 F de livraison Daloa
+  const decoOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_maison_lot4_daloa_01',
+      customerName: 'Fatou Bamba',
+      customerPhone: '0755443322',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Tazibouo',
+      deliverySlot: 'soir',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0755443322',
+      waveTransactionRef: 'WV_MAISON_LOT4_DALOA_01',
+      items: [
+        { productId: 'vaisselle-mug-gres-motif-cafe-terracotta', quantity: 2 },
+        { productId: 'vaisselle-mug-maison-pain-epices', quantity: 1 },
+      ],
+    },
+  });
+  assert.equal(decoOrder.status, 201);
+  assert.equal(decoOrder.data.order.deliveryFee, 1000);
+  assert.equal(decoOrder.data.order.total, 6300);
+});

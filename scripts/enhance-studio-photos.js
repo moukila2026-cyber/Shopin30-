@@ -570,7 +570,60 @@ const TASSES_MUGS_JOBS = [
   },
 ];
 
-export { VAISSELLE_JOBS, ART_TABLE_JOBS, TASSES_MUGS_JOBS };
+export { VAISSELLE_JOBS, ART_TABLE_JOBS, TASSES_MUGS_JOBS, TASSES_MUGS_LOT2_JOBS };
+
+const TASSES_MUGS_LOT2_JOBS = [
+  // ——— Mug « maison en pain d'épices » de Noël ———
+  {
+    src: '20261125_163542.jpg',
+    out: 'vaisselle-mug-maison-pain-epices.jpg',
+    mask: 'box',
+    crop: { left: 0.07, top: 0.1, width: 0.55, height: 0.85 },
+    exposure: 1.06,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+  // ——— Mug céramique 2 tons menthe & bleu 280 ml (1 700 F) ———
+  {
+    src: '20261125_163643.jpg',
+    out: 'vaisselle-mug-ceramique-2-tons-menthe-bleu-280ml.jpg',
+    mask: 'box',
+    crop: { left: 0.1, top: 0.1, width: 0.62, height: 0.74 },
+    exposure: 1.04,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+  // ——— Mug céramique 420 ml motif géométrique terracotta (2 900 F) ———
+  {
+    src: '20261125_163654.jpg',
+    out: 'vaisselle-mug-ceramique-420ml-motif-geometrique.jpg',
+    mask: 'box',
+    crop: { left: 0.05, top: 0.2, width: 0.58, height: 0.62 },
+    exposure: 1.04,
+    saturation: 1.04,
+    contrast: 1.12,
+  },
+  // ——— Mug grès motif « Coffee » terracotta (1 400 F) ———
+  {
+    src: '20261125_163708.jpg',
+    out: 'vaisselle-mug-gres-motif-cafe-terracotta.jpg',
+    mask: 'box',
+    crop: { left: 0.06, top: 0.02, width: 0.78, height: 0.92 },
+    exposure: 1.05,
+    saturation: 1.04,
+    contrast: 1.12,
+  },
+  // ——— Duo de mugs décor visage au trait ———
+  {
+    src: '20261125_163611.jpg',
+    out: 'vaisselle-duo-mugs-visages-ligne-blanche.jpg',
+    mask: 'box',
+    crop: { left: 0, top: 0.04, width: 0.76, height: 0.74 },
+    exposure: 1.06,
+    saturation: 1.04,
+    contrast: 1.12,
+  },
+];
 
 async function buildStudioImage(job) {
   const inputPath = path.join(INPUT_DIR, job.src);
@@ -766,7 +819,9 @@ async function main() {
         ? VAISSELLE_JOBS
         : BATCH === 'tasses'
           ? TASSES_MUGS_JOBS
-          : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS, ...TASSES_MUGS_JOBS];
+          : BATCH === 'tasses2'
+            ? TASSES_MUGS_LOT2_JOBS
+            : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS, ...TASSES_MUGS_JOBS, ...TASSES_MUGS_LOT2_JOBS];
   for (const job of jobs) {
     try {
       await buildStudioImage(job);
