@@ -15,6 +15,7 @@ import {
   CUISINE_MAISON_LOT2_PRODUCTS,
   CUISINE_MAISON_LOT3_PRODUCTS,
   CUISINE_MAISON_LOT4_PRODUCTS,
+  CUISINE_MAISON_LOT5_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   QUINCAILLERIE_BTP_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
@@ -659,6 +660,45 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_maison_lot4_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente du cinquieme arrivage Maison (mugs, tasses et
+          // verrerie de service du showroom du 25/11/2026) : duos de mugs 2 tons,
+          // mugs porcelaine/gres, bocaux, carafes et pichet Luminarc.
+          const { rows: lot5SyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_maison_lot5_v1_synced'`
+          );
+          if (lot5SyncRows.length === 0) {
+            for (const p of CUISINE_MAISON_LOT5_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_maison_lot5_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

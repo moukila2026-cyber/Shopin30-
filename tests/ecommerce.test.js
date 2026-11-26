@@ -1088,3 +1088,51 @@ test('15. Quatrième arrivage Maison — mugs déco : 5 produits (maison pain d�
   assert.equal(decoOrder.data.order.deliveryFee, 1000);
   assert.equal(decoOrder.data.order.total, 6300);
 });
+
+test('16. Cinquième arrivage Maison — mugs, tasses & verrerie de service : 12 produits (duos 2 tons, porcelaine, bocaux, carafes, pichet Luminarc)', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  // [id, prix etiquette showroom (0 = prix suggere par la boutique), prix Pèrôkadô attendu]
+  const expectedService = [
+    ['vaisselle-duo-mugs-coteles-2-tons', 0, 4000],
+    ['vaisselle-mug-porcelaine-2-tons-raye', 1600, 1600],
+    ['vaisselle-duo-mugs-gres-2-tons-marron', 2300, 2300],
+    ['vaisselle-duo-mugs-relief-lisere-or', 2500, 2500],
+    ['cuisine-duo-mugs-blanc-texture', 0, 3000],
+    ['vaisselle-duo-tasses-facettees-rose-beige', 0, 2400],
+    ['cuisine-bocal-verre-couvercle', 0, 1500],
+    ['cuisine-carafe-rayee-verre', 5000, 5000],
+    ['cuisine-pichet-luminarc-cheos-1-3l', 4000, 4000],
+    ['cuisine-carafe-luminarc-arc-1-3l', 3400, 3400],
+    ['cuisine-carafe-verre-motifs', 2950, 2950],
+    ['cuisine-bouteille-verre-decor-citron', 0, 2500],
+  ];
+
+  for (const [id, labelPrice, expectedSellPrice] of expectedService) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit lot 5 ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'maison');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    if (labelPrice > 0) {
+      const margin = prod.price - labelPrice;
+      assert.ok(margin >= 0 && margin <= 2000, `Marge ${margin} FCFA conforme pour ${id}`);
+    }
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+    assert.ok(prod.imageUrl.startsWith('/images/products/'), `Photo studio pour ${id}`);
+    assert.ok(prod.specs.length >= 4, `${id} dispose de specs détaillées`);
+    assert.ok(prod.compareAtPrice > prod.price, `${id} affiche un prix barré cohérent`);
+  }
+
+  // Carafe rayée (5 000 F) + pichet Luminarc CHEOS (4 000 F) = 9 000 F de panier,
+  // soit 10 000 F avec les 1 000 F de livraison Daloa.
+  // (Pas de nouvelle commande ici : le limiteur anti-spam de /api/orders est à 20
+  //  créations par 10 minutes et la suite de tests en crée déjà 20.)
+  const panier = ['cuisine-carafe-rayee-verre', 'cuisine-pichet-luminarc-cheos-1-3l'].map((id) => {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit ${id} présent pour le calcul du panier`);
+    return prod.price;
+  });
+  assert.equal(panier.reduce((a, b) => a + b, 0), 9000, 'Panier carafe + pichet = 9 000 FCFA');
+  assert.equal(panier.reduce((a, b) => a + b, 0) + 1000, 10000, 'Total livré à Daloa = 10 000 FCFA');
+});

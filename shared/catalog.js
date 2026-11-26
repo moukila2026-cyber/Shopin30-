@@ -3360,6 +3360,297 @@ export const CUISINE_MAISON_LOT4_PRODUCTS = [
   },
 ];
 
+export const CUISINE_MAISON_LOT5_PRODUCTS = [
+  {
+    id: 'vaisselle-duo-mugs-coteles-2-tons',
+    slug: 'duo-mugs-coteles-2-tons-lavande-marine',
+    name: 'Duo de Mugs Côtelés 2 Tons — Lavande & Marine, Anses Contrastées',
+    category: 'maison',
+    price: 4000,
+    compareAtPrice: 5200,
+    stock: 8,
+    badge: 'Duo 2 tons',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Deux mugs côtelés aux anses contrastées — lavande à anse beige, marine à anse vert anis : le duo déco qui réveille une table.',
+    description:
+      'Un duo de mugs en céramique au corps côtelé, jouant le contraste des couleurs jusqu’aux anses : lavande et beige d’un côté, bleu marine et vert anis de l’autre. Le relief côtelé accroche la lumière, la paroi épaisse garde les boissons chaudes et les anses en anneau sont faciles à tenir. Un cadeau design à petit prix.',
+    specs: [
+      'Duo de mugs en céramique émaillée — corps côtelé',
+      'Coloris : lavande à anse beige et marine à anse vert anis',
+      'Contenance 300 ml environ par mug',
+      'Anses en anneau, paroi épaisse isolante',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-coteles-2-tons.jpg',
+  },
+  {
+    id: 'vaisselle-mug-porcelaine-2-tons-raye',
+    slug: 'mug-porcelaine-2-tons-raye-coloris-assortis',
+    name: 'Mug en Porcelaine 2 Tons Rayé — Coloris Assortis (Beige, Sauge, Gris)',
+    category: 'maison',
+    price: 1600,
+    compareAtPrice: 2200,
+    stock: 30,
+    badge: 'Porcelaine',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug en porcelaine à large rayure blanche, disponible en beige, sauge et gris : la tasse sobre qui va avec tout.',
+    description:
+      'Un mug en porcelaine émaillée orné d’une large bande blanche, décliné en trois coloris naturels — beige, sauge et gris. Dimensions 9,2 × 7,1 × 10,2 cm, contenance confortable pour le café ou le thé. Paroi lisse, anse pleine, intérieur émaillé clair : un basique du quotidien qui ne se démode pas.',
+    specs: [
+      'Mug en porcelaine émaillée — 3 coloris assortis',
+      'Dimensions 9,2 × 7,1 × 10,2 cm · réf. KLV9-V20',
+      'Contenance 300 ml environ',
+      'Large bande blanche, anse pleine confortable',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-porcelaine-2-tons-raye.jpg',
+  },
+  {
+    id: 'vaisselle-duo-mugs-gres-2-tons-marron',
+    slug: 'duo-mugs-gres-2-tons-marron-fonce',
+    name: 'Duo de Mugs en Grès 2 Tons — Camel & Marron Foncé',
+    category: 'maison',
+    price: 2300,
+    compareAtPrice: 3000,
+    stock: 12,
+    badge: 'Grès',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Deux grands mugs en grès bicolores camel et marron foncé, à rayures fines : le duo chaleureux pour le café et le thé.',
+    description:
+      'Deux mugs en grès de belle taille (13 × 8,5 × 10,7 cm), partagés en deux tons — camel sur le haut, marron foncé sur le bas — avec de fines rayures en relief. Le grès garde la chaleur, résiste aux chocs et vieillit bien. Parfaits pour un grand café au lait, un thé ou un chocolat chaud.',
+    specs: [
+      'Duo de mugs en grès — camel & marron foncé',
+      'Dimensions 13 × 8,5 × 10,7 cm · réf. SM23366',
+      'Contenance 400 ml environ par mug',
+      'Rayures fines en relief, paroi épaisse',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-gres-2-tons-marron.jpg',
+  },
+  {
+    id: 'vaisselle-duo-mugs-relief-lisere-or',
+    slug: 'duo-mugs-blancs-relief-lisere-or',
+    name: 'Duo de Mugs Blancs en Relief — Liseré Doré, Style Vintage',
+    category: 'maison',
+    price: 2500,
+    compareAtPrice: 3300,
+    stock: 12,
+    badge: 'Liseré or',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Deux mugs en céramique blanche à décor de perles en relief et liseré doré : l’élégance rétro pour le café du matin.',
+    description:
+      'Un duo de mugs en céramique blanche au corps cannelé, orné d’une frise de perles en relief et d’un liseré doré sur le bord. Le style rappelle la vaisselle de nos grands-mères, en version solide et utilisable tous les jours. Paroi épaisse, anse généreuse, contenance 300 ml.',
+    specs: [
+      'Duo de mugs en céramique blanche — décor perles en relief',
+      'Liseré doré sur le bord · style vintage',
+      'Contenance 300 ml environ par mug',
+      'Anse généreuse, paroi épaisse',
+      'Lavage à la main conseillé pour préserver le doré'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-relief-lisere-or.jpg',
+  },
+  {
+    id: 'cuisine-duo-mugs-blanc-texture',
+    slug: 'duo-mugs-blancs-texture-godet',
+    name: 'Duo de Mugs Blancs Texturés — Effet Godet, 22 cl',
+    category: 'maison',
+    price: 3000,
+    compareAtPrice: 3900,
+    stock: 10,
+    badge: 'Duo',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Deux mugs blancs à surface texturée et base lisse, forme godet : le minimalisme blanc qui s’accorde partout.',
+    description:
+      'Un duo de mugs blancs au corps légèrement texturé, terminé par une base lisse : la matière joue la différence sans casser la sobriété. Leur forme évasée type godet tient bien en main, la paroi épaisse garde le café chaud et l’anse large est facile à saisir. Idéal pour un service monochrome.',
+    specs: [
+      'Duo de mugs en céramique blanche texturée',
+      'Contenance 220 ml · forme godet évasée',
+      'Base lisse, anse large',
+      'Paroi épaisse qui garde la chaleur',
+      'Compatible lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-duo-mugs-blanc-texture.jpg',
+  },
+  {
+    id: 'vaisselle-duo-tasses-facettees-rose-beige',
+    slug: 'duo-tasses-facettees-rose-beige',
+    name: 'Duo de Tasses Facettées — Rose Poudré & Beige, Sans Anse',
+    category: 'maison',
+    price: 2400,
+    compareAtPrice: 3200,
+    stock: 12,
+    badge: 'Facetté',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Deux grands gobelets facettés rose poudré et beige, sans anse : parfaits pour le thé, le café glacé ou le chocolat chaud.',
+    description:
+      'Ces deux gobelets en céramique mate au corps facetté jouent la carte du minimalisme : pas d’anse, une prise en main directe, des facettes qui accrochent la lumière. Le rose poudré et le beige sable se marient avec toutes les tables. Contenance généreuse pour le thé, le latte ou le chocolat chaud.',
+    specs: [
+      'Duo de gobelets en céramique mate — rose poudré & beige',
+      'Corps facetté, sans anse',
+      'Contenance 300 ml environ par tasse',
+      'Base épaisse stable, paroi droite',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-tasses-facettees-rose-beige.jpg',
+  },
+  {
+    id: 'cuisine-bocal-verre-couvercle',
+    slug: 'bocaux-verre-couvercle-conservation',
+    name: 'Bocaux en Verre avec Couvercle — Conservation & Épices',
+    category: 'maison',
+    price: 1500,
+    compareAtPrice: 2000,
+    stock: 24,
+    badge: 'Verre',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bocaux en verre transparent avec couvercle boule : riz, épices, café, bonbons ou produits de beauté rangés proprement.',
+    description:
+      'Ces bocaux en verre transparent, à couvercle boule, gardent l’humidité dehors et laissent voir le contenu. Parfaits pour le riz, les épices, le café, le sucre, les bonbons ou le coton en salle de bain. Le verre épais résiste au quotidien et se lave facilement.',
+    specs: [
+      'Bocaux en verre transparent avec couvercle boule',
+      'Hauteur 15 cm environ · ouverture large',
+      'Idéal riz, épices, café, sucre, bonbons',
+      'Verre épais, lavable à l’eau',
+      'Vendus à l’unité — plusieurs tailles en boutique'
+    ],
+    imageUrl: '/images/products/cuisine-bocal-verre-couvercle.jpg',
+  },
+  {
+    id: 'cuisine-carafe-rayee-verre',
+    slug: 'carafe-rayee-verre-couvercle-1l',
+    name: 'Carafe Rayée en Verre avec Couvercle — 1 L',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 10,
+    badge: 'Verre strié',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe en verre strié avec couvercle et anse, 1 litre : l’eau, le jus de bissap ou la citronnade servis avec allure.',
+    description:
+      'Une carafe en verre transparent au corps strié, équipée d’un couvercle et d’une grande anse de service. Son litre de contenance suffit pour une table familiale, et les stries diffusent la lumière pour un rendu très soigné. Verre épais, bec verseur net, base large stable.',
+    specs: [
+      'Carafe en verre transparent strié — 1 litre',
+      'Couvercle et anse de service intégrés',
+      'Bec verseur, base large stable',
+      'Eau, jus, citronnade, thé glacé',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-rayee-verre.jpg',
+  },
+  {
+    id: 'cuisine-pichet-luminarc-cheos-1-3l',
+    slug: 'pichet-luminarc-cheos-fridge-jug-1-3l',
+    name: 'Pichet Luminarc CHEOS Fridge Jug 1,3 L — Couvercle Blanc',
+    category: 'maison',
+    price: 4000,
+    compareAtPrice: 5200,
+    stock: 10,
+    badge: 'Luminarc',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pichet Luminarc CHEOS Fridge Jug de 1,3 L avec couvercle blanc : l’eau fraîche du frigo, servie sans renverser.',
+    description:
+      'Le pichet CHEOS de Luminarc est pensé pour le réfrigérateur : format 1,3 litre, corps droit qui se glisse dans la porte et couvercle blanc qui garde l’eau fraîche et propre. Verre trempé résistant, anse large et bec verseur précis. Un indispensable de la cuisine ivoirienne.',
+    specs: [
+      'Pichet Luminarc CHEOS Fridge Jug — 1,3 litre',
+      'Couvercle blanc, anse large, bec verseur',
+      'Verre trempé résistant aux chocs',
+      'Format porte de réfrigérateur',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-pichet-luminarc-cheos-1-3l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-arc-1-3l',
+    slug: 'carafe-luminarc-arc-1-3l-couvercle',
+    name: 'Carafe Luminarc ARC 1,3 L + Couvercle — Verre Transparent',
+    category: 'maison',
+    price: 3400,
+    compareAtPrice: 4500,
+    stock: 10,
+    badge: 'Luminarc',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe Luminarc ARC de 1,3 L avec couvercle (réf. 146460) : verre transparent, forme arrondie, service facile.',
+    description:
+      'La carafe ARC de Luminarc (1,3 litre + couvercle, art. 146460) mise sur une forme arrondie agréable en main et un verre transparent qui laisse voir la couleur des boissons. Le couvercle limite les odeurs du frigo, l’anse large facilite le service et le bec verseur évite les gouttes. Verre trempé.',
+    specs: [
+      'Carafe Luminarc ARC 1,3 litre + couvercle',
+      'Réf. N1183, art. 146460',
+      'Verre transparent trempé, forme arrondie',
+      'Anse large, bec verseur anti-goutte',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-arc-1-3l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-verre-motifs',
+    slug: 'carafe-verre-motifs-relief-1l',
+    name: 'Carafe en Verre à Motifs en Relief — 1 L, Couvercle',
+    category: 'maison',
+    price: 2950,
+    compareAtPrice: 3900,
+    stock: 12,
+    badge: 'Motifs relief',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe en verre à motifs en relief et couvercle, 1 litre : une carafe déco qui sert aussi tous les jours.',
+    description:
+      'Une carafe en verre transparent décorée de motifs en relief (réf. YZH-36) : le dessin se voit sans cacher la boisson. Couvercle inclus pour garder l’eau fraîche, anse graphique et base stable. Un litre de contenance, parfait pour l’eau, la citronnade ou le jus de gingembre.',
+    specs: [
+      'Carafe en verre transparent à motifs en relief',
+      'Contenance 1 litre · réf. YZH-36',
+      'Couvercle inclus, anse de service',
+      'Eau, citronnade, jus, boissons fraîches',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-verre-motifs.jpg',
+  },
+  {
+    id: 'cuisine-bouteille-verre-decor-citron',
+    slug: 'bouteille-verre-decor-citron-fresh-market',
+    name: 'Bouteille en Verre Décor Citrons — « Fresh from the Market »',
+    category: 'maison',
+    price: 2500,
+    compareAtPrice: 3300,
+    stock: 12,
+    badge: 'Décor citron',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bouteille en verre à bouchon, décor citrons et clôture bleue « Fresh from the Market » : jus et limonades avec style.',
+    description:
+      'Une bouteille en verre transparent décorée de citrons, de feuilles et d’une clôture bleue, avec l’inscription « Fresh from the Market ». Son bouchon garde les boissons hermétiques et son goulot étroit facilite le service. Parfaite pour la limonade maison, l’infusion de citron ou comme carafe déco sur la table.',
+    specs: [
+      'Bouteille en verre transparent — bouchon de fermeture',
+      'Décor citrons & clôture bleue « Fresh from the Market »',
+      'Contenance 1 litre environ · goulot étroit',
+      'Limonade, jus, eau citronnée, décoration',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-bouteille-verre-decor-citron.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -3371,6 +3662,7 @@ export const INITIAL_PRODUCTS = [
   ...CUISINE_MAISON_LOT2_PRODUCTS,
   ...CUISINE_MAISON_LOT3_PRODUCTS,
   ...CUISINE_MAISON_LOT4_PRODUCTS,
+  ...CUISINE_MAISON_LOT5_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',

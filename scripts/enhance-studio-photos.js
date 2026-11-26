@@ -570,7 +570,7 @@ const TASSES_MUGS_JOBS = [
   },
 ];
 
-export { VAISSELLE_JOBS, ART_TABLE_JOBS, TASSES_MUGS_JOBS, TASSES_MUGS_LOT2_JOBS };
+export { VAISSELLE_JOBS, ART_TABLE_JOBS, TASSES_MUGS_JOBS, TASSES_MUGS_LOT2_JOBS, VERRERIE_JOBS };
 
 const TASSES_MUGS_LOT2_JOBS = [
   // ——— Mug « maison en pain d'épices » de Noël ———
@@ -622,6 +622,129 @@ const TASSES_MUGS_LOT2_JOBS = [
     exposure: 1.06,
     saturation: 1.04,
     contrast: 1.12,
+  },
+];
+
+const VERRERIE_JOBS = [
+  // ——— Duo mugs côtelés 2 tons (lavande & marine) ———
+  {
+    src: '20261125_163735.jpg',
+    out: 'vaisselle-duo-mugs-coteles-2-tons.jpg',
+    mask: 'box',
+    crop: { left: 0.06, top: 0.08, width: 0.82, height: 0.7 },
+    exposure: 1.05,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+  // ——— Mug porcelaine 2 tons rayé (1 600 F) ———
+  {
+    src: '20261125_163807.jpg',
+    out: 'vaisselle-mug-porcelaine-2-tons-raye.jpg',
+    mask: 'box',
+    crop: { left: 0.1, top: 0.16, width: 0.76, height: 0.58 },
+    exposure: 1.04,
+    saturation: 1.02,
+    contrast: 1.12,
+  },
+  // ——— Duo mugs grès 2 tons brun (2 300 F) ———
+  {
+    src: '20261125_163823.jpg',
+    out: 'vaisselle-duo-mugs-gres-2-tons-marron.jpg',
+    mask: 'box',
+    crop: { left: 0, top: 0.12, width: 0.55, height: 0.68 },
+    exposure: 1.05,
+    saturation: 1.02,
+    contrast: 1.12,
+  },
+  // ——— Duo mugs blancs relief liseré or (2 500 F) ———
+  {
+    src: '20261125_163843.jpg',
+    out: 'vaisselle-duo-mugs-relief-lisere-or.jpg',
+    mask: 'box',
+    crop: { left: 0.11, top: 0.17, width: 0.65, height: 0.63 },
+    exposure: 1.06,
+    saturation: 0.98,
+    contrast: 1.14,
+  },
+  // ——— Duo mugs blancs texturés ———
+  {
+    src: '20261125_163900.jpg',
+    out: 'cuisine-duo-mugs-blanc-texture.jpg',
+    mask: 'box',
+    crop: { left: 0, top: 0.26, width: 0.70, height: 0.66 },
+    exposure: 1.06,
+    saturation: 1.0,
+    contrast: 1.12,
+  },
+  // ——— Duo tasses facettées rose & beige ———
+  {
+    src: '20261125_163928.jpg',
+    out: 'vaisselle-duo-tasses-facettees-rose-beige.jpg',
+    mask: 'box',
+    crop: { left: 0.14, top: 0.06, width: 0.80, height: 0.78 },
+    exposure: 1.04,
+    saturation: 1.02,
+    contrast: 1.12,
+  },
+  // ——— Bocaux en verre avec couvercle ———
+  {
+    src: '20261125_164027.jpg',
+    out: 'cuisine-bocal-verre-couvercle.jpg',
+    mask: 'box',
+    crop: { left: 0.01, top: 0.18, width: 0.97, height: 0.52 },
+    exposure: 1.04,
+    saturation: 1.0,
+    contrast: 1.1,
+  },
+  // ——— Carafe rayée verre (5 000 F) ———
+  {
+    src: '20261125_164054.jpg',
+    out: 'cuisine-carafe-rayee-verre.jpg',
+    mask: 'box',
+    crop: { left: 0.16, top: 0.18, width: 0.72, height: 0.66 },
+    exposure: 1.04,
+    saturation: 1.0,
+    contrast: 1.1,
+  },
+  // ——— Pichet Luminarc CHEOS Fridge Jug 1,3 L (4 000 F) ———
+  {
+    src: '20261125_164105.jpg',
+    out: 'cuisine-pichet-luminarc-cheos-1-3l.jpg',
+    mask: 'box',
+    crop: { left: 0.18, top: 0.07, width: 0.68, height: 0.78 },
+    exposure: 1.04,
+    saturation: 1.0,
+    contrast: 1.1,
+  },
+  // ——— Carafe Luminarc ARC 1,3 L + couvercle (3 400 F) ———
+  {
+    src: '20261125_164119.jpg',
+    out: 'cuisine-carafe-luminarc-arc-1-3l.jpg',
+    mask: 'box',
+    crop: { left: 0.18, top: 0.1, width: 0.68, height: 0.75 },
+    exposure: 1.04,
+    saturation: 1.0,
+    contrast: 1.1,
+  },
+  // ——— Carafe en verre à motifs (2 950 F) ———
+  {
+    src: '20261125_164201.jpg',
+    out: 'cuisine-carafe-verre-motifs.jpg',
+    mask: 'box',
+    crop: { left: 0.14, top: 0.1, width: 0.74, height: 0.8 },
+    exposure: 1.04,
+    saturation: 1.0,
+    contrast: 1.1,
+  },
+  // ——— Bouteille en verre décor citrons ———
+  {
+    src: '20261125_164234.jpg',
+    out: 'cuisine-bouteille-verre-decor-citron.jpg',
+    mask: 'box',
+    crop: { left: 0.14, top: 0.02, width: 0.56, height: 0.95 },
+    exposure: 1.04,
+    saturation: 1.02,
+    contrast: 1.1,
   },
 ];
 
@@ -821,7 +944,9 @@ async function main() {
           ? TASSES_MUGS_JOBS
           : BATCH === 'tasses2'
             ? TASSES_MUGS_LOT2_JOBS
-            : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS, ...TASSES_MUGS_JOBS, ...TASSES_MUGS_LOT2_JOBS];
+            : BATCH === 'verrerie'
+              ? VERRERIE_JOBS
+              : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS, ...TASSES_MUGS_JOBS, ...TASSES_MUGS_LOT2_JOBS, ...VERRERIE_JOBS];
   for (const job of jobs) {
     try {
       await buildStudioImage(job);
