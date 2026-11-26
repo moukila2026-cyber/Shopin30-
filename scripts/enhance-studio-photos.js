@@ -31,7 +31,7 @@ const MARGIN = 1.09; // marge de recadrage autour de l'ellipse de l'article
  * crop    : { left, top, width, height } en fractions (articles non ronds).
  * mask    : 'ellipse' | 'box'
  */
-const JOBS = [
+const VAISSELLE_JOBS = [
   // ——— Assiette plate ronde GRAAL Ø 26,5 cm (2 150 F) ———
   {
     src: '20261125_161934.jpg',
@@ -160,7 +160,7 @@ const JOBS = [
     src: '20261125_162450.jpg',
     out: 'cuisine-lunch-box-inox-jia-teng-2-2l.jpg',
     mask: 'box',
-    crop: { left: 0.07, top: 0.16, width: 0.9, height: 0.79 },
+    crop: { left: 0.02, top: 0.005, width: 0.93, height: 0.68 },
     exposure: 1.37,
     saturation: 0.98,
     contrast: 1.18,
@@ -315,6 +315,137 @@ async function refineEllipse(cropBuffer, guess) {
 // ---------------------------------------------------------------------------
 // 3) Composition studio
 // ---------------------------------------------------------------------------
+const ART_TABLE_JOBS = [
+  // ——— Lunch box inox JIA TENG 3,4 L (9 000 F) ———
+  {
+    src: '20261125_162459.jpg',
+    out: 'cuisine-lunch-box-inox-jia-teng-3-4l.jpg',
+    mask: 'box',
+    crop: { left: 0.02, top: 0.01, width: 0.93, height: 0.65 },
+    exposure: 1.04,
+    saturation: 0.98,
+    contrast: 1.14,
+  },
+  // ——— Mason jar mug « Today is a fruit day » ———
+  {
+    src: '20261125_162521.jpg',
+    out: 'cuisine-mason-jar-mug-fruit-day.jpg',
+    mask: 'box',
+    crop: { left: 0.19, top: 0.05, width: 0.48, height: 0.62 },
+    expand: 1.16,
+    exposure: 1.04,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+  // ——— Mason jar mugs colorés (bleu / vert / jaune) ———
+  {
+    src: '20261125_162533.jpg',
+    out: 'cuisine-mason-jar-mug-colore-lot.jpg',
+    mask: 'box',
+    crop: { left: 0.03, top: 0.22, width: 0.94, height: 0.36 },
+    expand: 1.12,
+    exposure: 1.02,
+    saturation: 1.08,
+    contrast: 1.12,
+  },
+  // ——— Coffret 6 verres Sisecam 280 ml ———
+  {
+    src: '20261125_162554.jpg',
+    out: 'cuisine-verres-sisecam-6x280ml.jpg',
+    mask: 'box',
+    crop: { left: 0.02, top: 0.18, width: 0.9, height: 0.62 },
+    expand: 1.12,
+    exposure: 1.08,
+    saturation: 1.0,
+    contrast: 1.12,
+  },
+  // ——— Pasabahce Golden Touch Iconic 6 verres dorés (12 500 F) ———
+  {
+    src: '20261125_162624.jpg',
+    out: 'cuisine-verres-pasabahce-golden-touch-iconic-6.jpg',
+    mask: 'box',
+    crop: { left: 0.14, top: 0.19, width: 0.66, height: 0.6 },
+    expand: 1.05,
+    exposure: 1.04,
+    saturation: 1.04,
+    contrast: 1.12,
+    clahe: 3,
+  },
+  // ——— Gobelet dégradé avec paille (2 950 F) ———
+  {
+    src: '20261125_162716.jpg',
+    out: 'cuisine-gobelet-degrade-paille.jpg',
+    mask: 'box',
+    crop: { left: 0.28, top: 0.02, width: 0.4, height: 0.78 },
+    expand: 1.22,
+    exposure: 1.0,
+    saturation: 1.06,
+    contrast: 1.1,
+  },
+  // ——— Tumbler pailleté « living in Full Color » ———
+  {
+    src: '20261125_162637.jpg',
+    out: 'cuisine-tumbler-paillete-living-in-full-color.jpg',
+    mask: 'box',
+    crop: { left: 0.605, top: 0.16, width: 0.185, height: 0.74 },
+    exposure: 1.06,
+    saturation: 1.08,
+    contrast: 1.1,
+    clahe: 3,
+  },
+  // ——— Tumbler isotherme Stanley Nova (7 000 F) ———
+  {
+    src: '20261125_162738.jpg',
+    out: 'cuisine-stanley-nova-tumbler-isotherme.jpg',
+    mask: 'box',
+    crop: { left: 0.31, top: 0.02, width: 0.58, height: 0.8 },
+    exposure: 1.0,
+    saturation: 1.04,
+    contrast: 1.1,
+  },
+  // ——— Thermos Daristore 304 SUS ———
+  {
+    src: '20261125_162914.jpg',
+    out: 'cuisine-thermos-daristore-304-sus-2l.jpg',
+    mask: 'box',
+    crop: { left: 0.24, top: 0.07, width: 0.5, height: 0.64 },
+    exposure: 1.06,
+    saturation: 1.02,
+    contrast: 1.14,
+  },
+  // ——— Étagère plastique 4 niveaux TAJ PLAST ———
+  {
+    src: '20261125_162946.jpg',
+    out: 'cuisine-etagere-plastique-4-niveaux-taj-plast.jpg',
+    mask: 'box',
+    crop: { left: 0.17, top: 0.03, width: 0.62, height: 0.77 },
+    exposure: 1.06,
+    saturation: 1.08,
+    contrast: 1.12,
+  },
+  // ——— Bol à soupe Wilmax 2 anses WL-991225/A (2 750 F) ———
+  {
+    src: '20261125_163023.jpg',
+    out: 'vaisselle-bol-soupe-wilmax-991225-440ml.jpg',
+    mask: 'box',
+    crop: { left: 0.09, top: 0.34, width: 0.82, height: 0.31 },
+    exposure: 1.02,
+    saturation: 1.02,
+    contrast: 1.12,
+  },
+  // ——— Coffret 3 tasses COFFEE HOUSE ———
+  {
+    src: '20261125_163048.jpg',
+    out: 'cuisine-tasses-coffee-house-lot-3.jpg',
+    mask: 'box',
+    crop: { left: 0.29, top: 0.24, width: 0.62, height: 0.33 },
+    exposure: 1.06,
+    saturation: 1.04,
+    contrast: 1.12,
+    clahe: 3,
+  },
+];
+
 async function buildStudioImage(job) {
   const inputPath = path.join(INPUT_DIR, job.src);
   const outputPath = path.join(OUTPUT_DIR, job.out);
@@ -363,10 +494,15 @@ async function buildStudioImage(job) {
     };
   } else {
     const c = job.crop;
-    left = Math.max(0, Math.round(meta.width * c.left));
-    top = Math.max(0, Math.round(meta.height * c.top));
-    cropW = Math.min(meta.width - left, Math.round(meta.width * c.width));
-    cropH = Math.min(meta.height - top, Math.round(meta.height * c.height));
+    const k = job.expand || 1; // marge de sécurité autour de l'article
+    const w = Math.min(1, c.width * k);
+    const h = Math.min(1, c.height * k);
+    const cx = c.left + c.width / 2;
+    const cy = c.top + c.height / 2;
+    left = Math.round(Math.min(Math.max((cx - w / 2) * meta.width, 0), meta.width - w * meta.width));
+    top = Math.round(Math.min(Math.max((cy - h / 2) * meta.height, 0), meta.height - h * meta.height));
+    cropW = Math.round(w * meta.width);
+    cropH = Math.round(h * meta.height);
   }
 
   const cropped = await sharp(rotated).extract({ left, top, width: cropW, height: cropH }).toBuffer();
@@ -476,8 +612,10 @@ async function buildStudioImage(job) {
   console.log(`✓ ${job.out} — ${w}×${h} (${Math.round(stat.size / 1024)} Ko)`);
 }
 
-async function buildPreviewSheet() {
-  const files = JOBS.map((j) => path.join(OUTPUT_DIR, j.out));
+const BATCH = process.argv[2];
+
+async function buildPreviewSheet(jobs) {
+  const files = jobs.map((j) => path.join(OUTPUT_DIR, j.out));
   const cols = 4;
   const cell = 340;
   const rows = Math.ceil(files.length / cols);
@@ -495,14 +633,15 @@ async function buildPreviewSheet() {
 }
 
 async function main() {
-  for (const job of JOBS) {
+  const jobs = BATCH === 'arttable' ? ART_TABLE_JOBS : BATCH === 'vaisselle' ? VAISSELLE_JOBS : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS];
+  for (const job of jobs) {
     try {
       await buildStudioImage(job);
     } catch (err) {
       console.error(`✗ ${job.out}`, err.message);
     }
   }
-  await buildPreviewSheet();
+  await buildPreviewSheet(jobs);
 }
 
 main().catch((err) => {

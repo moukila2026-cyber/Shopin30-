@@ -12,6 +12,7 @@ import {
   MOTOS_TRICYCLES_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   VAISSELLE_ART_TABLE_PRODUCTS,
+  CUISINE_MAISON_LOT2_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   QUINCAILLERIE_BTP_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
@@ -538,6 +539,46 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_vaisselle_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente du second arrivage Maison / Cuisine
+          // (showroom du 25/11/2026, lot 2) : lunch box 3,4 L, bol Wilmax a soupe,
+          // coffrets Pasabahce & Sisecam, gobelet degrade, tumblers, mason jars,
+          // thermos Daristore, etagere TAJ PLAST et tasses Coffee House.
+          const { rows: lot2SyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_maison_lot2_v1_synced'`
+          );
+          if (lot2SyncRows.length === 0) {
+            for (const p of CUISINE_MAISON_LOT2_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_maison_lot2_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

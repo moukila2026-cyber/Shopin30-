@@ -11,7 +11,8 @@ Propulsée par **React 19 + Vite + Tailwind CSS 4** côté interface, **Express 
 ### Boutique Publique (`/`)
 - **Multi-catégories** : High-Tech & Téléphonie, Mode & Accessoires, Beauté/Parfums & Cadeaux, Maison & Électroménager (modifiable et extensible depuis `/admin`).
 - **Rayon Vaisselle & Art de la table** : porcelaine GRAAL Germany, Wilmax England et Tableware Gourmet, coffrets de 6 verres LAV (NevaKar 320 cc, Misket 390 cc), carafe Azur, panier à frire inox et lunch box inox JIA TENG 2,2 L.
-- **Photos produits « studio »** : chaque arrivage est retraité par `scripts/enhance-studio-photos.js` (correction du vignettage, balance des blancs, détourage progressif, ombre portée, fond blanc 1200 × 1200) pour des fiches produit nettes et uniformes, dans l’esprit des marketplaces.
+- **Rayon Maison & Cuisine — 2ᵉ arrivage** : lunch box inox JIA TENG 3,4 L, bol à soupe Wilmax WL-991225/A (440 ml, 2 anses), coffrets de verres Pasabahce Golden Touch Iconic et Sisecam (6 × 280 ml), gobelet dégradé 600 ml avec paille, tumblers isothermes STANLEY NOVA et pailleté « Living in Full Color », mason jar mugs (à l’unité et lot de 3), thermos inox Daristore 304 SUS 2 L, étagère plastique 4 niveaux TAJ PLAST et lot de 3 tasses « Coffee House ».
+- **Photos produits « studio »** : chaque arrivage est retraité par `scripts/enhance-studio-photos.js` (correction du vignettage, balance des blancs, détourage progressif, ombre portée, fond blanc 1200 × 1200) pour des fiches produit nettes et uniformes, dans l’esprit des marketplaces. Le script expose deux jeux de cadrages : `node scripts/enhance-studio-photos.js vaisselle` (lot 1) et `node scripts/enhance-studio-photos.js arttable` (lot 2).
 - **Tarification claire sans livraison gratuite** :
   - **Daloa Commune** : `1 000 FCFA`
   - **Daloa Périphérie** : `1 500 FCFA`

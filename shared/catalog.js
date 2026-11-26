@@ -2655,6 +2655,297 @@ export const VAISSELLE_ART_TABLE_PRODUCTS = [
   },
 ];
 
+export const CUISINE_MAISON_LOT2_PRODUCTS = [
+  {
+    id: 'cuisine-lunch-box-inox-jia-teng-3-4l',
+    slug: 'lunch-box-inox-jia-teng-3-4l-repas-chauds',
+    name: 'Lunch Box Inox JIA TENG 3,4 L — Grand Format Repas Chauds',
+    category: 'maison',
+    price: 9000,
+    compareAtPrice: 11900,
+    stock: 10,
+    badge: 'Inox 3,4 L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Marmite lunch box inox JIA TENG de 3,4 L avec couvercle à joint : la grande capacité pour les familles, les ouvriers et les vendeuses de repas.',
+    description:
+      'Trois litres quatre de contenu, c’est le format qu’il faut pour transporter riz, sauce graine, soupe ou attiéké sans transborder plusieurs plats. L’inox alimentaire garde la chaleur plusieurs heures, le couvercle à joint évite les fuites dans le sac et la poignée rabattable facilite le port. Un indispensable du midi à Daloa, du chantier au marché.',
+    specs: [
+      'Capacité 3,4 litres — inox alimentaire JIA TENG',
+      'Couvercle à joint hermétique et poignée rabattable',
+      'Garde les plats chauds plusieurs heures',
+      'Format familial : riz, sauces, soupes, foutou',
+      'Paroi inox facile à laver, résistante aux chocs'
+    ],
+    imageUrl: '/images/products/cuisine-lunch-box-inox-jia-teng-3-4l.jpg',
+  },
+  {
+    id: 'vaisselle-bol-soupe-wilmax-991225-440ml',
+    slug: 'bol-soupe-wilmax-2-anses-440ml-991225',
+    name: 'Bol à Soupe Wilmax 2 Anses — 440 ml Porcelaine Blanche (WL-991225/A)',
+    category: 'maison',
+    price: 2750,
+    compareAtPrice: 3500,
+    stock: 24,
+    badge: 'Wilmax England',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Bol à soupe en fine porcelaine blanche Wilmax, 11 cm et 440 ml, avec deux anses pour tenir la soupe chaude sans se brûler.',
+    description:
+      'La porcelaine blanche Wilmax apporte la table des grands restaurants jusque dans vos repas de famille. Ses deux anses latérales laissent servir et tenir une soupe fumante, un bouillon de poisson ou un chocolat chaud en toute sécurité, et son ouverture large laisse la cuillère s’exprimer. Passe au four à micro-ondes et au lave-vaisselle.',
+    specs: [
+      'Fine porcelaine blanche émaillée — Wilmax England, réf. WL-991225/A',
+      'Contenance 440 ml · diamètre 11 cm · 2 anses',
+      'Idéal soupes, bouillons, chocolat chaud, crème dessert',
+      'Compatible micro-ondes et lave-vaisselle',
+      'Assorti aux assiettes creuses Wilmax de la boutique'
+    ],
+    imageUrl: '/images/products/vaisselle-bol-soupe-wilmax-991225-440ml.jpg',
+  },
+  {
+    id: 'cuisine-verres-pasabahce-golden-touch-iconic-6',
+    slug: 'coffret-6-verres-pasabahce-golden-touch-iconic-365ml',
+    name: 'Coffret 6 Verres Pasabahce Golden Touch Iconic 365 ml — Liseré Or',
+    category: 'maison',
+    price: 12500,
+    compareAtPrice: 15900,
+    stock: 8,
+    badge: 'Pasabahce',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coffret de 6 verres Pasabahce Golden Touch Iconic (365 ml) au liseré doré et aux facettes élégantes : le service qui fait briller une table de fête.',
+    description:
+      'Six verres à eau de la collection Golden Touch Iconic de Pasabahce, la verrerie turque des grandes tables. Le liseré or et les facettes verticales accrochent la lumière : parfait pour recevoir, pour un mariage, un baptême ou simplement pour boire l’eau du robinet avec un peu de prestige. Verre trempé, résistant au lave-vaisselle.',
+    specs: [
+      'Coffret de 6 verres — Pasabahce Golden Touch Iconic',
+      'Contenance 365 ml · hauteur 14 cm environ',
+      'Liseré doré et corps à facettes, verre trempé',
+      'Lavage à la main conseillé pour préserver le doré',
+      'Livré en coffret cadeau d’origine'
+    ],
+    imageUrl: '/images/products/cuisine-verres-pasabahce-golden-touch-iconic-6.jpg',
+  },
+  {
+    id: 'cuisine-verres-sisecam-6x280ml',
+    slug: 'coffret-6-verres-facettes-sisecam-280ml',
+    name: 'Coffret 6 Verres à Facettes Sisecam 280 ml',
+    category: 'maison',
+    price: 8500,
+    compareAtPrice: 10900,
+    stock: 10,
+    badge: 'Sisecam',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Six verres à facettes Sisecam de 280 ml, robustes et lumineux : le coffret malin pour remplacer toute la verrerie de la maison d’un coup.',
+    description:
+      'Un coffret complet de six verres signés Sisecam, le verrier turc réputé pour la solidité de ses verres trempés. Les facettes verticales diffractent la lumière et donnent du relief à l’eau, au jus de bissap ou au cocktail. Format 280 ml agréable en main, résistant aux chocs du quotidien et au lave-vaisselle.',
+    specs: [
+      'Coffret de 6 verres — Sisecam, verre trempé',
+      'Contenance 280 ml par verre',
+      'Corps à facettes, base épaisse antichoc',
+      'Compatible lave-vaisselle',
+      'Emballage d’origine 6 PCS 280 ML'
+    ],
+    imageUrl: '/images/products/cuisine-verres-sisecam-6x280ml.jpg',
+  },
+  {
+    id: 'cuisine-gobelet-degrade-paille',
+    slug: 'gobelet-degrade-paille-600ml-jaune-rose',
+    name: 'Gobelet Dégradé avec Paille 600 ml — Jaune → Rose',
+    category: 'maison',
+    price: 2950,
+    compareAtPrice: 3900,
+    stock: 18,
+    badge: '600 ml',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Gobelet 600 ml au dégradé jaune-rose avec couvercle et paille réutilisable : le compagnon des jus, smoothies et boissons glacées.',
+    description:
+      'Un grand gobelet de 600 ml au dégradé jaune vers rose qui fait tout de suite son effet sur une table ou en voiture. Couvercle à coulisse et paille réutilisable inclus : on emporte son jus de gingembre, son bissap ou son smoothie sans renverser. Plastique alimentaire résistant, léger et facile à laver.',
+    specs: [
+      'Contenance 600 ml · hauteur 22 cm environ',
+      'Dégradé jaune → rose, finition mate',
+      'Couvercle à coulisse + paille réutilisable incluse',
+      'Plastique alimentaire sans BPA',
+      'Parfait pour jus, smoothies, boissons glacées'
+    ],
+    imageUrl: '/images/products/cuisine-gobelet-degrade-paille.jpg',
+  },
+  {
+    id: 'cuisine-stanley-nova-tumbler-isotherme',
+    slug: 'tumbler-isotherme-stanley-nova-turquoise',
+    name: 'Tumbler Isotherme STANLEY NOVA — Turquoise, Anse Intégrée',
+    category: 'maison',
+    price: 7000,
+    compareAtPrice: 9500,
+    stock: 12,
+    badge: 'STANLEY NOVA',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Tumbler isotherme STANLEY NOVA turquoise avec anse et couvercle coulissant : l’eau reste glacée toute la journée à Daloa.',
+    description:
+      'Le tumbler isotherme STANLEY NOVA garde les boissons froides pendant des heures, même en pleine chaleur. Sa double paroi inox limite la condensation, l’anse intégrée le rend facile à porter au champ, au bureau ou en taxi, et le couvercle coulissant permet de boire sans renverser. Une couleur turquoise qui ne passe pas inaperçue.',
+    specs: [
+      'Gobelet isotherme double paroi inox — STANLEY NOVA',
+      'Contenance 1 litre · couvercle coulissant étanche',
+      'Anse de transport intégrée, base antidérapante',
+      'Garde le froid plusieurs heures, limite la condensation',
+      'Finition turquoise mate, facile à nettoyer'
+    ],
+    imageUrl: '/images/products/cuisine-stanley-nova-tumbler-isotherme.jpg',
+  },
+  {
+    id: 'cuisine-tumbler-paillete-living-in-full-color',
+    slug: 'tumbler-paillete-living-in-full-color',
+    name: 'Tumbler Pailleté « Living in Full Color » — Couvercle Dôme & Paille',
+    category: 'maison',
+    price: 5500,
+    compareAtPrice: 7200,
+    stock: 14,
+    badge: 'Édition pailletée',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Tumbler pailleté à couvercle dôme orné d’un arc-en-ciel, paille incluse : la gourde qui plaît aux jeunes et aux fashionistas.',
+    description:
+      'Un tumbler entièrement pailleté avec l’inscription « Living in Full Color », un couvercle dôme décoré d’un arc-en-ciel et une paille assortie. Double paroi qui garde les boissons fraîches, format nomade qui trouve sa place dans le sac ou sur le bureau. Un cadeau qui fait plaisir sans se ruiner.',
+    specs: [
+      'Tumbler double paroi, extérieur pailleté',
+      'Couvercle dôme décoré + paille incluse',
+      'Contenance 500 ml environ · hauteur 24 cm',
+      'Garde le froid plusieurs heures',
+      'Idéal cadeau, école, bureau, sorties'
+    ],
+    imageUrl: '/images/products/cuisine-tumbler-paillete-living-in-full-color.jpg',
+  },
+  {
+    id: 'cuisine-mason-jar-mug-fruit-day',
+    slug: 'mason-jar-mug-fruit-day-couvercle-paille',
+    name: 'Mason Jar Mug « Today is a Fruit Day » — Couvercle Vert & Paille',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 16,
+    badge: 'Mason Jar',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bocal mug en verre « Today is a Fruit Day » avec couvercle vert et paille rayée : jus, smoothies et infusions servis avec style.',
+    description:
+      'Le mason jar mug revisité pour les boissons fraîches : verre épais décoré de pastèques, couvercle à vis vert et paille rayée rouge et blanche. On y sert un jus de mangue, un smoothie ou une citronnade, et la poignée latérale rend la prise facile. Un objet déco autant qu’un verre à boire.',
+    specs: [
+      'Bocal mug en verre épais — décoration « Today is a Fruit Day »',
+      'Couvercle à vis vert + paille rayée incluse',
+      'Contenance 450 ml environ · poignée latérale',
+      'Parfait pour jus, smoothies, infusions froides',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-mason-jar-mug-fruit-day.jpg',
+  },
+  {
+    id: 'cuisine-mason-jar-mug-colore-lot',
+    slug: 'lot-3-mason-jar-mugs-colores-couvercles-pailles',
+    name: 'Lot de 3 Mason Jar Mugs Colorés — Couvercles & Pailles',
+    category: 'maison',
+    price: 12500,
+    compareAtPrice: 15900,
+    stock: 8,
+    badge: 'Lot de 3',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Trois mason jar mugs en verre couleur (bleu, vert, jaune) avec couvercles et pailles assorties : le trio parfait pour recevoir.',
+    description:
+      'Un lot de trois bocaux mugs en verre coloré — bleu, vert et jaune — chacun avec son couvercle à vis et sa paille. Le verre épais garde les boissons fraîches et la couleur transparente laisse voir jus et smoothies. Idéal pour un service de jus maison, un anniversaire ou un cadeau groupé.',
+    specs: [
+      'Lot de 3 bocaux mugs en verre coloré : bleu, vert, jaune',
+      'Couvercles à vis et pailles assorties inclus',
+      'Contenance 450 ml par mug environ',
+      'Verre épais transparent, poignée latérale',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-mason-jar-mug-colore-lot.jpg',
+  },
+  {
+    id: 'cuisine-thermos-daristore-304-sus-2l',
+    slug: 'thermos-inox-daristore-304-sus-2l-double-poignee',
+    name: 'Thermos Inox Daristore 304 SUS 2 L — Double Poignée',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 10,
+    badge: 'Inox 304 SUS',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grand thermos inox 304 SUS de 2 L avec double poignée et bouchon verseur : thé, café ou eau chaude pendant des heures.',
+    description:
+      'Le thermos qu’il faut pour la famille, la boutique de café ou les longues journées dehors : 2 litres d’inox 304 alimentaire, double poignée de portage et bouchon verseur qui sert sans renverser. La double paroi sous vide maintient le thé, le café ou l’eau chaude pendant de longues heures, et la finition métal brossé résiste aux chocs.',
+    specs: [
+      'Capacité 2 litres — inox alimentaire 304 SUS, marque Daristore',
+      'Double paroi isolante : chaud ou froid plusieurs heures',
+      'Double poignée de transport + bouchon verseur',
+      'Base large stable, finition métal brossé',
+      'Idéal thé, café, eau chaude, famille et boutique'
+    ],
+    imageUrl: '/images/products/cuisine-thermos-daristore-304-sus-2l.jpg',
+  },
+  {
+    id: 'cuisine-etagere-plastique-4-niveaux-taj-plast',
+    slug: 'etagere-plastique-4-niveaux-taj-plast',
+    name: 'Étagère Plastique 4 Niveaux TAJ PLAST — Vert & Blanc',
+    category: 'maison',
+    price: 12000,
+    compareAtPrice: 15000,
+    stock: 6,
+    badge: 'TAJ PLAST',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Étagère 4 niveaux en plastique résistant TAJ PLAST, montage sans outil : range cuisine, salle de bain ou chambre en un clin d’œil.',
+    description:
+      'Quatre paniers ajourés sur une structure à montage rapide : cette étagère TAJ PLAST libère de la place partout où le rangement manque. Les paniers laissent l’air circuler — parfait pour les légumes, les épices, les produits de toilette ou les jouets — et la structure en plastique ne rouille pas. On la monte sans outil et on la déplace d’une pièce à l’autre sans effort.',
+    specs: [
+      '4 paniers ajourés — structure plastique TAJ PLAST',
+      'Montage sans outil, démontable et déplaçable',
+      'Ne rouille pas, se nettoie à l’eau',
+      'Hauteur totale 1,15 m environ · 3 pieds stables',
+      'Cuisine, salle de bain, buanderie, chambre d’enfant'
+    ],
+    imageUrl: '/images/products/cuisine-etagere-plastique-4-niveaux-taj-plast.jpg',
+  },
+  {
+    id: 'cuisine-tasses-coffee-house-lot-3',
+    slug: 'lot-3-tasses-coffee-house-rose-bleu-bordeaux',
+    name: 'Lot de 3 Tasses « Coffee House » — Rose, Bleu, Bordeaux',
+    category: 'maison',
+    price: 6500,
+    compareAtPrice: 8500,
+    stock: 12,
+    badge: 'Lot de 3',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Trois tasses « Coffee House » en céramique — rose, bleu et bordeaux — pour le café, le thé ou le chocolat chaud.',
+    description:
+      'Un trio de tasses en céramique émaillée signées « Coffee House », chacune d’une couleur : rose poudré, bleu ciel et bordeaux. Le format à anse confortable convient au café, au thé, au chocolat chaud ou à la tisane, et la céramique épaisse garde la boisson chaude plus longtemps. Vendues avec leur présentoir carton d’origine.',
+    specs: [
+      'Lot de 3 tasses en céramique émaillée — « Coffee House »',
+      'Couleurs : rose, bleu et bordeaux',
+      'Contenance 250 ml environ · anse confortable',
+      'Céramique épaisse qui garde la chaleur',
+      'Livré dans son présentoir carton d’origine'
+    ],
+    imageUrl: '/images/products/cuisine-tasses-coffee-house-lot-3.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -2663,6 +2954,7 @@ export const INITIAL_PRODUCTS = [
   ...JOUETS_ENFANTS_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
   ...VAISSELLE_ART_TABLE_PRODUCTS,
+  ...CUISINE_MAISON_LOT2_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',

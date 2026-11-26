@@ -918,3 +918,62 @@ test('12. Rayon Vaisselle & Art de la table : 13 produits showroom (GRAAL, Wilma
   assert.equal(tableOrder.data.order.deliveryFee, 1000);
   assert.equal(tableOrder.data.order.total, 8850);
 });
+
+test('13. Second arrivage Maison & Cuisine : 12 produits (lunch box 3,4 L, Wilmax, Pasabahce, Sisecam, tumblers, mason jars, thermos, étagère, tasses), prix = étiquette ou prix suggéré', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  // [id, prix etiquette showroom (0 = prix suggere par la boutique), prix Pèrôkadô attendu]
+  const expectedLot2 = [
+    ['cuisine-lunch-box-inox-jia-teng-3-4l', 9000, 9000],
+    ['vaisselle-bol-soupe-wilmax-991225-440ml', 2750, 2750],
+    ['cuisine-verres-pasabahce-golden-touch-iconic-6', 12500, 12500],
+    ['cuisine-verres-sisecam-6x280ml', 0, 8500],
+    ['cuisine-gobelet-degrade-paille', 2950, 2950],
+    ['cuisine-stanley-nova-tumbler-isotherme', 7000, 7000],
+    ['cuisine-tumbler-paillete-living-in-full-color', 0, 5500],
+    ['cuisine-mason-jar-mug-fruit-day', 0, 4500],
+    ['cuisine-mason-jar-mug-colore-lot', 0, 12500],
+    ['cuisine-thermos-daristore-304-sus-2l', 0, 9500],
+    ['cuisine-etagere-plastique-4-niveaux-taj-plast', 0, 12000],
+    ['cuisine-tasses-coffee-house-lot-3', 0, 6500],
+  ];
+
+  for (const [id, labelPrice, expectedSellPrice] of expectedLot2) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit lot 2 ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'maison');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    if (labelPrice > 0) {
+      const margin = prod.price - labelPrice;
+      assert.ok(margin >= 0 && margin <= 2000, `Marge ${margin} FCFA conforme pour ${id}`);
+    }
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+    assert.ok(prod.imageUrl.startsWith('/images/products/'), `Photo studio pour ${id}`);
+    assert.ok(prod.specs.length >= 4, `${id} dispose de specs détaillées`);
+    assert.ok(prod.compareAtPrice > prod.price, `${id} affiche un prix barré cohérent`);
+  }
+
+  // Deux mugs Coffee House (6 500 F) + un bol Wilmax (2 750 F) : 15 750 F + 1 000 F de livraison Daloa
+  const maisonOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_maison_lot2_daloa_01',
+      customerName: 'Awa Koné',
+      customerPhone: '0744556677',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Tazibouo',
+      deliverySlot: 'matin',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0744556677',
+      waveTransactionRef: 'WV_MAISON_LOT2_DALOA_01',
+      items: [
+        { productId: 'cuisine-tasses-coffee-house-lot-3', quantity: 2 },
+        { productId: 'vaisselle-bol-soupe-wilmax-991225-440ml', quantity: 1 },
+      ],
+    },
+  });
+  assert.equal(maisonOrder.status, 201);
+  assert.equal(maisonOrder.data.order.deliveryFee, 1000);
+  assert.equal(maisonOrder.data.order.total, 16750);
+});
