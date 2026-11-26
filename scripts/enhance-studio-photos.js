@@ -446,6 +446,132 @@ const ART_TABLE_JOBS = [
   },
 ];
 
+const TASSES_MUGS_JOBS = [
+  // ——— Coffret 3 tasses noires « coffee » (2 000 F) ———
+  {
+    src: '20261125_163114.jpg',
+    out: 'cuisine-tasses-noires-coffee-lot-3.jpg',
+    mask: 'box',
+    crop: { left: 0, top: 0.31, width: 0.6, height: 0.56 },
+    exposure: 1.06,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+  // ——— Coffret 4 tasses à café porcelaine blanche 9 cl (3 600 F) ———
+  {
+    src: '20261125_163156.jpg',
+    out: 'cuisine-tasses-cafe-porcelaine-blanc-9cl-lot-4.jpg',
+    mask: 'box',
+    crop: { left: 0.1, top: 0.2, width: 0.86, height: 0.52 },
+    exposure: 1.04,
+    saturation: 1.0,
+    contrast: 1.12,
+  },
+  // ——— Tasse verre double paroi Wilmax WL-888420/A 100 ml (3 500 F) ———
+  {
+    src: '20261125_163222.jpg',
+    out: 'vaisselle-tasse-verre-double-paroi-wilmax-888420-100ml.jpg',
+    mask: 'box',
+    crop: { left: 0.34, top: 0.14, width: 0.44, height: 0.72 },
+    exposure: 1.02,
+    saturation: 1.0,
+    contrast: 1.14,
+    clahe: 4,
+  },
+  // ——— Tasse Luminarc Flashy Lavande 8 cl (2 950 F) ———
+  {
+    src: '20261125_163241.jpg',
+    out: 'vaisselle-tasse-luminarc-flashy-lavande-8cl.jpg',
+    mask: 'box',
+    crop: { left: 0.34, top: 0.2, width: 0.36, height: 0.52 },
+    exposure: 1.0,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+  // ——— Mug Luminarc Flashy Neo Gold (3 300 F) ———
+  {
+    src: '20261125_163251.jpg',
+    out: 'vaisselle-mug-luminarc-flashy-neo-gold.jpg',
+    mask: 'box',
+    crop: { left: 0.16, top: 0.12, width: 0.6, height: 0.62 },
+    exposure: 1.02,
+    saturation: 1.04,
+    contrast: 1.12,
+  },
+  // ——— Mug grès motif vague sauge (1 800 F) ———
+  {
+    src: '20261125_163303.jpg',
+    out: 'vaisselle-mug-gres-vague-sauge.jpg',
+    mask: 'box',
+    crop: { left: 0.1, top: 0.28, width: 0.44, height: 0.56 },
+    exposure: 1.04,
+    saturation: 1.02,
+    contrast: 1.12,
+  },
+  // ——— Lot de 3 mugs grès motif vague (sauge, jaune, bordeaux) ———
+  {
+    src: '20261125_163342.jpg',
+    out: 'vaisselle-lot-3-mugs-gres-motif-vague.jpg',
+    mask: 'box',
+    crop: { left: 0.1, top: 0.32, width: 0.8, height: 0.34 },
+    exposure: 1.04,
+    saturation: 1.04,
+    contrast: 1.12,
+  },
+  // ——— Mug porcelaine Colorado bleu 18 cl (1 150 F) ———
+  {
+    src: '20261125_163401.jpg',
+    out: 'vaisselle-mug-porcelaine-colorado-bleu-18cl.jpg',
+    mask: 'box',
+    crop: { left: 0.0, top: 0.02, width: 0.5, height: 0.74 },
+    exposure: 1.06,
+    saturation: 1.04,
+    contrast: 1.12,
+  },
+  // ——— Duo de mugs blancs porcelaine ———
+  {
+    src: '20261125_163415.jpg',
+    out: 'vaisselle-duo-mugs-blancs-porcelaine.jpg',
+    mask: 'box',
+    crop: { left: 0.18, top: 0.08, width: 0.78, height: 0.66 },
+    exposure: 1.06,
+    saturation: 1.0,
+    contrast: 1.12,
+  },
+  // ——— Duo de mugs pastel beige & bleu ———
+  {
+    src: '20261125_163431.jpg',
+    out: 'vaisselle-duo-mugs-pastel-beige-bleu.jpg',
+    mask: 'box',
+    crop: { left: 0.0, top: 0.14, width: 0.84, height: 0.72 },
+    exposure: 1.06,
+    saturation: 1.02,
+    contrast: 1.12,
+  },
+  // ——— Mug grès rayé taupe ———
+  {
+    src: '20261125_163446.jpg',
+    out: 'vaisselle-mug-gres-raye-taupe.jpg',
+    mask: 'box',
+    crop: { left: 0.18, top: 0.26, width: 0.64, height: 0.68 },
+    exposure: 1.06,
+    saturation: 1.0,
+    contrast: 1.12,
+  },
+  // ——— Duo de mugs grès peints à la main ———
+  {
+    src: '20261125_163524.jpg',
+    out: 'vaisselle-duo-mugs-gres-peints-main.jpg',
+    mask: 'box',
+    crop: { left: 0.06, top: 0.09, width: 0.82, height: 0.72 },
+    exposure: 1.06,
+    saturation: 1.06,
+    contrast: 1.12,
+  },
+];
+
+export { VAISSELLE_JOBS, ART_TABLE_JOBS, TASSES_MUGS_JOBS };
+
 async function buildStudioImage(job) {
   const inputPath = path.join(INPUT_DIR, job.src);
   const outputPath = path.join(OUTPUT_DIR, job.out);
@@ -633,7 +759,14 @@ async function buildPreviewSheet(jobs) {
 }
 
 async function main() {
-  const jobs = BATCH === 'arttable' ? ART_TABLE_JOBS : BATCH === 'vaisselle' ? VAISSELLE_JOBS : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS];
+  const jobs =
+    BATCH === 'arttable'
+      ? ART_TABLE_JOBS
+      : BATCH === 'vaisselle'
+        ? VAISSELLE_JOBS
+        : BATCH === 'tasses'
+          ? TASSES_MUGS_JOBS
+          : [...VAISSELLE_JOBS, ...ART_TABLE_JOBS, ...TASSES_MUGS_JOBS];
   for (const job of jobs) {
     try {
       await buildStudioImage(job);
@@ -644,7 +777,10 @@ async function main() {
   await buildPreviewSheet(jobs);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// n'exécute le pipeline que si le script est lancé directement
+if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

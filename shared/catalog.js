@@ -2946,6 +2946,297 @@ export const CUISINE_MAISON_LOT2_PRODUCTS = [
   },
 ];
 
+export const CUISINE_MAISON_LOT3_PRODUCTS = [
+  {
+    id: 'cuisine-tasses-noires-coffee-lot-3',
+    slug: 'coffret-3-tasses-noires-coffee-rose',
+    name: 'Coffret 3 Tasses « coffee » Noires — Décor Fleurs de Rose',
+    category: 'maison',
+    price: 2000,
+    compareAtPrice: 2900,
+    stock: 12,
+    badge: 'Coffret 3 tasses',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Trois tasses à café noires illustrées « coffee » (vert, bleu, rouge) dans leur coffret fleuri : le petit cadeau qui fait plaisir.',
+    description:
+      'Trois tasses en céramique au corps noir mat, chacune illustrée d’un « coffee » calligraphié et d’un avion en papier, avec la phrase « an early morning cup of coffee can banish your worries ». Le coffret cartonné à fleurs de rose et grains de café les protège et se présente tel quel en cadeau. Parfaites pour l’expresso, le café au lait du matin ou une collection.',
+    specs: [
+      'Coffret de 3 tasses en céramique — corps noir mat',
+      'Décors assortis : vert, bleu et rouge « coffee »',
+      'Emballage cartonné floral avec grains de café',
+      'Contenance 200 ml environ par tasse',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/cuisine-tasses-noires-coffee-lot-3.jpg',
+  },
+  {
+    id: 'cuisine-tasses-cafe-porcelaine-blanc-9cl-lot-4',
+    slug: 'coffret-4-tasses-cafe-porcelaine-blanche-9cl',
+    name: 'Coffret 4 Tasses à Café Porcelaine Blanche 9 cl — Format Expresso',
+    category: 'maison',
+    price: 3600,
+    compareAtPrice: 4900,
+    stock: 10,
+    badge: 'Porcelaine EH',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Quatre tasses à café en porcelaine blanche de 9 cl, présentées dans leur plateau kraft : l’expresso servi comme au café.',
+    description:
+      'Un coffret de quatre tasses à café en porcelaine blanche émaillée, format 9 cl (3 fl.oz) — la contenance exacte d’un expresso ou d’un café serré. Paroi épaisse qui garde la chaleur, rebord lisse, empilables dans le placard. Livrées dans leur plateau carton kraft avec étiquette d’origine, prêtes à offrir.',
+    specs: [
+      'Coffret de 4 tasses à café en porcelaine blanche',
+      'Contenance 9 cl (3 fl.oz) — idéal expresso',
+      'Paroi épaisse qui conserve la chaleur',
+      'Présentées dans leur plateau carton kraft d’origine',
+      'Compatible lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-tasses-cafe-porcelaine-blanc-9cl-lot-4.jpg',
+  },
+  {
+    id: 'vaisselle-tasse-verre-double-paroi-wilmax-888420-100ml',
+    slug: 'tasse-verre-double-paroi-wilmax-888420-100ml',
+    name: 'Tasse à Café Verre Double Paroi Wilmax 100 ml — WL-888420/A',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4500,
+    stock: 18,
+    badge: 'Wilmax England',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Tasse en verre à double paroi Wilmax (100 ml, réf. WL-888420/A) : le café semble flotter dans le verre et reste chaud sans brûler les doigts.',
+    description:
+      'La double paroi en verre borosilicate crée un effet visuel unique : le café, le thé ou l’expresso paraît suspendu. La couche d’air isole la boisson (elle reste chaude plus longtemps) et la paroi extérieure reste tiède au toucher, sans condensation. Anse confortable, finition transparente élégante, passe au lave-vaisselle.',
+    specs: [
+      'Tasse en verre double paroi — Wilmax England, réf. WL-888420/A',
+      'Contenance 100 ml (3 fl.oz) · anse intégrée',
+      'Isolation par lame d’air : boisson chaude, paroi tiède',
+      'Verre borosilicate résistant aux chocs thermiques',
+      'Compatible lave-vaisselle et micro-ondes'
+    ],
+    imageUrl: '/images/products/vaisselle-tasse-verre-double-paroi-wilmax-888420-100ml.jpg',
+  },
+  {
+    id: 'vaisselle-tasse-luminarc-flashy-lavande-8cl',
+    slug: 'tasse-cafe-luminarc-flashy-lavande-8cl',
+    name: 'Tasse à Café Luminarc Flashy Lavande 8 cl — Réf. V2750',
+    category: 'maison',
+    price: 2950,
+    compareAtPrice: 3900,
+    stock: 16,
+    badge: 'Luminarc',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Tasse à café Luminarc Flashy Lavande (8 cl, réf. V2750) : la couleur pastel tendance qui réveille un service à café.',
+    description:
+      'La collection Flashy de Luminarc joue les couleurs franches et mates. Cette tasse lavande de 8 cl, au galbe légèrement évasé, tient parfaitement en main et met en valeur un expresso, un ristretto ou une infusion courte. Verre trempé résistant, coloris qui ne passe pas au lave-vaisselle (lavage à la main conseillé).',
+    specs: [
+      'Tasse à café Luminarc Flashy — coloris lavande mat',
+      'Contenance 8 cl · réf. V2750, art. 942552',
+      'Galbe évasé, prise en main confortable',
+      'Verre trempé résistant aux chocs',
+      'Lavage à la main conseillé pour préserver la couleur'
+    ],
+    imageUrl: '/images/products/vaisselle-tasse-luminarc-flashy-lavande-8cl.jpg',
+  },
+  {
+    id: 'vaisselle-mug-luminarc-flashy-neo-gold',
+    slug: 'mug-luminarc-flashy-neo-gold',
+    name: 'Mug Luminarc Flashy Neo Gold — Anse Dorée, 25 cl',
+    category: 'maison',
+    price: 3300,
+    compareAtPrice: 4300,
+    stock: 12,
+    badge: 'Luminarc',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug Luminarc Flashy Neo Gold au corps beige doré et à l’anse chromée striée : le mug qui donne du style au café du matin.',
+    description:
+      'Un mug au revêtement doré satiné, rehaussé d’une anse chromée à rayures — l’esprit « Neo Gold » de Luminarc. Sa contenance généreuse convient au café au lait, au chocolat chaud ou au thé, et son intérieur brun garde la boisson à température. Un cadeau simple et élégant.',
+    specs: [
+      'Mug Luminarc Flashy Neo Gold — corps doré satiné',
+      'Anse chromée striée, intérieur brun',
+      'Contenance 25 cl · réf. V2623, art. 944532',
+      'Céramique émaillée résistante',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-luminarc-flashy-neo-gold.jpg',
+  },
+  {
+    id: 'vaisselle-mug-gres-vague-sauge',
+    slug: 'mug-gres-motif-vague-sauge-300ml',
+    name: 'Mug en Grès Motif Vague — Sauge, 30 cl',
+    category: 'maison',
+    price: 1800,
+    compareAtPrice: 2500,
+    stock: 24,
+    badge: 'Grès émaillé',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug en grès émaillé couleur sauge au motif de vagues blanches : la tasse artisanale qui réchauffe la cuisine.',
+    description:
+      'Le grès émaillé donne à ce mug un toucher doux et une vraie tenue en main. Son motif de vagues blanches en relief et sa base crème non émaillée rappellent les poteries artisanales. Parfait pour le café, le thé ou le chocolat chaud, il passe au micro-ondes et au lave-vaisselle.',
+    specs: [
+      'Mug en grès émaillé — coloris sauge, motif vagues',
+      'Contenance 30 cl · base crème non émaillée',
+      'Anse large, paroi épaisse qui garde la chaleur',
+      'Compatible micro-ondes et lave-vaisselle',
+      'Assorti aux autres coloris de la collection (jaune, bordeaux)'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-gres-vague-sauge.jpg',
+  },
+  {
+    id: 'vaisselle-lot-3-mugs-gres-motif-vague',
+    slug: 'lot-3-mugs-gres-motif-vague-sauge-jaune-bordeaux',
+    name: 'Lot de 3 Mugs en Grès Motif Vague — Sauge, Jaune & Bordeaux',
+    category: 'maison',
+    price: 4900,
+    compareAtPrice: 6500,
+    stock: 8,
+    badge: 'Lot de 3',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Trois mugs en grès émaillé au motif vague — sauge, jaune moutarde et bordeaux : la collection complète pour la famille.',
+    description:
+      'Les trois coloris de la collection réunis : sauge, jaune moutarde et bordeaux, tous ornés du motif de vagues blanches en relief. Le grès émaillé garde les boissons chaudes, supporte le micro-ondes et le lave-vaisselle, et supporte les chocs du quotidien. Idéal pour équiper une famille ou offrir un trio déco.',
+    specs: [
+      'Lot de 3 mugs en grès émaillé — sauge, jaune, bordeaux',
+      'Contenance 30 cl par mug · motif vagues en relief',
+      'Anses larges, parois épaisses isolantes',
+      'Compatible micro-ondes et lave-vaisselle',
+      'Base crème non émaillée antidérapante'
+    ],
+    imageUrl: '/images/products/vaisselle-lot-3-mugs-gres-motif-vague.jpg',
+  },
+  {
+    id: 'vaisselle-mug-porcelaine-colorado-bleu-18cl',
+    slug: 'mug-porcelaine-colorado-bleu-18cl',
+    name: 'Mug en Porcelaine Colorado Bleu 18 cl — Intérieur Blanc',
+    category: 'maison',
+    price: 1150,
+    compareAtPrice: 1600,
+    stock: 36,
+    badge: 'Colorado',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Mug en porcelaine bleu nuit, intérieur blanc émail (18 cl) : le classique intemporel à petit prix.',
+    description:
+      'Un mug en porcelaine au bleu nuit profond, émaillé blanc à l’intérieur pour bien voir la couleur du café ou du thé. Format 18 cl, paroi fine mais solide, anse arrondie confortable. Le compagnon du bureau, de la chambre ou du plateau-repas, à un prix imbattable.',
+    specs: [
+      'Mug en porcelaine — Bleu Colorado, intérieur blanc',
+      'Contenance 18 cl · réf. 145417A',
+      'Paroi fine et solide, anse arrondie',
+      'Compatible lave-vaisselle et micro-ondes',
+      'Empilable, idéal bureau ou famille'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-porcelaine-colorado-bleu-18cl.jpg',
+  },
+  {
+    id: 'vaisselle-duo-mugs-blancs-porcelaine',
+    slug: 'duo-mugs-blancs-porcelaine',
+    name: 'Duo de Mugs Blancs en Porcelaine — 25 cl',
+    category: 'maison',
+    price: 2200,
+    compareAtPrice: 2900,
+    stock: 14,
+    badge: 'Duo',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Deux mugs blancs en porcelaine émaillée, sobres et solides : le duo indispensable du café du matin.',
+    description:
+      'Deux mugs en porcelaine blanche au galbe droit et à l’anse fine : ils vont avec toutes les tables et toutes les cuisines. Paroi qui garde la chaleur, émail lisse facile à laver, format 25 cl pour le café au lait ou le thé. Vendus par deux pour le couple ou le bureau.',
+    specs: [
+      'Duo de mugs en porcelaine blanche émaillée',
+      'Contenance 25 cl par mug',
+      'Galbe droit, anse fine et confortable',
+      'Compatible lave-vaisselle et micro-ondes',
+      'Vendus par 2'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-blancs-porcelaine.jpg',
+  },
+  {
+    id: 'vaisselle-duo-mugs-pastel-beige-bleu',
+    slug: 'duo-mugs-pastel-beige-bleu-poudre',
+    name: 'Duo de Mugs Pastel — Beige Sable & Bleu Poudré',
+    category: 'maison',
+    price: 2400,
+    compareAtPrice: 3200,
+    stock: 12,
+    badge: 'Duo pastel',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Un mug beige sable et un mug bleu poudré, mats et généreux : le duo pastel qui adoucit la table.',
+    description:
+      'Deux mugs aux teintes pastel mates — beige sable et bleu poudré — au corps légèrement évasé et à l’anse ronde. Leur émail mat ne laisse pas de traces de doigts et leur paroi épaisse garde le café chaud. Un duo décoratif autant qu’utilitaire, parfait pour un cadeau de couple ou de crémaillère.',
+    specs: [
+      'Duo de mugs — beige sable et bleu poudré',
+      'Contenance 28 cl · émail mat',
+      'Corps évasé, anse ronde confortable',
+      'Paroi épaisse qui garde la chaleur',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-pastel-beige-bleu.jpg',
+  },
+  {
+    id: 'vaisselle-mug-gres-raye-taupe',
+    slug: 'mug-gres-raye-taupe-350ml',
+    name: 'Mug en Grès Rayé Taupe — 35 cl, Grand Format',
+    category: 'maison',
+    price: 1800,
+    compareAtPrice: 2400,
+    stock: 20,
+    badge: 'Grès rayé',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Grand mug en grès taupe à rayures horizontales : 35 cl pour le thé, le café au lait ou le chocolat chaud.',
+    description:
+      'Un grand mug en grès émaillé couleur taupe, orné de fines rayures horizontales en relief qui rappellent la poterie. Sa contenance de 35 cl est parfaite pour un grand thé, un café au lait ou un chocolat chaud, et sa paroi épaisse garde la boisson tiède longtemps. Passe au micro-ondes.',
+    specs: [
+      'Grand mug en grès émaillé — taupe, rayures en relief',
+      'Contenance 35 cl · rebord épaissi',
+      'Anse large et solide',
+      'Compatible micro-ondes',
+      'Nettoyage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-mug-gres-raye-taupe.jpg',
+  },
+  {
+    id: 'vaisselle-duo-mugs-gres-peints-main',
+    slug: 'duo-mugs-gres-peints-main-jaune-bleu',
+    name: 'Duo de Mugs en Grès Peints à la Main — Jaune & Bleu Grisé',
+    category: 'maison',
+    price: 2800,
+    compareAtPrice: 3700,
+    stock: 10,
+    badge: 'Fait main',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Deux mugs en grès au décor peint à la main — tache jaune moutarde et lavis bleu grisé : chaque pièce est unique.',
+    description:
+      'Ces deux mugs en grès ont été décorés à la main : une large tache jaune moutarde sur l’un, un lavis bleu grisé et des rayures peintes sur l’autre. Le grès garde la chaleur, le bord légèrement irrégulier donne le charme de l’artisanat, et chaque pièce est unique. Un duo déco pour la cuisine ou un cadeau original.',
+    specs: [
+      'Duo de mugs en grès — décor peint à la main',
+      'Coloris : jaune moutarde & bleu grisé',
+      'Contenance 250 ml environ par mug',
+      'Chaque pièce est unique (décor manuel)',
+      'Lavage à la main conseillé'
+    ],
+    imageUrl: '/images/products/vaisselle-duo-mugs-gres-peints-main.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -2955,6 +3246,7 @@ export const INITIAL_PRODUCTS = [
   ...CUISINE_MAISON_PRODUCTS,
   ...VAISSELLE_ART_TABLE_PRODUCTS,
   ...CUISINE_MAISON_LOT2_PRODUCTS,
+  ...CUISINE_MAISON_LOT3_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',

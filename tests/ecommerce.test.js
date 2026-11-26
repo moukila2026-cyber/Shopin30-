@@ -977,3 +977,62 @@ test('13. Second arrivage Maison & Cuisine : 12 produits (lunch box 3,4 L, Wilma
   assert.equal(maisonOrder.data.order.deliveryFee, 1000);
   assert.equal(maisonOrder.data.order.total, 16750);
 });
+
+test('14. Troisième arrivage Maison — tasses & mugs : 12 produits (coffrets de tasses, Wilmax double paroi, Luminarc Flashy, grès motif vague, Colorado, duos de mugs)', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  // [id, prix etiquette showroom (0 = prix suggere par la boutique), prix Pèrôkadô attendu]
+  const expectedMugs = [
+    ['cuisine-tasses-noires-coffee-lot-3', 2000, 2000],
+    ['cuisine-tasses-cafe-porcelaine-blanc-9cl-lot-4', 3600, 3600],
+    ['vaisselle-tasse-verre-double-paroi-wilmax-888420-100ml', 3500, 3500],
+    ['vaisselle-tasse-luminarc-flashy-lavande-8cl', 2950, 2950],
+    ['vaisselle-mug-luminarc-flashy-neo-gold', 3300, 3300],
+    ['vaisselle-mug-gres-vague-sauge', 1800, 1800],
+    ['vaisselle-lot-3-mugs-gres-motif-vague', 0, 4900],
+    ['vaisselle-mug-porcelaine-colorado-bleu-18cl', 1150, 1150],
+    ['vaisselle-duo-mugs-blancs-porcelaine', 0, 2200],
+    ['vaisselle-duo-mugs-pastel-beige-bleu', 0, 2400],
+    ['vaisselle-mug-gres-raye-taupe', 0, 1800],
+    ['vaisselle-duo-mugs-gres-peints-main', 0, 2800],
+  ];
+
+  for (const [id, labelPrice, expectedSellPrice] of expectedMugs) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit lot 3 ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'maison');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    if (labelPrice > 0) {
+      const margin = prod.price - labelPrice;
+      assert.ok(margin >= 0 && margin <= 2000, `Marge ${margin} FCFA conforme pour ${id}`);
+    }
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+    assert.ok(prod.imageUrl.startsWith('/images/products/'), `Photo studio pour ${id}`);
+    assert.ok(prod.specs.length >= 4, `${id} dispose de specs détaillées`);
+    assert.ok(prod.compareAtPrice > prod.price, `${id} affiche un prix barré cohérent`);
+  }
+
+  // Un duo de mugs peints main (2 800 F) + un mug Colorado (1 150 F) : 3 950 F + 1 000 F de livraison Daloa
+  const mugsOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_maison_lot3_daloa_01',
+      customerName: 'Mariam Traoré',
+      customerPhone: '0700112233',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Lobia',
+      deliverySlot: 'apres-midi',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0700112233',
+      waveTransactionRef: 'WV_MAISON_LOT3_DALOA_01',
+      items: [
+        { productId: 'vaisselle-duo-mugs-gres-peints-main', quantity: 1 },
+        { productId: 'vaisselle-mug-porcelaine-colorado-bleu-18cl', quantity: 1 },
+      ],
+    },
+  });
+  assert.equal(mugsOrder.status, 201);
+  assert.equal(mugsOrder.data.order.deliveryFee, 1000);
+  assert.equal(mugsOrder.data.order.total, 4950);
+});
