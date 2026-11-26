@@ -16,6 +16,9 @@ export function timingSafeEqualStr(a, b) {
   return match && String(a ?? '').length === String(b ?? '').length && String(a ?? '').length > 0;
 }
 
+// Clé éphémère générée aléatoirement en mémoire pour le dev local uniquement (aucune clé en dur dans le code)
+const EPHEMERAL_DEV_SECRET = crypto.randomBytes(32).toString('hex');
+
 function getSigningSecret() {
   const explicit = (process.env.SESSION_SECRET || '').trim();
   if (explicit.length >= 16) return explicit;
@@ -23,26 +26,20 @@ function getSigningSecret() {
   if (adminPw.length > 0) {
     return crypto.createHmac('sha256', 'perokado-session-key-v1').update(adminPw).digest('hex');
   }
-  // En mode développement local uniquement
+  // En mode développement local uniquement : clé aléatoire en mémoire (jamais de clé en dur)
   if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-    return 'dev-local-perokado-secret-key-not-for-production-2026';
+    return EPHEMERAL_DEV_SECRET;
   }
   return null;
 }
 
 export function isAdminConfigured() {
-  if ((process.env.ADMIN_PASSWORD || '').trim().length >= 6) return true;
-  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) return true;
-  return false;
+  return (process.env.ADMIN_PASSWORD || '').trim().length >= 6;
 }
 
 export function getEffectiveAdminPassword() {
   const pw = (process.env.ADMIN_PASSWORD || '').trim();
-  if (pw) return pw;
-  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-    return 'perokado-demo-admin';
-  }
-  return null;
+  return pw.length >= 6 ? pw : null;
 }
 
 export function signSessionToken(payload) {

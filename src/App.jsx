@@ -8,7 +8,13 @@ import {
   Truck,
   QrCode,
 } from 'lucide-react';
-import { CATEGORIES, DELIVERY_ZONES, BRAND, INITIAL_PRODUCTS } from '../shared/catalog.js';
+import {
+  CATEGORIES,
+  DELIVERY_ZONES,
+  BRAND,
+  INITIAL_PRODUCTS,
+  matchesProductSearch,
+} from '../shared/catalog.js';
 import { apiFetch } from './lib/api.js';
 import { Header } from './components/Header.jsx';
 import { Hero } from './components/Hero.jsx';
@@ -203,23 +209,20 @@ export default function App() {
   }
 
   const activeRange = PRICE_RANGES.find((r) => r.id === priceRangeId) || PRICE_RANGES[0];
+  const hasSearchQuery = Boolean(searchQuery.trim());
 
-  // Filtrage multi-critères style Amazon
+  // Filtrage multi-critères + recherche multi-mots insensible aux accents sur tous les rayons
   const filteredProducts = catalogData.products
     .filter((p) => {
       if (onlyFavorites && !favorites.includes(p.id)) return false;
-      if (!onlyFavorites && activeCategory !== 'all' && p.category !== activeCategory) return false;
+      if (!onlyFavorites && !hasSearchQuery && activeCategory !== 'all' && p.category !== activeCategory) {
+        return false;
+      }
       if (onlyPromos && !(p.compareAtPrice && p.compareAtPrice > p.price)) return false;
       if (onlyInStock && p.stock <= 0) return false;
       if (p.price < activeRange.min || p.price > activeRange.max) return false;
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        return (
-          p.name.toLowerCase().includes(q) ||
-          (p.shortDescription || '').toLowerCase().includes(q) ||
-          (p.description || '').toLowerCase().includes(q) ||
-          (p.badge || '').toLowerCase().includes(q)
-        );
+      if (hasSearchQuery) {
+        return matchesProductSearch(p, searchQuery, catalogData.categories);
       }
       return true;
     })
@@ -233,6 +236,28 @@ export default function App() {
       }
       return Number(b.featured) - Number(a.featured);
     });
+
+  // Regroupement par catégorie lorsque la vue « Tous les rayons » est affichée
+  const shouldGroupByCategory = activeCategory === 'all' && !hasSearchQuery && !onlyFavorites;
+  const groupedCategories = React.useMemo(() => {
+    if (!shouldGroupByCategory) return [];
+    const cats = (catalogData.categories || CATEGORIES).filter((c) => c.id !== 'all');
+    const groups = cats
+      .map((cat) => ({
+        category: cat,
+        items: filteredProducts.filter((p) => p.category === cat.id),
+      }))
+      .filter((g) => g.items.length > 0);
+    const knownIds = new Set(cats.map((c) => c.id));
+    const others = filteredProducts.filter((p) => !knownIds.has(p.category));
+    if (others.length > 0) {
+      groups.push({
+        category: { id: 'autres', label: 'Autres produits', shortLabel: 'Autres' },
+        items: others,
+      });
+    }
+    return groups;
+  }, [shouldGroupByCategory, catalogData.categories, filteredProducts]);
 
   const showHero = !searchQuery.trim() && !onlyFavorites;
 
@@ -496,6 +521,49 @@ export default function App() {
                 >
                   Afficher tous les produits
                 </button>
+              </div>
+            ) : shouldGroupByCategory ? (
+              <div className="space-y-8">
+                {groupedCategories.map(({ category, items }) => (
+                  <section key={category.id} id={`cat-${category.id}`} className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 bg-white border border-[#D5D9D9] rounded-md px-4 py-2.5 shadow-2xs">
+                      <div className="flex items-center gap-2.5">
+                        <h3 className="text-base sm:text-lg font-extrabold text-[#0F1111]">
+                          {category.label}
+                        </h3>
+                        <span className="px-2 py-0.5 rounded-full bg-[#F0F2F2] border border-[#D5D9D9] text-[11px] font-bold text-[#565959]">
+                          {items.length} article{items.length > 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOnlyFavorites(false);
+                          setActiveCategory(category.id);
+                          document.getElementById('catalogue')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="text-xs font-bold text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+                      >
+                        Voir tout le rayon →
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {items.map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          isFavorite={favorites.includes(product.id)}
+                          onToggleFavorite={handleToggleFavorite}
+                          onAddToCart={handleAddToCart}
+                          onBuyNow={handleBuyNow}
+                          onOpenDetail={setSelectedProduct}
+                          inCartQty={cartQtyMap.get(product.id) || 0}
+                          selectedZone={selectedZone}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                ))}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">

@@ -3726,3 +3726,39 @@ export function computeProductDeliveryFee(product, zone) {
   return computeZoneDeliveryFee(zone, { hasHeavyItem: inferHeavyShipping(product) });
 }
 
+// ==============================================================================
+// RECHERCHE MULTI-MOTS INSENSIBLE AUX ACCENTS (100% FIABLE SUR TOUS LES RAYONS)
+// ==============================================================================
+export function normalizeSearchText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+export function matchesProductSearch(product, rawQuery, categories = CATEGORIES) {
+  const normalizedQuery = normalizeSearchText(rawQuery);
+  if (!normalizedQuery) return true;
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return true;
+  const catObj = Array.isArray(categories)
+    ? categories.find((c) => c.id === product?.category)
+    : null;
+  const haystack = normalizeSearchText(
+    [
+      product?.name,
+      product?.shortDescription,
+      product?.description,
+      product?.badge,
+      product?.slug,
+      product?.category,
+      catObj?.label,
+      catObj?.shortLabel,
+      Array.isArray(product?.specs) ? product.specs.join(' ') : '',
+    ].join(' ')
+  );
+  return tokens.every((token) => haystack.includes(token));
+}
+
