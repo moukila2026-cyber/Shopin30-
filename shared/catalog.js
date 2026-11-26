@@ -1883,6 +1883,443 @@ export const QUINCAILLERIE_BTP_PRODUCTS = [
     ],
     imageUrl: '/images/products/kit-pistolet-arrosage-raccords-haute-pression.jpg',
   },
+  {
+    id: 'btp-verrou-rouge-ck6683',
+    slug: 'cle-verrou-rouge-ck6683-cylindre-laiton',
+    name: 'Serrure Verrou de Porte Rouge CK6683 — Cylindre Laiton & Clés',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 25,
+    badge: 'Serrurerie',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Verrou de sûreté en applique coloris rouge bordeaux (CK6683) avec cylindre laiton, pêne solide et jeu de clés inclus.',
+    description:
+      'Renforcez la sécurité de vos portes d’entrée, magasins ou portails ! Ce verrou en applique CK6683 au boîtier métal peint rouge résistant est équipé d’un cylindre en laiton et d’un jeu de clés.',
+    specs: [
+      'Référence CK6683 · Boîtier acier peint rouge bordeaux',
+      'Cylindre et pêne en laiton haute résistance',
+      'Livré avec jeu de clés',
+      'Installation rapide en applique sur porte bois ou métal'
+    ],
+    imageUrl: '/images/products/btp-verrou-rouge-ck6683.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-165-noir-or',
+    slug: 'serrure-cle-canon-luxe-noir-or-griffe-165-9069-a904',
+    name: 'Serrure Clé à Canon Luxe Noir & Or Griffe 165 — 9069-A904',
+    category: 'quincaillerie-btp',
+    price: 14500,
+    compareAtPrice: 18000,
+    stock: 15,
+    badge: 'Luxe Noir & Or',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Ensemble complet serrure à encastrer luxe Griffe 165 finition noir mat & doré, cylindre laiton et clés inclus.',
+    description:
+      'Alliez sécurité et design haut de gamme pour vos portes principales et chambres ! La serrure Griffe 165 (9069-A904) se distingue par ses poignées noir mat rehaussées d’une touche dorée et son mécanisme robuste.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-165 (9069-A904)',
+      'Finition luxe noir mat avec détails dorés',
+      'Coffret complet : poignées, boîtier à encastrer, cylindre laiton & clés',
+      'Idéale portes d’entrée, villas, bureaux et hôtels'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-165-noir-or.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-gf11-1023',
+    slug: 'serrure-cle-canon-luxe-inox-griffe-gf-11-1023',
+    name: 'Serrure Clé à Canon Luxe Inox Griffe — GF-11-1023',
+    category: 'quincaillerie-btp',
+    price: 11500,
+    compareAtPrice: 14500,
+    stock: 18,
+    badge: 'Inox Brossé',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure complète à canon Griffe GF-11-1023 finition inox brossé, poignée ergonomique à reliefs et jeu de clés.',
+    description:
+      'Élégante et durable, la serrure Griffe GF-11-1023 en finition acier inoxydable brossé résiste à l’usage intensif quotidien. Livrée complète avec canon et clés.',
+    specs: [
+      'Marque Griffe · Référence GF-11-1023',
+      'Plaque longue et poignée ergonomique finition inox brossé',
+      'Cylindre à canon sécurisé avec jeu de clés',
+      'Convient aux portes intérieures et extérieures'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-gf11-1023.jpg',
+  },
+  {
+    id: 'btp-tirefond-tole-8x80-bleu-force',
+    slug: 'tirefond-de-tole-8x80mm-bleu-force-avec-cavaliers',
+    name: 'Kit Tirefonds de Tôle 8×80 mm Bleu FORCE — Cavaliers & Rondelles Étanches',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 40,
+    badge: 'Toiture BTP',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Tirefonds de fixation de tôles 8×80 mm en acier bichromaté FORCE avec cavaliers bleus, rondelles métal et joints d’étanchéité.',
+    description:
+      'Assurez une fixation solide et 100 % étanche de vos tôles de toiture ! Ce kit FORCE (Réf. TTBF) réunit les tirefonds 8×80 mm anticorrosion, les cavaliers de maintien bleus et les rondelles d’étanchéité.',
+    specs: [
+      'Marque FORCE · Réf. TTBF · Dimensions : 8 × 80 mm',
+      'Acier bichromaté haute résistance anti-rouille',
+      'Livré avec cavaliers bleus, rondelles acier et joints étanches',
+      'Indispensable pour pose de tôles bac alu et toitures'
+    ],
+    imageUrl: '/images/products/btp-tirefond-tole-8x80-bleu-force.jpg',
+  },
+  {
+    id: 'btp-disjoncteur-schneider-easy9-2p-25a',
+    slug: 'disjoncteur-sur-rail-2p-25a-schneider-easy9-ez9f32225',
+    name: 'Disjoncteur sur Rail 2P 25A Schneider Electric Easy9 — EZ9F32225',
+    category: 'quincaillerie-btp',
+    price: 6500,
+    compareAtPrice: 8500,
+    stock: 30,
+    badge: 'Schneider Original',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur bipolaire 2P 25A courbe C (gamme Easy9 Schneider Electric) pour protection fiable de vos circuits électriques.',
+    description:
+      'Protégez vos installations électriques contre les surcharges et courts-circuits avec la qualité certifiée Schneider Electric ! Montage rapide sur rail DIN pour tableaux résidentiels et professionnels.',
+    specs: [
+      'Marque Schneider Electric · Gamme Easy9 · Réf. EZ9F32225',
+      'Bipolaire 2P · Calibre 25A · Courbe C',
+      'Montage standard sur rail DIN',
+      'Protection contre les surcharges et courts-circuits'
+    ],
+    imageUrl: '/images/products/btp-disjoncteur-schneider-easy9-2p-25a.jpg',
+  },
+  {
+    id: 'btp-parafoudre-schneider-easy9-1pn-20ka',
+    slug: 'parafoudre-1pn-20ka-230v-schneider-easy9-ez9l33620',
+    name: 'Parafoudre 1P+N 20kA 230V Schneider Electric Easy9 — EZ9L33620',
+    category: 'quincaillerie-btp',
+    price: 68500,
+    compareAtPrice: 79000,
+    stock: 10,
+    badge: 'Protection Foudre',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Parafoudre monophasé Type 2 (1P+N, 20 kA, 230 V) Schneider Electric Easy9 : protège TV, frigos, clims et appareils contre la foudre et surtensions.',
+    description:
+      'Indispensable pendant la saison des pluies et orages en Côte d’Ivoire ! Le parafoudre Schneider Electric Easy9 EZ9L33620 (Type 2 · 20 kA) absorbe les pics de tension et protège toute votre installation monophasée.',
+    specs: [
+      'Marque Schneider Electric · Réf. EZ9L33620 (Easy9 SPD T2)',
+      'Monophasé 1P+N · 230 V · Courant de décharge max Imax 20 kA',
+      'Voyant mécanique d’état (Vert = OK / Rouge = à remplacer)',
+      'Montage sur rail DIN · Protection résidentielle & commerciale'
+    ],
+    imageUrl: '/images/products/btp-parafoudre-schneider-easy9-1pn-20ka.jpg',
+  },
+  {
+    id: 'btp-fiche-industrielle-megalec-5p-16a',
+    slug: 'fiche-industrielle-femelle-apparente-5p-16a-ip44-megalec-meg-115g',
+    name: 'Prise / Fiche Industrielle Femelle Apparente 5P 16A IP44 Megalec — MEG-115G',
+    category: 'quincaillerie-btp',
+    price: 6500,
+    compareAtPrice: 8500,
+    stock: 20,
+    badge: 'Industriel IP44',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Socle prise industrielle femelle apparente 5 pôles (3P+N+T) 16A 400V étanche IP44 Megalec avec clapet rouge de protection.',
+    description:
+      'Conçue pour les ateliers, chantiers, groupes électrogènes et machines triphasées ! Cette prise murale apparente Megalec 5P 16A IP44 résiste aux projections d’eau et à la poussière.',
+    specs: [
+      'Marque Megalec · Réf. MEG-115G · 5P (3P+N+T) 16A',
+      'Indice de protection IP44 étanche aux projections d’eau',
+      'Boîtier apparent robuste avec clapet de fermeture rouge',
+      'Ateliers, chantiers BTP, groupes électrogènes triphasés'
+    ],
+    imageUrl: '/images/products/btp-fiche-industrielle-megalec-5p-16a.jpg',
+  },
+  {
+    id: 'btp-coffret-schneider-120-modules-lvsxh524',
+    slug: 'coffret-electrique-120-modules-encastre-5-rangees-schneider-lvsxh524',
+    name: 'Coffret Électrique 120 Modules Encastré 5 Rangées Porte Transparente Schneider — LVSXH524',
+    category: 'quincaillerie-btp',
+    price: 155000,
+    compareAtPrice: 175000,
+    stock: 5,
+    badge: '120 Modules Pro',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grand tableau électrique encastré Schneider Electric PrismaSet XS 5 rangées × 24 modules (120 modules) avec porte transparente.',
+    description:
+      'La référence des électriciens pour les grandes villas, immeubles, hôtels et bâtiments tertiaires ! Ce coffret encastré PrismaSet XS LVSXH524 offre 120 modules répartis sur 5 rangées avec porte transparente de contrôle.',
+    specs: [
+      'Marque Schneider Electric · PrismaSet XS · Réf. LVSXH524',
+      'Capacité 120 modules (5 rangées de 24 modules)',
+      'Pose encastrée · Porte transparente incluse',
+      'Idéal villas, immeubles, bureaux et locaux commerciaux'
+    ],
+    imageUrl: '/images/products/btp-coffret-schneider-120-modules-lvsxh524.jpg',
+  },
+  {
+    id: 'btp-extracteur-industriel-emtop-120w-8p',
+    slug: 'ventilateur-extraction-industriel-emtop-120w-8-pouces-egfj2a08',
+    name: 'Ventilateur d’Extraction Industriel EMTOP 120 W 8" (1300 m³/h) — EGFJ2A08',
+    category: 'quincaillerie-btp',
+    price: 68000,
+    compareAtPrice: 79000,
+    stock: 6,
+    badge: '1300 m³/h · Cuivre',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Puissant extracteur d’air industriel portable EMTOP 8 pouces (120 W · 0,16 HP · bobinage cuivre) débit 1300 m³/h pour chantiers et ateliers.',
+    description:
+      'Ventilez efficacement sous-sols, ateliers, garages, cuisines professionnelles et chantiers ! L’extracteur EMTOP EGFJ2A08 combine un moteur 100 % fil de cuivre de 120 W, un débit puissant de 1300 m³/h, une poignée de transport et 4 pieds stables.',
+    specs: [
+      'Marque EMTOP · Réf. EGFJ2A08 · Diamètre 8 pouces (200 mm)',
+      'Puissance 120 W (0,16 HP) · Moteur bobinage 100 % cuivre',
+      'Débit d’air puissant : 1 300 m³/h',
+      'Grilles de protection, poignée de transport & pieds anti-vibration'
+    ],
+    imageUrl: '/images/products/btp-extracteur-industriel-emtop-120w-8p.jpg',
+  },
+  {
+    id: 'btp-colonne-douche-inox-griffe-gs-g224ss',
+    slug: 'colonne-douche-hydromassante-inox-griffe-gs-g224ss',
+    name: 'Colonne de Douche Hydromassante Inox Complète Griffe — GS-G224SS',
+    category: 'quincaillerie-btp',
+    price: 65000,
+    compareAtPrice: 78000,
+    stock: 8,
+    badge: 'Hydromassante Inox',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Colonne de douche murale en acier inoxydable brossé Griffe GS-G224SS avec pomme haute effet pluie, buses de massage, mitigeur et douchette flexible.',
+    description:
+      'Transformez votre salle de bain en espace spa moderne ! Cette colonne de douche en inox brossé anti-corrosion intègre un ciel de pluie supérieur, deux zones de buses hydromassantes, un mitigeur chromé et une douchette à main avec flexible.',
+    specs: [
+      'Marque Griffe · Réf. GS-G224SS · Corps acier inoxydable brossé',
+      'Pomme de douche haute effet pluie + buses hydromassantes intégrées',
+      'Mitigeur mécanique + sélecteur de fonctions + douchette à main flexible',
+      'Installation murale complète pour salles de bain modernes & hôtels'
+    ],
+    imageUrl: '/images/products/btp-colonne-douche-inox-griffe-gs-g224ss.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-158-inox',
+    slug: 'serrure-cle-canon-luxe-123-inox-griffe-158',
+    name: 'Serrure Clé à Canon Luxe 123 Inox Griffe — GRIFFE-158',
+    category: 'quincaillerie-btp',
+    price: 10500,
+    compareAtPrice: 13000,
+    stock: 20,
+    badge: 'Inox Satiné',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure complète à canon Griffe 158 (modèle 123) finition inox satiné avec plaque longue, poignée ergonomique et jeu de clés.',
+    description:
+      'Sobre, résistante et intemporelle, la serrure Griffe 158 équipe durablement les portes de chambres, bureaux et appartements. Livrée complète avec canon et clés.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-158 (modèle 123)',
+      'Finition acier inoxydable satiné anti-traces',
+      'Livrée avec cylindre à canon et jeu de clés',
+      'Pose facile sur portes bois ou métalliques'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-158-inox.jpg',
+  },
+  {
+    id: 'btp-surpresseur-qb80-force-444',
+    slug: 'pompe-surpresseur-eau-qb80-force-444',
+    name: 'Pompe Surpresseur d’Eau Électrique QB80 FORCE — FORCE-444',
+    category: 'quincaillerie-btp',
+    price: 48000,
+    compareAtPrice: 58000,
+    stock: 10,
+    badge: 'Surpresseur QB80',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pompe surpresseur d’eau électrique QB80 (1 HP) FORCE-444 pour augmenter la pression domestique, alimenter les châteaux d’eau et l’arrosage.',
+    description:
+      'Fini les faibles débits d’eau aux étages ou dans la douche ! Le surpresseur électrique QB80 FORCE-444 offre une pression puissante et régulière avec un corps de pompe robuste et un moteur ventilé endurant.',
+    specs: [
+      'Marque FORCE · Modèle QB80 · Réf. FORCE-444',
+      'Puissance 1 HP (0,75 kW) · Alimentation 220–240 V',
+      'Corps moteur à ailettes de refroidissement & turbine laiton',
+      'Idéal villas, immeubles, citernes, puits et jardins'
+    ],
+    imageUrl: '/images/products/btp-surpresseur-qb80-force-444.jpg',
+  },
+  {
+    id: 'btp-parafoudre-schneider-easy9-3pn-20ka',
+    slug: 'parafoudre-3pn-20ka-400v-schneider-easy9-ez9l33720',
+    name: 'Parafoudre Triphasé 3P+N 20kA 400V Schneider Electric Easy9 — EZ9L33720',
+    category: 'quincaillerie-btp',
+    price: 118000,
+    compareAtPrice: 129000,
+    stock: 6,
+    badge: 'Triphasé 400V',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Parafoudre triphasé Type 2 (3P+N, 20 kA, 400 V) Schneider Electric Easy9 EZ9L33720 pour protection complète des tableaux triphasés contre la foudre.',
+    description:
+      'Protégez vos installations triphasées (villas, ateliers, commerces, cliniques, hôtels) contre les surtensions atmosphériques et pics du réseau CIE avec le parafoudre certifié Schneider Electric Easy9 EZ9L33720.',
+    specs: [
+      'Marque Schneider Electric · Gamme Easy9 · Réf. EZ9L33720',
+      'Triphasé 3P+N · 400 V · Type 2 · Imax 20 kA',
+      'Voyants mécaniques d’état sur chaque pôle (Vert = OK)',
+      'Montage sur rail DIN (4 modules)'
+    ],
+    imageUrl: '/images/products/btp-parafoudre-schneider-easy9-3pn-20ka.jpg',
+  },
+  {
+    id: 'btp-groupe-electrogene-emtop-55kva-eggrd5511',
+    slug: 'groupe-electrogene-essence-emtop-55kva-24a-demarreur-cle-eggrd5511',
+    name: 'Groupe Électrogène Essence EMTOP 5,5 kVA (5500 W) 24A — Démarreur à Clé EGGRD5511',
+    category: 'quincaillerie-btp',
+    price: 379000,
+    compareAtPrice: 430000,
+    stock: 4,
+    badge: '5,5 kVA · Clé + Cuivre',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Puissant groupe électrogène essence monophasé EMTOP 5,5 kVA / 5500 W (24 A) avec démarreur électrique à clé, batterie, bobinage 100 % cuivre et roues.',
+    description:
+      'Assurez la continuité électrique de votre maison, commerce, pharmacie ou chantier en cas de coupure ! Le groupe électrogène EMTOP EGGRD5511 délivre 5 500 W max (24 A) avec alternateur bobinage 100 % cuivre, démarrage électrique à clé (batterie incluse), voltmètre et châssis tubulaire renforcé sur roues.',
+    specs: [
+      'Marque EMTOP · Réf. EGGRD5511 · Puissance max 5,5 kVA / 5 500 W (24 A)',
+      'Démarrage électrique à clé (batterie 12V incluse) + lanceur manuel',
+      'Alternateur bobinage 100 % fil de cuivre haute longévité',
+      '2 prises monophasées protégées, voltmètre & kit roues de transport'
+    ],
+    imageUrl: '/images/products/btp-groupe-electrogene-emtop-55kva-eggrd5511.jpg',
+  },
+  {
+    id: 'btp-cle-douche-griffe-163',
+    slug: 'serrure-cle-de-douche-luxe-125-griffe-163',
+    name: 'Serrure Clé de Douche / Salle de Bain Luxe 125 Inox Griffe — GRIFFE-163',
+    category: 'quincaillerie-btp',
+    price: 8500,
+    compareAtPrice: 11000,
+    stock: 22,
+    badge: 'Salle de Bain',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Ensemble poignée et verrou à condamnation (bouton tournant) spécial douche & WC Griffe 163 en acier inoxydable résistant à l’humidité.',
+    description:
+      'Spécialement conçue pour les portes de salles de bain, douches et toilettes ! Sa finition inox anti-corrosion résiste à la vapeur et à l’humidité, avec verrouillage intérieur pratique par bouton tournant.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-163 (modèle 125)',
+      'Condamnation intérieure à bouton tournant (sans clé)',
+      'Finition inox brossé anti-rouille spéciale pièces humides',
+      'Idéale douches, salles de bain et toilettes'
+    ],
+    imageUrl: '/images/products/btp-cle-douche-griffe-163.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-168-bronze',
+    slug: 'serrure-cle-canon-luxe-bronze-grec-griffe-168-s52a',
+    name: 'Serrure Clé à Canon Luxe Bronze Motif Grec Griffe 168 — S52A',
+    category: 'quincaillerie-btp',
+    price: 16500,
+    compareAtPrice: 20000,
+    stock: 12,
+    badge: 'Luxe Bronze',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Serrure haut de gamme Griffe 168 (S52A) finition bronze antique doré avec gravure motif grec, canon sécurisé et jeu de clés.',
+    description:
+      'Sublimez vos portes d’entrée, salons et suites avec la serrure Griffe 168 S52A ! Sa finition bronze doré brossé et ses gravures géométriques de style grec apportent prestige et robustesse.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-168 (S52A)',
+      'Finition bronze antique doré avec motif grec sculpté',
+      'Cylindre à canon haute sécurité + jeu de clés',
+      'Idéale portes d’entrée, villas haut standing et hôtels'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-168-bronze.jpg',
+  },
+  {
+    id: 'btp-poutrelle-coffrage-h20-390m',
+    slug: 'poutrelle-de-coffrage-bois-h20-avec-protection-390m-pout-h20-3900',
+    name: 'Poutrelle de Coffrage en Bois H20 avec Embouts de Protection — 3,90 m (POUT-H20-3900)',
+    category: 'quincaillerie-btp',
+    price: 26000,
+    compareAtPrice: 31000,
+    stock: 30,
+    badge: 'Gros Œuvre BTP',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Poutrelle de coffrage professionnelle en bois lamellé H20 longueur 3,90 m traitée jaune hydrofuge avec embouts rouges anti-chocs.',
+    description:
+      'Indispensable sur les chantiers de construction pour le coffrage de dalles et planchers béton ! Cette poutrelle H20 de 3,90 m combine légèreté, forte capacité portante et embouts de protection rouges pour prolonger sa durée de vie.',
+    specs: [
+      'Référence POUT-H20-3900 · Profil H20 · Longueur : 3,90 m',
+      'Bois résineux sélectionné traité hydrofuge jaune chantier',
+      'Embouts de protection plastique rouge anti-éclatement aux extrémités',
+      'Coffrage de dalles, poutres et planchers BTP'
+    ],
+    imageUrl: '/images/products/btp-poutrelle-coffrage-h20-390m.jpg',
+  },
+  {
+    id: 'btp-serrure-force-cle-134f',
+    slug: 'serrure-cle-canon-luxe-134-force-cle-134f',
+    name: 'Serrure Clé à Canon Luxe 134 Nickel Satiné FORCE — CLE-134F',
+    category: 'quincaillerie-btp',
+    price: 9500,
+    compareAtPrice: 12000,
+    stock: 20,
+    badge: 'Nickel Satiné',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Ensemble serrure à canon luxe FORCE 134 (CLE-134F) à poignée courbée ergonomique finition nickel satiné pour portes intérieures et extérieures.',
+    description:
+      'Design fluide et prise en main confortable ! La serrure FORCE CLE-134F offre un excellent rapport qualité-prix pour équiper maisons, résidences locatives et bureaux.',
+    specs: [
+      'Marque FORCE · Réf. CLE-134F (modèle 134)',
+      'Poignée courbée ergonomique finition nickel satiné',
+      'Plaque longue percée pour cylindre européen à canon',
+      'Résistante à l’usage quotidien intensif'
+    ],
+    imageUrl: '/images/products/btp-serrure-force-cle-134f.jpg',
+  },
+  {
+    id: 'btp-dismatique-megalec-meg-dis',
+    slug: 'dismatique-interrupteur-securite-megalec-meg-dis',
+    name: 'Dismatique Mural de Protection Électrique Megalec — MEG-DIS',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 25,
+    badge: 'Protection Clim/Appareils',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur mural Dismatique Megalec (MEG-DIS) avec bouton marche vert et bouton arrêt/réarmement rouge pour climatiseurs, chauffe-eau et appareils.',
+    description:
+      'Protégez vos climatiseurs, chauffe-eau et appareils électroménagers puissants avec le Dismatique Megalec ! Commande directe marche/arrêt en façade et coupure automatique en cas de surcharge.',
+    specs: [
+      'Marque Megalec · Réf. MEG-DIS',
+      'Bouton poussoir vert (Marche) + bouton rouge (Arrêt / Réarmement)',
+      'Boîtier blanc sobre à montage mural encastré ou saillie',
+      'Idéal climatiseurs, chauffe-eau, congélateurs et pompes'
+    ],
+    imageUrl: '/images/products/btp-dismatique-megalec-meg-dis.jpg',
+  },
 ];
 
 // ==============================================================================
@@ -2145,7 +2582,7 @@ export const NOUVEAUTES_SMART_MOBILIER_PRODUCTS = [
 ];
 
 // ==============================================================================
-// RAYON CUISINE & ART DE LA TABLE (8 PRODUITS — arrivage showroom Nov. 2026)
+// RAYON CUISINE & ART DE LA TABLE (54 PRODUITS — arrivage showroom Nov. 2026)
 // Prix Pèrôkadô = prix étiquette showroom + marge magasin (conforme politique <= 2 000 F)
 // ==============================================================================
 export const CUISINE_MAISON_PRODUCTS = [
@@ -2332,6 +2769,1064 @@ export const CUISINE_MAISON_PRODUCTS = [
       'Gâteaux, tartes, viennoiseries · Fêtes & réceptions'
     ],
     imageUrl: '/images/products/cuisine-presentoir-gateau-cloche.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-cheqs-1-3l',
+    slug: 'carafe-frigo-luminarc-cheqs-verre-1-3l-couvercle-blanc',
+    name: 'Carafe Frigo Luminarc Cheqs 1,3 L en Verre — Couvercle Blanc',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 14,
+    badge: 'Luminarc 1,3L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe réfrigérateur Luminarc Cheqs 1,3 L en verre transparent à motif quadrillé en relief, anse ergonomique et couvercle blanc.',
+    description:
+      'Conçue pour se glisser facilement dans la porte du réfrigérateur ! Cette carafe Luminarc Cheqs de 1,3 L en verre résistant arbore un élégant motif quadrillé en bas et un couvercle blanc pratique qui protège eau, jus naturels et bissap des odeurs du frigo.',
+    specs: [
+      'Marque Luminarc · Modèle Cheqs Fridge Jug 1,3 L',
+      'Verre transparent haute qualité avec relief quadrillé',
+      'Couvercle blanc hermétique anti-odeurs',
+      'Format spécial porte de réfrigérateur · Lavable au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-cheqs-1-3l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-arc-1-3l',
+    slug: 'carafe-luminarc-arc-verre-1-3l-avec-couvercle',
+    name: 'Carafe Luminarc Arc 1,3 L en Verre Transparent avec Couvercle',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 16,
+    badge: 'Luminarc Arc',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Grand classique de la table : pichet Luminarc Arc 1,3 L en verre transparent évasé avec anse robuste et couvercle inclus.',
+    description:
+      'Indispensable au quotidien pour servir eau fraîche, jus de fruits ou thé glacé à table ! La carafe Luminarc Arc 1,3 L séduit par sa ligne évasée intemporelle, son bec verseur précis et son couvercle assorti.',
+    specs: [
+      'Marque Luminarc · Gamme Arc Jug 1,3 L (Réf. N1103)',
+      'Verre transparent solide à base large très stable',
+      'Couvercle de protection inclus',
+      'Eau, jus, bissap, gingembre · Entretien facile'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-arc-1-3l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-verre-motifs-yzh36',
+    slug: 'carafe-verre-transparent-motifs-geometriques-couvercle',
+    name: 'Carafe en Verre Transparent à Motifs Géométriques & Couvercle',
+    category: 'maison',
+    price: 4000,
+    compareAtPrice: 5500,
+    stock: 18,
+    badge: 'Petit prix',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Pichet en verre transparent décoré de motifs géométriques côtelés sur la base, avec anse confortable et couvercle.',
+    description:
+      'Une carafe lumineuse et pratique à petit prix pour tous les repas de la famille. Son verre moulé à motifs géométriques capte la lumière sur la table et offre une excellente prise en main.',
+    specs: [
+      'Verre transparent épais avec motifs géométriques en relief',
+      'Anse ergonomique et bec verseur anti-goutte',
+      'Couvercle de protection inclus · Réf. YZH-36',
+      'Idéale eau fraîche, jus maison et boissons de table'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-verre-motifs-yzh36.jpg',
+  },
+  {
+    id: 'cuisine-carafe-verre-poire-couvercle',
+    slug: 'carafe-verre-forme-poire-couvercle-bec-verseur',
+    name: 'Carafe en Verre Forme Poire avec Couvercle Bec Verseur',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 12,
+    badge: 'Couvercle Pratique',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Carafe galbée forme poire en verre transparent avec grande anse et couvercle translucide à bec verseur intégré.',
+    description:
+      'Élégante et fonctionnelle, cette carafe galbée en verre transparent dispose d’un couvercle ajusté qui retient les glaçons et tranches de citron lorsque vous versez. Parfaite pour les tables familiales et les réceptions.',
+    specs: [
+      'Verre transparent haute clarté, silhouette poire élégante',
+      'Couvercle blanc translucide avec bec verseur pratique',
+      'Grande anse en verre facile à saisir',
+      'Eau fraîche, citronnade, jus de fruits et cocktails'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-verre-poire-couvercle.jpg',
+  },
+  {
+    id: 'cuisine-bouteille-verre-1l-agrumes',
+    slug: 'bouteille-eau-verre-1l-imprime-agrumes-sirio-zagara',
+    name: 'Bouteille à Eau en Verre 1 L Imprimé Agrumes « Fresh from the Market »',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Design Italie',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Bouteille 1 litre en verre italien Decover au décor estival citrons & quadrillage bleu, avec bouchon métallique blanc à vis.',
+    description:
+      'Apportez une touche de fraîcheur méditerranéenne sur votre table ! Cette bouteille en verre de 1 litre (gamme Sirio Zagara Agrumes) ferme hermétiquement grâce à son bouchon métal à vis pour conserver eau fraîche, jus de citron, bissap ou lait au réfrigérateur.',
+    specs: [
+      'Contenance 1 Litre · Verre imprimé Sirio Zagara Agrumes (Decover)',
+      'Bouchon métallique blanc à vis hermétique',
+      'Décor citrons jaunes & quadrillage bleu « Fresh from the Market »',
+      'Format fin idéal pour la porte du réfrigérateur'
+    ],
+    imageUrl: '/images/products/cuisine-bouteille-verre-1l-agrumes.jpg',
+  },
+  {
+    id: 'cuisine-carafe-luminarc-1l-liege',
+    slug: 'carafe-luminarc-verre-1l-bouchon-liege-naturel',
+    name: 'Carafe Luminarc 1 L en Verre avec Bouchon en Liège Naturel',
+    category: 'maison',
+    price: 10500,
+    compareAtPrice: 13500,
+    stock: 10,
+    badge: 'Made in France',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe cylindrique design Luminarc 1 L fabriquée en France, coiffée d’un authentique bouchon en liège naturel.',
+    description:
+      'Le chic minimaliste pour les belles tables ! Fabriquée en France par Luminarc, cette carafe cylindrique en verre cristallin de 1 litre s’accompagne d’un gros bouchon en liège naturel qui protège vos boissons avec style. Idéale aussi en idée cadeau.',
+    specs: [
+      'Marque Luminarc · Fabriquée en France (Réf. N3941)',
+      'Contenance 1 Litre · Verre transparent haute brillance',
+      'Bouchon épais en liège naturel amovible',
+      'Eau détox, jus frais, service de table haut de gamme'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-luminarc-1l-liege.jpg',
+  },
+  {
+    id: 'cuisine-carafe-pasabahce-couvercle-violet',
+    slug: 'carafe-pasabahce-verre-col-evase-couvercle-violet',
+    name: 'Carafe Paşabahçe en Verre Col Évasé — Couvercle Violet',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 12,
+    badge: 'Verre Paşabahçe',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Carafe élégante Paşabahçe en verre épais à col évasé, livrée avec son couvercle souple violet anti-poussière.',
+    description:
+      'Alliez la solidité du verre Paşabahçe à une touche de couleur moderne ! Sa silhouette élancée se prend facilement en main par le col et son couvercle souple violet préserve la fraîcheur de vos boissons au réfrigérateur comme sur la table.',
+    specs: [
+      'Marque Paşabahçe · Verre épais transparent (Réf. DS26629)',
+      'Col évasé ergonomique facile à verser',
+      'Couvercle souple violet ajusté inclus',
+      'Eau, jus de fruits, boissons glacées · Passe au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-pasabahce-couvercle-violet.jpg',
+  },
+  {
+    id: 'cuisine-pichet-polycarbonate-1-4l-incassable',
+    slug: 'pichet-1-4l-polycarbonate-incassable-transparent-orca',
+    name: 'Pichet 1,4 L en Polycarbonate Incassable Transparent — Design Épuré',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 16,
+    badge: 'Incassable',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pichet 1,4 L aspect cristal en polycarbonate incassable ultra léger : idéal familles avec enfants, terrasses et restaurants.',
+    description:
+      'Toute la transparence du verre sans aucun risque de casse ! Ce pichet Orca de 1,4 L en polycarbonate alimentaire incassable affiche une ligne moderne à taille cintrée et un bec verseur précis. Parfait pour la maison, le jardin, les enfants ou la restauration.',
+    specs: [
+      'Contenance 1,4 Litre · Dimensions : Ø 11,2 × H 29 cm (Réf. 8832)',
+      'Polycarbonate alimentaire transparent 100 % incassable',
+      'Léger, prise en main facile par la taille cintrée',
+      'Idéal familles, enfants, terrasses, maquis & restaurants'
+    ],
+    imageUrl: '/images/products/cuisine-pichet-polycarbonate-1-4l-incassable.jpg',
+  },
+  {
+    id: 'cuisine-carafe-plastique-martele-1-9l',
+    slug: 'carafe-plastique-transparent-1-9l-effet-martele-couvercle',
+    name: 'Carafe Grande Capacité 1,9 L Effet Verre Martelé — Vert d’Eau ou Transparent',
+    category: 'maison',
+    price: 7000,
+    compareAtPrice: 9000,
+    stock: 12,
+    badge: 'Format XXL 1,9L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Très grand pichet de 1,9 L (64 oz) en plastique cristallin effet martelé, léger et résistant, avec anse et couvercle.',
+    description:
+      'Servez toute la famille ou vos invités sans recharger sans cesse ! Cette grande carafe de 1,9 litre imite à merveille le verre martelé tout en restant légère et résistante aux chocs. Disponible en teinte vert d’eau ou cristal transparent (précisez votre choix dans la commande).',
+    specs: [
+      'Très grande capacité 1,9 Litre (64,25 oz) · Réf. 179650940',
+      'Plastique cristallin épais effet verre martelé',
+      'Couvercle ajusté + grande anse robuste',
+      'Coloris au choix : Vert d’eau ou Transparent'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-plastique-martele-1-9l.jpg',
+  },
+  {
+    id: 'cuisine-carafe-plastique-1-5l-bleu-barok',
+    slug: 'carafe-plastique-1-5l-bleu-marine-barok-strie',
+    name: 'Carafe 1,5 L Bleu Marine Barok Striée avec Couvercle',
+    category: 'maison',
+    price: 6000,
+    compareAtPrice: 7900,
+    stock: 14,
+    badge: 'Style Barok 1,5L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Pichet élancé 1,5 L en plastique translucide bleu marine à fines stries verticales, avec anse et couvercle assorti.',
+    description:
+      'Une note de fraîcheur bleu marine sur votre table ! Légère, incassable et facile à manipuler même par les enfants, cette carafe Barok de 1,5 L aux stries verticales modernes s’emporte partout : salle à manger, terrasse ou pique-nique.',
+    specs: [
+      'Capacité 1,5 Litre · Modèle Barok Réf. 6850',
+      'Plastique alimentaire translucide bleu marine résistant aux chocs',
+      'Fines stries verticales modernes · Anse et couvercle assortis',
+      'Légère et pratique pour toute la famille'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-plastique-1-5l-bleu-barok.jpg',
+  },
+  {
+    id: 'cuisine-lot-4-mini-bocaux-hexagonaux',
+    slug: 'lot-4-mini-bocaux-hexagonaux-verre-couvercles-noir-rouge',
+    name: 'Lot de 4 Mini Bocaux Hexagonaux en Verre — Couvercles Noir & Rouge',
+    category: 'maison',
+    price: 2500,
+    compareAtPrice: 3500,
+    stock: 20,
+    badge: 'Lot de 4',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      '4 petits bocaux hexagonaux en verre transparent avec couvercles métalliques à vis (2 noirs + 2 rouges) pour épices, miel et confitures.',
+    description:
+      'Idéaux pour organiser vos épices, poivre, piment, miel, confitures maison ou graines ! Ce lot de 4 mini bocaux hexagonaux en verre épais (Réf. DS26641) assure une fermeture hermétique grâce à leurs couvercles métalliques à vis.',
+    specs: [
+      'Lot de 4 mini bocaux hexagonaux en verre transparent',
+      'Couvercles métalliques hermétiques à vis (2 noirs + 2 rouges)',
+      'Parfaits pour épices, miel, confitures, herbes & sauces',
+      'Référence showroom DS26641'
+    ],
+    imageUrl: '/images/products/cuisine-lot-4-mini-bocaux-hexagonaux.jpg',
+  },
+  {
+    id: 'cuisine-bocal-boule-verre-3l-bleu',
+    slug: 'grand-bocal-boule-verre-3-litres-couvercle-bleu',
+    name: 'Grand Bocal Boule en Verre 3 Litres — Couvercle Métal Bleu',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 14,
+    badge: 'Format 3 L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Très grand bocal rond façon bonbonnière en verre épais de 3 litres avec large ouverture et couvercle métallique bleu.',
+    description:
+      'Un bocal généreux de 3 litres au format boule classique, parfait pour conserver biscuits, gâteaux secs, bonbons, arachides, gari, sucre ou pâtes tout en gardant le contenu bien visible.',
+    specs: [
+      'Grande capacité 3 Litres · Verre transparent épais',
+      'Large ouverture pratique pour servir facilement',
+      'Couvercle métallique bleu à vis · Réf. VAI0162',
+      'Idéal biscuits, bonbons, céréales, arachides et conserves sèches'
+    ],
+    imageUrl: '/images/products/cuisine-bocal-boule-verre-3l-bleu.jpg',
+  },
+  {
+    id: 'maison-corbeille-mandala-orange',
+    slug: 'corbeille-poubelle-deco-mandala-multicolore-rebord-orange',
+    name: 'Corbeille Déco Motif Mandala Multicolore — Rebord Orange',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Déco Maison',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Corbeille à papier décorative en plastique robuste imprimé mosaïque mandala colorée avec rebord orange.',
+    description:
+      'Ajoutez une note chaleureuse et artistique à votre bureau, chambre ou salon ! Cette corbeille légère et lavable en un coup d’éponge habille votre intérieur de motifs mandalas colorés.',
+    specs: [
+      'Plastique rigide résistant et facile à nettoyer',
+      'Imprimé mosaïque mandala multicolore + rebord orange',
+      'Format idéal chambre, bureau, salon ou salle de bain',
+      'Légère et empilable'
+    ],
+    imageUrl: '/images/products/maison-corbeille-mandala-orange.jpg',
+  },
+  {
+    id: 'maison-corbeille-pat-patrouille-bleue',
+    slug: 'corbeille-chambre-enfant-pat-patrouille-bleue',
+    name: 'Corbeille Chambre Enfant Pat’Patrouille (Paw Patrol) — Bleue',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 15,
+    badge: 'Chambre Enfant',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Corbeille à papier bleue illustrée des héros Pat’Patrouille : parfaite pour apprendre le rangement aux enfants.',
+    description:
+      'Les petits fans de Pat’Patrouille vont adorer ! Cette corbeille solide en plastique lisse aux couleurs vives décore la chambre d’enfant ou le coin bureau tout en restant ultra facile à laver.',
+    specs: [
+      'Décor officiel Pat’Patrouille (Chase, Stella, Marcus, Ruben, Everest)',
+      'Plastique robuste sans bords coupants, rebord bleu',
+      'Idéale chambre d’enfant, salle de jeux ou bureau d’écolier',
+      'Nettoyage facile à l’eau savonneuse'
+    ],
+    imageUrl: '/images/products/maison-corbeille-pat-patrouille-bleue.jpg',
+  },
+  {
+    id: 'maison-organisateur-placard-plastart-4-7l',
+    slug: 'organisateur-placard-suspendu-plastart-4-7l-blanc',
+    name: 'Organisateur de Placard Suspendu Plastart 4,7 L — Blanc (25×14×36 cm)',
+    category: 'maison',
+    price: 5000,
+    compareAtPrice: 6500,
+    stock: 16,
+    badge: 'Gain de place',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Panier de rangement suspendu ajouré Plastart 4,7 L à accrocher sur porte de placard (cuisine ou salle de bain), sans perçage.',
+    description:
+      'Optimisez l’intérieur de vos placards sans aucun trou ni vis ! Cet organisateur suspendu Plastart (fabriqué en Turquie) s’accroche simplement sur la porte d’un meuble de cuisine ou de salle de bain pour ranger produits ménagers, éponges, sacs ou flacons.',
+    specs: [
+      'Marque Plastart (Irak Plastik, Turquie) · Réf. TE-550 / VAI0123',
+      'Capacité 4,7 Litres · Dimensions : 25 × 14 × 36 cm',
+      'Installation instantanée sur porte de placard sans perçage',
+      'Parois ajourées respirantes · Cuisine & salle de bain'
+    ],
+    imageUrl: '/images/products/maison-organisateur-placard-plastart-4-7l.jpg',
+  },
+  {
+    id: 'maison-nappe-hevoa-150x250-florale',
+    slug: 'nappe-de-table-hevoa-150x250-motif-floral-pastel',
+    name: 'Nappe de Table Hevoa Home & Co. 150×250 cm — Motif Floral Pastel',
+    category: 'maison',
+    price: 16500,
+    compareAtPrice: 21000,
+    stock: 8,
+    badge: 'Grand Format',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grande nappe rectangulaire 150×250 cm (6 à 8 couverts) fond blanc à imprimé floral aquarelle rose poudré, beige et jaune doux.',
+    description:
+      'Habillez votre salle à manger avec raffinement ! Cette grande nappe Hevoa Home & Co. de 150 × 250 cm illumine la table grâce à ses motifs floraux aquarelle très doux. Parfaite pour les repas de famille, réceptions et fêtes.',
+    specs: [
+      'Marque Hevoa Home & Co. · Dimensions : 150 × 250 cm',
+      'Convient aux grandes tables rectangulaires de 6 à 8 personnes',
+      'Motif floral aquarelle pastel (rose poudré, beige doré, jaune)',
+      'Finitions ourlées soignées · Entretien facile'
+    ],
+    imageUrl: '/images/products/maison-nappe-hevoa-150x250-florale.jpg',
+  },
+  {
+    id: 'maison-rideau-orca-140x270-taupe',
+    slug: 'rideau-orca-creations-140x270cm-taupe-raye',
+    name: 'Rideau Orca Créations 140×270 cm — Taupe à Fines Rayures',
+    category: 'maison',
+    price: 8500,
+    compareAtPrice: 11500,
+    stock: 12,
+    badge: '140×270 cm',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Panneau de rideau prêt-à-poser Orca Créations 140×270 cm coloris taupe chic avec fines rayures verticales lumineuses.',
+    description:
+      'Apportez une atmosphère chaleureuse et moderne à votre salon ou chambre ! Ce rideau grande hauteur 140 × 270 cm de la gamme Orca Créations offre un tombé fluide dans une teinte taupe intemporelle facile à assortir.',
+    specs: [
+      'Marque Orca Créations · Dimensions : 140 × 270 cm',
+      'Coloris taupe élégant à fines rayures verticales',
+      'Prêt-à-poser pour fenêtres et baies vitrées',
+      'Salon, chambre, bureau · Entretien facile'
+    ],
+    imageUrl: '/images/products/maison-rideau-orca-140x270-taupe.jpg',
+  },
+  {
+    id: 'cuisine-lot-4-serviettes-table-coton',
+    slug: 'lot-4-serviettes-de-table-coton-40x40cm-blanc-casse',
+    name: 'Lot de 4 Serviettes de Table en Coton 40×40 cm — Blanc Cassé',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 5900,
+    stock: 16,
+    badge: '100% Coton',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Coffret rubané de 4 serviettes de table 40×40 cm en coton demi-blanc (blanc cassé) : élégance intemporelle pour vos repas.',
+    description:
+      'Complétez votre art de la table avec ce lot de 4 serviettes en coton blanc cassé (Réf. TC-5083J), présentées nouées d’un ruban assorti. Douces, absorbantes et lavables en machine, elles subliment vos dîners et réceptions.',
+    specs: [
+      'Lot de 4 serviettes de table · Dimensions : 40 × 40 cm',
+      'Tissu coton demi-blanc (blanc cassé) doux et résistant',
+      'Présentation élégante avec ruban · Réf. TC-5083J',
+      'Lavables en machine · Idéal réceptions & usage quotidien'
+    ],
+    imageUrl: '/images/products/cuisine-lot-4-serviettes-table-coton.jpg',
+  },
+  {
+    id: 'cuisine-lot-4-sets-table-ningxin',
+    slug: 'lot-4-sets-de-table-tresses-ningxin-45x30cm-blanc-noir',
+    name: 'Lot de 4 Sets de Table Tressés Ningxin 45×30 cm — Blanc & Rayures Noires',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 14,
+    badge: 'Lot de 4 Sets',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      '4 sets de table tressés lavables 45×30 cm blancs à fines rayures noires pointillées : protègent et décorent votre table.',
+    description:
+      'Protégez votre table des taches et de la chaleur avec style ! Ces 4 sets de table Ningxin (45 × 30 cm) au tissage moderne blanc et noir s’essuient d’un simple coup d’éponge et s’accordent à toute votre vaisselle.',
+    specs: [
+      'Lot de 4 sets de table · Dimensions : 45 × 30 cm chacun',
+      'Matière tressée résistante à la chaleur et anti-taches',
+      'Design sobre blanc à fines rayures noires',
+      'Nettoyage express à l’éponge humide'
+    ],
+    imageUrl: '/images/products/cuisine-lot-4-sets-table-ningxin.jpg',
+  },
+  {
+    id: 'maison-lot-4-serviettes-bain-julie',
+    slug: 'lot-4-serviettes-de-bain-eponge-julie-50x90cm',
+    name: 'Lot de 4 Serviettes de Bain Éponge Julie (50×90 cm) — Dégradé Rose & Blanc',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 10,
+    badge: 'Lot de 4 Éponge',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pack cadeau de 4 serviettes de toilette éponge épaisse 50×90 cm (gamme Julie) aux tons doux rose poudré, mauve et blanc.',
+    description:
+      'Offrez-vous la douceur d’un linge de bain de qualité ! Ce pack de 4 serviettes de toilette Julie (50 × 90 cm) en éponge moelleuse et très absorbante est présenté noué d’un ruban satin — parfait pour la salle de bain ou comme cadeau de mariage / pendaison de crémaillère.',
+    specs: [
+      'Lot de 4 serviettes de toilette · Dimensions : 50 × 90 cm',
+      'Éponge épaisse, douce et hautement absorbante (gamme Julie)',
+      'Assortiment harmonieux tons rose poudré / mauve / blanc',
+      'Présentation ruban satin · Idéal maison ou cadeau'
+    ],
+    imageUrl: '/images/products/maison-lot-4-serviettes-bain-julie.jpg',
+  },
+  {
+    id: 'cuisine-lot-3-bocaux-verre-argente',
+    slug: 'lot-3-bocaux-verre-couvercle-metal-argente-gradues',
+    name: 'Lot de 3 Bocaux en Verre Couvercle Métal Argenté à Vis (Grand, Moyen, Petit)',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4900,
+    stock: 14,
+    badge: 'Trio de Bocaux',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Trio pratique de 3 bocaux en verre transparent de tailles graduées avec couvercles métalliques argentés hermétiques à vis.',
+    description:
+      'Un trio malin pour tout ranger dans la cuisine ! Ce lot réunit 3 bocaux en verre transparent (grand, moyen et petit format) munis de couvercles métalliques argentés brossés à vis pour garder café, sucre, pâtes, épices ou biscuits bien au sec.',
+    specs: [
+      'Lot de 3 tailles graduées : Grand + Moyen + Petit',
+      'Verre transparent solide à large ouverture',
+      'Couvercles métalliques argentés brossés à vis',
+      'Café, sucre, riz, épices, biscuits · Faciles à laver'
+    ],
+    imageUrl: '/images/products/cuisine-lot-3-bocaux-verre-argente.jpg',
+  },
+  {
+    id: 'cuisine-balance-digitale-decakila-5kg',
+    slug: 'balance-de-cuisine-digitale-decakila-5kg-bol-transparent-kmtt092w',
+    name: 'Balance de Cuisine Digitale Decakila 5 kg avec Bol Transparent — KMTT092W',
+    category: 'maison',
+    price: 14000,
+    compareAtPrice: 17500,
+    stock: 10,
+    badge: 'Précision 1g',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Balance électronique de précision Decakila (2 g à 5 000 g) avec grand écran LCD rétroéclairé vert, fonction Tare et bol transparent inclus.',
+    description:
+      'Réussissez toutes vos pâtisseries, recettes et portions au gramme près ! La balance digitale Decakila KMTT092W pèse de 2 g jusqu’à 5 kg avec une précision de 1 g, dispose d’un écran LCD vert ultra lisible, de la fonction Tare et est livrée avec son bol doseur transparent amovible.',
+    specs: [
+      'Marque Decakila · Modèle KMTT092W · Portée 2 g à 5 000 g (5 kg)',
+      'Haute précision au gramme près (1 g) · Fonction Tare',
+      'Grand écran LCD rétroéclairé vert très lisible',
+      'Bol transparent amovible inclus · Pâtisserie & cuisine quotidienne'
+    ],
+    imageUrl: '/images/products/cuisine-balance-digitale-decakila-5kg.jpg',
+  },
+  {
+    id: 'cuisine-balance-decakila-kmtt091w-5kg',
+    slug: 'balance-de-cuisine-digitale-decakila-5kg-plateau-plat-kmtt091w',
+    name: 'Balance de Cuisine Digitale Decakila 5 kg Plateau Plat — KMTT091W',
+    category: 'maison',
+    price: 8000,
+    compareAtPrice: 10500,
+    stock: 14,
+    badge: 'Précision 1g',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Balance électronique compacte Decakila KMTT091W (2 g à 5 000 g) à plateau plat, écran LCD et fonction Tare.',
+    description:
+      'Compacte, fiable et facile à ranger ! La balance digitale Decakila KMTT091W pèse tous vos ingrédients de 2 g à 5 kg avec une précision au gramme près, conversion g/oz et fonction Tare.',
+    specs: [
+      'Marque Decakila · Modèle KMTT091W · Portée 2 g à 5 000 g',
+      'Précision 1 g · Fonction Tare et conversion d’unités',
+      'Plateau de pesée plat compatible avec tous vos bols',
+      'Design compact blanc et bleu · Facile à nettoyer'
+    ],
+    imageUrl: '/images/products/cuisine-balance-decakila-kmtt091w-5kg.jpg',
+  },
+  {
+    id: 'cuisine-machine-popcorn-decakila-kett009r',
+    slug: 'machine-a-popcorn-air-chaud-decakila-2-minutes-kett009r',
+    name: 'Machine à Pop-Corn à Air Chaud Decakila — Prêt en 2 Minutes (KETT009R)',
+    category: 'maison',
+    price: 14500,
+    compareAtPrice: 18500,
+    stock: 10,
+    badge: 'Sans Huile',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Préparez du pop-corn chaud, croustillant et sain sans huile en 2 minutes chrono pour toute la famille !',
+    description:
+      'Transformez vos soirées films en vrai cinéma à la maison ! La machine à pop-corn Decakila KETT009R fonctionne par circulation d’air chaud rapide sans aucune matière grasse, avec doseur intégré sur le couvercle.',
+    specs: [
+      'Marque Decakila · Modèle KETT009R (Rouge & Noir)',
+      'Cuisson ultra rapide par air chaud en 2 minutes',
+      'Sans huile ni beurre : pop-corn léger et sain',
+      'Gobelet doseur intégré dans le couvercle supérieur'
+    ],
+    imageUrl: '/images/products/cuisine-machine-popcorn-decakila-kett009r.jpg',
+  },
+  {
+    id: 'cuisine-hachoir-manuel-decakila-400ml',
+    slug: 'hachoir-manuel-ficelle-decakila-400ml-ail-oignons-kmtt084w',
+    name: 'Hachoir Manuel à Ficelle Decakila 400 ml — Ail, Oignons & Légumes (KMTT084W)',
+    category: 'maison',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 18,
+    badge: 'Sans Électricité',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Hachez ail, oignons, piment, persil et tomates en quelques secondes sans électricité grâce aux lames inox ultra tranchantes.',
+    description:
+      'Fini les larmes en coupant les oignons ! Tirez simplement sur la poignée verte du hachoir manuel Decakila 400 ml pour émincer ail, oignons, piments, herbes ou légumes en un clin d’œil, même en cas de coupure de courant.',
+    specs: [
+      'Marque Decakila · Modèle KMTT084W · Bol 400 ml sans BPA',
+      'Lames en acier inoxydable 420 J2 ultra résistantes',
+      'Fonctionnement 100 % manuel à ficelle, zéro électricité',
+      'Démontable et facile à rincer · Idéal ail, oignon, piment'
+    ],
+    imageUrl: '/images/products/cuisine-hachoir-manuel-decakila-400ml.jpg',
+  },
+  {
+    id: 'beaute-tondeuse-rowenta-nomad-tn1410f0',
+    slug: 'tondeuse-cheveux-sans-fil-rowenta-nomad-tn1410f0',
+    name: 'Tondeuse à Cheveux Sans Fil Rowenta Nomad — 20 Hauteurs (TN1410F0)',
+    category: 'beaute-cadeaux',
+    price: 24500,
+    compareAtPrice: 29500,
+    stock: 8,
+    badge: 'Rowenta Original',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Tondeuse cheveux de haute précision Rowenta Nomad : lames inox conçues pour durer 15 ans, 20 hauteurs de coupe (1 à 30 mm) et 40 min d’autonomie.',
+    description:
+      'La fiabilité allemande Rowenta pour des coupes nettes à domicile ! La tondeuse Nomad TN1410F0 offre 20 réglages précis de 1 mm à 30 mm grâce à ses 2 sabots réglables et ses lames en acier inoxydable haute durabilité.',
+    specs: [
+      'Marque Rowenta · Modèle Nomad TN1410F0 (Original)',
+      '20 hauteurs de coupe de haute précision (1 mm à 30 mm)',
+      'Lames acier inoxydable conçues pour durer 15 ans',
+      'Autonomie jusqu’à 40 min · 2 sabots réglables inclus'
+    ],
+    imageUrl: '/images/products/beaute-tondeuse-rowenta-nomad-tn1410f0.jpg',
+  },
+  {
+    id: 'cuisine-set-7-ustensiles-decakila-kmtt046b',
+    slug: 'set-7-ustensiles-de-cuisine-pot-rangement-decakila-kmtt046b',
+    name: 'Set de 7 Ustensiles de Cuisine avec Pot de Rangement Decakila — KMTT046B',
+    category: 'maison',
+    price: 8000,
+    compareAtPrice: 10500,
+    stock: 14,
+    badge: 'Set 7 Pièces',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coffret complet de 6 ustensiles anti-rayures (louche, écumoire, spatule, cuillère à pâtes, pince, pinceau) + pot de rangement Decakila.',
+    description:
+      'Tout le nécessaire de cuisine toujours à portée de main ! Ce set Decakila 7 pièces réunit des ustensiles résistants à la chaleur qui n’abîment pas vos poêles antiadhésives, rangés dans un joli pot vert d’eau.',
+    specs: [
+      'Marque Decakila · Modèle KMTT046B (7 pièces au total)',
+      'Louche, écumoire, spatule ajourée, cuillère à spaghettis, pince, pinceau + pot',
+      'Poignées ergonomiques multicolores confortables',
+      'Protège les revêtements antiadhésifs · Facile à laver'
+    ],
+    imageUrl: '/images/products/cuisine-set-7-ustensiles-decakila-kmtt046b.jpg',
+  },
+  {
+    id: 'maison-defroisseur-vapeur-decakila-1500w',
+    slug: 'defroisseur-vapeur-main-decakila-1500w-keen003w',
+    name: 'Défroisseur Vapeur à Main Decakila 1500 W — 25 g/min (KEEN003W)',
+    category: 'maison',
+    price: 18500,
+    compareAtPrice: 23500,
+    stock: 10,
+    badge: 'Vapeur 1500W',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Défroissez chemises, robes, boubous, costumes et rideaux directement sur cintre grâce à sa puissance 1500 W et son débit vapeur 25 g/min.',
+    description:
+      'Plus besoin de sortir la table à repasser ! Le défroisseur vapeur portable Decakila KEEN003W chauffe rapidement grâce à ses 1500 W et projette une vapeur puissante de 25 g/min qui lisse et rafraîchit tous les textiles délicats en quelques instants.',
+    specs: [
+      'Marque Decakila · Modèle KEEN003W · Puissance 1500 W',
+      'Débit vapeur puissant 25 g/min · Préchauffage rapide',
+      'Tête vapeur en acier inoxydable pour tous textiles',
+      'Idéal chemises, robes, costumes, pagnes et rideaux'
+    ],
+    imageUrl: '/images/products/maison-defroisseur-vapeur-decakila-1500w.jpg',
+  },
+  {
+    id: 'cuisine-contact-grill-decakila-2000w',
+    slug: 'contact-grill-panini-barbecue-decakila-2000w-keec079m',
+    name: 'Contact Grill & Panini Decakila 2000 W — Ouverture 180° Barbecue (KEEC079M)',
+    category: 'maison',
+    price: 47000,
+    compareAtPrice: 54000,
+    stock: 6,
+    badge: '2000W · 180°',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Puissant grill électrique 2000 W avec grandes plaques antiadhésives 29×24 cm, thermostat réglable, minuterie et ouverture à plat 180° façon barbecue.',
+    description:
+      'Préparez paninis dorés, steaks juteux, poulet grillé, poissons et légumes rôtis à la maison ! Le Contact Grill Decakila KEEC079M développe 2000 W pour une saisie rapide, s’ouvre à 180° pour doubler la surface en mode barbecue de table, et intègre un thermostat multi-niveaux ainsi qu’une minuterie réglable.',
+    specs: [
+      'Marque Decakila · Modèle KEEC079M · Puissance 2000 W',
+      'Grandes plaques antiadhésives 290 × 240 mm faciles à nettoyer',
+      'Ouverture à plat 180° pour mode barbecue familial',
+      'Thermostat réglable + minuterie intégrée + témoins lumineux'
+    ],
+    imageUrl: '/images/products/cuisine-contact-grill-decakila-2000w.jpg',
+  },
+  {
+    id: 'maison-fer-vapeur-tefal-express-steam-2400w',
+    slug: 'fer-a-repasser-vapeur-tefal-express-steam-2400w-fv2839e0',
+    name: 'Fer à Repasser Vapeur Tefal Express Steam 2400 W — Semelle Céramique (FV2839E0)',
+    category: 'maison',
+    price: 28500,
+    compareAtPrice: 34000,
+    stock: 8,
+    badge: 'Tefal 2400W',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Fer vapeur Tefal Express Steam 2400 W : semelle céramique Xglide ultra glissante, défroissage vertical, système anti-goutte et remplissage XL.',
+    description:
+      'Gagnez du temps sur votre repassage avec la référence Tefal ! Le Express Steam FV2839E0 allie 2400 W de puissance, une semelle céramique Xglide résistante aux rayures, une fonction défroissage vertical et un système anti-goutte pour un linge impeccable sans taches d’eau.',
+    specs: [
+      'Marque Tefal · Modèle Express Steam FV2839E0 · 2400 W',
+      'Semelle céramique Xglide Diffusion anti-rayures',
+      'Système anti-goutte + défroissage vertical efficace',
+      'Large ouverture de remplissage XL · Réparable 10 ans'
+    ],
+    imageUrl: '/images/products/maison-fer-vapeur-tefal-express-steam-2400w.jpg',
+  },
+  {
+    id: 'maison-fer-vapeur-ilux-il1688a',
+    slug: 'fer-a-repasser-vapeur-ilux-il-1688a-bleu-blanc',
+    name: 'Fer à Repasser Vapeur iLUX IL-1688A — Bleu & Blanc (Italian Design)',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 15,
+    badge: 'Petit prix',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Fer à repasser vapeur iLUX IL-1688A léger et maniable avec thermostat réglable, jet d’eau spray et semelle antiadhésive.',
+    description:
+      'Le luxe pas cher au quotidien ! Le fer à repasser vapeur iLUX IL-1688A offre un repassage fluide sur coton, lin, synthétique et pagnes grâce à son thermostat précis, son réservoir transparent bleu et sa fonction spray.',
+    specs: [
+      'Marque iLUX · Modèle IL-1688A (Italian Design)',
+      'Fonctions vapeur réglable, spray et repassage à sec',
+      'Thermostat multi-textiles + témoin lumineux de chauffe',
+      'Semelle antiadhésive glisse facile'
+    ],
+    imageUrl: '/images/products/maison-fer-vapeur-ilux-il1688a.jpg',
+  },
+  {
+    id: 'smart-fer-vapeur-stpfr-5101-2200w',
+    slug: 'fer-a-repasser-vapeur-smart-technology-2200w-stpfr-5101',
+    name: 'Fer à Repasser Vapeur SMART TECHNOLOGY 2200 W — STPFR-5101',
+    category: 'maison',
+    price: 12000,
+    compareAtPrice: 16000,
+    stock: 14,
+    badge: 'SMART 2200W',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Fer à repasser vapeur puissant 2200 W SMART TECHNOLOGY STPFR-5101 avec grand réservoir bleu translucide, fonction spray et glisse rapide.',
+    description:
+      'Fini les plis, place à la perfection ! Ce fer à repasser vapeur SMART TECHNOLOGY de 2200 W chauffe vite et élimine les plis tenaces sur tous vos vêtements grâce à son débit vapeur régulier et sa prise en main ergonomique.',
+    specs: [
+      'Marque SMART TECHNOLOGY · Modèle STPFR-5101 · 2200 W',
+      'Repassage vapeur, spray et à sec · Thermostat réglable',
+      'Réservoir d’eau bleu translucide avec niveau MAX visible',
+      'Cordon rotatif souple · Nouveau design ergonomique'
+    ],
+    imageUrl: '/images/products/smart-fer-vapeur-stpfr-5101-2200w.jpg',
+  },
+  {
+    id: 'smart-bouilloire-verre-1-8l-stpe-991vl',
+    slug: 'bouilloire-electrique-verre-smart-technology-1-8l-1500w-stpe-991vl',
+    name: 'Bouilloire Électrique en Verre SMART TECHNOLOGY 1,8 L — 1500 W (STPE-991VL)',
+    category: 'maison',
+    price: 13500,
+    compareAtPrice: 17500,
+    stock: 12,
+    badge: 'Verre 1,8L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Élégante bouilloire électrique en verre borosilicate gradué 1,8 L (1500 W) avec base pivotante 360°, témoin lumineux et arrêt automatique.',
+    description:
+      'Alliez design moderne et ébullition rapide ! La bouilloire en verre SMART TECHNOLOGY STPE-991VL (1,8 L · 1500 W) dispose d’un corps en verre transparent gradué sain, d’une résistance cachée en acier inoxydable facile à nettoyer et d’une double sécurité anti-chauffe à sec.',
+    specs: [
+      'Marque SMART TECHNOLOGY · Modèle STPE-991VL · 1,8 L · 1500 W',
+      'Corps en verre haute qualité gradué (0,5 L à 1,8 L)',
+      'Élément chauffant dissimulé en acier inoxydable',
+      'Arrêt automatique + protection anti-surchauffe + base 360°'
+    ],
+    imageUrl: '/images/products/smart-bouilloire-verre-1-8l-stpe-991vl.jpg',
+  },
+  {
+    id: 'cuisine-bouilloire-ilux-lxk520-2l',
+    slug: 'bouilloire-electrique-inox-ilux-2l-1500w-lxk-520',
+    name: 'Bouilloire Électrique Inox iLUX 2,0 L — 1500 W (LXK-520)',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12500,
+    stock: 16,
+    badge: 'Inox 2,0L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bouilloire familiale 2,0 L en acier inoxydable iLUX (1500 W) avec base pivotante 360°, arrêt automatique et protection anti-sec.',
+    description:
+      'Robuste, rapide et économique ! La bouilloire électrique iLUX LXK-520 de 2 litres en acier inoxydable fait bouillir votre eau en quelques minutes pour le café, le thé ou la cuisine quotidienne.',
+    specs: [
+      'Marque iLUX · Modèle LXK-520 · 2,0 L · 1500 W',
+      'Corps en acier inoxydable avec résistance cachée',
+      'Base pivotante 360° sans fil + arrêt automatique',
+      'Protection anti-chauffe à sec · Touche d’ouverture couvercle'
+    ],
+    imageUrl: '/images/products/cuisine-bouilloire-ilux-lxk520-2l.jpg',
+  },
+  {
+    id: 'cuisine-bouilloire-ilux-lxkbx180-1-8l',
+    slug: 'bouilloire-electrique-sans-fil-ilux-inox-noir-1-8l-lxk-bx180',
+    name: 'Bouilloire Électrique Sans Fil Inox & Noir iLUX 1,8 L — 1500 W (LXK-BX180)',
+    category: 'maison',
+    price: 10500,
+    compareAtPrice: 13500,
+    stock: 14,
+    badge: 'Design Bicolore',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bouilloire sans fil 1,8 L au design moderne bicolore inox & noir mat (1500 W), base 360°, arrêt auto et protection anti-sec.',
+    description:
+      'Une touche d’élégance sur votre plan de travail ! La bouilloire iLUX LXK-BX180 marie acier inoxydable et finition noire mate, avec une puissance de 1500 W pour une ébullition rapide et sécurisée.',
+    specs: [
+      'Marque iLUX · Modèle LXK-BX180 · 1,8 L · 1500 W',
+      'Corps en acier inoxydable + finition noire mate élégante',
+      'Base pivotante 360° + mise hors tension automatique',
+      'Protection anti-sec + résistance cachée facile à nettoyer'
+    ],
+    imageUrl: '/images/products/cuisine-bouilloire-ilux-lxkbx180-1-8l.jpg',
+  },
+  {
+    id: 'cuisine-robot-sans-fil-decakila-kmmg005b',
+    slug: 'robot-culinaire-sans-fil-decakila-decaprime-200w-1-25l-kmmg005b',
+    name: 'Robot Culinaire Sans Fil Decakila DecaPrime 200 W — 1,25 L Batterie 2000 mAh (KMMG005B)',
+    category: 'maison',
+    price: 42000,
+    compareAtPrice: 49000,
+    stock: 6,
+    badge: 'Sans Fil 2000mAh',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Robot multifonction sans fil rechargeable (batterie 2000 mAh) : hache, râpe, tranche et mixe partout même sans courant ! Grand bol 1,25 L.',
+    description:
+      'La liberté totale en cuisine, même en cas de coupure d’électricité ! Le robot culinaire sans fil Decakila DecaPrime KMMG005B (200 W · batterie longue durée 2000 mAh) dispose d’un grand bol familial de 1,25 L, d’une lame hachoir inox, d’un disque râpeur/trancheur et d’un disque émulsionneur.',
+    specs: [
+      'Marque Decakila DecaPrime · Modèle KMMG005B · 200 W',
+      '100 % sans fil : batterie rechargeable haute capacité 2000 mAh',
+      'Grand bol familial 1,25 L avec cheminée d’alimentation',
+      'Livré avec lame hachoir inox, disque à râper/trancher et émulsionneur'
+    ],
+    imageUrl: '/images/products/cuisine-robot-sans-fil-decakila-kmmg005b.jpg',
+  },
+  {
+    id: 'cuisine-machine-popcorn-ilux-lxpm912',
+    slug: 'machine-a-popcorn-electrique-ilux-2-5l-450w-lx-pm912',
+    name: 'Machine à Pop-Corn Électrique iLUX 2,5 L — 450 W avec Bol de Service (LX-PM912)',
+    category: 'maison',
+    price: 16500,
+    compareAtPrice: 21000,
+    stock: 8,
+    badge: 'Grand Bol 2,5L',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Machine à pop-corn familiale 2,5 L à plaque antiadhésive avec bras mélangeur motorisé et couvercle retournable servant de saladier.',
+    description:
+      'Des pop-corns gourmands sucrés ou salés comme à la fête foraine ! La machine iLUX LX-PM912 (450 W) cuit à l’huile avec son bras mélangeur motorisé anti-brûlure ; il suffit ensuite de retourner le couvercle transparent de 2,5 L pour servir directement !',
+    specs: [
+      'Marque iLUX · Modèle LX-PM912 · 450 W · Capacité 2,5 L',
+      'Cuisson à l’huile sur plaque antiadhésive + bras mélangeur motorisé',
+      'Couvercle transparent 2-en-1 servant de bol de service',
+      'Pieds caoutchouc antidérapants · Nettoyage facile'
+    ],
+    imageUrl: '/images/products/cuisine-machine-popcorn-ilux-lxpm912.jpg',
+  },
+  {
+    id: 'smart-mixeur-blender-incassable-2-5l-600w',
+    slug: 'mixeur-blender-pro-incassable-smart-technology-2-5l-600w',
+    name: 'Mixeur Blender Pro Incassable SMART TECHNOLOGY 2,5 L — 600 W Turbo',
+    category: 'maison',
+    price: 24500,
+    compareAtPrice: 29500,
+    stock: 10,
+    badge: 'Bol Incassable 2,5L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Blender puissant 600 W Turbo avec grand bol carré 2,5 L 100 % incassable, 6 lames inox ultra tranchantes et poussoir inclus.',
+    description:
+      'Conçu pour les préparations exigeantes du quotidien : smoothies, jus de gingembre, bissap, purées, pâtes et glace pilée ! Son moteur 600 W Turbo, ses 2 vitesses + fonction Pulse et son bol 2,5 L incassable en font un allié durable.',
+    specs: [
+      'Marque SMART TECHNOLOGY · Puissance Turbo 600 W',
+      'Grand bol carré 2,5 L incassable avec bâton poussoir',
+      '6 lames amovibles en acier inoxydable haute performance',
+      '2 vitesses + fonction Pulse · Système de sécurité intégré'
+    ],
+    imageUrl: '/images/products/smart-mixeur-blender-incassable-2-5l-600w.jpg',
+  },
+  {
+    id: 'cuisine-mixeur-ilux-lx375-2en1',
+    slug: 'mixeur-blender-2en1-ilux-lx-375-1-5l-bol-incassable-moulin',
+    name: 'Mixeur Blender 2-en-1 iLUX LX-375 — 1,5 L Bol Incassable + Moulin à Café (300 W)',
+    category: 'maison',
+    price: 15500,
+    compareAtPrice: 19000,
+    stock: 12,
+    badge: '2-en-1 + Moulin',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Blender 2-en-1 iLUX LX-375 finition moderne : bol incassable 1,5 L, moulin à café/épices inclus, 4 vitesses + Pulse (300 W).',
+    description:
+      'Mixez vos jus et soupes et moulez vos épices ou grains de café avec un seul appareil ! Le mixeur 2-en-1 iLUX LX-375 dispose d’un bol incassable de 1,5 L, de 4 vitesses + mode Pulse et de pieds antidérapants.',
+    specs: [
+      'Marque iLUX · Modèle LX-375 · 300 W (Italian Design)',
+      '2-en-1 : Bol blender incassable 1,5 L + Moulin à café/épices',
+      '4 vitesses + fonction Pulse · Lames inox ultra tranchantes',
+      'Couvercle anti-fuite avec bouchon doseur amovible'
+    ],
+    imageUrl: '/images/products/cuisine-mixeur-ilux-lx375-2en1.jpg',
+  },
+  {
+    id: 'cuisine-blender-ilux-lx316-rouge',
+    slug: 'blender-broyeur-2en1-ilux-lx-316-poignee-rouge-moulin',
+    name: 'Blender & Broyeur 2-en-1 iLUX LX-316 — Bol Incassable Poignée Rouge + Moulin',
+    category: 'maison',
+    price: 14500,
+    compareAtPrice: 18500,
+    stock: 14,
+    badge: '2-en-1 Incassable',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Mélangeur et broyeur 2-en-1 iLUX LX-316 (300 W) avec bol incassable à poignée rouge, moulin broyeur inclus et 2 vitesses + Pulse.',
+    description:
+      'Pratique et dynamique avec sa poignée rouge ergonomique ! Le blender & broyeur iLUX LX-316 réunit un grand bol incassable et un moulin sec pour broyer épices, arachides, café et préparer tous vos smoothies.',
+    specs: [
+      'Marque iLUX · Modèle LX-316 · 300 W (220-240 V)',
+      '2-en-1 : Bol mélangeur incassable + Moulin broyeur inclus',
+      '2 vitesses avec mode Impulsion (Pulse)',
+      'Lame croisée en acier inoxydable'
+    ],
+    imageUrl: '/images/products/cuisine-blender-ilux-lx316-rouge.jpg',
+  },
+  {
+    id: 'cuisine-mixeur-ilux-lx378-inox',
+    slug: 'mixeur-2en1-finition-inox-ilux-lx-378-1-5l-moulin',
+    name: 'Mixeur 2-en-1 Finition Inox iLUX LX-378 — 1,5 L Bol Incassable + Moulin (300 W)',
+    category: 'maison',
+    price: 16500,
+    compareAtPrice: 21000,
+    stock: 10,
+    badge: 'Finition Inox',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Mixeur élégant finition inox brossé iLUX LX-378 à boutons poussoirs (4 vitesses + Pulse), bol incassable 1,5 L et moulin à café inclus.',
+    description:
+      'Alliez style inox et polyvalence en cuisine ! Le mixeur iLUX LX-378 offre 4 vitesses à boutons poussoirs + Pulse, un bol incassable de 1,5 L avec couvercle anti-fuite et un moulin à café/épices.',
+    specs: [
+      'Marque iLUX · Modèle LX-378 · 300 W · Finition Inox',
+      'Bol transparent incassable 1,5 L + Moulin à café inclus',
+      '4 vitesses + fonction Pause/Pulse à boutons poussoirs',
+      'Lames ultra tranchantes + pieds antidérapants'
+    ],
+    imageUrl: '/images/products/cuisine-mixeur-ilux-lx378-inox.jpg',
+  },
+  {
+    id: 'cuisine-blender-ilux-lx815p-1-5l',
+    slug: 'blender-multifonction-ilux-lx-815p-1-5l-300w',
+    name: 'Blender Multifonction iLUX LX-815P — 1,5 L · 300 W (Blanc & Gris)',
+    category: 'maison',
+    price: 12500,
+    compareAtPrice: 16000,
+    stock: 15,
+    badge: 'Petit prix',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Blender simple, efficace et abordable : bol 1,5 L, 2 vitesses + fonction Pulse, lames inox amovibles faciles à nettoyer (300 W).',
+    description:
+      'L’essentiel pour réussir smoothies, jus frais, purées et sauces à petit prix ! Le blender iLUX LX-815P (1,5 L · 300 W) est équipé de lames amovibles en acier inoxydable pour un nettoyage ultra rapide.',
+    specs: [
+      'Marque iLUX · Modèle LX-815P · Capacité 1,5 L · 300 W',
+      '2 vitesses + fonction Pulse',
+      'Lames amovibles en acier inoxydable faciles à nettoyer',
+      'Design sobre blanc & gris · Format compact'
+    ],
+    imageUrl: '/images/products/cuisine-blender-ilux-lx815p-1-5l.jpg',
+  },
+  {
+    id: 'cuisine-blender-ilux-lx926-10vitesses',
+    slug: 'blender-broyeur-10-vitesses-ilux-lx-926-inox-moulin',
+    name: 'Blender & Broyeur 10 Vitesses iLUX LX-926 — Corps Inox + Moulin',
+    category: 'maison',
+    price: 19500,
+    compareAtPrice: 24500,
+    stock: 10,
+    badge: '10 Vitesses Inox',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Blender puissant 10 vitesses + Pulse au corps en acier inoxydable brossé, livré avec son moulin broyeur pour café, épices et noix.',
+    description:
+      'Un contrôle parfait sur toutes vos textures grâce aux 10 vitesses à boutons poussoirs + mode Pulse ! Le blender iLUX LX-926 en finition acier inoxydable brossé est accompagné d’un moulin broyeur dédié pour les ingrédients secs.',
+    specs: [
+      'Marque iLUX · Modèle LX-926 (Italian Design)',
+      '10 vitesses + fonction Pulse à boutons poussoirs',
+      'Corps robuste finition acier inoxydable brossé',
+      'Livré avec moulin broyeur (épices, café, arachides)'
+    ],
+    imageUrl: '/images/products/cuisine-blender-ilux-lx926-10vitesses.jpg',
+  },
+  {
+    id: 'cuisine-mixeur-plongeant-4en1-ilux-lx05',
+    slug: 'mixeur-plongeant-4en1-ilux-lx-05-fouet-hachoir-bol-doseur',
+    name: 'Mixeur Plongeant 4-en-1 iLUX LX-05 — Hachoir, Fouet, Bol Doseur & Support Mural',
+    category: 'maison',
+    price: 15500,
+    compareAtPrice: 19500,
+    stock: 12,
+    badge: 'Kit 4-en-1',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coffret mixeur plongeant multifonction 4-en-1 iLUX LX-05 : pied mixeur inox, bol hachoir, fouet pâtisserie, verre doseur et support mural.',
+    description:
+      'Préparez soupes veloutées, mayonnaise maison, purées pour bébé, chantilly et légumes hachés avec un seul kit compact ! Le mixeur plongeant 4-en-1 iLUX LX-05 dispose de 2 vitesses, d’une lame en acier inoxydable et d’un pied détachable facile à laver.',
+    specs: [
+      'Marque iLUX · Modèle LX-05 (4-en-1, Italian Design)',
+      'Moteur 2 vitesses rapide + lame en acier inoxydable',
+      'Inclus : pied mixeur, bol hachoir, fouet inox, verre doseur, support mural',
+      'Accessoires détachables · Prise en main ergonomique'
+    ],
+    imageUrl: '/images/products/cuisine-mixeur-plongeant-4en1-ilux-lx05.jpg',
+  },
+  {
+    id: 'cuisine-batteur-main-decakila-7vitesses-kemx016w',
+    slug: 'batteur-electrique-main-decakila-7-vitesses-120w-kemx016w',
+    name: 'Batteur Électrique à Main Decakila 7 Vitesses — 120 W (KEMX016W)',
+    category: 'maison',
+    price: 14000,
+    compareAtPrice: 17500,
+    stock: 12,
+    badge: '7 Vitesses',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Batteur pâtissier 7 vitesses Decakila 120 W livré avec 2 fouets inox + 2 crochets pétrisseurs et bouton d’éjection rapide.',
+    description:
+      'Réussissez vos génoises, blancs en neige, crèmes fouettées et pâtes à gâteaux sans effort ! Léger et stable grâce à son design à poser debout, le batteur Decakila KEMX016W offre 7 vitesses progressives et 2 paires de tiges en acier inoxydable.',
+    specs: [
+      'Marque Decakila · Modèle KEMX016W · 120 W (220-240 V)',
+      '7 vitesses réglables + bouton d’éjection rapide des fouets',
+      '2 paires d’accessoires inox : fouets + crochets pétrisseurs',
+      'Design stable à poser debout sur le plan de travail'
+    ],
+    imageUrl: '/images/products/cuisine-batteur-main-decakila-7vitesses-kemx016w.jpg',
+  },
+  {
+    id: 'cuisine-batteur-socle-decakila-3-5l-kemx012b',
+    slug: 'batteur-sur-socle-bol-inox-3-5l-decakila-250w-kemx012b',
+    name: 'Batteur sur Socle avec Bol Inox 3,5 L Decakila 250 W — Noir (KEMX012B)',
+    category: 'maison',
+    price: 32000,
+    compareAtPrice: 38000,
+    stock: 8,
+    badge: 'Bol Inox 3,5L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Robot batteur pâtissier sur socle Decakila 250 W avec grand bol inox 3,5 L, 5 vitesses + Turbo, 2 fouets et 2 crochets pétrisseurs.',
+    description:
+      'Gardez les mains libres pendant que vos pâtes à gâteaux, brioches, crèmes et meringues montent à la perfection ! Le batteur sur socle Decakila KEMX012B (250 W) combine un grand bol en acier inoxydable de 3,5 L, 5 vitesses + Turbo et un batteur détachable utilisable aussi à la main.',
+    specs: [
+      'Marque Decakila · Modèle KEMX012B · 250 W · Coloris Noir',
+      'Grand bol pâtissier en acier inoxydable 3,5 Litres',
+      '5 vitesses + fonction Turbo · Bouton d’éjection facile',
+      'Livré avec 2 fouets inox + 2 crochets pétrisseurs'
+    ],
+    imageUrl: '/images/products/cuisine-batteur-socle-decakila-3-5l-kemx012b.jpg',
   },
 ];
 
@@ -2666,5 +4161,41 @@ export function computeZoneDeliveryFee(zone, { hasHeavyItem = false } = {}) {
 
 export function computeProductDeliveryFee(product, zone) {
   return computeZoneDeliveryFee(zone, { hasHeavyItem: inferHeavyShipping(product) });
+}
+
+// ==============================================================================
+// RECHERCHE MULTI-MOTS INSENSIBLE AUX ACCENTS (100% FIABLE SUR TOUS LES RAYONS)
+// ==============================================================================
+export function normalizeSearchText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+export function matchesProductSearch(product, rawQuery, categories = CATEGORIES) {
+  const normalizedQuery = normalizeSearchText(rawQuery);
+  if (!normalizedQuery) return true;
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return true;
+  const catObj = Array.isArray(categories)
+    ? categories.find((c) => c.id === product?.category)
+    : null;
+  const haystack = normalizeSearchText(
+    [
+      product?.name,
+      product?.shortDescription,
+      product?.description,
+      product?.badge,
+      product?.slug,
+      product?.category,
+      catObj?.label,
+      catObj?.shortLabel,
+      Array.isArray(product?.specs) ? product.specs.join(' ') : '',
+    ].join(' ')
+  );
+  return tokens.every((token) => haystack.includes(token));
 }
 
