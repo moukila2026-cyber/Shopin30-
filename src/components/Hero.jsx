@@ -14,6 +14,17 @@ import { buildWhatsappServiceUrl } from '../lib/api.js';
 
 const BANNERS = [
   {
+    id: 'jouets-enfants',
+    image: '/images/banners/banner-jouets-enfants.jpg',
+    tag: 'NOUVEAU RAYON JOUETS, JEUX & ENFANTS — DALOA & CÔTE D’IVOIRE',
+    title: 'Voiture F1 R/C Fumée, Motos à Construire, Caisses Enregistreuses & Loisirs Créatifs',
+    subtitle:
+      'Idées cadeaux dès 3 500 FCFA : Perles Heishi SentoSphère, UNO Spin, Dinettes Inox & Métal, Pistolets à eau électriques et Coloriage 38-en-1 Stitch. Paiement Wave & Suivi QR.',
+    ctaLabel: 'Voir les 14 Jouets & Jeux Enfants',
+    targetCategory: 'jouets-enfants',
+    darkText: true,
+  },
+  {
     id: 'motos-tricycles',
     image: '/images/banners/banner-motos.jpg',
     tag: 'NOUVEAU RAYON MOTOS & TRICYCLES — DALOA & CÔTE D’IVOIRE',
@@ -84,6 +95,7 @@ export function Hero({
 
   const motosItems = pickByCategory('motos-tricycles', 4);
   const allMotos = products.filter((p) => p.category === 'motos-tricycles');
+  const allJouets = products.filter((p) => p.category === 'jouets-enfants');
   const froidItems = pickByCategory('froid', 4);
   const lavageCuissonItems = pickByCategory('lavage-cuisson', 4);
   const maisonItems = pickByCategory('maison', 4);
@@ -380,7 +392,80 @@ export function Hero({
         </div>
       </div>
 
-      {/* 2B. SECTION DÉDIÉE MOTOS & TRICYCLES CARGO PÈRÔKADÔ */}
+      {/* 2B. SECTION DÉDIÉE JOUETS, JEUX & UNIVERS ENFANTS PÈRÔKADÔ */}
+      {allJouets.length > 0 && (
+        <div id="section-jouets" className="mt-5 px-3 sm:px-6">
+          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="bg-[#CC0C39] text-white text-[11px] font-extrabold px-2 py-0.5 rounded-xs tracking-wide">
+                  NOUVEAU RAYON JOUETS & ENFANTS
+                </span>
+                <h2 className="text-lg sm:text-xl font-bold text-[#0F1111]">
+                  Jouets, Jeux de Société, Construction STEM, Dinettes & Idées Cadeaux Enfants
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectCategory?.('jouets-enfants');
+                  scrollToCatalog();
+                }}
+                className="text-xs sm:text-sm font-semibold text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+              >
+                Ouvrir tout le rayon Jouets & Enfants ({allJouets.length}) →
+              </button>
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+              {allJouets.map((toy) => (
+                <button
+                  key={toy.id}
+                  type="button"
+                  onClick={() => onSelectProduct?.(toy)}
+                  className="w-48 sm:w-56 shrink-0 text-left group border border-[#EAEDED] hover:border-[#FF9900] rounded-md p-3 bg-white transition cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="h-40 sm:h-44 bg-[#F7F8F8] rounded-xs p-2.5 flex items-center justify-center overflow-hidden mb-2.5 relative">
+                      {toy.badge && (
+                        <span className="absolute top-1.5 left-1.5 bg-[#232F3E] text-white text-[10px] font-bold px-2 py-0.5 rounded-xs">
+                          {toy.badge}
+                        </span>
+                      )}
+                      <img
+                        src={toy.imageUrl}
+                        alt={toy.name}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-200 mix-blend-multiply"
+                      />
+                    </div>
+                    <p className="text-xs font-semibold text-[#0F1111] line-clamp-2 group-hover:text-[#C7511F] leading-snug">
+                      {toy.name}
+                    </p>
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-[#F0F2F2]">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-sm font-extrabold text-[#B12704]">
+                        {formatFcfa(toy.price)}
+                      </span>
+                      {toy.compareAtPrice > toy.price && (
+                        <span className="text-[11px] text-[#565959] line-through">
+                          {formatFcfa(toy.compareAtPrice)}
+                        </span>
+                      )}
+                    </div>
+                    <span className="block text-[11px] text-[#007600] font-medium mt-0.5">
+                      En stock · Livraison dès 1 000 F
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 2C. SECTION DÉDIÉE MOTOS & TRICYCLES CARGO PÈRÔKADÔ */}
       {allMotos.length > 0 && (
         <div id="section-motos" className="mt-5 px-3 sm:px-6">
           <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs">

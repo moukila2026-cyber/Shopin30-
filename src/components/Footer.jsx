@@ -100,6 +100,7 @@ export function Footer({
             <h3 className="font-bold text-base text-white">Nos Rayons</h3>
             <ul className="space-y-1.5 text-xs text-[#DDDDDD]">
               {[
+                { id: 'jouets-enfants', label: 'Jouets, Jeux & Univers Enfants' },
                 { id: 'motos-tricycles', label: 'Motos & Tricycles Cargo' },
                 { id: 'froid', label: 'Réfrigérateurs & Vitrines SMART' },
                 { id: 'lavage-cuisson', label: 'Lave-linge & Gazinières SMART' },
