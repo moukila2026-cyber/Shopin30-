@@ -10,7 +10,7 @@ export const BRAND = {
     'Motos neuves & Tricycles Cargo (Apsonic, Haojue, Sanya, TVS, KTM, Royal), Électroménager SMART TECHNOLOGY garanti, High-Tech, Mode et Cadeaux livrés à Daloa et expédiés partout en Côte d’Ivoire.',
   city: 'Daloa, Côte d’Ivoire',
   defaultWhatsapp: '2250501303343',
-  defaultWavePhone: '05 01 30 33 43',
+  defaultWavePhone: '+225 05 46 69 74 78',
   defaultWavePaymentUrl: '',
   shippingDisclaimer:
     'Aucune livraison gratuite. Colis standards : Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition hors Daloa 2 000 F. Produits lourds & volumineux (motos, tricycles, lave-linge, gazinières, réfrigérateurs, vitrines…) : 2 500 F dans Daloa et 5 000 F en expédition hors de Daloa.',
@@ -94,13 +94,13 @@ export const DELIVERY_SLOTS = [
   { id: 'soir', label: 'Fin de journée (16h00 – 19h30)' },
 ];
 
-// Paiement en ligne instantané (SasPay : Wave, Orange Money, MTN MoMo, Moov, Carte · ou Wave direct)
+// Paiement en ligne 100% Wave Côte d'Ivoire (sans frais d'agrégateur)
 export const PAYMENT_METHODS = [
   {
     id: 'wave',
-    label: 'Paiement en ligne instantané (Wave / Mobile Money via SasPay)',
+    label: 'Paiement sécurisé Wave Côte d’Ivoire (+225 05 46 69 74 78)',
     description:
-      'Réglez en ligne en toute sécurité (Wave, Orange Money, MTN, Moov ou Carte via SasPay) et obtenez immédiatement votre référence avec Code QR de suivi en direct.',
+      'Réglez votre commande via Wave Côte d’Ivoire uniquement (aucun paiement à la livraison) et obtenez immédiatement votre référence avec Code QR de suivi en direct.',
   },
 ];
 

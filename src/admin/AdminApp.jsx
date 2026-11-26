@@ -429,7 +429,7 @@ export default function AdminApp() {
           <img
             src="/images/icon-512.png"
             alt="Logo Pèrôkadô"
-            className="w-10 h-10 rounded-md bg-white p-0.5 object-cover"
+            className="w-11 h-11 rounded-lg object-contain shrink-0"
           />
           <div className="leading-tight">
             <div className="flex items-baseline gap-1">
@@ -555,7 +555,7 @@ export default function AdminApp() {
             <img
               src="/images/icon-512.png"
               alt="Pèrôkadô"
-              className="w-9 h-9 rounded-md bg-white p-0.5 object-cover"
+              className="w-10 h-10 rounded-lg object-contain shrink-0"
             />
             <div>
               <div className="flex items-center gap-1.5">
@@ -1289,55 +1289,55 @@ export default function AdminApp() {
               Paramètres de la boutique & Livraison Daloa
             </h2>
 
-            {/* Diagnostic SasPay & Webhooks */}
+            {/* Diagnostic Wave Business Côte d'Ivoire & Webhooks */}
             {overview?.paymentIntegration && (
-              <div className="p-4 rounded-2xl bg-[#F4FBF8] border border-[#B7E4CE] space-y-2.5 text-xs">
+              <div className="p-4 rounded-2xl bg-[#EBF8FF] border border-[#B3E5FC] space-y-2.5 text-xs">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-extrabold text-[#0F443E] text-sm">
-                    Paiements instantanés SasPay (`saspay.me`) & Webhooks
+                  <p className="font-extrabold text-[#053B54] text-sm">
+                    Paiement 100% Wave Côte d’Ivoire (`business.wave.com`) & Webhooks
                   </p>
                   <span
                     className={`px-2.5 py-1 rounded-full font-bold ${
-                      overview.paymentIntegration.saspayConfigured
-                        ? 'bg-emerald-600 text-white'
+                      overview.paymentIntegration.waveAutoConfigured
+                        ? 'bg-[#009EE3] text-white'
                         : 'bg-amber-100 text-amber-900'
                     }`}
                   >
-                    {overview.paymentIntegration.saspayConfigured
-                      ? 'SasPay API Actif'
-                      : 'En attente de SASPAY_API_KEY'}
+                    {overview.paymentIntegration.waveAutoConfigured
+                      ? 'Wave Business API Actif (100% Auto)'
+                      : 'Wave Direct (+225 05 46 69 74 78)'}
                   </span>
                 </div>
                 <p className="text-stone-700 leading-relaxed">
-                  URL Webhook à coller dans votre dashboard{' '}
-                  <strong>app.saspay.me → Webhooks</strong> (événement{' '}
-                  <code>transaction.success</code>) :
+                  Dès l’ouverture de votre portail <strong>business.wave.com/dev-portal</strong>,
+                  collez cette URL Webhook pour valider les paiements automatiquement 24h/24
+                  (événement <code>checkout.session.completed</code>) :
                 </p>
-                <div className="flex items-center justify-between gap-2 bg-white px-3 py-2 rounded-xl border border-[#D4E9DF] font-mono text-[11px] break-all">
-                  <span>{overview.paymentIntegration.saspayWebhookUrl}</span>
+                <div className="flex items-center justify-between gap-2 bg-white px-3 py-2 rounded-xl border border-[#B3E5FC] font-mono text-[11px] break-all">
+                  <span>{overview.paymentIntegration.waveWebhookUrl}</span>
                   <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard?.writeText(overview.paymentIntegration.saspayWebhookUrl);
-                      showToast('URL Webhook SasPay copiée !');
+                      navigator.clipboard?.writeText(overview.paymentIntegration.waveWebhookUrl);
+                      showToast('URL Webhook Wave copiée !');
                     }}
-                    className="px-2.5 py-1 rounded-lg bg-[#0F443E] text-white font-sans font-bold shrink-0 cursor-pointer"
+                    className="px-2.5 py-1 rounded-lg bg-[#009EE3] text-white font-sans font-bold shrink-0 cursor-pointer"
                   >
                     Copier
                   </button>
                 </div>
                 <div className="grid sm:grid-cols-3 gap-2 pt-1 text-[11px]">
-                  <div className="p-2 rounded-lg bg-white border border-[#E5DEC9]">
-                    <strong>Clé API (`SASPAY_API_KEY`) :</strong>{' '}
-                    {overview.paymentIntegration.saspayConfigured ? '✅ Configurée' : '⏳ Non définie'}
+                  <div className="p-2 rounded-lg bg-white border border-[#B3E5FC]">
+                    <strong>Clé API (`WAVE_API_KEY`) :</strong>{' '}
+                    {overview.paymentIntegration.waveAutoConfigured ? '✅ Configurée' : '⏳ Optionnel (Auto)'}
                   </div>
-                  <div className="p-2 rounded-lg bg-white border border-[#E5DEC9]">
-                    <strong>Secret (`SASPAY_WEBHOOK_SECRET`) :</strong>{' '}
-                    {overview.paymentIntegration.saspayWebhookSecretConfigured
+                  <div className="p-2 rounded-lg bg-white border border-[#B3E5FC]">
+                    <strong>Secret (`WAVE_WEBHOOK_SECRET`) :</strong>{' '}
+                    {overview.paymentIntegration.waveWebhookSecretConfigured
                       ? '✅ Configuré'
-                      : '⏳ Non défini'}
+                      : '⏳ Optionnel'}
                   </div>
-                  <div className="p-2 rounded-lg bg-white border border-[#E5DEC9]">
+                  <div className="p-2 rounded-lg bg-white border border-[#B3E5FC]">
                     <strong>Alerte Telegram :</strong>{' '}
                     {overview.paymentIntegration.telegramConfigured ? '✅ Active' : 'Optionnel'}
                   </div>
@@ -1361,7 +1361,7 @@ export default function AdminApp() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold mb-1">
-                  Numéro WhatsApp du Service Client *
+                  Numéro WhatsApp du Service Client (+225 05 01 30 33 43) *
                 </label>
                 <input
                   type="text"
@@ -1375,7 +1375,7 @@ export default function AdminApp() {
               </div>
               <div>
                 <label className="block text-xs font-bold mb-1">
-                  Numéro Wave marchand affiché aux clients *
+                  Numéro Wave dédié aux paiements clients (+225 05 46 69 74 78) *
                 </label>
                 <input
                   type="text"
@@ -1384,7 +1384,7 @@ export default function AdminApp() {
                   onChange={(e) =>
                     setSettingsForm({ ...settingsForm, wavePhone: e.target.value })
                   }
-                  placeholder="Ex: 05 01 30 33 43"
+                  placeholder="Ex: +225 05 46 69 74 78"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF7F0] border border-[#DED6C1] text-sm font-bold"
                 />
               </div>

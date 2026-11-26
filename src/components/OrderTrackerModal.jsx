@@ -256,13 +256,13 @@ export function OrderTrackerModal({ open, onClose, initialTrack, whatsappNumber 
                 <span>{meta.label}</span>
               </div>
 
-              {/* Si le client n'a pas encore finalisé son paiement sur SasPay, lui permettre d'y retourner en 1 clic */}
-              {order.status === 'pending' && order.saspayCheckoutUrl && (
+              {/* Si le client n'a pas encore finalisé son paiement dans Wave Business, lui permettre d'ouvrir Wave en 1 clic */}
+              {order.status === 'pending' && order.waveCheckoutUrl && (
                 <a
-                  href={order.saspayCheckoutUrl}
-                  className="w-full py-2.5 px-4 rounded-full bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[#0F1111] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs"
+                  href={order.waveCheckoutUrl}
+                  className="w-full py-2.5 px-4 rounded-full bg-[#009EE3] hover:bg-[#0086C3] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs"
                 >
-                  <span>Finaliser mon paiement sécurisé sur SasPay ({formatFcfa(order.total)})</span>
+                  <span>Finaliser mon paiement dans l’application Wave ({formatFcfa(order.total)})</span>
                 </a>
               )}
 

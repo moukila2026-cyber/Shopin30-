@@ -11,7 +11,6 @@ import { createApp } from '../server/app.js';
 process.env.ADMIN_PASSWORD = 'TestAdminStrongPassword!2026';
 process.env.SESSION_SECRET = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 process.env.WAVE_WEBHOOK_SECRET = 'whsec_test_wave_secret_2026';
-process.env.SASPAY_WEBHOOK_SECRET = 'whsec_test_saspay_secret_2026';
 
 let store;
 let server;
@@ -339,10 +338,15 @@ test('6. Webhook Wave Business 100% automatique : rejette une fausse signature e
   assert.equal(tracked.data.order.waveTransactionRef, 'WAVE_AUTO_TX_998877');
 });
 
-test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix FCFA éditables dans /gestion) & Webhook signé SasPay', async () => {
-  // 1) Vérifier que les produits SMART TECHNOLOGY sont bien dans le catalogue public
+test('7. Gamme SMART TECHNOLOGY, séparation stricte Wave (+225 05 46 69 74 78) vs WhatsApp (+225 05 01 30 33 43) & Webhook signé Wave Business', async () => {
+  // 1) Vérifier le catalogue public + les 2 numéros officiels distincts
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
+  assert.equal(cat.data.settings.wavePhone, '+225 05 46 69 74 78');
+  assert.equal(cat.data.settings.whatsappNumber, '2250501303343');
+  assert.equal(cat.data.paymentMethods.length, 1);
+  assert.equal(cat.data.paymentMethods[0].id, 'wave');
+
   const smartFrigo = cat.data.products.find((p) => p.id === 'smart-frigo-4-portes-inverter-inox');
   const smartFoutou = cat.data.products.find((p) => p.id === 'smart-broyeur-foutou-stpe-792');
   const smartMicro = cat.data.products.find((p) => p.id === 'smart-micro-ondes-25l-stmw-25wg');
@@ -381,7 +385,7 @@ test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix
   const created = await reqJson('/api/orders', {
     method: 'POST',
     body: {
-      requestId: 'req_saspay_webhook_smart_01',
+      requestId: 'req_wave_webhook_smart_01',
       customerName: 'Koné Mariam',
       customerPhone: '0744556677',
       cityZoneId: 'daloa-commune',
@@ -389,7 +393,7 @@ test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix
       deliverySlot: 'apres-midi',
       paymentMethod: 'wave',
       waveSenderPhone: '0744556677',
-      waveTransactionRef: 'PENDING_SASPAY',
+      waveTransactionRef: 'PENDING_WAVE',
       items: [{ productId: smartFoutou.id, quantity: 1 }],
     },
   });
@@ -397,58 +401,52 @@ test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix
   const orderRef = created.data.order.reference;
   const qrTok = created.data.order.trackingToken;
 
-  // 4) Rejeter un webhook SasPay avec un horodatage expiré (> 300s) ou une mauvaise signature
-  const saspayBody = JSON.stringify({
-    event: 'transaction.success',
+  // 4) Rejeter un webhook Wave avec un horodatage expiré (> 600s) ou une mauvaise signature
+  const waveBody = JSON.stringify({
+    id: 'ae_wave_evt_01',
+    type: 'checkout.session.completed',
     data: {
-      id: '7c1a9988-saspay-tx',
-      reference: 'TXN-2026-SASPAY-001',
-      type: 'PAIEMENT',
-      status: 'SUCCESS',
-      amount: `${created.data.order.total}.00`,
-      net_amount: `${created.data.order.total}.00`,
+      id: 'cos-18qq25rgr100a',
+      client_reference: orderRef,
+      transaction_id: 'TWAVE2026CI001',
+      sender_mobile: '+2250744556677',
       currency: 'XOF',
-      country: 'CI',
-      network: 'wave_ci',
-      msisdn: '2250744556677',
-      metadata: { order_reference: orderRef },
+      amount: String(created.data.order.total),
+      payment_status: 'succeeded',
+      checkout_status: 'complete',
     },
   });
 
   const expiredTs = String(Math.floor(Date.now() / 1000) - 900);
   const expiredSig = crypto
-    .createHmac('sha256', process.env.SASPAY_WEBHOOK_SECRET)
-    .update(`${expiredTs}.${saspayBody}`)
+    .createHmac('sha256', process.env.WAVE_WEBHOOK_SECRET)
+    .update(`${expiredTs}${waveBody}`)
     .digest('hex');
 
-  const expiredRes = await fetch(`${baseUrl}/api/webhooks/saspay`, {
+  const expiredRes = await fetch(`${baseUrl}/api/webhooks/wave`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Webhook-Timestamp': expiredTs,
-      'X-Webhook-Signature': expiredSig,
-      'X-Webhook-Event': 'transaction.success',
+      'Wave-Signature': `t=${expiredTs},v1=${expiredSig}`,
     },
-    body: saspayBody,
+    body: waveBody,
   });
-  assert.equal(expiredRes.status, 401, 'Doit rejeter un webhook SasPay de plus de 5 minutes');
+  assert.equal(expiredRes.status, 401, 'Doit rejeter un webhook Wave expiré');
 
-  // 5) Valider automatiquement avec un webhook SasPay authentique (< 300s + HMAC valide)
+  // 5) Valider automatiquement avec un webhook Wave authentique (HMAC valide)
   const freshTs = String(Math.floor(Date.now() / 1000));
   const freshSig = crypto
-    .createHmac('sha256', process.env.SASPAY_WEBHOOK_SECRET)
-    .update(`${freshTs}.${saspayBody}`)
+    .createHmac('sha256', process.env.WAVE_WEBHOOK_SECRET)
+    .update(`${freshTs}${waveBody}`)
     .digest('hex');
 
-  const validRes = await fetch(`${baseUrl}/api/webhooks/saspay`, {
+  const validRes = await fetch(`${baseUrl}/api/webhooks/wave`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Webhook-Timestamp': freshTs,
-      'X-Webhook-Signature': freshSig,
-      'X-Webhook-Event': 'transaction.success',
+      'Wave-Signature': `t=${freshTs},v1=${freshSig}`,
     },
-    body: saspayBody,
+    body: waveBody,
   });
   assert.equal(validRes.status, 200);
 
@@ -459,8 +457,8 @@ test('7. Gamme SMART TECHNOLOGY (20 photos optimisées -> 20 modèles/vues, prix
   });
   assert.equal(tracked.status, 200);
   assert.equal(tracked.data.order.status, 'preparing');
-  assert.equal(tracked.data.order.paymentProvider, 'saspay');
-  assert.equal(tracked.data.order.waveTransactionRef, 'TXN-2026-SASPAY-001');
+  assert.equal(tracked.data.order.paymentProvider, 'wave');
+  assert.equal(tracked.data.order.waveTransactionRef, 'TWAVE2026CI001');
 });
 
 test('8. Produits lourds (lave-linge, gazinières, frigos & nouveaux produits) : 2 500 F dans Daloa et 5 000 F hors Daloa', async () => {

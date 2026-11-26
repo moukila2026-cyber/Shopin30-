@@ -175,10 +175,11 @@ export function LegalModal({ openTab, onClose, onSelectTab, whatsappNumber, onRe
                   calculés de manière transparente avant validation finale du panier.
                 </li>
                 <li>
-                  <strong>Paiement sécurisé :</strong> Les règlements s’effectuent en ligne en Francs
-                  CFA via <strong>Wave Côte d’Ivoire</strong> ou passerelle de paiement agréée{' '}
-                  <strong>SasPay</strong> (Wave, Orange Money, MTN MoMo, Moov Money). Aucune clé ni
-                  code secret Mobile Money ou bancaire n’est jamais stocké sur les serveurs de
+                  <strong>Paiement sécurisé 100% Wave CI :</strong> Les règlements s’effectuent
+                  exclusivement via <strong>Wave Côte d’Ivoire</strong> sur le compte dédié aux
+                  encaissements Pèrôkadô (<strong>+225 05 46 69 74 78</strong>, distinct du numéro
+                  WhatsApp du Service Client +225 05 01 30 33 43) ou via Wave Business Checkout.
+                  Aucune clé ni code secret Mobile Money n’est jamais stocké sur les serveurs de
                   Pèrôkadô.
                 </li>
                 <li>

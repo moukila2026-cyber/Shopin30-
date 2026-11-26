@@ -100,14 +100,14 @@ export function Header({
               <img
                 src="/images/icon-512.png"
                 alt="Logo Pèrôkadô"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-md object-cover bg-white p-0.5"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-contain shrink-0 drop-shadow-sm"
               />
               <div className="leading-none">
                 <div className="flex items-baseline gap-0.5">
                   <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
                     pèrôkadô
                   </span>
-                  <span className="text-xs font-bold text-[#FF9900]">.ci</span>
+                  <span className="text-xs font-bold text-[#FF9900]">.com</span>
                 </div>
                 <span className="block text-[10px] text-[#CCCCCC] font-medium">
                   Daloa & Expédition
@@ -413,7 +413,7 @@ export function Header({
                 <img
                   src="/images/icon-512.png"
                   alt=""
-                  className="w-8 h-8 rounded bg-white p-0.5 object-cover"
+                  className="w-9 h-9 rounded-lg object-contain shrink-0"
                 />
                 <div>
                   <p className="font-bold text-sm">Bienvenue sur Pèrôkadô</p>

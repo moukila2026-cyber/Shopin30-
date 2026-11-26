@@ -183,13 +183,11 @@ function mapOrderRow(row) {
     addressDetails: row.address_details || '',
     deliverySlot: row.delivery_slot,
     paymentMethod: row.payment_method,
-    paymentProvider: row.payment_provider || 'wave',
+    paymentProvider: 'wave',
     waveSenderPhone: row.wave_sender_phone || '',
     waveTransactionRef: row.wave_transaction_ref || '',
-    saspaySessionId: row.saspay_session_id || '',
-    saspayPaymentId: row.saspay_payment_id || '',
-    saspayCheckoutUrl: row.saspay_checkout_url || '',
-    saspayPayoutId: row.saspay_payout_id || '',
+    waveSessionId: row.wave_session_id || '',
+    waveCheckoutUrl: row.wave_checkout_url || '',
     trackingToken: row.tracking_token || '',
     customerNote: row.customer_note || '',
     promoCode: row.promo_code || null,
@@ -357,6 +355,26 @@ export function createStore(adapterPromiseOrInstance) {
 
           await adapter.query(
             `UPDATE products SET name = REPLACE(name, '\`', '') WHERE name LIKE '%\`%'`
+          );
+        }
+
+        // Migration idempotente unique du numéro Wave marchand officiel (+225 05 46 69 74 78),
+        // distinct du numéro WhatsApp Service Client (+225 05 01 30 33 43)
+        const { rows: wavePhoneMigRows } = await adapter.query(
+          `SELECT 1 FROM store_settings WHERE key = 'wave_phone_0546697478_v1'`
+        );
+        if (wavePhoneMigRows.length === 0) {
+          await adapter.query(
+            `UPDATE store_settings
+             SET value = jsonb_set(value, '{wavePhone}', to_jsonb($1::text), true),
+                 updated_at = NOW()
+             WHERE key = 'general'`,
+            [BRAND.defaultWavePhone]
+          );
+          await adapter.query(
+            `INSERT INTO store_settings (key, value)
+             VALUES ('wave_phone_0546697478_v1', '{"done":true}'::jsonb)
+             ON CONFLICT (key) DO NOTHING`
           );
         }
 
@@ -902,10 +920,10 @@ export function createStore(adapterPromiseOrInstance) {
       neighborhood: order.neighborhood,
       deliverySlot: order.deliverySlot,
       paymentMethod: order.paymentMethod,
-      paymentProvider: order.paymentProvider,
+      paymentProvider: 'wave',
       waveTransactionRef: order.waveTransactionRef,
-      saspaySessionId: order.saspaySessionId,
-      saspayCheckoutUrl: order.saspayCheckoutUrl,
+      waveSessionId: order.waveSessionId,
+      waveCheckoutUrl: order.waveCheckoutUrl,
       trackingToken: order.trackingToken,
       subtotal: order.subtotal,
       discountAmount: order.discountAmount,
@@ -993,87 +1011,33 @@ export function createStore(adapterPromiseOrInstance) {
     });
   }
 
-  // Confirmation automatique par Webhook officiel Wave Business Checkout (sans intervention humaine)
-  async function confirmWaveWebhookPayment({ reference, waveTransactionId, waveSenderPhone }) {
-    const db = await ensureReady();
-    const refClean = String(reference || '').trim().toUpperCase();
-    return db.withTransaction(async (tx) => {
-      const { rows } = await tx.query(
-        `SELECT * FROM orders WHERE UPPER(reference) = $1 FOR UPDATE`,
-        [refClean]
-      );
-      if (rows.length === 0) return null;
-      const current = rows[0];
-      const nextStatus = current.status === 'pending' ? 'preparing' : current.status;
-      const { rows: updated } = await tx.query(
-        `UPDATE orders
-         SET status = $2,
-             wave_transaction_ref = COALESCE(NULLIF($3, ''), wave_transaction_ref),
-             wave_sender_phone = COALESCE(NULLIF($4, ''), wave_sender_phone),
-             handled_by = 'wave-webhook-auto',
-             updated_at = NOW()
-         WHERE id = $1
-         RETURNING *`,
-        [
-          current.id,
-          nextStatus,
-          String(waveTransactionId || '').trim(),
-          String(waveSenderPhone || '').trim(),
-        ]
-      );
-      await tx.query(
-        `INSERT INTO audit_logs (actor, action, target, details) VALUES ('wave-webhook-auto', 'order.wave_paid', $1, $2::jsonb)`,
-        [current.reference, JSON.stringify({ waveTransactionId })]
-      );
-      return mapOrderRow(updated[0]);
-    });
-  }
-
-  // Attacher une session de checkout SasPay à la commande fraîchement créée
-  async function attachSaspaySession(reference, { sessionId, checkoutUrl, transactionId = '' }) {
+  // Attacher une session de checkout Wave Business à la commande fraîchement créée
+  async function attachWaveSession(reference, { sessionId, checkoutUrl }) {
     const db = await ensureReady();
     const { rows } = await db.query(
       `UPDATE orders
-       SET payment_provider = 'saspay',
-           saspay_session_id = $2,
-           saspay_checkout_url = $3,
-           saspay_payment_id = COALESCE(NULLIF($4, ''), saspay_payment_id),
+       SET payment_provider = 'wave',
+           wave_session_id = $2,
+           wave_checkout_url = $3,
            updated_at = NOW()
        WHERE reference = $1
        RETURNING *`,
-      [reference, String(sessionId || ''), String(checkoutUrl || ''), String(transactionId || '')]
+      [reference, String(sessionId || ''), String(checkoutUrl || '')]
     );
     return rows[0] ? mapOrderRow(rows[0]) : null;
   }
 
-  // Lister les commandes récentes SasPay encore en attente ('pending') pour réconciliation
-  async function listPendingSaspayOrders(limit = 15) {
-    const db = await ensureReady();
-    const { rows } = await db.query(
-      `SELECT * FROM orders
-       WHERE status = 'pending' AND saspay_session_id != ''
-       ORDER BY created_at DESC
-       LIMIT $1`,
-      [limit]
-    );
-    return rows.map(mapOrderRow);
-  }
-
-  // Confirmation automatique d'un paiement SasPay (par Webhook signé ou vérification directe API)
-  async function confirmSaspayPayment({
-    reference = '',
+  // Confirmation automatique par Webhook officiel Wave Business Checkout ou vérification directe API (sans intervention humaine)
+  async function confirmWaveWebhookPayment({
+    reference,
     sessionId = '',
-    paymentId = '',
-    transactionRef = '',
-    senderPhone = '',
-    payoutId = '',
-    actor = 'saspay-webhook-auto',
+    waveTransactionId = '',
+    waveSenderPhone = '',
+    actor = 'wave-webhook-auto',
   }) {
     const db = await ensureReady();
     const refClean = String(reference || '').trim().toUpperCase();
     const sessClean = String(sessionId || '').trim();
-    const payClean = String(paymentId || '').trim();
-
     return db.withTransaction(async (tx) => {
       let rows = [];
       if (refClean) {
@@ -1085,15 +1049,8 @@ export function createStore(adapterPromiseOrInstance) {
       }
       if (rows.length === 0 && sessClean) {
         const res = await tx.query(
-          `SELECT * FROM orders WHERE saspay_session_id = $1 FOR UPDATE`,
+          `SELECT * FROM orders WHERE wave_session_id = $1 FOR UPDATE`,
           [sessClean]
-        );
-        rows = res.rows;
-      }
-      if (rows.length === 0 && payClean) {
-        const res = await tx.query(
-          `SELECT * FROM orders WHERE saspay_payment_id = $1 FOR UPDATE`,
-          [payClean]
         );
         rows = res.rows;
       }
@@ -1102,47 +1059,30 @@ export function createStore(adapterPromiseOrInstance) {
       const current = rows[0];
       const wasPending = current.status === 'pending';
       const nextStatus = wasPending ? 'preparing' : current.status;
-      const displayTxRef = String(transactionRef || payClean || '').trim();
-
       const { rows: updated } = await tx.query(
         `UPDATE orders
          SET status = $2,
-             payment_provider = 'saspay',
-             saspay_payment_id = COALESCE(NULLIF($3, ''), saspay_payment_id),
-             wave_transaction_ref = COALESCE(NULLIF($4, ''), wave_transaction_ref),
-             wave_sender_phone = COALESCE(NULLIF($5, ''), wave_sender_phone),
-             saspay_payout_id = COALESCE(NULLIF($6, ''), saspay_payout_id),
-             handled_by = CASE WHEN status = 'pending' THEN $7 ELSE handled_by END,
+             payment_provider = 'wave',
+             wave_transaction_ref = COALESCE(NULLIF($3, ''), wave_transaction_ref),
+             wave_sender_phone = COALESCE(NULLIF($4, ''), wave_sender_phone),
+             handled_by = CASE WHEN status = 'pending' THEN $5 ELSE handled_by END,
              updated_at = NOW()
          WHERE id = $1
          RETURNING *`,
         [
           current.id,
           nextStatus,
-          payClean,
-          displayTxRef,
-          String(senderPhone || '').trim(),
-          String(payoutId || '').trim(),
+          String(waveTransactionId || '').trim(),
+          String(waveSenderPhone || '').trim(),
           actor,
         ]
       );
-
       if (wasPending) {
         await tx.query(
-          `INSERT INTO audit_logs (actor, action, target, details)
-           VALUES ($1, 'order.saspay_paid', $2, $3::jsonb)`,
-          [
-            actor,
-            current.reference,
-            JSON.stringify({
-              paymentId: payClean,
-              transactionRef: displayTxRef,
-              payoutId: payoutId || null,
-            }),
-          ]
+          `INSERT INTO audit_logs (actor, action, target, details) VALUES ($1, 'order.wave_paid', $2, $3::jsonb)`,
+          [actor, current.reference, JSON.stringify({ waveTransactionId, sessionId: sessClean || null })]
         );
       }
-
       return { order: mapOrderRow(updated[0]), newlyConfirmed: wasPending };
     });
   }
@@ -1321,10 +1261,8 @@ export function createStore(adapterPromiseOrInstance) {
     trackOrder,
     listOrders,
     updateOrderStatus,
+    attachWaveSession,
     confirmWaveWebhookPayment,
-    attachSaspaySession,
-    listPendingSaspayOrders,
-    confirmSaspayPayment,
     getDashboardStats,
     listAgents,
     createAgent,
