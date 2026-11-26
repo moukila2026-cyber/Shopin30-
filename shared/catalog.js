@@ -1883,6 +1883,443 @@ export const QUINCAILLERIE_BTP_PRODUCTS = [
     ],
     imageUrl: '/images/products/kit-pistolet-arrosage-raccords-haute-pression.jpg',
   },
+  {
+    id: 'btp-verrou-rouge-ck6683',
+    slug: 'cle-verrou-rouge-ck6683-cylindre-laiton',
+    name: 'Serrure Verrou de Porte Rouge CK6683 — Cylindre Laiton & Clés',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 25,
+    badge: 'Serrurerie',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Verrou de sûreté en applique coloris rouge bordeaux (CK6683) avec cylindre laiton, pêne solide et jeu de clés inclus.',
+    description:
+      'Renforcez la sécurité de vos portes d’entrée, magasins ou portails ! Ce verrou en applique CK6683 au boîtier métal peint rouge résistant est équipé d’un cylindre en laiton et d’un jeu de clés.',
+    specs: [
+      'Référence CK6683 · Boîtier acier peint rouge bordeaux',
+      'Cylindre et pêne en laiton haute résistance',
+      'Livré avec jeu de clés',
+      'Installation rapide en applique sur porte bois ou métal'
+    ],
+    imageUrl: '/images/products/btp-verrou-rouge-ck6683.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-165-noir-or',
+    slug: 'serrure-cle-canon-luxe-noir-or-griffe-165-9069-a904',
+    name: 'Serrure Clé à Canon Luxe Noir & Or Griffe 165 — 9069-A904',
+    category: 'quincaillerie-btp',
+    price: 14500,
+    compareAtPrice: 18000,
+    stock: 15,
+    badge: 'Luxe Noir & Or',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Ensemble complet serrure à encastrer luxe Griffe 165 finition noir mat & doré, cylindre laiton et clés inclus.',
+    description:
+      'Alliez sécurité et design haut de gamme pour vos portes principales et chambres ! La serrure Griffe 165 (9069-A904) se distingue par ses poignées noir mat rehaussées d’une touche dorée et son mécanisme robuste.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-165 (9069-A904)',
+      'Finition luxe noir mat avec détails dorés',
+      'Coffret complet : poignées, boîtier à encastrer, cylindre laiton & clés',
+      'Idéale portes d’entrée, villas, bureaux et hôtels'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-165-noir-or.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-gf11-1023',
+    slug: 'serrure-cle-canon-luxe-inox-griffe-gf-11-1023',
+    name: 'Serrure Clé à Canon Luxe Inox Griffe — GF-11-1023',
+    category: 'quincaillerie-btp',
+    price: 11500,
+    compareAtPrice: 14500,
+    stock: 18,
+    badge: 'Inox Brossé',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure complète à canon Griffe GF-11-1023 finition inox brossé, poignée ergonomique à reliefs et jeu de clés.',
+    description:
+      'Élégante et durable, la serrure Griffe GF-11-1023 en finition acier inoxydable brossé résiste à l’usage intensif quotidien. Livrée complète avec canon et clés.',
+    specs: [
+      'Marque Griffe · Référence GF-11-1023',
+      'Plaque longue et poignée ergonomique finition inox brossé',
+      'Cylindre à canon sécurisé avec jeu de clés',
+      'Convient aux portes intérieures et extérieures'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-gf11-1023.jpg',
+  },
+  {
+    id: 'btp-tirefond-tole-8x80-bleu-force',
+    slug: 'tirefond-de-tole-8x80mm-bleu-force-avec-cavaliers',
+    name: 'Kit Tirefonds de Tôle 8×80 mm Bleu FORCE — Cavaliers & Rondelles Étanches',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 40,
+    badge: 'Toiture BTP',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Tirefonds de fixation de tôles 8×80 mm en acier bichromaté FORCE avec cavaliers bleus, rondelles métal et joints d’étanchéité.',
+    description:
+      'Assurez une fixation solide et 100 % étanche de vos tôles de toiture ! Ce kit FORCE (Réf. TTBF) réunit les tirefonds 8×80 mm anticorrosion, les cavaliers de maintien bleus et les rondelles d’étanchéité.',
+    specs: [
+      'Marque FORCE · Réf. TTBF · Dimensions : 8 × 80 mm',
+      'Acier bichromaté haute résistance anti-rouille',
+      'Livré avec cavaliers bleus, rondelles acier et joints étanches',
+      'Indispensable pour pose de tôles bac alu et toitures'
+    ],
+    imageUrl: '/images/products/btp-tirefond-tole-8x80-bleu-force.jpg',
+  },
+  {
+    id: 'btp-disjoncteur-schneider-easy9-2p-25a',
+    slug: 'disjoncteur-sur-rail-2p-25a-schneider-easy9-ez9f32225',
+    name: 'Disjoncteur sur Rail 2P 25A Schneider Electric Easy9 — EZ9F32225',
+    category: 'quincaillerie-btp',
+    price: 6500,
+    compareAtPrice: 8500,
+    stock: 30,
+    badge: 'Schneider Original',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur bipolaire 2P 25A courbe C (gamme Easy9 Schneider Electric) pour protection fiable de vos circuits électriques.',
+    description:
+      'Protégez vos installations électriques contre les surcharges et courts-circuits avec la qualité certifiée Schneider Electric ! Montage rapide sur rail DIN pour tableaux résidentiels et professionnels.',
+    specs: [
+      'Marque Schneider Electric · Gamme Easy9 · Réf. EZ9F32225',
+      'Bipolaire 2P · Calibre 25A · Courbe C',
+      'Montage standard sur rail DIN',
+      'Protection contre les surcharges et courts-circuits'
+    ],
+    imageUrl: '/images/products/btp-disjoncteur-schneider-easy9-2p-25a.jpg',
+  },
+  {
+    id: 'btp-parafoudre-schneider-easy9-1pn-20ka',
+    slug: 'parafoudre-1pn-20ka-230v-schneider-easy9-ez9l33620',
+    name: 'Parafoudre 1P+N 20kA 230V Schneider Electric Easy9 — EZ9L33620',
+    category: 'quincaillerie-btp',
+    price: 68500,
+    compareAtPrice: 79000,
+    stock: 10,
+    badge: 'Protection Foudre',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Parafoudre monophasé Type 2 (1P+N, 20 kA, 230 V) Schneider Electric Easy9 : protège TV, frigos, clims et appareils contre la foudre et surtensions.',
+    description:
+      'Indispensable pendant la saison des pluies et orages en Côte d’Ivoire ! Le parafoudre Schneider Electric Easy9 EZ9L33620 (Type 2 · 20 kA) absorbe les pics de tension et protège toute votre installation monophasée.',
+    specs: [
+      'Marque Schneider Electric · Réf. EZ9L33620 (Easy9 SPD T2)',
+      'Monophasé 1P+N · 230 V · Courant de décharge max Imax 20 kA',
+      'Voyant mécanique d’état (Vert = OK / Rouge = à remplacer)',
+      'Montage sur rail DIN · Protection résidentielle & commerciale'
+    ],
+    imageUrl: '/images/products/btp-parafoudre-schneider-easy9-1pn-20ka.jpg',
+  },
+  {
+    id: 'btp-fiche-industrielle-megalec-5p-16a',
+    slug: 'fiche-industrielle-femelle-apparente-5p-16a-ip44-megalec-meg-115g',
+    name: 'Prise / Fiche Industrielle Femelle Apparente 5P 16A IP44 Megalec — MEG-115G',
+    category: 'quincaillerie-btp',
+    price: 6500,
+    compareAtPrice: 8500,
+    stock: 20,
+    badge: 'Industriel IP44',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Socle prise industrielle femelle apparente 5 pôles (3P+N+T) 16A 400V étanche IP44 Megalec avec clapet rouge de protection.',
+    description:
+      'Conçue pour les ateliers, chantiers, groupes électrogènes et machines triphasées ! Cette prise murale apparente Megalec 5P 16A IP44 résiste aux projections d’eau et à la poussière.',
+    specs: [
+      'Marque Megalec · Réf. MEG-115G · 5P (3P+N+T) 16A',
+      'Indice de protection IP44 étanche aux projections d’eau',
+      'Boîtier apparent robuste avec clapet de fermeture rouge',
+      'Ateliers, chantiers BTP, groupes électrogènes triphasés'
+    ],
+    imageUrl: '/images/products/btp-fiche-industrielle-megalec-5p-16a.jpg',
+  },
+  {
+    id: 'btp-coffret-schneider-120-modules-lvsxh524',
+    slug: 'coffret-electrique-120-modules-encastre-5-rangees-schneider-lvsxh524',
+    name: 'Coffret Électrique 120 Modules Encastré 5 Rangées Porte Transparente Schneider — LVSXH524',
+    category: 'quincaillerie-btp',
+    price: 155000,
+    compareAtPrice: 175000,
+    stock: 5,
+    badge: '120 Modules Pro',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grand tableau électrique encastré Schneider Electric PrismaSet XS 5 rangées × 24 modules (120 modules) avec porte transparente.',
+    description:
+      'La référence des électriciens pour les grandes villas, immeubles, hôtels et bâtiments tertiaires ! Ce coffret encastré PrismaSet XS LVSXH524 offre 120 modules répartis sur 5 rangées avec porte transparente de contrôle.',
+    specs: [
+      'Marque Schneider Electric · PrismaSet XS · Réf. LVSXH524',
+      'Capacité 120 modules (5 rangées de 24 modules)',
+      'Pose encastrée · Porte transparente incluse',
+      'Idéal villas, immeubles, bureaux et locaux commerciaux'
+    ],
+    imageUrl: '/images/products/btp-coffret-schneider-120-modules-lvsxh524.jpg',
+  },
+  {
+    id: 'btp-extracteur-industriel-emtop-120w-8p',
+    slug: 'ventilateur-extraction-industriel-emtop-120w-8-pouces-egfj2a08',
+    name: 'Ventilateur d’Extraction Industriel EMTOP 120 W 8" (1300 m³/h) — EGFJ2A08',
+    category: 'quincaillerie-btp',
+    price: 68000,
+    compareAtPrice: 79000,
+    stock: 6,
+    badge: '1300 m³/h · Cuivre',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Puissant extracteur d’air industriel portable EMTOP 8 pouces (120 W · 0,16 HP · bobinage cuivre) débit 1300 m³/h pour chantiers et ateliers.',
+    description:
+      'Ventilez efficacement sous-sols, ateliers, garages, cuisines professionnelles et chantiers ! L’extracteur EMTOP EGFJ2A08 combine un moteur 100 % fil de cuivre de 120 W, un débit puissant de 1300 m³/h, une poignée de transport et 4 pieds stables.',
+    specs: [
+      'Marque EMTOP · Réf. EGFJ2A08 · Diamètre 8 pouces (200 mm)',
+      'Puissance 120 W (0,16 HP) · Moteur bobinage 100 % cuivre',
+      'Débit d’air puissant : 1 300 m³/h',
+      'Grilles de protection, poignée de transport & pieds anti-vibration'
+    ],
+    imageUrl: '/images/products/btp-extracteur-industriel-emtop-120w-8p.jpg',
+  },
+  {
+    id: 'btp-colonne-douche-inox-griffe-gs-g224ss',
+    slug: 'colonne-douche-hydromassante-inox-griffe-gs-g224ss',
+    name: 'Colonne de Douche Hydromassante Inox Complète Griffe — GS-G224SS',
+    category: 'quincaillerie-btp',
+    price: 65000,
+    compareAtPrice: 78000,
+    stock: 8,
+    badge: 'Hydromassante Inox',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Colonne de douche murale en acier inoxydable brossé Griffe GS-G224SS avec pomme haute effet pluie, buses de massage, mitigeur et douchette flexible.',
+    description:
+      'Transformez votre salle de bain en espace spa moderne ! Cette colonne de douche en inox brossé anti-corrosion intègre un ciel de pluie supérieur, deux zones de buses hydromassantes, un mitigeur chromé et une douchette à main avec flexible.',
+    specs: [
+      'Marque Griffe · Réf. GS-G224SS · Corps acier inoxydable brossé',
+      'Pomme de douche haute effet pluie + buses hydromassantes intégrées',
+      'Mitigeur mécanique + sélecteur de fonctions + douchette à main flexible',
+      'Installation murale complète pour salles de bain modernes & hôtels'
+    ],
+    imageUrl: '/images/products/btp-colonne-douche-inox-griffe-gs-g224ss.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-158-inox',
+    slug: 'serrure-cle-canon-luxe-123-inox-griffe-158',
+    name: 'Serrure Clé à Canon Luxe 123 Inox Griffe — GRIFFE-158',
+    category: 'quincaillerie-btp',
+    price: 10500,
+    compareAtPrice: 13000,
+    stock: 20,
+    badge: 'Inox Satiné',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure complète à canon Griffe 158 (modèle 123) finition inox satiné avec plaque longue, poignée ergonomique et jeu de clés.',
+    description:
+      'Sobre, résistante et intemporelle, la serrure Griffe 158 équipe durablement les portes de chambres, bureaux et appartements. Livrée complète avec canon et clés.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-158 (modèle 123)',
+      'Finition acier inoxydable satiné anti-traces',
+      'Livrée avec cylindre à canon et jeu de clés',
+      'Pose facile sur portes bois ou métalliques'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-158-inox.jpg',
+  },
+  {
+    id: 'btp-surpresseur-qb80-force-444',
+    slug: 'pompe-surpresseur-eau-qb80-force-444',
+    name: 'Pompe Surpresseur d’Eau Électrique QB80 FORCE — FORCE-444',
+    category: 'quincaillerie-btp',
+    price: 48000,
+    compareAtPrice: 58000,
+    stock: 10,
+    badge: 'Surpresseur QB80',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pompe surpresseur d’eau électrique QB80 (1 HP) FORCE-444 pour augmenter la pression domestique, alimenter les châteaux d’eau et l’arrosage.',
+    description:
+      'Fini les faibles débits d’eau aux étages ou dans la douche ! Le surpresseur électrique QB80 FORCE-444 offre une pression puissante et régulière avec un corps de pompe robuste et un moteur ventilé endurant.',
+    specs: [
+      'Marque FORCE · Modèle QB80 · Réf. FORCE-444',
+      'Puissance 1 HP (0,75 kW) · Alimentation 220–240 V',
+      'Corps moteur à ailettes de refroidissement & turbine laiton',
+      'Idéal villas, immeubles, citernes, puits et jardins'
+    ],
+    imageUrl: '/images/products/btp-surpresseur-qb80-force-444.jpg',
+  },
+  {
+    id: 'btp-parafoudre-schneider-easy9-3pn-20ka',
+    slug: 'parafoudre-3pn-20ka-400v-schneider-easy9-ez9l33720',
+    name: 'Parafoudre Triphasé 3P+N 20kA 400V Schneider Electric Easy9 — EZ9L33720',
+    category: 'quincaillerie-btp',
+    price: 118000,
+    compareAtPrice: 129000,
+    stock: 6,
+    badge: 'Triphasé 400V',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Parafoudre triphasé Type 2 (3P+N, 20 kA, 400 V) Schneider Electric Easy9 EZ9L33720 pour protection complète des tableaux triphasés contre la foudre.',
+    description:
+      'Protégez vos installations triphasées (villas, ateliers, commerces, cliniques, hôtels) contre les surtensions atmosphériques et pics du réseau CIE avec le parafoudre certifié Schneider Electric Easy9 EZ9L33720.',
+    specs: [
+      'Marque Schneider Electric · Gamme Easy9 · Réf. EZ9L33720',
+      'Triphasé 3P+N · 400 V · Type 2 · Imax 20 kA',
+      'Voyants mécaniques d’état sur chaque pôle (Vert = OK)',
+      'Montage sur rail DIN (4 modules)'
+    ],
+    imageUrl: '/images/products/btp-parafoudre-schneider-easy9-3pn-20ka.jpg',
+  },
+  {
+    id: 'btp-groupe-electrogene-emtop-55kva-eggrd5511',
+    slug: 'groupe-electrogene-essence-emtop-55kva-24a-demarreur-cle-eggrd5511',
+    name: 'Groupe Électrogène Essence EMTOP 5,5 kVA (5500 W) 24A — Démarreur à Clé EGGRD5511',
+    category: 'quincaillerie-btp',
+    price: 379000,
+    compareAtPrice: 430000,
+    stock: 4,
+    badge: '5,5 kVA · Clé + Cuivre',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Puissant groupe électrogène essence monophasé EMTOP 5,5 kVA / 5500 W (24 A) avec démarreur électrique à clé, batterie, bobinage 100 % cuivre et roues.',
+    description:
+      'Assurez la continuité électrique de votre maison, commerce, pharmacie ou chantier en cas de coupure ! Le groupe électrogène EMTOP EGGRD5511 délivre 5 500 W max (24 A) avec alternateur bobinage 100 % cuivre, démarrage électrique à clé (batterie incluse), voltmètre et châssis tubulaire renforcé sur roues.',
+    specs: [
+      'Marque EMTOP · Réf. EGGRD5511 · Puissance max 5,5 kVA / 5 500 W (24 A)',
+      'Démarrage électrique à clé (batterie 12V incluse) + lanceur manuel',
+      'Alternateur bobinage 100 % fil de cuivre haute longévité',
+      '2 prises monophasées protégées, voltmètre & kit roues de transport'
+    ],
+    imageUrl: '/images/products/btp-groupe-electrogene-emtop-55kva-eggrd5511.jpg',
+  },
+  {
+    id: 'btp-cle-douche-griffe-163',
+    slug: 'serrure-cle-de-douche-luxe-125-griffe-163',
+    name: 'Serrure Clé de Douche / Salle de Bain Luxe 125 Inox Griffe — GRIFFE-163',
+    category: 'quincaillerie-btp',
+    price: 8500,
+    compareAtPrice: 11000,
+    stock: 22,
+    badge: 'Salle de Bain',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Ensemble poignée et verrou à condamnation (bouton tournant) spécial douche & WC Griffe 163 en acier inoxydable résistant à l’humidité.',
+    description:
+      'Spécialement conçue pour les portes de salles de bain, douches et toilettes ! Sa finition inox anti-corrosion résiste à la vapeur et à l’humidité, avec verrouillage intérieur pratique par bouton tournant.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-163 (modèle 125)',
+      'Condamnation intérieure à bouton tournant (sans clé)',
+      'Finition inox brossé anti-rouille spéciale pièces humides',
+      'Idéale douches, salles de bain et toilettes'
+    ],
+    imageUrl: '/images/products/btp-cle-douche-griffe-163.jpg',
+  },
+  {
+    id: 'btp-serrure-griffe-168-bronze',
+    slug: 'serrure-cle-canon-luxe-bronze-grec-griffe-168-s52a',
+    name: 'Serrure Clé à Canon Luxe Bronze Motif Grec Griffe 168 — S52A',
+    category: 'quincaillerie-btp',
+    price: 16500,
+    compareAtPrice: 20000,
+    stock: 12,
+    badge: 'Luxe Bronze',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Serrure haut de gamme Griffe 168 (S52A) finition bronze antique doré avec gravure motif grec, canon sécurisé et jeu de clés.',
+    description:
+      'Sublimez vos portes d’entrée, salons et suites avec la serrure Griffe 168 S52A ! Sa finition bronze doré brossé et ses gravures géométriques de style grec apportent prestige et robustesse.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-168 (S52A)',
+      'Finition bronze antique doré avec motif grec sculpté',
+      'Cylindre à canon haute sécurité + jeu de clés',
+      'Idéale portes d’entrée, villas haut standing et hôtels'
+    ],
+    imageUrl: '/images/products/btp-serrure-griffe-168-bronze.jpg',
+  },
+  {
+    id: 'btp-poutrelle-coffrage-h20-390m',
+    slug: 'poutrelle-de-coffrage-bois-h20-avec-protection-390m-pout-h20-3900',
+    name: 'Poutrelle de Coffrage en Bois H20 avec Embouts de Protection — 3,90 m (POUT-H20-3900)',
+    category: 'quincaillerie-btp',
+    price: 26000,
+    compareAtPrice: 31000,
+    stock: 30,
+    badge: 'Gros Œuvre BTP',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Poutrelle de coffrage professionnelle en bois lamellé H20 longueur 3,90 m traitée jaune hydrofuge avec embouts rouges anti-chocs.',
+    description:
+      'Indispensable sur les chantiers de construction pour le coffrage de dalles et planchers béton ! Cette poutrelle H20 de 3,90 m combine légèreté, forte capacité portante et embouts de protection rouges pour prolonger sa durée de vie.',
+    specs: [
+      'Référence POUT-H20-3900 · Profil H20 · Longueur : 3,90 m',
+      'Bois résineux sélectionné traité hydrofuge jaune chantier',
+      'Embouts de protection plastique rouge anti-éclatement aux extrémités',
+      'Coffrage de dalles, poutres et planchers BTP'
+    ],
+    imageUrl: '/images/products/btp-poutrelle-coffrage-h20-390m.jpg',
+  },
+  {
+    id: 'btp-serrure-force-cle-134f',
+    slug: 'serrure-cle-canon-luxe-134-force-cle-134f',
+    name: 'Serrure Clé à Canon Luxe 134 Nickel Satiné FORCE — CLE-134F',
+    category: 'quincaillerie-btp',
+    price: 9500,
+    compareAtPrice: 12000,
+    stock: 20,
+    badge: 'Nickel Satiné',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Ensemble serrure à canon luxe FORCE 134 (CLE-134F) à poignée courbée ergonomique finition nickel satiné pour portes intérieures et extérieures.',
+    description:
+      'Design fluide et prise en main confortable ! La serrure FORCE CLE-134F offre un excellent rapport qualité-prix pour équiper maisons, résidences locatives et bureaux.',
+    specs: [
+      'Marque FORCE · Réf. CLE-134F (modèle 134)',
+      'Poignée courbée ergonomique finition nickel satiné',
+      'Plaque longue percée pour cylindre européen à canon',
+      'Résistante à l’usage quotidien intensif'
+    ],
+    imageUrl: '/images/products/btp-serrure-force-cle-134f.jpg',
+  },
+  {
+    id: 'btp-dismatique-megalec-meg-dis',
+    slug: 'dismatique-interrupteur-securite-megalec-meg-dis',
+    name: 'Dismatique Mural de Protection Électrique Megalec — MEG-DIS',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 25,
+    badge: 'Protection Clim/Appareils',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur mural Dismatique Megalec (MEG-DIS) avec bouton marche vert et bouton arrêt/réarmement rouge pour climatiseurs, chauffe-eau et appareils.',
+    description:
+      'Protégez vos climatiseurs, chauffe-eau et appareils électroménagers puissants avec le Dismatique Megalec ! Commande directe marche/arrêt en façade et coupure automatique en cas de surcharge.',
+    specs: [
+      'Marque Megalec · Réf. MEG-DIS',
+      'Bouton poussoir vert (Marche) + bouton rouge (Arrêt / Réarmement)',
+      'Boîtier blanc sobre à montage mural encastré ou saillie',
+      'Idéal climatiseurs, chauffe-eau, congélateurs et pompes'
+    ],
+    imageUrl: '/images/products/btp-dismatique-megalec-meg-dis.jpg',
+  },
 ];
 
 // ==============================================================================

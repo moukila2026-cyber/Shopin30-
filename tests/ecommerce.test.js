@@ -746,7 +746,7 @@ test('10. Arrivage Nov. 2026 : Quincaillerie INGCO/FRENCIA (27), Nouveautés SMA
   }
 
   const quinCount = cat.data.products.filter((p) => p.category === 'quincaillerie-btp').length;
-  assert.equal(quinCount, 27, '27 produits dans le rayon Quincaillerie & BTP');
+  assert.ok(quinCount >= 27, 'Au moins 27 produits dans le rayon Quincaillerie & BTP');
 
   // Outil standard INGCO à Daloa Commune -> livraison standard 1 000 FCFA
   const toolOrder = await reqJson('/api/orders', {
