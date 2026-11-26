@@ -510,10 +510,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
       return res.json({
         authenticated: false,
         configured: true,
-        demoHint:
-          !production && !process.env.VERCEL && !process.env.ADMIN_PASSWORD
-            ? 'perokado-demo-admin'
-            : null,
+        demoHint: null,
         storage,
       });
     }

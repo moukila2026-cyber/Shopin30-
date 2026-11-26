@@ -13,7 +13,7 @@ import {
   ChevronDown,
   ShieldCheck,
 } from 'lucide-react';
-import { formatFcfa } from '../../shared/catalog.js';
+import { formatFcfa, matchesProductSearch } from '../../shared/catalog.js';
 import { buildWhatsappServiceUrl } from '../lib/api.js';
 
 export function Header({
@@ -50,19 +50,14 @@ export function Header({
       eta: 'Livraison 1h–3h',
     };
 
-  // Suggestions d'autocomplétion instantanée style Amazon
+  // Suggestions d'autocomplétion instantanée (multi-mots, insensible aux accents)
   const suggestions = React.useMemo(() => {
-    const q = (searchQuery || '').trim().toLowerCase();
+    const q = (searchQuery || '').trim();
     if (!q) return [];
     return products
-      .filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          (p.shortDescription || '').toLowerCase().includes(q) ||
-          (p.badge || '').toLowerCase().includes(q)
-      )
-      .slice(0, 6);
-  }, [products, searchQuery]);
+      .filter((p) => matchesProductSearch(p, q, categories))
+      .slice(0, 8);
+  }, [products, searchQuery, categories]);
 
   function scrollToCatalog() {
     document.getElementById('catalogue')?.scrollIntoView({ behavior: 'smooth' });
