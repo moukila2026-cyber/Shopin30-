@@ -80,7 +80,8 @@ export function Footer({
             <h3 className="font-bold text-base text-white">À propos de Pèrôkadô</h3>
             <p className="text-xs text-[#DDDDDD] leading-relaxed">
               Votre boutique e-commerce de référence basée à <strong>Daloa (Haut-Sassandra)</strong>,
-              spécialisée dans les <strong>Motos & Tricycles</strong>, l’Électroménager{' '}
+              spécialisée dans les <strong>Motos & Tricycles</strong>, la{' '}
+              <strong>Quincaillerie INGCO & Sanitaires FRENCIA</strong>, l’Électroménager{' '}
               <strong>SMART TECHNOLOGY</strong>, le High-Tech, la Mode et la Maison.
             </p>
             <div className="pt-1 space-y-1.5 text-xs text-[#FF9900] font-semibold">
@@ -100,12 +101,13 @@ export function Footer({
             <h3 className="font-bold text-base text-white">Nos Rayons</h3>
             <ul className="space-y-1.5 text-xs text-[#DDDDDD]">
               {[
+                { id: 'quincaillerie-btp', label: 'Quincaillerie, Outillage INGCO & Sanitaires' },
                 { id: 'jouets-enfants', label: 'Jouets, Jeux & Univers Enfants' },
                 { id: 'motos-tricycles', label: 'Motos & Tricycles Cargo' },
-                { id: 'froid', label: 'Réfrigérateurs & Vitrines SMART' },
+                { id: 'froid', label: 'Réfrigérateurs, Congélateurs & Fontaines SMART' },
                 { id: 'lavage-cuisson', label: 'Lave-linge & Gazinières SMART' },
-                { id: 'maison', label: 'Petit Électroménager & Maison' },
-                { id: 'high-tech', label: 'High-Tech, Smartphones & Audio' },
+                { id: 'maison', label: 'Petit Électroménager, Mobilier & Maison' },
+                { id: 'high-tech', label: 'Google TV, Audio, High-Tech & Téléphonie' },
                 { id: 'mode', label: 'Mode, Montres & Bagagerie' },
                 { id: 'beaute-cadeaux', label: 'Beauté, Parfums & Coffrets' },
               ].map((cat) => (

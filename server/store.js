@@ -10,6 +10,8 @@ import {
   INITIAL_PROMO_CODES,
   JOUETS_ENFANTS_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
+  NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
+  QUINCAILLERIE_BTP_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
   computeZoneDeliveryFee,
   inferHeavyShipping,
@@ -285,6 +287,11 @@ export function createStore(adapterPromiseOrInstance) {
              VALUES ('catalog_jouets_v1_synced', '{"done":true}'::jsonb)
              ON CONFLICT (key) DO NOTHING`
           );
+          await adapter.query(
+            `INSERT INTO store_settings (key, value)
+             VALUES ('catalog_arrivage_nov2026_v1_synced', '{"done":true}'::jsonb)
+             ON CONFLICT (key) DO NOTHING`
+          );
         } else {
           const { rows: syncRows } = await adapter.query(
             `SELECT 1 FROM store_settings WHERE key = 'catalog_smart_v1_synced'`
@@ -392,6 +399,53 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_jouets_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente de l'arrivage Nov. 2026 : Quincaillerie INGCO/DINGQI,
+          // Sanitaires FRENCIA, Google TV / Audio / Froid SMART TECHNOLOGY et Salon rotin.
+          // ON CONFLICT DO NOTHING : n'ecrase jamais un prix/stock deja modifie dans /gestion.
+          const { rows: arrivageSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_arrivage_nov2026_v1_synced'`
+          );
+          if (arrivageSyncRows.length === 0) {
+            for (const p of [...QUINCAILLERIE_BTP_PRODUCTS, ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS]) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `UPDATE products SET image_url = '/images/products/smart-cuisiniere-gaz-4-feux-four-inox.jpg'
+               WHERE id = 'smart-cuisiniere-gaz-4-feux-inox'`
+            );
+            await adapter.query(
+              `UPDATE products SET image_url = '/images/products/smart-cuisiniere-gaz-5-feux-grand-four-inox.jpg'
+               WHERE id = 'smart-cuisiniere-gaz-5-feux-inox'`
+            );
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_arrivage_nov2026_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

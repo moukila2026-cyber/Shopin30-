@@ -5,15 +5,15 @@
 
 export const BRAND = {
   name: 'Pèrôkadô',
-  tagline: 'Motos & Tricycles, Électroménager SMART TECHNOLOGY, High-Tech & Maison à Daloa',
+  tagline: 'Motos & Tricycles, Électroménager SMART TECHNOLOGY, Quincaillerie INGCO, Sanitaires & Maison à Daloa',
   shortDescription:
-    'Motos neuves & Tricycles Cargo (Apsonic, Haojue, Sanya, TVS, KTM, Royal), Électroménager SMART TECHNOLOGY garanti, High-Tech, Mode et Cadeaux livrés à Daloa et expédiés partout en Côte d’Ivoire.',
+    'Motos neuves & Tricycles Cargo, Électroménager & Google TV SMART TECHNOLOGY, Quincaillerie & Outillage INGCO, Sanitaires FRENCIA, Mobilier, Jouets et Cadeaux livrés à Daloa et expédiés partout en Côte d’Ivoire.',
   city: 'Daloa, Côte d’Ivoire',
   defaultWhatsapp: '2250501303343',
   defaultWavePhone: '+225 05 46 69 74 78',
   defaultWavePaymentUrl: '',
   shippingDisclaimer:
-    'Aucune livraison gratuite. Colis standards : Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition hors Daloa 2 000 F. Produits lourds & volumineux (motos, tricycles, lave-linge, gazinières, réfrigérateurs, vitrines…) : 2 500 F dans Daloa et 5 000 F en expédition hors de Daloa.',
+    'Aucune livraison gratuite. Colis standards : Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition hors Daloa 2 000 F. Produits lourds & volumineux (motos, tricycles, lave-linge, gazinières, réfrigérateurs, congélateurs, fontaines à eau, TV grand écran, packs WC, salons…) : 2 500 F dans Daloa et 5 000 F en expédition hors de Daloa.',
   studioCredit: {
     name: 'Shopin30',
     phoneDisplay: '+225 05 01 30 33 43',
@@ -27,12 +27,13 @@ export const BRAND = {
 
 export const CATEGORIES = [
   { id: 'all', label: 'Tous les produits', shortLabel: 'Tout' },
+  { id: 'quincaillerie-btp', label: 'Quincaillerie, Outillage INGCO & Sanitaires', shortLabel: 'Quincaillerie & BTP' },
   { id: 'jouets-enfants', label: 'Jouets, Jeux & Univers Enfants', shortLabel: 'Jouets & Enfants' },
   { id: 'motos-tricycles', label: 'Motos & Tricycles Cargo', shortLabel: 'Motos & Tricycles' },
-  { id: 'froid', label: 'Réfrigérateurs & Vitrines SMART', shortLabel: 'Frigos & Froid' },
+  { id: 'froid', label: 'Réfrigérateurs, Congélateurs & Fontaines SMART', shortLabel: 'Frigos & Froid' },
   { id: 'lavage-cuisson', label: 'Lave-linge & Cuisinières SMART', shortLabel: 'Lavage & Gazinières' },
-  { id: 'maison', label: 'Petit Électroménager & Maison', shortLabel: 'Cuisine & Maison' },
-  { id: 'high-tech', label: 'High-Tech & Téléphonie', shortLabel: 'High-Tech' },
+  { id: 'maison', label: 'Petit Électroménager, Mobilier & Maison', shortLabel: 'Maison & Mobilier' },
+  { id: 'high-tech', label: 'Google TV, Audio, High-Tech & Téléphonie', shortLabel: 'TV, Son & High-Tech' },
   { id: 'mode', label: 'Mode & Accessoires', shortLabel: 'Mode' },
   { id: 'beaute-cadeaux', label: 'Beauté, Parfums & Cadeaux', shortLabel: 'Beauté & Cadeaux' },
 ];
@@ -1257,7 +1258,895 @@ export const JOUETS_ENFANTS_PRODUCTS = [
   },
 ];
 
+// ==============================================================================
+// GAMME QUINCAILLERIE, OUTILLAGE INGCO/DINGQI & SANITAIRES FRENCIA (27 PRODUITS)
+// ==============================================================================
+export const QUINCAILLERIE_BTP_PRODUCTS = [
+  {
+    id: 'frencia-wc001',
+    slug: 'frencia-pack-wc-complet-2-pieces-ovale-wc001',
+    name: 'Pack WC Complet 2 Pièces FRENCIA Ovale WC001 — Céramique Blanche',
+    category: 'quincaillerie-btp',
+    price: 52000,
+    compareAtPrice: 62000,
+    stock: 6,
+    badge: 'Sanitaires FRENCIA',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'WC à poser 2 pièces en céramique émaillée blanche : cuvette ovale, réservoir avec chasse double débit et abattant inclus.',
+    description:
+      'Installez des sanitaires durables et faciles à entretenir dans votre maison, hôtel ou chantier à Daloa. Le pack WC FRENCIA WC001 en céramique vitrifiée résiste aux taches, se nettoie en un passage et offre une chasse puissante et économique.',
+    specs: [
+      'Marque FRENCIA · Modèle WC001 (gamme WC-008) ovale 2 pièces',
+      'Céramique émaillée blanche haute brillance anti-taches',
+      'Chasse double débit économique + Abattant inclus',
+      'Sortie et robinetterie standard Côte d’Ivoire · Pose au sol'
+    ],
+    imageUrl: '/images/products/frencia-pack-wc-2-pieces-ovale-wc001.jpg',
+  },
+  {
+    id: 'frencia-wc045',
+    slug: 'frencia-pack-wc-complet-2-pieces-design-wc045',
+    name: 'Pack WC Complet 2 Pièces FRENCIA Design Moderne WC045 — Céramique Blanche',
+    category: 'quincaillerie-btp',
+    price: 58000,
+    compareAtPrice: 69000,
+    stock: 5,
+    badge: 'Design Moderne',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'WC design aux lignes droites contemporaines, jupe épurée facile à nettoyer, chasse double débit et abattant frein de chute selon arrivage.',
+    description:
+      'Apportez une touche moderne à votre salle de bain avec le FRENCIA WC045 : silhouette carrée épurée, céramique blanche éclatante et mécanisme de chasse fiable pensé pour un usage quotidien intensif en famille ou en location.',
+    specs: [
+      'Marque FRENCIA · Modèle WC045 / SC-045 design contemporain',
+      'Cuvette à jupe épurée : nettoyage extérieur ultra-rapide',
+      'Céramique vitrifiée blanche + Chasse double débit',
+      'Abattant inclus · Installation standard au sol'
+    ],
+    imageUrl: '/images/products/frencia-pack-wc-2-pieces-design-wc045.jpg',
+  },
+  {
+    id: 'frencia-wc129',
+    slug: 'frencia-pack-wc-complet-2-pieces-carre-wc129',
+    name: 'Pack WC Complet 2 Pièces FRENCIA Carré WC129 — Céramique Blanche',
+    category: 'quincaillerie-btp',
+    price: 55000,
+    compareAtPrice: 65000,
+    stock: 5,
+    badge: 'Sanitaires FRENCIA',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'WC carré contemporain en céramique blanche avec réservoir compact, chasse efficace et finition émaillée durable.',
+    description:
+      'Le FRENCIA WC129 combine esthétique carrée actuelle et robustesse céramique pour les salles de bain neuves et les rénovations à Daloa et partout en Côte d’Ivoire. Finition blanche lumineuse qui ne jaunit pas.',
+    specs: [
+      'Marque FRENCIA · Modèle WC129 format carré 2 pièces',
+      'Céramique émaillée blanche haute résistance',
+      'Réservoir compact + Chasse double débit économique',
+      'Abattant inclus · Pose au sol standard'
+    ],
+    imageUrl: '/images/products/frencia-pack-wc-2-pieces-carre-wc129.jpg',
+  },
+  {
+    id: 'ingco-coupe-carreaux-800mm',
+    slug: 'ingco-coupe-carreaux-manuel-professionnel-800mm-32-pouces',
+    name: 'Coupe-Carreaux Manuel Professionnel INGCO 800 mm (32") — Carrelage & Faïence',
+    category: 'quincaillerie-btp',
+    price: 76500,
+    compareAtPrice: 89000,
+    stock: 6,
+    badge: 'Pro Carreleur',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coupe nette et droite des carreaux jusqu’à 800 mm : double rail chromé, molette carbure et base aluminium renforcée.',
+    description:
+      'Outil indispensable des carreleurs professionnels en Côte d’Ivoire : le coupe-carreaux INGCO 800 mm coupe grès cérame, faïence et carreaux de sol grand format avec précision, sans électricité ni poussière.',
+    specs: [
+      'Longueur de coupe 800 mm (32 pouces) · Épaisseur jusqu’à ~14 mm',
+      'Double rail en acier chromé + Molette en carbure de tungstène',
+      'Base aluminium large avec règle graduée et butée d’angle',
+      'Poignée ergonomique INGCO · Idéal chantiers & rénovations'
+    ],
+    imageUrl: '/images/products/ingco-coupe-carreaux-pro-800mm.jpg',
+  },
+  {
+    id: 'ingco-coupe-carreaux-600mm-htc04600',
+    slug: 'ingco-coupe-carreaux-manuel-600mm-htc04600',
+    name: 'Coupe-Carreaux Manuel INGCO 600 mm HTC04600 — Précision Carrelage',
+    category: 'quincaillerie-btp',
+    price: 31500,
+    compareAtPrice: 38000,
+    stock: 8,
+    badge: 'INGCO Officiel',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Format 600 mm polyvalent pour faïence et carreaux standards, rail fluide et coupe propre sans éclats.',
+    description:
+      'Compact et précis, le coupe-carreaux INGCO HTC04600 600 mm est parfait pour les salles de bain, cuisines et petites surfaces. Molette carbure remplaçable et guidage stable pour des coupes droites impeccables.',
+    specs: [
+      'Modèle officiel INGCO HTC04600 · Coupe 600 mm',
+      'Molette carbure + Double guidage fluide',
+      'Base stable avec graduations de mesure intégrées',
+      'Léger et transportable sur tous les chantiers'
+    ],
+    imageUrl: '/images/products/ingco-coupe-carreaux-600mm-htc04600.jpg',
+  },
+  {
+    id: 'ingco-perceuse-percussion-1100w',
+    slug: 'ingco-perceuse-a-percussion-1100w-id11008',
+    name: 'Perceuse à Percussion INGCO 1100W ID11008 — Mandrin 13 mm Métal',
+    category: 'quincaillerie-btp',
+    price: 46500,
+    compareAtPrice: 55000,
+    stock: 7,
+    badge: '1100W Puissante',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Perceuse filaire 1100W pour béton, brique, bois et métal : percussion, variateur de vitesse et mandrin 13 mm.',
+    description:
+      'Avec ses 1100W, la perceuse à percussion INGCO ID11008 perce le béton vibré, le parpaing et la brique sans faiblir. Variateur électronique, inverseur de rotation et poignée auxiliaire pour un contrôle total sur chantier.',
+    specs: [
+      'Modèle INGCO ID11008 / ID211008 · Puissance 1100W',
+      'Mandrin métal 13 mm à clé · Fonction percussion + perçage',
+      'Variateur de vitesse + Inverseur droite/gauche',
+      'Poignée latérale 360° + Butée de profondeur incluses'
+    ],
+    imageUrl: '/images/products/ingco-perceuse-percussion-1100w-id11008.jpg',
+  },
+  {
+    id: 'ingco-cle-a-chocs-sans-fil-20v',
+    slug: 'ingco-coffret-cle-a-chocs-sans-fil-20v-ciwli2040',
+    name: 'Coffret Clé à Chocs Sans Fil 20V INGCO CIWLI2040 — 2 Batteries + Sacoche',
+    category: 'quincaillerie-btp',
+    price: 66500,
+    compareAtPrice: 79000,
+    stock: 5,
+    badge: 'Sans Fil 20V',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Boulonneuse à chocs 20V brushless pour écrous de roues et boulons : coffret complet 2 batteries, chargeur rapide et sacoche.',
+    description:
+      'Desserrez les écrous les plus grippés sans effort : la clé à chocs INGCO 20V délivre un couple élevé pour garages, vulcanisateurs et mécaniciens à Daloa. Livrée en coffret prêt à travailler avec 2 batteries P20S.',
+    specs: [
+      'INGCO CIWLI2040 / CIWLI2001 · Plateforme batteries 20V P20S',
+      'Couple élevé spécial écrous de roues & boulonnerie',
+      '2 batteries 20V + Chargeur rapide + Sacoche de transport',
+      'Éclairage LED intégré · Inverseur de rotation'
+    ],
+    imageUrl: '/images/products/ingco-cle-a-chocs-sans-fil-20v-coffret.jpg',
+  },
+  {
+    id: 'ingco-rabot-electrique-1050w-pl10508',
+    slug: 'ingco-rabot-electrique-industriel-1050w-pl10508',
+    name: 'Rabot Électrique Industriel INGCO 1050W PL10508 — 82 mm',
+    category: 'quincaillerie-btp',
+    price: 56500,
+    compareAtPrice: 67000,
+    stock: 5,
+    badge: '1050W Industriel',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Rabot filaire 1050W largeur 82 mm pour dresser portes, chevrons et bois de menuiserie avec profondeur réglable.',
+    description:
+      'Le rabot INGCO PL10508 1050W aplanit et chanfreine le bois rapidement grâce à son tambour haute vitesse et son réglage de profondeur précis. Indispensable en menuiserie et sur chantier pour ajuster portes et fenêtres.',
+    specs: [
+      'Modèle INGCO PL10508 · Puissance 1050W',
+      'Largeur de rabotage 82 mm · Profondeur réglable',
+      'Guide parallèle + Éjection des copeaux efficace',
+      'Semelle aluminium usinée pour une glisse régulière'
+    ],
+    imageUrl: '/images/products/ingco-rabot-electrique-1050w-pl10508.jpg',
+  },
+  {
+    id: 'dingqi-rabot-electrique-500w',
+    slug: 'dingqi-rabot-electrique-82mm-500w',
+    name: 'Rabot Électrique DINGQI 82 mm — Menuiserie & Finitions Bois',
+    category: 'quincaillerie-btp',
+    price: 39500,
+    compareAtPrice: 47000,
+    stock: 6,
+    badge: 'Bon Plan Menuiserie',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Rabot compact 82 mm au excellent rapport qualité/prix pour raboter, dresser et chanfreiner le bois au quotidien.',
+    description:
+      'Alternative économique et fiable, le rabot électrique DINGQI 82 mm convient aux menuisiers et bricoleurs exigeants : prise en main équilibrée, réglage simple de la profondeur et finition propre sur bois tendre et dur.',
+    specs: [
+      'Marque DINGQI · Largeur de travail 82 mm',
+      'Profondeur de passe réglable avec précision',
+      'Corps compact équilibré anti-fatigue',
+      'Idéal portes, cadres, chevrons et meubles en bois'
+    ],
+    imageUrl: '/images/products/dingqi-rabot-electrique-500w-82mm.jpg',
+  },
+  {
+    id: 'ingco-pompe-immergee-forage-dwp37062',
+    slug: 'ingco-pompe-immergee-forage-inox-4-pouces-370w-dwp37062',
+    name: 'Pompe Immergée Forage Inox 4" INGCO 0,5 CV 370W DWP37062 + Boîtier de Commande',
+    category: 'quincaillerie-btp',
+    price: 107000,
+    compareAtPrice: 125000,
+    stock: 4,
+    badge: 'Forage 0,5 CV',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Pompe de forage immergée inox 4 pouces 370W (0,5 CV) livrée avec boîtier de commande INGCO pour puits et forages domestiques.',
+    description:
+      'Équipez votre forage d’une pompe inox fiable : la INGCO DWP37062 370W remonte l’eau claire des puits profonds pour l’alimentation domestique, les réservoirs et l’arrosage. Boîtier de commande jaune INGCO inclus pour démarrage et protection.',
+    specs: [
+      'Modèle INGCO DWP37062 · 370W / 0,5 CV · Corps inox 4 pouces',
+      'Boîtier de commande INGCO inclus (condensateur + protection)',
+      'Pour forages et puits profonds · Eau claire domestique',
+      'Câble et raccord sortie laiton selon kit fournisseur'
+    ],
+    imageUrl: '/images/products/ingco-pompe-immergee-forage-370w-dwp37062.jpg',
+  },
+  {
+    id: 'ingco-pompe-immergee-forage-dwp55062',
+    slug: 'ingco-pompe-immergee-forage-inox-4-pouces-550w-dwp55062',
+    name: 'Pompe Immergée Forage Inox 4" INGCO 0,75 CV 550W DWP55062 + Boîtier de Commande',
+    category: 'quincaillerie-btp',
+    price: 122000,
+    compareAtPrice: 142000,
+    stock: 4,
+    badge: 'Forage 0,75 CV',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Pompe immergée inox 4 pouces 550W (0,75 CV) avec boîtier de commande : débit renforcé pour maisons, fermes et petits immeubles.',
+    description:
+      'Version intermédiaire idéale entre domestique et semi-professionnel, la INGCO DWP55062 550W assure une pression régulière pour remplir châteaux d’eau et alimenter plusieurs points d’eau. Construction inox anti-corrosion.',
+    specs: [
+      'Modèle INGCO DWP55062 · 550W / 0,75 CV · Inox 4 pouces',
+      'Boîtier de commande INGCO inclus prêt à brancher',
+      'Débit renforcé maisons familiales, fermes & maraîchage',
+      'Moteur immergé refroidi par eau · Longue durée de vie'
+    ],
+    imageUrl: '/images/products/ingco-pompe-immergee-forage-550w-dwp55062.jpg',
+  },
+  {
+    id: 'ingco-pompe-immergee-forage-dwp75062',
+    slug: 'ingco-pompe-immergee-forage-inox-4-pouces-750w-dwp75062',
+    name: 'Pompe Immergée Forage Inox 4" INGCO 1,0 CV 750W DWP75062 + Boîtier de Commande',
+    category: 'quincaillerie-btp',
+    price: 142000,
+    compareAtPrice: 165000,
+    stock: 3,
+    badge: 'Forage 1,0 CV Pro',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'La plus puissante de la gamme : pompe forage inox 4 pouces 750W (1,0 CV) avec boîtier de commande pour grands besoins en eau.',
+    description:
+      'Pour les forages profonds et les usages intensifs (immeubles, écoles, fermes, châteaux d’eau), la INGCO DWP75062 750W offre hauteur de refoulement et débit supérieurs avec une fiabilité inox éprouvée.',
+    specs: [
+      'Modèle INGCO DWP75062 · 750W / 1,0 CV · Corps inox 4 pouces',
+      'Boîtier de commande INGCO inclus avec protections',
+      'Hauteur de refoulement élevée · Usage intensif continu',
+      'Idéale châteaux d’eau, immeubles et exploitations agricoles'
+    ],
+    imageUrl: '/images/products/ingco-pompe-immergee-forage-750w-dwp75062.jpg',
+  },
+  {
+    id: 'ingco-coupe-boulons-36-hbc0836',
+    slug: 'ingco-coupe-boulons-industriel-36-pouces-hbc0836',
+    name: 'Coupe-Boulons Industriel Cr-V INGCO 36" (900 mm) HBC0836',
+    category: 'quincaillerie-btp',
+    price: 29000,
+    compareAtPrice: 35000,
+    stock: 6,
+    badge: 'Industriel 36"',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Coupe-boulons grand format 900 mm en acier chrome-vanadium pour fers à béton, chaînes et boulons épais.',
+    description:
+      'Force de coupe maximale pour les chantiers BTP : le coupe-boulons INGCO HBC0836 36 pouces sectionne fers à béton et tiges métalliques grâce à ses mâchoires Cr-V trempées et ses longs bras à fort levier.',
+    specs: [
+      'Modèle INGCO HBC0836 · Longueur 36 pouces / 900 mm',
+      'Mâchoires acier Chrome-Vanadium trempé interchangeables',
+      'Manches tubulaires longs à poignées antidérapantes',
+      'Pour fers à béton, chaînes, cadenas et boulons'
+    ],
+    imageUrl: '/images/products/ingco-coupe-boulons-36-pouces-hbc0836.jpg',
+  },
+  {
+    id: 'ingco-coupe-boulons-24-hbc0824',
+    slug: 'ingco-coupe-boulons-industriel-24-pouces-hbc0824',
+    name: 'Coupe-Boulons Industriel Cr-V INGCO 24" (600 mm) HBC0824',
+    category: 'quincaillerie-btp',
+    price: 17000,
+    compareAtPrice: 21000,
+    stock: 8,
+    badge: 'Industriel 24"',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Coupe-boulons 600 mm maniable et puissant pour ateliers, garages et chantiers : mâchoires Cr-V haute dureté.',
+    description:
+      'Format atelier le plus polyvalent, le INGCO HBC0824 24 pouces coupe proprement tiges, grillages renforcés et boulons courants. Équilibre parfait entre force de coupe et maniabilité quotidienne.',
+    specs: [
+      'Modèle INGCO HBC0824 · Longueur 24 pouces / 600 mm',
+      'Acier Chrome-Vanadium · Coupe centrée précise',
+      'Poignées bi-matière confort antidérapant',
+      'Indispensable garages, ateliers et chantiers BTP'
+    ],
+    imageUrl: '/images/products/ingco-coupe-boulons-24-pouces-hbc0824.jpg',
+  },
+  {
+    id: 'ingco-pied-de-biche-hwba01362',
+    slug: 'ingco-pied-de-biche-acier-forge-arrache-clous',
+    name: 'Pied-de-Biche Acier Forgé INGCO — Arrache-Clous Chantier & Démolition',
+    category: 'quincaillerie-btp',
+    price: 9500,
+    compareAtPrice: 12000,
+    stock: 12,
+    badge: 'Acier Forgé',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Barre à mine / pied-de-biche en acier forgé pour arracher clous, décoffrer et lever les charges sur chantier.',
+    description:
+      'Outil de force incontournable en maçonnerie et charpente : le pied-de-biche INGCO en acier forgé trempé démultiplie l’effort pour le décoffrage, l’arrachage de clous et le levage de charges lourdes sans plier.',
+    specs: [
+      'Acier forgé trempé haute résistance INGCO',
+      'Double extrémité : arrache-clous + levier plat',
+      'Finition anti-corrosion jaune chantier visible',
+      'Pour décoffrage, démolition légère et charpente'
+    ],
+    imageUrl: '/images/products/ingco-pied-de-biche-arrache-clous-hwba.jpg',
+  },
+  {
+    id: 'ingco-niveau-100cm-hsl08100',
+    slug: 'ingco-niveau-a-bulle-aluminium-magnetique-100cm-hsl08100',
+    name: 'Niveau à Bulle Aluminium Magnétique INGCO 100 cm HSL08100',
+    category: 'quincaillerie-btp',
+    price: 5500,
+    compareAtPrice: 7000,
+    stock: 20,
+    badge: 'Précision Pro',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Niveau aluminium 100 cm à 3 fioles haute lisibilité et semelle magnétique pour maçonnerie et poses précises.',
+    description:
+      'Vérifiez l’horizontalité de vos chapes, murs et poses de carreaux avec le niveau INGCO HSL08100 : profil aluminium rigide, fioles incassables et base magnétique pratique sur les structures métalliques.',
+    specs: [
+      'Modèle INGCO HSL08100 · Longueur 100 cm',
+      '3 fioles : horizontale, verticale et 45 degrés',
+      'Profil aluminium renforcé + Semelle magnétique',
+      'Embouts anti-chocs · Précision chantier professionnelle'
+    ],
+    imageUrl: '/images/products/ingco-niveau-a-bulle-alu-100cm-hsl08100.jpg',
+  },
+  {
+    id: 'ingco-niveau-60cm-hsl08060',
+    slug: 'ingco-niveau-a-bulle-aluminium-60cm-hsl08060',
+    name: 'Niveau à Bulle Aluminium INGCO 60 cm HSL08060',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 20,
+    badge: 'Format 60 cm',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Niveau 60 cm compact pour cuisines, salles de bain et petits ouvrages : 3 fioles précises, profil alu léger.',
+    description:
+      'Le format 60 cm du niveau INGCO HSL08060 se glisse partout où le 100 cm ne passe pas : pose d’étagères, meubles de cuisine, sanitaires et petits scellements avec la même précision professionnelle.',
+    specs: [
+      'Modèle INGCO HSL08060 · Longueur 60 cm',
+      '3 fioles haute visibilité anti-UV',
+      'Profil aluminium léger et rigide',
+      'Embouts de protection anti-chocs inclus'
+    ],
+    imageUrl: '/images/products/ingco-niveau-a-bulle-alu-60cm-hsl08060.jpg',
+  },
+  {
+    id: 'ingco-scie-egoine-hhas08550',
+    slug: 'ingco-scie-egoine-bois-pvc-22-pouces-hhas08550',
+    name: 'Scie Égoïne Bois & PVC INGCO 22" (550 mm) HHAS08550',
+    category: 'quincaillerie-btp',
+    price: 4000,
+    compareAtPrice: 5500,
+    stock: 20,
+    badge: 'Coupe Rapide',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Scie égoïne 550 mm à denture trempée triple affûtage pour coupes rapides du bois et des tuyaux PVC.',
+    description:
+      'Coupez chevrons, planches et tubes PVC sans effort : la lame INGCO HHAS08550 en acier haut carbone glisse vite grâce à sa denture agressive et sa poignée ergonomique absorbant les vibrations.',
+    specs: [
+      'Modèle INGCO HHAS08550 · Lame 22 pouces / 550 mm',
+      'Denture trempée triple affûtage coupe poussée nette',
+      'Poignée bi-matière avec guides 45° et 90° intégrés',
+      'Pour bois de charpente, menuiserie et PVC'
+    ],
+    imageUrl: '/images/products/ingco-scie-egoine-bois-pvc-hhas08550.jpg',
+  },
+  {
+    id: 'ingco-marteau-hch80816',
+    slug: 'ingco-marteau-arrache-clous-manche-fibre-verre-hch80816',
+    name: 'Marteau Arrache-Clous Manche Fibre de Verre INGCO HCH80816',
+    category: 'quincaillerie-btp',
+    price: 8500,
+    compareAtPrice: 10500,
+    stock: 15,
+    badge: 'Fibre de Verre',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Marteau de charpentier 450 g à tête acier forgé et manche fibre de verre incassable absorbant les chocs.',
+    description:
+      'Le marteau arrache-clous INGCO HCH80816 combine tête en acier carbone forgé poli et manche fibre de verre quasi incassable qui protège votre bras des vibrations. Équilibre parfait pour coffrage et charpente.',
+    specs: [
+      'Modèle INGCO HCH80816 · Tête acier forgé ~450 g',
+      'Manche fibre de verre haute résistance anti-vibrations',
+      'Panne arrache-clous incurvée à fort levier',
+      'Grip caoutchouc antidérapant spécial chantier'
+    ],
+    imageUrl: '/images/products/ingco-marteau-arrache-clous-hch80816.jpg',
+  },
+  {
+    id: 'ingco-massette-hsth82000',
+    slug: 'ingco-massette-macon-2kg-manche-fibre-verre-hsth82000',
+    name: 'Massette de Maçon 2 kg Manche Fibre de Verre INGCO HSTH82000',
+    category: 'quincaillerie-btp',
+    price: 4000,
+    compareAtPrice: 5500,
+    stock: 18,
+    badge: 'Massette 2 kg',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Massette 2 kg pour frapper burins, pointerolles et petits travaux de démolition avec manche fibre incassable.',
+    description:
+      'Frappez juste et fort : la massette INGCO HSTH82000 de 2 kg transmet toute la puissance au burin sans rebond excessif, avec un manche fibre de verre qui ne casse pas comme le bois sur les chantiers ivoiriens.',
+    specs: [
+      'Modèle INGCO HSTH82000 · Tête acier forgé 2 kg',
+      'Manche fibre de verre incassable anti-chocs',
+      'Double face de frappe plane usinée',
+      'Pour burins, démolition légère et maçonnerie'
+    ],
+    imageUrl: '/images/products/ingco-massette-fibre-verre-2kg-hsth82000.jpg',
+  },
+  {
+    id: 'ingco-metre-ruban-hsmt0810',
+    slug: 'ingco-metre-ruban-acier-professionnel-10m-hsmt0810',
+    name: 'Mètre Ruban Acier Professionnel INGCO 10 m × 25 mm HSMT0810',
+    category: 'quincaillerie-btp',
+    price: 3500,
+    compareAtPrice: 5000,
+    stock: 25,
+    badge: '10 Mètres Pro',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Mètre ruban 10 mètres à lame acier 25 mm rigide, boîtier bi-matière anti-chocs et blocage fiable.',
+    description:
+      'Mesurez jusqu’à 10 mètres sans aide grâce à la lame large et rigide du INGCO HSMT0810. Graduations nettes métriques, crochet mobile de précision et retour de lame fluide pour maçons et menuisiers.',
+    specs: [
+      'Modèle INGCO HSMT0810 · 10 m × 25 mm',
+      'Lame acier revêtue anti-usure très rigide',
+      'Boîtier caoutchouc anti-chocs + Frein de lame',
+      'Crochet magnétique selon série · Clip ceinture métal'
+    ],
+    imageUrl: '/images/products/ingco-metre-ruban-acier-10m-hsmt0810.jpg',
+  },
+  {
+    id: 'ingco-burin-hccl082412',
+    slug: 'ingco-burin-plat-macon-pare-coups-300mm',
+    name: 'Burin Plat de Maçon Pare-Coups 300 mm INGCO — Acier Trempé',
+    category: 'quincaillerie-btp',
+    price: 3500,
+    compareAtPrice: 5000,
+    stock: 20,
+    badge: 'Pare-Coups Sécurité',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Burin plat 300 mm avec garde pare-coups protectrice pour saignées, démolition et taille de matériaux.',
+    description:
+      'Travaillez en sécurité : le burin INGCO à large garde pare-coups protège votre main des coups de massette ratés pendant les saignées dans le béton, la brique et le parpaing. Pointe réaffûtable en acier trempé.',
+    specs: [
+      'Longueur 300 mm · Pointe plate acier trempé',
+      'Large garde pare-coups ergonomique protectrice',
+      'Corps octogonal anti-roulement sur chantier',
+      'Pour saignées électricité/plomberie et démolition'
+    ],
+    imageUrl: '/images/products/ingco-burin-macon-pare-coups-300mm.jpg',
+  },
+  {
+    id: 'ingco-taloche-hptt28138',
+    slug: 'ingco-taloche-crantee-inox-carreleur-280mm-hptt28138',
+    name: 'Taloche Crantée Inox Carreleur INGCO 280×130 mm HPTT28138',
+    category: 'quincaillerie-btp',
+    price: 3500,
+    compareAtPrice: 5000,
+    stock: 18,
+    badge: 'Spécial Carreleur',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Taloche dentée inox 280 mm pour étaler la colle à carrelage en stries régulières et une pose sans bulles d’air.',
+    description:
+      'Obtenez un encollage parfait : la taloche crantée INGCO HPTT28138 en inox ne rouille pas, dépose la juste épaisseur de mortier-colle et assure l’adhérence durable de vos carreaux de sol et muraux.',
+    specs: [
+      'Modèle INGCO HPTT28138 · Plateau inox 280×130 mm',
+      'Denture régulière spéciale mortier-colle carrelage',
+      'Poignée ergonomique soudée haute résistance',
+      'Inox anti-rouille facile à nettoyer après chantier'
+    ],
+    imageUrl: '/images/products/ingco-taloche-dentee-inox-280mm-hptt28138.jpg',
+  },
+  {
+    id: 'ingco-truelle-hbt818',
+    slug: 'ingco-truelle-de-macon-200mm-hbt818',
+    name: 'Truelle de Maçon INGCO 200 mm (8") HBT818 — Lame Acier',
+    category: 'quincaillerie-btp',
+    price: 3000,
+    compareAtPrice: 4500,
+    stock: 22,
+    badge: 'Essentiel Maçon',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Truelle langue-de-chat 200 mm en acier pour projeter, étaler et lisser mortier et enduits comme un pro.',
+    description:
+      'L’outil n°1 du maçon : la truelle INGCO HBT818 en acier flexible et résistant projette le mortier avec précision et ne se déforme pas. Manche ergonomique équilibré pour les longues journées de chantier.',
+    specs: [
+      'Modèle INGCO HBT818 · Lame acier 200 mm / 8 pouces',
+      'Forme triangulaire précision pour joints et angles',
+      'Manche confort anti-fatigue bien équilibré',
+      'Pour mortier, enduits, scellements et reprises'
+    ],
+    imageUrl: '/images/products/ingco-truelle-macon-200mm-hbt818.jpg',
+  },
+  {
+    id: 'ingco-spatule-hput08100',
+    slug: 'ingco-spatule-couteau-enduire-inox-100mm-hput08100',
+    name: 'Spatule Couteau à Enduire Inox INGCO 100 mm HPUT08100',
+    category: 'quincaillerie-btp',
+    price: 2500,
+    compareAtPrice: 4000,
+    stock: 25,
+    badge: 'Finition Peinture',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Couteau à enduire inox 100 mm flexible pour reboucher, lisser enduits et gratter anciennes peintures.',
+    description:
+      'Finition impeccable garantie : la spatule INGCO HPUT08100 en inox flexible lisse les enduits de rebouchage, décolle les papiers peints et gratte sans rayer. Manche bi-matière pour un contrôle précis.',
+    specs: [
+      'Modèle INGCO HPUT08100 · Lame inox 100 mm',
+      'Lame flexible anti-rouille affûtée avec précision',
+      'Manche bi-matière ergonomique trou de suspension',
+      'Pour enduits, rebouchage, grattage et peinture'
+    ],
+    imageUrl: '/images/products/ingco-spatule-peintre-inox-100mm-hput08100.jpg',
+  },
+  {
+    id: 'ingco-griffe-jardin-hgr1008',
+    slug: 'ingco-griffe-de-jardin-3-dents-cultivateur',
+    name: 'Griffe de Jardin 3 Dents INGCO — Cultivateur Manuel Acier',
+    category: 'quincaillerie-btp',
+    price: 3500,
+    compareAtPrice: 5000,
+    stock: 15,
+    badge: 'Jardin & Maraîchage',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Griffe cultivateur 3 dents en acier pour ameublir la terre, désherber et préparer potagers et massifs.',
+    description:
+      'Ameublissez la terre sans vous fatiguer : la griffe INGCO à 3 dents forgées pénètre les sols compacts, arrache les herbes et prépare vos planches de maraîchage. Manche ergonomique jaune haute visibilité.',
+    specs: [
+      '3 dents acier forgé haute pénétration',
+      'Manche ergonomique INGCO antidérapant',
+      'Pour potagers, massifs, désherbage et aération du sol',
+      'Compacte et légère · Usage domestique et maraîcher'
+    ],
+    imageUrl: '/images/products/ingco-griffe-rateau-jardin-hgr1008.jpg',
+  },
+  {
+    id: 'kit-pistolet-arrosage-jardin',
+    slug: 'kit-pistolets-arrosage-raccords-rapides-jardin-haute-pression',
+    name: 'Kit Pistolets d’Arrosage & Raccords Rapides Jardin — Haute Pression',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6500,
+    stock: 15,
+    badge: 'Kit Complet Jardin',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Kit complet d’arrosage : pistolets multi-jets, lance haute pression et raccords rapides pour tuyaux de jardin.',
+    description:
+      'Arrosez potager, pelouse et véhicules avec un seul kit : pistolets multi-fonctions à jets réglables, lance concentrée haute pression et raccords rapides étanches compatibles avec les tuyaux standards du marché.',
+    specs: [
+      'Pistolets multi-jets réglables + Lance haute pression',
+      'Raccords rapides étanches anti-fuites inclus',
+      'Compatible tuyaux d’arrosage standards jardin',
+      'Idéal potagers, lavage véhicules et cours à Daloa'
+    ],
+    imageUrl: '/images/products/kit-pistolet-arrosage-raccords-haute-pression.jpg',
+  },
+];
+
+// ==============================================================================
+// NOUVEAUTÉS SMART TECHNOLOGY & MOBILIER : TV 58"/85", AUDIO, FROID & SALON (11 PRODUITS)
+// ==============================================================================
+export const NOUVEAUTES_SMART_MOBILIER_PRODUCTS = [
+  {
+    id: 'salon-angle-resine-tressee-table-basse',
+    slug: 'salon-angle-modulable-resine-tressee-rotin-table-basse-verre',
+    name: 'Salon d’Angle Modulable en Résine Tressée (Rotin Synthétique) 5–6 Places + Table Basse Verre',
+    category: 'maison',
+    price: 275000,
+    compareAtPrice: 320000,
+    stock: 3,
+    badge: 'Salon de Jardin Premium',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Canapé d’angle marron foncé en résine tressée anti-UV avec coussins beiges déhoussables et table basse plateau verre.',
+    description:
+      'Transformez votre terrasse, véranda ou jardin à Daloa en espace lounge haut de gamme : ce salon d’angle modulable en rotin synthétique tressé main résiste au soleil et à la pluie, avec des coussins épais beiges déhoussables et lavables.',
+    specs: [
+      'Structure résine tressée (rotin synthétique) anti-UV marron foncé',
+      'Assises 5 à 6 places modulables selon votre espace',
+      'Coussins beiges épais déhoussables et lavables inclus',
+      'Table basse plateau en verre trempé · Usage intérieur/extérieur'
+    ],
+    imageUrl: '/images/products/salon-angle-rotin-resine-tressee-table-basse.jpg',
+  },
+  {
+    id: 'smart-congelateur-horizontal-silver-stcc-320',
+    slug: 'smart-technology-congelateur-horizontal-300l-stcc-320-silver',
+    name: 'Congélateur Horizontal SMART TECHNOLOGY 300L STCC-320 Silver — Fast Cooling',
+    category: 'froid',
+    price: 152000,
+    compareAtPrice: 180000,
+    stock: 4,
+    badge: 'Fast Cooling 300L',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Grand congélateur coffre 300 litres finition Silver à congélation rapide pour familles, boutiques et restaurants.',
+    description:
+      'Stockez viandes, poissons et provisions en toute sécurité malgré les coupures : le SMART TECHNOLOGY STCC-320 de 300L maintient le froid très longtemps grâce à son isolation renforcée et son compresseur tropicalisé économe.',
+    specs: [
+      'Modèle STCC-320 · Capacité utile ~300 Litres Silver',
+      'Fonction Fast Cooling congélation ultra-rapide',
+      'Isolation renforcée longue conservation hors tension',
+      'Panier intérieur + Serrure de sécurité · Tropicalisé CI'
+    ],
+    imageUrl: '/images/products/smart-congelateur-horizontal-gris-stcc-320.jpg',
+  },
+  {
+    id: 'smart-congelateur-horizontal-vitre-stccv-313',
+    slug: 'smart-technology-congelateur-horizontal-vitre-commercial-stccv-313',
+    name: 'Congélateur Horizontal Vitré Commercial SMART TECHNOLOGY STCCV-313 Blanc',
+    category: 'froid',
+    price: 165000,
+    compareAtPrice: 195000,
+    stock: 3,
+    badge: 'Pro Commerce Vitré',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Coffre congélateur à portes vitrées coulissantes spécial glaces et produits surgelés pour maquis et boutiques.',
+    description:
+      'Présentez vos glaces, crèmes et surgelés tout en les conservant à température parfaite : les portes vitrées coulissantes du STCCV-313 attirent l’œil des clients et limitent les pertes de froid à chaque ouverture.',
+    specs: [
+      'Modèle STCCV-313 · Portes vitrées coulissantes commerciales',
+      'Idéal glaces, supermarchés, maquis et dépôts de boissons',
+      'Congélation rapide tropicalisée basse consommation',
+      'Paniers de rangement + Roulettes de déplacement'
+    ],
+    imageUrl: '/images/products/smart-congelateur-horizontal-vitre-stccv-313.jpg',
+  },
+  {
+    id: 'smart-fontaine-eau-3-robinets-or-stfo-br538',
+    slug: 'smart-technology-fontaine-eau-3-robinets-noir-or-stfo-br-538',
+    name: 'Distributeur Fontaine à Eau 3 Robinets SMART TECHNOLOGY Noir & Or STFO-BR_538 + Réfrigérateur',
+    category: 'froid',
+    price: 79000,
+    compareAtPrice: 95000,
+    stock: 5,
+    badge: '3 Robinets + Frigo Bas',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Eau chaude, tempérée et froide + petit réfrigérateur intégré en bas, finition noire et dorée haut de gamme.',
+    description:
+      'Le modèle le plus prestigieux de la gamme : la fontaine SMART TECHNOLOGY STFO-BR_538 distribue eau chaude, normale et glacée et conserve boissons et fruits au frais dans son réfrigérateur bas. Finition noir et or très classe pour bureaux et salons.',
+    specs: [
+      'Modèle STFO-BR_538 · 3 robinets : chaud / normal / froid',
+      'Réfrigérateur bas intégré pour boissons et fruits',
+      'Finition Noir & Or premium · Réservoir inox alimentaire',
+      'Sécurité enfant eau chaude · Compatible bonbonnes standards'
+    ],
+    imageUrl: '/images/products/smart-fontaine-eau-noir-dore-stfo-br-538.jpg',
+  },
+  {
+    id: 'smart-fontaine-eau-noire-stfo-599a',
+    slug: 'smart-technology-fontaine-eau-3-robinets-noire-stfo-599a',
+    name: 'Distributeur Fontaine à Eau 3 Robinets SMART TECHNOLOGY Noir Intégral STFO-599A',
+    category: 'froid',
+    price: 69000,
+    compareAtPrice: 85000,
+    stock: 5,
+    badge: 'Noir Intégral Classe',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Fontaine à eau noire intégrale 3 robinets avec armoire de rangement basse pour bonbonnes et gobelets.',
+    description:
+      'Discrète et élégante en noir intégral, la fontaine STFO-599A sert eau chaude, tempérée et froide à toute la famille ou au bureau. Son armoire basse range discrètement la bonbonne de réserve et les gobelets.',
+    specs: [
+      'Modèle STFO-599A / STFO-BC_509 · 3 robinets complets',
+      'Armoire de rangement basse intégrée spacieuse',
+      'Finition noire intégrale moderne anti-traces',
+      'Compresseur silencieux économe · Bonbonnes standards'
+    ],
+    imageUrl: '/images/products/smart-fontaine-eau-noire-stfo-599a.jpg',
+  },
+  {
+    id: 'smart-fontaine-eau-inox-stfo-by601s',
+    slug: 'smart-technology-fontaine-eau-3-robinets-noir-inox-stfo-by-601s',
+    name: 'Distributeur Fontaine à Eau 3 Robinets SMART TECHNOLOGY Noir & Inox STFO-BY_601S',
+    category: 'froid',
+    price: 85000,
+    compareAtPrice: 102000,
+    stock: 4,
+    badge: 'Noir & Inox Premium',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Eau chaude, normale et froide avec façade inox brossé, robinets poussoirs et finition professionnelle durable.',
+    description:
+      'Conçue pour les bureaux, cliniques, écoles et accueils à fort passage, la STFO-BY_601S associe façade inox facile à désinfecter et distribution rapide sur 3 températures. Robinetterie robuste pensée pour durer.',
+    specs: [
+      'Modèle STFO-BY_601S · Façade Noir & Inox brossé',
+      '3 températures : chaude, tempérée et froide glacée',
+      'Bac récupérateur amovible + Réservoir inox alimentaire',
+      'Usage intensif bureaux, cliniques, écoles et commerces'
+    ],
+    imageUrl: '/images/products/smart-fontaine-eau-noir-inox-stfo-by-601s.jpg',
+  },
+  {
+    id: 'smart-cuisiniere-gaz-4-feux-50x50-stc5050b',
+    slug: 'smart-technology-cuisiniere-gaz-4-feux-50x50-stc-5050b',
+    name: 'Cuisinière à Gaz 4 Feux 50×50 Inox SMART TECHNOLOGY STC-5050B — Four Vitré & Couvercle',
+    category: 'lavage-cuisson',
+    price: 86900,
+    compareAtPrice: 105000,
+    stock: 6,
+    badge: 'Format Compact 50×50',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Gazinière 4 feux compacte 50×50 en inox avec four vitré, couvercle et grilles stables pour petites cuisines.',
+    description:
+      'Parfaite pour appartements et cuisines compactes à Daloa, la SMART TECHNOLOGY STC-5050B 50×50 offre 4 feux efficaces, un four vitré pour gratins et poulets rôtis et un plateau inox qui se nettoie en un coup d’éponge.',
+    specs: [
+      'Modèle STC-5050B · Dimensions compactes 50×50 cm Inox',
+      '4 brûleurs gaz + Four vitré avec grille fournie',
+      'Couvercle de protection relevable inclus',
+      'Allumage pratique · Plateau inox anti-traces facile d’entretien'
+    ],
+    imageUrl: '/images/products/smart-cuisiniere-gaz-4-feux-50x50-stc-5050b.jpg',
+  },
+  {
+    id: 'smart-google-tv-58-4k-stt5880k',
+    slug: 'smart-technology-google-tv-58-pouces-4k-uhd-stt-5880k',
+    name: 'Téléviseur SMART TECHNOLOGY Google TV 58" 4K UHD Frameless Android 14 STT-5880K',
+    category: 'high-tech',
+    price: 215000,
+    compareAtPrice: 260000,
+    stock: 4,
+    badge: 'Google TV 58" 4K',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Écran géant 58 pouces 4K UHD sans bords avec Google TV Android 14, commande vocale et applications streaming intégrées.',
+    description:
+      'Vivez le cinéma à la maison : la Google TV SMART TECHNOLOGY 58 pouces STT-5880K affiche une image 4K éclatante, accède à YouTube, Netflix et Canal+ via Wi-Fi et se pilote à la voix avec Google Assistant.',
+    specs: [
+      'Modèle STT-5880K · 58 pouces 4K UHD Frameless (sans bords)',
+      'Google TV Android 14 · Google Assistant vocal intégré',
+      'Wi-Fi, Bluetooth, HDMI, USB · Chromecast intégré',
+      'Idéale CAN, films et jeux · Garantie boutique Daloa'
+    ],
+    imageUrl: '/images/products/smart-google-tv-58-4k-stt-5880k.jpg',
+  },
+  {
+    id: 'smart-google-tv-85-4k-stt8580k',
+    slug: 'smart-technology-google-tv-85-pouces-4k-qled-stt-8580k',
+    name: 'Téléviseur Géant SMART TECHNOLOGY Google TV 85" 4K UHD QLED Frameless STT-8580K',
+    category: 'high-tech',
+    price: 665000,
+    compareAtPrice: 780000,
+    stock: 2,
+    badge: 'Écran Géant 85" QLED',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Immense écran 85 pouces QLED 4K pour salons, maquis VIP, hôtels et salles de projection : image cinéma spectaculaire.',
+    description:
+      'Le téléviseur ultime en Côte d’Ivoire : 85 pouces de technologie QLED 4K avec couleurs éclatantes et contraste cinéma. Transformez votre salon ou votre espace commercial en véritable salle de spectacle pour la CAN et les grands événements.',
+    specs: [
+      'Modèle STT-8580K · 85 pouces 4K UHD QLED Frameless',
+      'Google TV Android 14 · Commande vocale Google Assistant',
+      'QLED couleurs premium · HDMI ARC, USB, Wi-Fi, Bluetooth',
+      'Pour grands salons, hôtels, maquis VIP et showrooms'
+    ],
+    imageUrl: '/images/products/smart-google-tv-85-4k-stt-8580k.jpg',
+  },
+  {
+    id: 'smart-home-cinema-karaoke-2000w-sthp2100e',
+    slug: 'smart-technology-home-cinema-karaoke-2000w-sthp-2100e',
+    name: 'Chaîne Home Cinéma & Karaoké SMART TECHNOLOGY 2000W STHP-2100E + 2 Micros Sans Fil',
+    category: 'high-tech',
+    price: 109000,
+    compareAtPrice: 130000,
+    stock: 4,
+    badge: '2000W Karaoké Inclus',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Tour audio 2000W avec caisson de basses, Bluetooth, HDMI, lecteur DVD et 2 micros sans fil pour soirées karaoké.',
+    description:
+      'Animez mariages, anniversaires et soirées CAN comme un DJ : le système SMART TECHNOLOGY STHP-2100E déploie 2000W de son puissant, lit DVD et clés USB, se connecte en Bluetooth et inclut 2 micros sans fil prêts pour le karaoké.',
+    specs: [
+      'Modèle STHP-2100E · Puissance totale 2000W avec caisson',
+      'Bluetooth, HDMI, USB, FM et lecteur DVD intégré',
+      '2 microphones sans fil karaoké inclus dans le pack',
+      'Effets lumineux fête · Télécommande de contrôle incluse'
+    ],
+    imageUrl: '/images/products/smart-home-cinema-karaoke-2000w-sthp-2100e.jpg',
+  },
+  {
+    id: 'smart-enceinte-colonne-1000w-sthp0100e',
+    slug: 'smart-technology-enceinte-colonne-party-1000w-sthp-0100e',
+    name: 'Enceinte Colonne Rechargeable Party Speaker SMART TECHNOLOGY 1000W STHP-0100E — Dual 10" X-Bass RGB',
+    category: 'high-tech',
+    price: 115000,
+    compareAtPrice: 138000,
+    stock: 4,
+    badge: 'Party 1000W Rechargeable',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Colonne sono rechargeable 1000W à double haut-parleur 10 pouces, basses X-Bass, lumières RGB et micros sans fil.',
+    description:
+      'La fête partout, même sans prise électrique : l’enceinte colonne SMART TECHNOLOGY STHP-0100E sur batterie rechargeable envoie 1000W de son avec des basses profondes, un show lumineux RGB et des micros sans fil pour animer tous vos événements.',
+    specs: [
+      'Modèle STHP-0100E / STHP-3080E · 1000W Dual Woofer 10 pouces',
+      'Batterie rechargeable longue autonomie intégrée',
+      'Bluetooth, USB, FM, X-Bass et lumières RGB synchronisées',
+      'Micros sans fil inclus · Poignée et roulettes de transport'
+    ],
+    imageUrl: '/images/products/smart-enceinte-colonne-1000w-sthp-0100e.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
+  ...QUINCAILLERIE_BTP_PRODUCTS,
+  ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   ...MOTOS_TRICYCLES_PRODUCTS,
   ...SMART_TECHNOLOGY_PRODUCTS,
   ...JOUETS_ENFANTS_PRODUCTS,
@@ -1559,7 +2448,7 @@ export const HEAVY_EXPEDITION_DELIVERY_FEE = 5000;
 
 const HEAVY_PRODUCT_CATEGORIES = new Set(['froid', 'lavage-cuisson', 'motos-tricycles']);
 const HEAVY_PRODUCT_KEYWORDS_RE =
-  /\b(moto|motos|tricycle|tricycles|scooter|lave[\s-]?linge|lavante|machine\s+[aà]\s+laver|gazini[eè]re|cuisini[eè]re|r[eé]frig[eé]rateur|frigo|cong[eé]lateur|vitrine\s+r[eé]frig[eé]r[eé]e|climatiseur|split\s+\d|lave[\s-]?vaisselle)\b/i;
+  /\b(moto|motos|tricycle|tricycles|scooter|lave[\s-]?linge|lavante|machine\s+[aà]\s+laver|gazini[eè]re|cuisini[eè]re|r[eé]frig[eé]rateur|frigo|cong[eé]lateur|vitrine\s+r[eé]frig[eé]r[eé]e|climatiseur|split\s+\d|lave[\s-]?vaisselle)\b|fontaine\s+[aà]\s+eau|distributeur\s+d['’]eau|pack\s+wc|wc\s+complet|salon\s+d['’]angle|t[eé]l[eé]viseur.{0,30}?\b(55|58|65|75|85)\s*(pouces|"|”|")/i;
 
 export function inferHeavyShipping(product = {}) {
   if (!product) return false;
