@@ -8,6 +8,7 @@ import {
   DELIVERY_ZONES,
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
+  JOUETS_ENFANTS_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
   computeZoneDeliveryFee,
@@ -279,6 +280,11 @@ export function createStore(adapterPromiseOrInstance) {
              VALUES ('catalog_motos_v1_synced', '{"done":true}'::jsonb)
              ON CONFLICT (key) DO NOTHING`
           );
+          await adapter.query(
+            `INSERT INTO store_settings (key, value)
+             VALUES ('catalog_jouets_v1_synced', '{"done":true}'::jsonb)
+             ON CONFLICT (key) DO NOTHING`
+          );
         } else {
           const { rows: syncRows } = await adapter.query(
             `SELECT 1 FROM store_settings WHERE key = 'catalog_smart_v1_synced'`
@@ -349,6 +355,43 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_motos_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente de la gamme Jouets, Jeux & Univers Enfants sur une base Neon existante
+          const { rows: jouetsSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_jouets_v1_synced'`
+          );
+          if (jouetsSyncRows.length === 0) {
+            for (const p of JOUETS_ENFANTS_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_jouets_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

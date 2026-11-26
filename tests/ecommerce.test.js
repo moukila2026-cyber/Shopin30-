@@ -629,5 +629,60 @@ test('9. Rayon dédié Motos & Tricycles Cargo (16 modèles officiels, prix FCFA
   assert.equal(motoOrderDaloa.data.order.total, 552500);
 });
 
+test('Rayon Jouets & Enfants : 14 produits identifiés avec marges conformes (<= 2 000 FCFA) et livraison standard', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  const jouetsCategory = cat.data.categories.find((c) => c.id === 'jouets-enfants');
+  assert.ok(jouetsCategory, 'La catégorie dédiée jouets-enfants est présente');
+
+  const expectedJouets = [
+    ['jouet-coloriage-38en1-stitch', 4700, 5200],
+    ['jouet-perles-heishi-sentosphere', 10750, 11750],
+    ['jouet-dinette-the-metal-fruits', 7500, 8000],
+    ['jouet-dinette-the-metal-pois-rouges', 10800, 11800],
+    ['jouet-cuisine-inox-simulation-set', 14500, 16000],
+    ['jouet-uno-spin-roue', 6500, 7000],
+    ['jouet-jeu-eau-manette-superheros', 3200, 3500],
+    ['jouet-pistolet-eau-electrique-270ml', 12750, 13750],
+    ['jouet-voiture-f1-rc-spray-champion', 9900, 10900],
+    ['jouet-pistolet-eau-electrique-680ml-led', 19500, 21000],
+    ['jouet-cogo-5818-moto-600pcs', 20500, 22500],
+    ['jouet-forange-moto-helico-2en1', 14900, 16400],
+    ['jouet-caisse-disney-princess-legumes', 16500, 18000],
+    ['jouet-caisse-playhouse-burger-panier', 16900, 18400],
+  ];
+
+  for (const [id, basePrice, expectedSellPrice] of expectedJouets) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Jouet ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'jouets-enfants');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    const margin = prod.price - basePrice;
+    assert.ok(margin >= 200 && margin <= 2000, `Marge ${margin} FCFA comprise entre 200 F et 2 000 F max`);
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+  }
+
+  // Commande d'un jouet COGO 5818 Moto à Daloa Commune -> livraison standard 1 000 FCFA (et non 2 500 F !)
+  const toyOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_toy_daloa_01',
+      customerName: 'Koffi Aya',
+      customerPhone: '0504030201',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Lobia',
+      deliverySlot: 'apres-midi',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0504030201',
+      waveTransactionRef: 'WV_TOY_DALOA_01',
+      items: [{ productId: 'jouet-cogo-5818-moto-600pcs', quantity: 1 }],
+    },
+  });
+  assert.equal(toyOrder.status, 201);
+  assert.equal(toyOrder.data.order.deliveryFee, 1000);
+  assert.equal(toyOrder.data.order.total, 23500);
+});
+
 
 
