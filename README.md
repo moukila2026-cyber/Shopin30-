@@ -10,6 +10,8 @@ Propulsée par **React 19 + Vite + Tailwind CSS 4** côté interface, **Express 
 
 ### Boutique Publique (`/`)
 - **Multi-catégories** : High-Tech & Téléphonie, Mode & Accessoires, Beauté/Parfums & Cadeaux, Maison & Électroménager (modifiable et extensible depuis `/admin`).
+- **Rayon Vaisselle & Art de la table** : porcelaine GRAAL Germany, Wilmax England et Tableware Gourmet, coffrets de 6 verres LAV (NevaKar 320 cc, Misket 390 cc), carafe Azur, panier à frire inox et lunch box inox JIA TENG 2,2 L.
+- **Photos produits « studio »** : chaque arrivage est retraité par `scripts/enhance-studio-photos.js` (correction du vignettage, balance des blancs, détourage progressif, ombre portée, fond blanc 1200 × 1200) pour des fiches produit nettes et uniformes, dans l’esprit des marketplaces.
 - **Tarification claire sans livraison gratuite** :
   - **Daloa Commune** : `1 000 FCFA`
   - **Daloa Périphérie** : `1 500 FCFA`

@@ -860,3 +860,55 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.deliveryFee, 1000);
   assert.equal(sugarOrder.data.order.total, 4500);
 });
+
+test('12. Rayon Vaisselle & Art de la table : 9 produits showroom (GRAAL, Wilmax, Gourmet, LAV, carafe, lunch box), prix = étiquette + marge <= 2 000 F', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  // [id, prix etquette showroom, prix Pèrôkadô attendu]
+  const expectedVaisselle = [
+    ['vaisselle-assiette-plate-graal-26-5cm', 2150, 2150],
+    ['vaisselle-bol-graal-14cm', 1350, 1350],
+    ['vaisselle-assiette-creuse-wilmax-991215-23cm', 3950, 3950],
+    ['vaisselle-assiette-dessert-20cm-gourmet-ivoire', 3600, 3600],
+    ['cuisine-panier-a-frire-inox', 2500, 2500],
+    ['cuisine-lav-6-verres-nevakar-320cc', 7500, 7500],
+    ['cuisine-lav-6-verres-misket-390cc', 9500, 9500],
+    ['cuisine-carafe-azur-verre-transparent', 6500, 6500],
+    ['cuisine-lunch-box-inox-jia-teng-2-2l', 7000, 7000],
+  ];
+
+  for (const [id, labelPrice, expectedSellPrice] of expectedVaisselle) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit vaisselle ${id} present dans le catalogue`);
+    assert.equal(prod.category, 'maison');
+    assert.equal(prod.price, expectedSellPrice, `Prix Pèrôkadô exact pour ${id}`);
+    const margin = prod.price - labelPrice;
+    assert.ok(margin >= 0 && margin <= 2000, `Marge ${margin} FCFA conforme pour ${id}`);
+    assert.equal(prod.isHeavy, false, `${id} est en colis standard (non lourd)`);
+    assert.match(prod.imageUrl, /^\/images\/products\/(vaisselle|cuisine)-/, `Photo studio pour ${id}`);
+  }
+
+  // Le bol GRAAL (1 350 F) ajoute a une carafe Azur (6 500 F) : 7 850 F + 1 000 F de livraison Daloa
+  const tableOrder = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      requestId: 'req_vaisselle_daloa_01',
+      customerName: 'Yao Serge',
+      customerPhone: '0708091011',
+      cityZoneId: 'daloa-commune',
+      neighborhood: 'Tazibouo',
+      deliverySlot: 'apres-midi',
+      paymentMethod: 'wave',
+      waveSenderPhone: '0708091011',
+      waveTransactionRef: 'WV_VAISSELLE_DALOA_01',
+      items: [
+        { productId: 'vaisselle-bol-graal-14cm', quantity: 1 },
+        { productId: 'cuisine-carafe-azur-verre-transparent', quantity: 1 },
+      ],
+    },
+  });
+  assert.equal(tableOrder.status, 201);
+  assert.equal(tableOrder.data.order.deliveryFee, 1000);
+  assert.equal(tableOrder.data.order.total, 8850);
+});

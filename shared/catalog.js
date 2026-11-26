@@ -2335,6 +2335,230 @@ export const CUISINE_MAISON_PRODUCTS = [
   },
 ];
 
+// ==============================================================================
+// VAISSELLE & ART DE LA TABLE — arrivage showroom du 25/11/2026
+// Porcelaine GRAAL Germany, Wilmax England, Tableware Gourmet, coffrets LAV,
+// carafe Azur et lunch box inox. Prix relevés sur les étiquettes du showroom.
+// ==============================================================================
+export const VAISSELLE_ART_TABLE_PRODUCTS = [
+  {
+    id: 'vaisselle-assiette-plate-graal-26-5cm',
+    slug: 'assiette-plate-ronde-graal-porcelaine-blanche-26-5cm',
+    name: 'Assiette Plate Ronde GRAAL Porcelaine Blanche — Ø 26,5 cm (Réf. CA24)',
+    category: 'maison',
+    price: 2150,
+    compareAtPrice: 2900,
+    stock: 24,
+    badge: 'Porcelaine GRAAL',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Grande assiette plate ronde en porcelaine blanche émaillée GRAAL Germany (Ø 26,5 cm, réf. CA24) : le socle élégant et solide de votre service de table.',
+    description:
+      'Une assiette plate à rebord large comme dans les grands restaurants ! Cette pièce GRAAL Germany en porcelaine blanche émaillée supporte le lave-vaisselle et le micro-ondes, résiste aux chocs du quotidien et met en valeur riz, attiéké, poulet braisé ou salades composées. Son diamètre généreux de 26,5 cm convient aux repas familiaux à Daloa.',
+    specs: [
+      'Porcelaine blanche émaillée — GRAAL Germany, réf. CA24',
+      'Diamètre 26,5 cm · hauteur 2 cm · rebord large anti-débordement',
+      'Assiette plate ronde, empilable et résistante aux chocs',
+      'Compatible lave-vaisselle & micro-ondes',
+      'Se complète avec nos bols et assiettes creuses GRAAL du même service'
+    ],
+    imageUrl: '/images/products/vaisselle-assiette-plate-graal-26-5cm.jpg',
+  },
+  {
+    id: 'vaisselle-bol-graal-14cm',
+    slug: 'bol-graal-porcelaine-blanche-14cm-ca24',
+    name: 'Bol GRAAL Porcelaine Blanche 14 cm — Service & Petit-Déjeuner',
+    category: 'maison',
+    price: 1350,
+    compareAtPrice: 1800,
+    stock: 36,
+    badge: 'Assorti à l’assiette',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bol en porcelaine blanche GRAAL Germany (14 cm, réf. CA24) au galbe parfait pour le café au lait, la soupe, les céréales ou la salade individuelle.',
+    description:
+      'Le compagnon indispensable des familles ivoiriennes : ce bol GRAAL en porcelaine blanche émaillée accueille café, bouillie, soupe de poisson, riz sauce ou céréales du matin. Sa contenance généreuse et sa paroi épaisse gardent les boissons chaudes plus longtemps, et sa finition lisse se lave en un coup d’éponge.',
+    specs: [
+      'Porcelaine blanche émaillée — GRAAL Germany, réf. CA24',
+      'Diamètre 14 cm · bol profond multiparade',
+      'Café, bouillie, soupe, céréales, salade individuelle',
+      'Compatible lave-vaisselle & micro-ondes',
+      'Assorti à l’assiette plate GRAAL 26,5 cm et à l’assiette creuse Wilmax'
+    ],
+    imageUrl: '/images/products/vaisselle-bol-graal-14cm-porcelaine.jpg',
+  },
+  {
+    id: 'vaisselle-assiette-creuse-wilmax-991215-23cm',
+    slug: 'assiette-creuse-wilmax-23cm-porcelaine-blanche-wl-991215a',
+    name: 'Assiette Creuse Wilmax England 23 cm Porcelaine Blanche — WL-991215/A',
+    category: 'maison',
+    price: 3950,
+    compareAtPrice: 4900,
+    stock: 12,
+    badge: 'Wilmax England',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Assiette creuse 23 cm en fine porcelaine blanche Wilmax England (réf. WL-991215/A) : la profondeur idéale pour les sauces, soupes et pâtes.',
+    description:
+      'Signée Wilmax England, cette assiette creuse de 23 cm en fine porcelaine blanche apporte une touche britannique à votre table. Son creux profond retient parfaitement le jus d’un poulet braisé, une sauce graine ou une soupe de légumes, tandis que son rebord large reste élégant et facile à tenir.',
+    specs: [
+      'Fine porcelaine blanche — Wilmax England, réf. WL-991215/A',
+      'Diamètre 23 cm · assiette creuse profonde',
+      'Idéale pour soupes, sauces, pâtes, riz sauce',
+      'Finition émaillée lisse, éclat durable',
+      'Compatible lave-vaisselle & micro-ondes'
+    ],
+    imageUrl: '/images/products/vaisselle-assiette-creuse-wilmax-991215-23cm.jpg',
+  },
+  {
+    id: 'vaisselle-assiette-dessert-20cm-gourmet-ivoire',
+    slug: 'assiette-dessert-20cm-tableware-gourmet-ivoire-ca24',
+    name: 'Assiette à Dessert 20 cm Tableware Gourmet — Ivoire (Réf. F5C114)',
+    category: 'maison',
+    price: 3600,
+    compareAtPrice: 4500,
+    stock: 18,
+    badge: 'Tableware Gourmet',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Assiette à dessert 20 cm Tableware Gourmet en porcelaine ivoire (réf. F5C114), à la teinte chaude idéale pour gâteaux, fruits et pâtisseries.',
+    description:
+      'La collection Gourmet de Tableware habille vos desserts d’une teinte ivoire délicate. Ce modèle 20 cm (réf. F5C114) accueille une part de gâteau d’anniversaire, une salade de fruits, des beignets ou une glace, et se marie aussi bien avec la porcelaine blanche qu’avec les verres LAV de la boutique.',
+    specs: [
+      'Porcelaine ivoire — Tableware Gourmet, réf. F5C114',
+      'Diamètre 20 cm · assiette à dessert et pâtisserie',
+      'Teinte ivoire chaleureuse, émail brillant',
+      'Livrée par lot de 24 au showroom : détail disponible',
+      'Compatible lave-vaisselle & micro-ondes'
+    ],
+    imageUrl: '/images/products/vaisselle-assiette-dessert-20cm-gourmet-ivoire.jpg',
+  },
+  {
+    id: 'cuisine-panier-a-frire-inox',
+    slug: 'panier-a-frire-inox-poele-friteuse-panier',
+    name: 'Panier à Frire Inox avec Poêle — Frites, Alloco & Beignets',
+    category: 'maison',
+    price: 2500,
+    compareAtPrice: 3500,
+    stock: 10,
+    badge: 'Inox anti-rouille',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Panier à frire en inox avec poêle assortie et poignées froides : frites croustillantes, alloco doré et beignets sans éclaboussures.',
+    description:
+      'Sortez les frites d’un seul geste ! Ce panier à frire en inox alimentaire, livré avec sa poêle, laisse égoutter l’huile avant de servir : frites, alloco, beignets, poisson frit ou poulet pané. Les poignées froides et le maillage fin évitent les projections sur le gaz ou le réchaud.',
+    specs: [
+      'Panier en inox alimentaire anti-rouille + poêle assortie',
+      'Maillage fin : égouttage rapide et friture croustillante',
+      'Poignées froides pour une prise en main sûre',
+      'Frites, alloco, beignets, poisson et poulet frits',
+      'Facile à laver à la main — va au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-panier-a-frire-inox-poele.jpg',
+  },
+  {
+    id: 'cuisine-lav-6-verres-nevakar-320cc',
+    slug: 'coffret-lav-6-verres-nevakar-320cc',
+    name: 'Coffret LAV 6 Verres NevaKar 320 cc — Jus, Cocktails & Apéritif',
+    category: 'maison',
+    price: 7500,
+    compareAtPrice: 9500,
+    stock: 8,
+    badge: 'Coffret de 6',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Coffret de 6 verres LAV NevaKar 320 cc (10 ¼ oz) en verre trempé turc : le service à jus et cocktails élégant pour les grandes occasions.',
+    description:
+      'Six verres NevaKar de LAV, la marque turque de référence, dans leur coffret d’origine. Le verre trempé résiste aux chocs et à la chaleur, la contenance de 320 cc est parfaite pour un jus de bissap bien frais, un cocktail ou un apéritif entre amis. Motif graphique discret et base stable.',
+    specs: [
+      'Coffret de 6 verres LAV NevaKar — 320 cc (10 ¼ oz)',
+      'Verre trempé turc, résistant aux chocs et à la chaleur',
+      'Jus naturels, cocktails, apéritifs et grands rassemblements',
+      'Coffret cadeau d’origine LAV',
+      'Compatible lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-lav-6-verres-nevakar-320cc.jpg',
+  },
+  {
+    id: 'cuisine-lav-6-verres-misket-390cc',
+    slug: 'coffret-lav-6-verres-misket-390cc',
+    name: 'Coffret LAV 6 Verres Misket 390 cc — Grands Verres à Cocktail',
+    category: 'maison',
+    price: 9500,
+    compareAtPrice: 12000,
+    stock: 8,
+    badge: 'Coffret de 6',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Coffret de 6 verres LAV Misket 390 cc (13 ¼ oz) en verre trempé : de grands verres ballon pour cocktails, jus et tables de fête.',
+    description:
+      'Les Misket de LAV offrent une contenance généreuse de 390 cc dans un verre trempé au galbe arrondi qui libère les arômes. Parfaits pour les cocktails sans alcool, les jus de fruits pressés, la bière ou l’eau pétillante, ils arrivent dans un coffret de 6 prêt à offrir — un cadeau sûr pour un mariage ou une pendaison de crémaillère à Daloa.',
+    specs: [
+      'Coffret de 6 verres LAV Misket — 390 cc (13 ¼ oz)',
+      'Verre trempé extra-résistant, galbe ballon',
+      'Cocktails, jus, bière, eau pétillante',
+      'Idéal cadeau : mariage, fête, pendaison de crémaillère',
+      'Compatible lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-lav-6-verres-misket-390cc.jpg',
+  },
+  {
+    id: 'cuisine-carafe-azur-verre-transparent',
+    slug: 'carafe-azur-verre-trempe-transparente',
+    name: 'Carafe Azur en Verre Trempé Transparent — 1,2 L',
+    category: 'maison',
+    price: 6500,
+    compareAtPrice: 8500,
+    stock: 10,
+    badge: 'Verre trempé',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Carafe Azur en verre trempé transparent au col évasé et aux facettes élégantes : eau, jus de bissap ou thé glacé servis avec style.',
+    description:
+      'La carafe Azur transforme un simple pichet d’eau en pièce de table. Son verre trempé transparent, son corps facetté et son col évasé assurent un service net, sans goutte, et sa contenance permet de servir toute la famille en une fois. Elle s’accorde avec les coffrets de verres LAV de la boutique.',
+    specs: [
+      'Carafe en verre trempé transparent — collection Azur',
+      'Corps facetté, col évasé anti-goutte, grande base stable',
+      'Eau, jus de bissap, thé glacé, citronnade',
+      'Se marie avec les coffrets LAV NevaKar et Misket',
+      'Lavable à la main ou au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/cuisine-carafe-azur-verre-transparent.jpg',
+  },
+  {
+    id: 'cuisine-lunch-box-inox-jia-teng-2-2l',
+    slug: 'lunch-box-inox-jia-teng-2-2l',
+    name: 'Lunch Box Inox JIA TENG 2,2 L — Marmite Repas Isotherme',
+    category: 'maison',
+    price: 7000,
+    compareAtPrice: 9000,
+    stock: 12,
+    badge: 'Inox 2,2 L',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Lunch box inox JIA TENG de 2,2 L avec couvercle et anse : le repas du midi reste chaud jusqu’au bureau, au champ ou à l’école.',
+    description:
+      'Fini les repas froids ! Cette marmite lunch box JIA TENG de 2,2 litres en inox alimentaire garde riz, sauce, soupe ou foutou à bonne température pendant plusieurs heures. Son couvercle à joint et son anse de transport en font l’alliée des élèves, des ouvriers, des commerçants et de tous ceux qui mangent hors de la maison.',
+    specs: [
+      'Capacité 2,2 litres — inox alimentaire JIA TENG',
+      'Couvercle à fermeture hermétique et anse de transport',
+      'Garde les plats chauds plusieurs heures',
+      'Riz, sauces, soupes, foutou, repas du midi',
+      'Entretien facile — ne craint pas les chocs'
+    ],
+    imageUrl: '/images/products/cuisine-lunch-box-inox-jia-teng-2-2l.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -2342,6 +2566,7 @@ export const INITIAL_PRODUCTS = [
   ...SMART_TECHNOLOGY_PRODUCTS,
   ...JOUETS_ENFANTS_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
+  ...VAISSELLE_ART_TABLE_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',
