@@ -2414,6 +2414,30 @@ export const VAISSELLE_ART_TABLE_PRODUCTS = [
     imageUrl: '/images/products/vaisselle-assiette-creuse-wilmax-991215-23cm.jpg',
   },
   {
+    id: 'vaisselle-assiette-creuse-wilmax-991019',
+    slug: 'assiette-creuse-wilmax-wl-991019a-porcelaine-blanche',
+    name: 'Assiette Creuse Wilmax England Porcelaine Blanche — WL-991019/A',
+    category: 'maison',
+    price: 3950,
+    compareAtPrice: 4900,
+    stock: 12,
+    badge: 'Wilmax England',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Assiette creuse en porcelaine blanche Wilmax England (réf. WL-991019/A) au profil arrondi, parfaite pour les plats en sauce et les desserts généreux.',
+    description:
+      'Le modèle WL-991019/A de Wilmax England séduit par son profil tout en rondeur et son émail blanc profond. Elle reçoit aussi bien une soupe de poisson qu’un riz au gras, une salade de fruits ou une glace, et s’associe sans effort aux autres pièces Wilmax de la boutique.',
+    specs: [
+      'Fine porcelaine blanche — Wilmax England, réf. WL-991019/A',
+      'Assiette creuse au profil arrondi et rebord large',
+      'Soupes, sauces, desserts, salades de fruits',
+      'Émail résistant aux couverts et au lave-vaisselle',
+      'Assortie à l’assiette creuse 23 cm WL-991215/A'
+    ],
+    imageUrl: '/images/products/vaisselle-assiette-creuse-wilmax-991019.jpg',
+  },
+  {
     id: 'vaisselle-assiette-dessert-20cm-gourmet-ivoire',
     slug: 'assiette-dessert-20cm-tableware-gourmet-ivoire-ca24',
     name: 'Assiette à Dessert 20 cm Tableware Gourmet — Ivoire (Réf. F5C114)',
@@ -2436,6 +2460,78 @@ export const VAISSELLE_ART_TABLE_PRODUCTS = [
       'Compatible lave-vaisselle & micro-ondes'
     ],
     imageUrl: '/images/products/vaisselle-assiette-dessert-20cm-gourmet-ivoire.jpg',
+  },
+  {
+    id: 'vaisselle-assiette-motif-feuillage-noir',
+    slug: 'assiette-decor-feuillage-noir-porcelaine',
+    name: 'Assiette Décor Feuillage Noir sur Porcelaine Blanche',
+    category: 'maison',
+    price: 2900,
+    compareAtPrice: 3900,
+    stock: 12,
+    badge: 'Décor feuillage',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Assiette ronde en porcelaine blanche au décor de feuillage noir dessiné à la main : la touche graphique qui habille une table simple.',
+    description:
+      'Un dessin de branches et de feuilles noires sur porcelaine blanche émaillée : cette assiette décor apporte du caractère à vos repas sans alourdir la table. Elle se marie aussi bien avec nos assiettes unies GRAAL et Wilmax qu’avec les verres LAV, et devient vite la pièce que l’on sort pour recevoir.',
+    specs: [
+      'Porcelaine blanche émaillée, décor feuillage noir',
+      'Assiette plate ronde, bord légèrement relevé',
+      'Se marie aux collections GRAAL, Wilmax et Tableware Gourmet',
+      'Vaisselle décorative pour repas et réceptions',
+      'Compatible lave-vaisselle'
+    ],
+    imageUrl: '/images/products/vaisselle-assiette-motif-feuillage-noir.jpg',
+  },
+  {
+    id: 'vaisselle-bol-terracotta-motif-feuilles',
+    slug: 'bol-terracotta-motif-feuilles-creme',
+    name: 'Bol Terracotta Motif Feuilles Crème — Céréales, Soupe & Salade',
+    category: 'maison',
+    price: 3200,
+    compareAtPrice: 4200,
+    stock: 12,
+    badge: 'Décor terracotta',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Grand bol terracotta émaillé au décor de feuilles crème, pour les céréales du matin, une soupe ou une salade colorée.',
+    description:
+      'Ce bol au galbe généreux marie un émail terracotta chaleureux à un motif de feuilles crème. Sa contenance accueille un petit-déjeuner complet, une soupe de légumes ou une salade individuelle, et sa couleur réchauffe instantanément la table — un vrai coup de cœur du showroom.',
+    specs: [
+      'Grès émaillé terracotta, décor feuilles crème',
+      'Grand bol profond multiparade',
+      'Céréales, soupe, salade, dessert',
+      'Émail brillant résistant, facile à nettoyer',
+      'Passe au lave-vaisselle'
+    ],
+    imageUrl: '/images/products/vaisselle-bol-terracotta-motif-feuilles.jpg',
+  },
+  {
+    id: 'vaisselle-bol-ovale-blanc-porcelaine',
+    slug: 'bol-ovale-blanc-porcelaine',
+    name: 'Bol Ovale Blanc en Porcelaine — Service & Dressage',
+    category: 'maison',
+    price: 3500,
+    compareAtPrice: 4500,
+    stock: 12,
+    badge: 'Format ovale',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Bol ovale en porcelaine blanche au galbe asymétrique : parfait pour dresser une salade, un riz sauté ou une soupe façon restaurant.',
+    description:
+      'Sa forme ovale et légèrement asymétrique donne un dressage de chef à vos plats : salade composée, riz sauté, soupe, pâtes ou légumes sautés. L’émail blanc brillant de ce bol en porcelaine met en valeur les couleurs des aliments et s’accorde avec toute la vaisselle blanche de la boutique.',
+    specs: [
+      'Porcelaine blanche émaillée, forme ovale',
+      'Bol de service et de dressage',
+      'Salades, riz sauté, soupes, pâtes, légumes',
+      'Finition brillante, paroi épaisse et stable',
+      'Compatible lave-vaisselle & micro-ondes'
+    ],
+    imageUrl: '/images/products/vaisselle-bol-ovale-blanc-porcelaine.jpg',
   },
   {
     id: 'cuisine-panier-a-frire-inox',
