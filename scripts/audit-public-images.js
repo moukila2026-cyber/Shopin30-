@@ -1,3 +1,4 @@
+import { INITIAL_PRODUCTS } from '../shared/catalog.js';
 import { appendFileSync } from 'node:fs';
 // Vérifie les images du catalogue public sans authentification ni modification de données.
 const base = 'https://perokado.com';
@@ -11,6 +12,12 @@ if (!otherResponse.ok) throw new Error(`Autre catalogue HTTP ${otherResponse.sta
 const otherProducts = (await otherResponse.json()).products;
 const publicIds = new Set(products.map(p => p.id));
 const missing = otherProducts.filter(p => !publicIds.has(p.id));
+const absentInitial = INITIAL_PRODUCTS.filter(p => !publicIds.has(p.id));
+const byCategory = {};
+for (const p of absentInitial) byCategory[p.category] = (byCategory[p.category] || 0) + 1;
+const initialComparison = `Catalogue code: ${INITIAL_PRODUCTS.length}, absents du public: ${absentInitial.length} (${Object.entries(byCategory).map(([k,v]) => `${k}:${v}`).join(' ')})`;
+console.log(initialComparison, absentInitial.map(p => p.id).join(', '));
+if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `initial=${initialComparison.slice(0, 140)}\n`);
 const otherUploads = otherProducts.reduce((count, p) => count + (p.uploadedPhotoSlots || []).filter(Boolean).length, 0);
 const comparison = `Autre site: ${otherProducts.length} produits, ${otherUploads} photos televersees; ${missing.length} produits absents sur perokado.com`;
 console.log(comparison, missing.map(p => p.id).join(', '));
