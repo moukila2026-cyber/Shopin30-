@@ -861,7 +861,7 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.total, 4500);
 });
 
-test('12. Arrivage BTP Décembre 2026 : 79 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+test('12. Arrivage BTP Décembre 2026 : 84 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
 
@@ -950,6 +950,12 @@ test('12. Arrivage BTP Décembre 2026 : 79 fiches retravaillées Pèrôkadô (lo
     ['btp-midea-ruban-led-rgb-50m-mdl-std8w-05', 50000],
     ['btp-midea-reglette-led-120m-45w-mdl-bll1245w', 8500],
     ['btp-midea-ampoule-led-5w-e27-6500k-mdl-bua4505w', 1700],
+    // Lot 6 — Legrand (appareillage modulaire 63 A) et Midea Lighting
+    ['btp-legrand-disjoncteur-tx3-2p-63a-403612', 24000],
+    ['btp-legrand-peigne-raccordement-hx3-404926', 4500],
+    ['btp-midea-projecteur-led-200w-mdl-flf200w-03', 52000],
+    ['btp-legrand-interrupteur-differentiel-2p-63a-30ma-411506', 79000],
+    ['btp-legrand-disjoncteur-rx3-4p-63a-419747', 89000],
   ];
   for (const [id, expectedPrice] of expectedBtpDec) {
     const prod = cat.data.products.find((p) => p.id === id);
@@ -1039,6 +1045,45 @@ test('12. Arrivage BTP Décembre 2026 : 79 fiches retravaillées Pèrôkadô (lo
   assert.match(bulbB22.name, /B22/);
   assert.ok(bulbE27.specs.some((s) => /B22/.test(s)), 'L’ampoule E27 renvoie a la B22');
   assert.ok(bulbB22.specs.some((s) => /E27/.test(s)), 'L’ampoule B22 renvoie a la E27');
+
+  // Lot 6 : les trois disjoncteurs 63 A et les deux appareils differentiels
+  // doivent rester impossibles a confondre (2P TX3 / 4P RX3 / ID 2P / ID 4P).
+  const tx3 = find('btp-legrand-disjoncteur-tx3-2p-63a-403612');
+  const rx4 = find('btp-legrand-disjoncteur-rx3-4p-63a-419747');
+  const id2 = find('btp-legrand-interrupteur-differentiel-2p-63a-30ma-411506');
+  const id4 = find('btp-legrand-interrupteur-differentiel-4p-25a-300ma-411664');
+  assert.ok(tx3 && rx4 && id2 && id4, 'Les 4 appareils 63 A du lot 6 sont presents');
+  assert.notEqual(tx3.imageUrl, rx4.imageUrl);
+  assert.notEqual(id2.imageUrl, id4.imageUrl);
+  assert.match(tx3.badge, /2P/);
+  assert.match(rx4.badge, /4P/);
+  assert.match(id2.badge, /2P 63 A 30 mA/);
+  assert.match(id2.name, /2P 63 A 30 mA/);
+  assert.match(tx3.name, /2P 63 A/);
+  assert.match(rx4.name, /4P 63 A/);
+  assert.ok(tx3.specs.some((s) => /419747/.test(s)), 'Le TX3 2P renvoie au RX3 4P');
+  assert.ok(rx4.specs.some((s) => /403612/.test(s)), 'Le RX3 4P renvoie au TX3 2P');
+  assert.ok(id2.specs.some((s) => /411664/.test(s)), 'L’ID 2P 63 A renvoie a l’ID 4P 25 A');
+  assert.ok(tx3.specs.some((s) => /419949/.test(s)), 'Le TX3 2P renvoie aux DPN 16 A');
+
+  // Lot 6 : les trois projecteurs Midea se distinguent par puissance et temperature.
+  const flf200 = find('btp-midea-projecteur-led-200w-mdl-flf200w-03');
+  const flf100 = find('btp-midea-projecteur-led-100w-mdl-flf100w-036');
+  const flf50 = find('btp-midea-projecteur-led-50w-mdl-flf50w-036');
+  assert.ok(flf200 && flf100 && flf50, 'Les 3 projecteurs Midea sont presents');
+  assert.notEqual(flf200.imageUrl, flf100.imageUrl);
+  assert.notEqual(flf100.imageUrl, flf50.imageUrl);
+  assert.match(flf200.badge, /200 W/);
+  assert.match(flf100.badge, /100 W/);
+  assert.match(flf50.badge, /50 W/);
+  assert.ok(flf200.specs.some((s) => /FLF100W/.test(s)), 'Le 200 W cite le 100 W');
+  assert.ok(flf200.specs.some((s) => /3000 K/.test(s)), 'Le 200 W est bien en 3000 K');
+
+  // Le peigne HX3 est le complement des appareils modulaires 63 A.
+  const hx3 = find('btp-legrand-peigne-raccordement-hx3-404926');
+  assert.ok(hx3, 'Le peigne HX3 404926 est present');
+  assert.match(hx3.badge, /HX/);
+  assert.ok(hx3.specs.some((s) => /403612|419747|411506/.test(s)), 'Le peigne cite les appareils qu’il alimente');
 
   // La motopompe et le disjoncteur compact restent des colis lourds (frais majorés).
   for (const heavyId of ['btp-motopompe-essence-emtop-egwp8016', 'btp-disjoncteur-compact-schneider-c25f6tm250']) {

@@ -552,14 +552,17 @@ export function createStore(adapterPromiseOrInstance) {
           // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
           // retravailles aux couleurs Perokado + prix marche ivoirien).
           // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
-          // Cle v5 : ajoute les 20 references du lot 5 (Legrand : Plexo 069820L/069831L,
+          // Cle v6 : ajoute les 5 references du lot 6 (Legrand : TX3 403612, peigne HX3
+          // 404926, DX3-ID 411506, RX3 419747 ; Midea Lighting : projecteur 200 W
+          // MDL-FLF200W-033000K). Cle v5 ajoutait les 20 references du lot 5 (Plexo
+          // 069820L/069831L,
           // Urbano UB3111WH/UB2210WH/UB2220WH, Mosaic 278111L, coffret 137017, inter
           // horaire 412790, parafoudre 410323, DPN 419947/419949, DX3 411664, detecteur
           // 48941, prise TV NP4102WH, griffe 84900, collier 31900 ; Midea Lighting :
           // ampoule 5 W E27, reglette BLL1245W, ruban STD8W-05, spot DL40R12W) sur les
           // bases ou v1/v2/v3/v4 sont deja posees.
           const { rows: btpDecSyncRows } = await adapter.query(
-            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v5_synced'`
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v6_synced'`
           );
           if (btpDecSyncRows.length === 0) {
             for (const p of BTP_ARRIVAGE_DEC2026_PRODUCTS) {
@@ -600,7 +603,7 @@ export function createStore(adapterPromiseOrInstance) {
             }
             await adapter.query(
               `INSERT INTO store_settings (key, value)
-               VALUES ('catalog_btp_dec2026_v5_synced', '{"done":true}'::jsonb)
+               VALUES ('catalog_btp_dec2026_v6_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }
