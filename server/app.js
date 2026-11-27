@@ -228,6 +228,12 @@ export function createApp({ store, production = false, serveStatic = false } = {
     next();
   });
 
+  function photoSlot(req) {
+    const slot = req.query.slot === undefined ? 1 : Number(req.query.slot);
+    if (![1, 2, 3].includes(slot)) throw new BusinessError('Emplacement photo invalide.', 400);
+    return slot;
+  }
+
   // Upload binaire d'image produit (jusqu'à 4 Mo max)
   app.put(
     '/api/admin/products/:id/photo',
@@ -248,7 +254,8 @@ export function createApp({ store, production = false, serveStatic = false } = {
           req.params.id,
           detectedMime,
           buf,
-          req.actorLabel
+          req.actorLabel,
+          photoSlot(req)
         );
         res.json({ product });
       } catch (err) {
@@ -454,7 +461,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
   app.get('/api/products/:id/photo', async (req, res, next) => {
     try {
-      const photo = await store.getProductPhoto(req.params.id);
+      const photo = await store.getProductPhoto(req.params.id, photoSlot(req));
       if (!photo) {
         return res.redirect(302, '/images/products/placeholder.svg');
       }
@@ -775,7 +782,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
   app.delete('/api/admin/products/:id/photo', requireAuth('admin'), async (req, res, next) => {
     try {
-      const product = await store.deleteProductPhoto(req.params.id, req.actorLabel);
+      const product = await store.deleteProductPhoto(req.params.id, req.actorLabel, photoSlot(req));
       res.json({ product });
     } catch (err) {
       next(err);

@@ -77,6 +77,18 @@ test('1. Catalogue & Grille tarifaire : Daloa Commune 1000 F, Périphérie 1500 
   );
 });
 
+test('Les galeries sélectionnées sont disponibles sur le catalogue', async () => {
+  const catalog = await reqJson('/api/catalog');
+  const blender = catalog.data.products.find((p) => p.id === 'smart-mixeur-pro-stpe-8879r');
+  const iron = catalog.data.products.find((p) => p.id === 'smart-fer-vapeur-stpfr-5104b');
+  assert.equal(blender.galleryUrls.length, 3);
+  assert.equal(iron.galleryUrls.length, 3);
+  const kettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-beige-stpe-251u');
+  assert.equal(kettle.galleryUrls.length, 3);
+  assert.deepEqual(kettle.generatedGalleryUrls, ['/images/gallery/stpe-251u-ia-angle.png']);
+  assert.ok(blender.imageUrl.startsWith('/images/gallery/'));
+});
+
 test('2. Protection CSRF / Same-Origin et rejet des moyens de paiement inconnus', async () => {
   const csrfRes = await reqJson('/api/orders', {
     method: 'POST',
@@ -268,6 +280,26 @@ test('5. Upload photo binaire sécurisé : rejette un faux fichier et accepte un
     body: minimalPng,
   });
   assert.equal(okRes.status, 200);
+  for (const slot of [2, 3]) {
+    const upload = await fetch(`${baseUrl}/api/admin/products/ecouteurs-airpulse-pro/photo?slot=${slot}`, {
+      method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/png' }, body: minimalPng,
+    });
+    assert.equal(upload.status, 200);
+    const photo = await fetch(`${baseUrl}/api/products/ecouteurs-airpulse-pro/photo?slot=${slot}`);
+    assert.equal(photo.status, 200);
+    assert.deepEqual(Buffer.from(await photo.arrayBuffer()), minimalPng);
+  }
+  const cat = await reqJson('/api/catalog');
+  const product = cat.data.products.find((p) => p.id === 'ecouteurs-airpulse-pro');
+  assert.equal(product.galleryUrls.length, 3);
+  assert.deepEqual(product.photoSlots, [true, true, true]);
+  const invalid = await fetch(`${baseUrl}/api/admin/products/ecouteurs-airpulse-pro/photo?slot=4`, {
+    method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/png' }, body: minimalPng,
+  });
+  assert.equal(invalid.status, 400);
+  const removed = await reqJson('/api/admin/products/ecouteurs-airpulse-pro/photo?slot=2', { method: 'DELETE', token });
+  assert.equal(removed.status, 200);
+  assert.deepEqual(removed.data.product.photoSlots, [true, false, true]);
 });
 
 test('6. Webhook Wave Business 100% automatique : rejette une fausse signature et valide automatiquement un paiement signé', async () => {

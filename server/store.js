@@ -3,6 +3,7 @@
 // ==============================================================================
 import crypto from 'node:crypto';
 import { SCHEMA_SQL } from './schema.js';
+import { PRODUCT_GALLERIES } from '../shared/productGalleries.js';
 import {
   BRAND,
   DELIVERY_ZONES,
@@ -145,6 +146,16 @@ function slugify(str) {
 function mapProductRow(row) {
   const compareAt = row.compare_at_price != null ? Number(row.compare_at_price) : null;
   const hasPhoto = Boolean(row.has_uploaded_photo);
+  const curated = !hasPhoto && PRODUCT_GALLERIES[row.id]?.original === row.image_url
+    ? PRODUCT_GALLERIES[row.id] : null;
+  const staticImage = row.image_url || '/images/products/placeholder.svg';
+  const photoUrl = (slot) => `/api/products/${encodeURIComponent(row.id)}/photo${slot === 1 ? '?' : `?slot=${slot}&`}v=${new Date(row.updated_at).getTime()}`;
+  const primaryImage = hasPhoto ? photoUrl(1) : (curated && !curated.primaryOriginal ? curated.images[0] : staticImage);
+  const fallbackSlots = curated ? (curated.primaryOriginal ? curated.images : [staticImage, curated.images[1]]) : [
+    row.id === 'smart-cuisiniere-gaz-5-feux-inox' && !hasPhoto ? '/images/products/smart-plaque-5-bruleurs-laiton-dore-detail.jpg' : null,
+    null,
+  ];
+  const gallerySlots = [primaryImage, ...[2, 3].map((slot) => row[`has_photo_${slot}`] ? photoUrl(slot) : fallbackSlots[slot - 2])];
   return {
     id: row.id,
     slug: row.slug,
@@ -165,9 +176,11 @@ function mapProductRow(row) {
     shortDescription: row.short_description || '',
     description: row.description || '',
     specs: Array.isArray(row.specs) ? row.specs : [],
-    imageUrl: hasPhoto
-      ? `/api/products/${encodeURIComponent(row.id)}/photo?v=${new Date(row.updated_at).getTime()}`
-      : row.image_url || '/images/products/placeholder.svg',
+    imageUrl: primaryImage,
+    galleryUrls: gallerySlots.filter(Boolean),
+    generatedGalleryUrls: (curated?.generated || []).filter((url) => gallerySlots.includes(url)),
+    photoSlots: gallerySlots.map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
+    uploadedPhotoSlots: [hasPhoto, Boolean(row.has_photo_2), Boolean(row.has_photo_3)],
     staticImageUrl: row.image_url || '/images/products/placeholder.svg',
     hasUploadedPhoto: hasPhoto,
     updatedAt: row.updated_at,
@@ -833,13 +846,22 @@ export function createStore(adapterPromiseOrInstance) {
     return { deleted: true };
   }
 
-  async function saveProductPhoto(productId, mimeType, buffer, actor = 'admin') {
+  async function saveProductPhoto(productId, mimeType, buffer, actor = 'admin', slot = 1) {
     const db = await ensureReady();
     const prod = await db.query(`SELECT id FROM products WHERE id = $1`, [productId]);
     if (prod.rows.length === 0) throw new BusinessError('Produit introuvable.', 404);
 
     await db.withTransaction(async (tx) => {
-      await tx.query(
+      if (slot !== 1) {
+        await tx.query(
+          `INSERT INTO product_extra_photos (product_id, slot, mime_type, data, updated_at)
+           VALUES ($1, $2, $3, $4, NOW()) ON CONFLICT (product_id, slot)
+           DO UPDATE SET mime_type = EXCLUDED.mime_type, data = EXCLUDED.data, updated_at = NOW()`,
+          [productId, slot, mimeType, buffer]
+        );
+        await tx.query(`UPDATE products SET ${slot === 2 ? 'has_photo_2' : 'has_photo_3'} = TRUE, updated_at = NOW() WHERE id = $1`, [productId]);
+      } else {
+        await tx.query(
         `INSERT INTO product_photos (product_id, mime_type, data, updated_at)
          VALUES ($1, $2, $3, NOW())
          ON CONFLICT (product_id) DO UPDATE SET mime_type = EXCLUDED.mime_type, data = EXCLUDED.data, updated_at = NOW()`,
@@ -849,17 +871,20 @@ export function createStore(adapterPromiseOrInstance) {
         `UPDATE products SET has_uploaded_photo = TRUE, updated_at = NOW() WHERE id = $1`,
         [productId]
       );
+      }
     });
     await logAudit(actor, 'product.photo_upload', productId, { mimeType, bytes: buffer.length });
     const updated = await db.query(`SELECT * FROM products WHERE id = $1`, [productId]);
     return mapProductRow(updated.rows[0]);
   }
 
-  async function getProductPhoto(productId) {
+  async function getProductPhoto(productId, slot = 1) {
     const db = await ensureReady();
     const { rows } = await db.query(
-      `SELECT mime_type, data, updated_at FROM product_photos WHERE product_id = $1`,
-      [productId]
+      slot === 1
+        ? `SELECT mime_type, data, updated_at FROM product_photos WHERE product_id = $1`
+        : `SELECT mime_type, data, updated_at FROM product_extra_photos WHERE product_id = $1 AND slot = $2`,
+      slot === 1 ? [productId] : [productId, slot]
     );
     if (rows.length === 0) return null;
     return {
@@ -869,14 +894,19 @@ export function createStore(adapterPromiseOrInstance) {
     };
   }
 
-  async function deleteProductPhoto(productId, actor = 'admin') {
+  async function deleteProductPhoto(productId, actor = 'admin', slot = 1) {
     const db = await ensureReady();
     await db.withTransaction(async (tx) => {
-      await tx.query(`DELETE FROM product_photos WHERE product_id = $1`, [productId]);
+      if (slot !== 1) {
+        await tx.query(`DELETE FROM product_extra_photos WHERE product_id = $1 AND slot = $2`, [productId, slot]);
+        await tx.query(`UPDATE products SET ${slot === 2 ? 'has_photo_2' : 'has_photo_3'} = FALSE, updated_at = NOW() WHERE id = $1`, [productId]);
+      } else {
+        await tx.query(`DELETE FROM product_photos WHERE product_id = $1`, [productId]);
       await tx.query(
         `UPDATE products SET has_uploaded_photo = FALSE, updated_at = NOW() WHERE id = $1`,
         [productId]
       );
+      }
     });
     await logAudit(actor, 'product.photo_delete', productId, {});
     const updated = await db.query(`SELECT * FROM products WHERE id = $1`, [productId]);
