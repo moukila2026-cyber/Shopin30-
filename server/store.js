@@ -521,8 +521,7 @@ export function createStore(adapterPromiseOrInstance) {
                   description = EXCLUDED.description,
                   specs = EXCLUDED.specs,
                   image_url = EXCLUDED.image_url,
-                  is_heavy = EXCLUDED.is_heavy,
-                  updated_at = NOW()`,
+                  is_heavy = EXCLUDED.is_heavy`,
                 [
                   p.id,
                   p.slug,
