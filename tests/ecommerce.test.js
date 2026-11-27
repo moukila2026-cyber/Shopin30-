@@ -93,16 +93,38 @@ test('Les galeries sélectionnées sont disponibles sur le catalogue', async () 
   assert.ok(blender.imageUrl.startsWith('/images/gallery/'));
 });
 
-test('Nouveaux quads enfants : marge, livraison et stock à confirmer', async () => {
+test('Véhicules enfants : six modèles, prix et stock confirmé', async () => {
   const catalog = await reqJson('/api/catalog');
-  for (const id of ['enfant-quad-rechargeable-noir-bleu', 'enfant-quad-rechargeable-noir-jaune']) {
+  const prices = {
+    'enfant-quad-rechargeable-noir-bleu': 45000,
+    'enfant-quad-rechargeable-noir-jaune': 45000,
+    'enfant-quad-racing-jaune': 45000,
+    'enfant-quad-bleu-4-roues': 50000,
+    'enfant-tricycle-chopper-jaune': 50000,
+    'enfant-scooter-jaune-noir': 85000,
+  };
+  for (const [id, price] of Object.entries(prices)) {
     const product = catalog.data.products.find((p) => p.id === id);
-    assert.ok(product);
-    assert.equal(product.price, 47000);
-    assert.equal(product.stock, 0);
+    assert.ok(product, id);
+    assert.equal(product.price, price);
+    assert.equal(product.stock, 3);
     assert.equal(product.isHeavy, false);
     assert.deepEqual(product.generatedGalleryUrls, [product.imageUrl]);
   }
+});
+
+test('La mise à jour unique du stock des véhicules ne remet pas le stock après une commande', async () => {
+  const db = await createDatabaseAdapter('');
+  const first = createStore(db);
+  try {
+    await first.ensureReady();
+    await db.query("UPDATE products SET stock = 1, price = 46000 WHERE id = 'enfant-quad-rechargeable-noir-bleu'");
+    const second = createStore(db);
+    await second.ensureReady();
+    const {rows} = await db.query("SELECT stock, price FROM products WHERE id = 'enfant-quad-rechargeable-noir-bleu'");
+    assert.equal(rows[0].stock, 1);
+    assert.equal(rows[0].price, 46000);
+  } finally { await first.close(); }
 });
 
 test('2. Protection CSRF / Same-Origin et rejet des moyens de paiement inconnus', async () => {

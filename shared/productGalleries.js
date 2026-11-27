@@ -1,6 +1,10 @@
 // Photos supplémentaires identifiées par référence. Les photos issues de la
 // base administrateur restent prioritaires sur ces vues du catalogue.
 export const PRODUCT_GALLERIES = {
+  'enfant-quad-racing-jaune': { original: '/images/enfants/quad-racing-jaune.png', primaryOriginal: true, images: [], generated: ['/images/enfants/quad-racing-jaune.png'] },
+  'enfant-quad-bleu-4-roues': { original: '/images/enfants/quad-bleu-4roues.png', primaryOriginal: true, images: [], generated: ['/images/enfants/quad-bleu-4roues.png'] },
+  'enfant-tricycle-chopper-jaune': { original: '/images/enfants/tricycle-chopper-jaune.png', primaryOriginal: true, images: [], generated: ['/images/enfants/tricycle-chopper-jaune.png'] },
+  'enfant-scooter-jaune-noir': { original: '/images/enfants/scooter-jaune-noir.png', primaryOriginal: true, images: [], generated: ['/images/enfants/scooter-jaune-noir.png'] },
   'enfant-quad-rechargeable-noir-bleu': {
     original: '/images/enfants/quad-noir-bleu.png',
     primaryOriginal: true,
