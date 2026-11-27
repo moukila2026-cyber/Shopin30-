@@ -9,7 +9,15 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { ZodError } from 'zod';
 
-import { CATEGORIES, DELIVERY_SLOTS, PAYMENT_METHODS, BRAND } from '../shared/catalog.js';
+import {
+  CATEGORIES,
+  DELIVERY_SLOTS,
+  DELIVERY_ZONES,
+  PAYMENT_METHODS,
+  BRAND,
+  getPaymentMethod,
+  isCashOnDeliveryAllowed,
+} from '../shared/catalog.js';
 import { BusinessError, DatabaseUnavailableError } from './store.js';
 import {
   clearSessionCookie,
@@ -28,6 +36,10 @@ import {
   CreatePromoSchema,
   OrderStatusUpdateSchema,
   PlaceOrderSchema,
+  ReviewSchema,
+  ReviewModerationSchema,
+  CartAbandonmentSchema,
+  CartAbandonmentStatusSchema,
   ProductUpsertSchema,
   PromoValidateSchema,
   StoreSettingsUpdateSchema,
@@ -142,7 +154,8 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
   const checkoutLimiter = rateLimit({
     windowMs: 10 * 60 * 1000,
-    limit: 20,
+    // En test/dev la limite est large : la suite automatisée enchaîne les commandes.
+    limit: production ? 20 : 500,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     message: { error: 'Trop de tentatives de commande rapprochées. Réessayez dans quelques minutes.' },
@@ -324,10 +337,28 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
   app.get('/api/catalog', async (_req, res, next) => {
     try {
-      const [products, settings] = await Promise.all([
+      const [products, settings, reviews] = await Promise.all([
         store.listPublicProducts(),
         store.getSettings(),
+        store.listApprovedReviews().catch(() => []),
       ]);
+
+      // Agrégat réel par produit : moyenne + nombre d'avis publiés.
+      const reviewStats = {};
+      for (const r of reviews) {
+        const s = reviewStats[r.productId] || (reviewStats[r.productId] = { sum: 0, count: 0 });
+        s.sum += r.rating;
+        s.count += 1;
+      }
+      const enrichedProducts = products.map((p) => {
+        const s = reviewStats[p.id];
+        return {
+          ...p,
+          reviewCount: s ? s.count : 0,
+          rating: s ? Math.round((s.sum / s.count) * 10) / 10 : null,
+        };
+      });
+
       res.json({
         brand: BRAND,
         categories: CATEGORIES,
@@ -337,7 +368,86 @@ export function createApp({ store, production = false, serveStatic = false } = {
           ...settings,
           waveAutoCheckout: isInstantCheckoutEnabled(),
         },
-        products,
+        products: enrichedProducts,
+        reviews: reviews.slice(0, 300),
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Panier abandonné : le client laisse son numéro, on enregistre la relance.
+  app.post('/api/cart-abandonment', checkoutLimiter, async (req, res, next) => {
+    try {
+      const payload = CartAbandonmentSchema.parse(req.body);
+      const result = await store.saveCartAbandonment(payload);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/api/admin/cart-abandonments', requireAuth('admin'), async (_req, res, next) => {
+    try {
+      const abandonments = await store.listCartAbandonments();
+      res.json({ abandonments });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.patch('/api/admin/cart-abandonments/:id', requireAuth('admin'), async (req, res, next) => {
+    try {
+      const status = CartAbandonmentStatusSchema.parse(req.body).status;
+      const result = await store.markCartAbandonment(Number(req.params.id), status);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Modération des avis (réservée au personnel)
+  app.get('/api/admin/reviews', requireAuth('any'), async (_req, res, next) => {
+    try {
+      const reviews = await store.listAllReviews();
+      res.json({ reviews });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.patch('/api/admin/reviews/:id', requireAuth('any'), async (req, res, next) => {
+    try {
+      const status = ReviewModerationSchema.parse(req.body).status;
+      const result = await store.moderateReview(Number(req.params.id), status);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Avis publiés d'un produit (lecture publique)
+  app.get('/api/reviews', async (req, res, next) => {
+    try {
+      const productId = String(req.query.productId || '').trim();
+      const reviews = productId
+        ? await store.listReviewsForProduct(productId)
+        : [];
+      res.json({ reviews });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Dépôt d'un avis : modération obligatoire avant publication.
+  app.post('/api/reviews', checkoutLimiter, async (req, res, next) => {
+    try {
+      const payload = ReviewSchema.parse(req.body);
+      const result = await store.createReview(payload);
+      res.status(201).json({
+        ...result,
+        message:
+          'Merci ! Votre avis sera publié après vérification (généralement sous 24h ouvrées).',
       });
     } catch (err) {
       next(err);
@@ -373,23 +483,38 @@ export function createApp({ store, production = false, serveStatic = false } = {
     try {
       const payload = PlaceOrderSchema.parse(req.body);
       const waveApiActive = isWaveAutoCheckoutEnabled();
+      const method = getPaymentMethod(payload.paymentMethod);
+      const isCash = method.kind === 'cash';
 
-      // Si l'API Wave Business Checkout n'est pas encore activée par clé API (`WAVE_API_KEY`),
-      // exiger le numéro émetteur et l'ID transaction Wave saisis par le client après transfert au +225 05 46 69 74 78
-      if (!waveApiActive) {
+      // Espèces à la livraison : possible uniquement dans Daloa (commune et périphérie).
+      if (isCash) {
+        const zone = DELIVERY_ZONES.find((z) => z.id === payload.cityZoneId);
+        if (!isCashOnDeliveryAllowed(zone || { id: payload.cityZoneId })) {
+          throw new BusinessError(
+            'Le paiement à la livraison est réservé à Daloa et sa périphérie. Choisissez Wave, Orange Money, MTN MoMo ou Moov Money pour une expédition.',
+            400,
+            'CASH_NOT_ALLOWED'
+          );
+        }
+      }
+
+      // Paiement Mobile Money (Wave, Orange Money, MTN MoMo, Moov Money) : le client
+      // envoie le montant au numéro marchand puis saisit la référence de la transaction.
+      // Si l'API Wave Business Checkout est activée, Wave s'ouvre directement à la place.
+      if (!isCash && !waveApiActive) {
         const digits = String(payload.waveSenderPhone || '').replace(/\D/g, '');
         if (digits.length < 8) {
           throw new BusinessError(
-            'Veuillez indiquer le numéro Wave utilisé pour le paiement (minimum 8 chiffres).',
+            `Veuillez indiquer le numéro ${method.shortLabel} utilisé pour le paiement (minimum 8 chiffres).`,
             400,
-            'WAVE_PHONE_REQUIRED'
+            'PAYMENT_PHONE_REQUIRED'
           );
         }
         if (String(payload.waveTransactionRef || '').trim().length < 4) {
           throw new BusinessError(
-            'Veuillez saisir la référence / ID de transaction reçu dans votre application Wave.',
+            `Veuillez saisir la référence de transaction reçue après votre paiement ${method.shortLabel}.`,
             400,
-            'WAVE_REF_REQUIRED'
+            'PAYMENT_REF_REQUIRED'
           );
         }
       }
@@ -401,7 +526,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
       let checkoutUrl = null;
 
-      if (waveApiActive && !result.duplicate) {
+      if (waveApiActive && !isCash && method.id === 'wave' && !result.duplicate) {
         const proto = isSecureRequest(req, production) ? 'https' : 'http';
         const reqHost = String(req.headers['x-forwarded-host'] || req.headers.host || 'localhost:3000')
           .split(',')[0]
@@ -434,7 +559,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
         order: result.order,
         duplicate: result.duplicate,
         whatsappNumber: settings.whatsappNumber,
-        paymentProvider: 'wave',
+        paymentProvider: method.id,
         checkoutUrl,
         waveCheckoutUrl: checkoutUrl,
       });

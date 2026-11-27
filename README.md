@@ -15,7 +15,12 @@ Propulsée par **React 19 + Vite + Tailwind CSS 4** côté interface, **Express 
   - **Daloa Périphérie** : `1 500 FCFA`
   - **Expédition vers Issia, Vavoua, Zoukougbeu, Bouaflé, Sinfra & autres villes** : `2 000 FCFA`
   - Mention explicite que le tarif dépend de la taille et du poids de la marchandise, avec lien direct vers le **Service Client**.
-- **Paiement en ligne uniquement par Wave** : instructions Wave claires (numéro marchand copiable + lien Wave Business optionnel), saisie du numéro Wave émetteur et de l’ID de transaction Wave.
+- **5 moyens de paiement ivoiriens** : Wave, Orange Money (`#144#`), MTN MoMo (`*133#`), Moov Money (`*155#`) et **espèces à la livraison** (Daloa commune et périphérie uniquement). Le client copie le numéro marchand, paie depuis son application puis saisit sa référence de transaction ; le paiement par défaut peut aussi s'ouvrir directement via l'API Wave Business.
+- **Supplément quartier à Daloa** : grille de 16 quartiers (Lobia, Tazibouo, Commerce, Kennedy, Orly, Zakoua, Gonaté, Bédiala…) appliquant 0 à 250 F de supplément sur le tarif commune ou périphérie.
+- **Avis clients réels modérés** : formulaire de dépôt sur chaque fiche produit, mention « achat vérifié » automatique si la référence de commande correspond, publication après validation dans la console Seller Central. Aucune note n'est générée artificiellement.
+- **PWA installable** : manifest + service worker (cache du shell, images en stale-while-revalidate, catalogue en network-first) et raccourcis panier / suivi / rayon BTP.
+- **SEO local** : JSON-LD `OnlineStore`, `WebSite`, `Product`, `BreadcrumbList`, `ItemList` ; sitemap de 292 URL (`/produit/:slug`, `/rayon/:id`, `/ville/:slug`) ; 8 pages villes avec contenu local et maillage interne.
+- **Chargement progressif** : 24 produits par page avec bouton « Afficher plus », images WebP 400/800 px en `srcset`, bundle découpé (react / icons / qrcode / catalogue).
 - **Génération immédiate de Référence + Code QR de suivi en direct** :
   - Chaque commande génère une référence `PKD-XXXXXX` et un **Code QR téléchargeable** intégrant un jeton cryptographique sécurisé.
   - En scannant son Code QR à tout moment, le client ouvre instantanément le suivi en temps réel de sa marchandise (rafraîchissement automatique en direct).

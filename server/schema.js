@@ -89,6 +89,44 @@ ALTER TABLE orders ADD COLUMN IF NOT EXISTS wave_session_id TEXT NOT NULL DEFAUL
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS wave_checkout_url TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS idx_orders_status_created ON orders(status, created_at DESC);
+
+-- Avis clients réels : un avis n'est publié qu'après vérification manuelle en
+-- administration (statut 'approved'). Aucune note générée automatiquement.
+CREATE TABLE IF NOT EXISTS reviews (
+  id SERIAL PRIMARY KEY,
+  product_id TEXT NOT NULL,
+  order_reference TEXT NOT NULL DEFAULT '',
+  author_name TEXT NOT NULL,
+  author_city TEXT NOT NULL DEFAULT 'Daloa',
+  rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  verified_purchase BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (product_id, order_reference, author_name)
+);
+
+CREATE INDEX IF NOT EXISTS idx_reviews_product_status ON reviews(product_id, status);
+
+-- Relance de panier abandonné : le client laisse son numéro avant de finaliser,
+-- le commerçant retrouve la relance prête (lien WhatsApp pré-rempli) dans l'admin.
+CREATE TABLE IF NOT EXISTS cart_abandonments (
+  id SERIAL PRIMARY KEY,
+  phone_norm TEXT NOT NULL,
+  customer_phone TEXT NOT NULL DEFAULT '',
+  customer_name TEXT NOT NULL DEFAULT '',
+  items JSONB NOT NULL DEFAULT '[]'::jsonb,
+  subtotal INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'reminded', 'converted', 'ignored')),
+  reminded_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (phone_norm)
+);
+
+CREATE INDEX IF NOT EXISTS idx_cart_abandonments_status ON cart_abandonments(status, created_at DESC);
+
+
 CREATE INDEX IF NOT EXISTS idx_orders_phone_norm ON orders(customer_phone_norm);
 CREATE INDEX IF NOT EXISTS idx_orders_wave_session ON orders(wave_session_id);
 

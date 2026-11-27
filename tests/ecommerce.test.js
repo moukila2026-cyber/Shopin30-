@@ -70,12 +70,14 @@ test('1. Catalogue & Grille tarifaire : Daloa Commune 1000 F, Périphérie 1500 
   assert.equal(issia?.fee, 2000);
   assert.equal(vavoua?.fee, 2000);
 
-  // Paiement en ligne Wave uniquement
-  assert.equal(catalog.data.paymentMethods.length, 1);
-  assert.equal(catalog.data.paymentMethods[0].id, 'wave');
+  // Moyens de paiement : 4 mobile money ivoiriens + espèces à la livraison
+  assert.deepEqual(
+    catalog.data.paymentMethods.map((m) => m.id),
+    ['wave', 'orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']
+  );
 });
 
-test('2. Protection CSRF / Same-Origin et rejet de tout mode de paiement autre que Wave', async () => {
+test('2. Protection CSRF / Same-Origin et rejet des moyens de paiement inconnus', async () => {
   const csrfRes = await reqJson('/api/orders', {
     method: 'POST',
     origin: 'https://evil-attacker.example.com',
@@ -92,7 +94,7 @@ test('2. Protection CSRF / Same-Origin et rejet de tout mode de paiement autre q
       cityZoneId: 'daloa-commune',
       neighborhood: 'Lobia',
       deliverySlot: 'matin',
-      paymentMethod: 'especes-livraison',
+      paymentMethod: 'bitcoin-libre',
       waveSenderPhone: '0708091011',
       waveTransactionRef: 'TWAVE1234',
       items: [{ productId: 'ecouteurs-airpulse-pro', quantity: 1 }],
@@ -344,8 +346,10 @@ test('7. Gamme SMART TECHNOLOGY, séparation stricte Wave (+225 05 46 69 74 78) 
   assert.equal(cat.status, 200);
   assert.equal(cat.data.settings.wavePhone, '+225 05 46 69 74 78');
   assert.equal(cat.data.settings.whatsappNumber, '2250501303343');
-  assert.equal(cat.data.paymentMethods.length, 1);
-  assert.equal(cat.data.paymentMethods[0].id, 'wave');
+  assert.deepEqual(
+    cat.data.paymentMethods.map((m) => m.id),
+    ['wave', 'orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']
+  );
 
   const smartFrigo = cat.data.products.find((p) => p.id === 'smart-frigo-4-portes-inverter-inox');
   const smartFoutou = cat.data.products.find((p) => p.id === 'smart-broyeur-foutou-stpe-792');
@@ -1184,4 +1188,142 @@ test('12. Arrivage BTP Décembre 2026 : 99 fiches retravaillées Pèrôkadô (lo
     const prod = cat.data.products.find((p) => p.id === heavyId);
     assert.equal(prod.isHeavy, true, `${heavyId} en livraison lourde`);
   }
+});
+
+// ==============================================================================
+// 14. Nouveaux parcours : Orange Money / Moov / espèces à la livraison,
+//     supplément quartier, avis réels modérés et relance panier abandonné.
+// ==============================================================================
+test('14. Paiement Orange Money accepté, espèces réservées à Daloa, quartier Zakoua majoré, avis modéré et panier abandonné', async () => {
+  const catalog = await reqJson('/api/catalog');
+  const payIds = catalog.data.paymentMethods.map((m) => m.id);
+  for (const id of ['orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']) {
+    assert.ok(payIds.includes(id), `moyen de paiement ${id} exposé`);
+  }
+
+  const baseOrder = {
+    requestId: 'req_orange_money_14a',
+    customerName: 'Yao Serge',
+    customerPhone: '0744556677',
+    cityZoneId: 'daloa-commune',
+    neighborhood: 'Lobia',
+    deliverySlot: 'apres-midi',
+    paymentMethod: 'orange-money',
+    waveSenderPhone: '0744556677',
+    waveTransactionRef: 'OM123456',
+    items: [{ productId: 'bouilloire-inox-2l', quantity: 1 }],
+  };
+
+  const om = await reqJson('/api/orders', { method: 'POST', body: baseOrder });
+  assert.equal(om.status, 201, JSON.stringify(om.data));
+  assert.equal(om.data.order.paymentMethod, 'orange-money');
+  assert.equal(om.data.paymentProvider, 'orange-money');
+
+  // Espèces hors Daloa : refusé explicitement
+  const cashFar = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      ...baseOrder,
+      requestId: 'req_cash_issia_14b',
+      cityZoneId: 'expedition-issia',
+      neighborhood: 'Centre',
+      paymentMethod: 'especes-livraison',
+    },
+  });
+  assert.equal(cashFar.status, 400);
+  assert.equal(cashFar.data.code, 'CASH_NOT_ALLOWED');
+
+  // Espèces à Daloa : accepté, sans référence de transaction
+  const cashDaloa = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      ...baseOrder,
+      requestId: 'req_cash_daloa_14c',
+      paymentMethod: 'especes-livraison',
+      waveSenderPhone: '',
+      waveTransactionRef: '',
+    },
+  });
+  assert.equal(cashDaloa.status, 201, JSON.stringify(cashDaloa.data));
+  assert.equal(cashDaloa.data.order.paymentMethod, 'especes-livraison');
+
+  // Supplément quartier : Zakoua = +250 F sur le tarif commune
+  const zakoua = await reqJson('/api/orders', {
+    method: 'POST',
+    body: {
+      ...baseOrder,
+      requestId: 'req_zakoua_14d',
+      neighborhood: 'Zakoua',
+      waveTransactionRef: 'OM654321',
+    },
+  });
+  assert.equal(zakoua.status, 201, JSON.stringify(zakoua.data));
+  assert.equal(zakoua.data.order.deliveryFee, 1250);
+
+  // Avis : invisible avant modération, visible après validation admin
+  const review = await reqJson('/api/reviews', {
+    method: 'POST',
+    body: {
+      productId: 'bouilloire-inox-2l',
+      authorName: 'Awa Koné',
+      authorCity: 'Daloa',
+      rating: 5,
+      comment: 'Livrée le jour même à Lobia, très bonne qualité.',
+    },
+  });
+  assert.equal(review.status, 201, JSON.stringify(review.data));
+  assert.equal(review.data.submitted, true);
+
+  const afterReview = await reqJson('/api/catalog');
+  const prodBefore = afterReview.data.products.find((p) => p.id === 'bouilloire-inox-2l');
+  assert.equal(prodBefore.reviewCount, 0, 'aucun avis publié tant qu’il n’est pas validé');
+
+  const login = await reqJson('/api/admin/login', {
+    method: 'POST',
+    body: { credential: process.env.ADMIN_PASSWORD },
+  });
+  assert.equal(login.status, 200);
+  const token = login.data.token;
+
+  const pending = await reqJson('/api/admin/reviews', { token });
+  const target = pending.data.reviews.find((r) => r.authorName === 'Awa Koné');
+  assert.ok(target, 'avis en attente visible en administration');
+
+  const approved = await reqJson(`/api/admin/reviews/${target.id}`, {
+    method: 'PATCH',
+    token,
+    body: { status: 'approved' },
+  });
+  assert.equal(approved.status, 200);
+
+  const afterApproval = await reqJson('/api/catalog');
+  const prodAfter = afterApproval.data.products.find((p) => p.id === 'bouilloire-inox-2l');
+  assert.equal(prodAfter.reviewCount, 1);
+  assert.equal(prodAfter.rating, 5);
+
+  // Panier abandonné : enregistré et listé côté admin
+  const cart = await reqJson('/api/cart-abandonment', {
+    method: 'POST',
+    body: {
+      customerPhone: '0788990011',
+      customerName: 'Fatou',
+      subtotal: 45000,
+      items: [{ productId: 'bouilloire-inox-2l', name: 'Bouilloire Inox 2L', quantity: 1, lineTotal: 45000 }],
+    },
+  });
+  assert.equal(cart.status, 200);
+  assert.equal(cart.data.saved, true);
+
+  const carts = await reqJson('/api/admin/cart-abandonments', { token });
+  const found = carts.data.abandonments.find((a) => a.customerName === 'Fatou');
+  assert.ok(found, 'panier abandonné listé pour la relance');
+  assert.equal(found.status, 'open');
+
+  const reminded = await reqJson(`/api/admin/cart-abandonments/${found.id}`, {
+    method: 'PATCH',
+    token,
+    body: { status: 'reminded' },
+  });
+  assert.equal(reminded.status, 200);
+  assert.equal(reminded.data.status, 'reminded');
 });

@@ -188,7 +188,7 @@ function mapOrderRow(row) {
     addressDetails: row.address_details || '',
     deliverySlot: row.delivery_slot,
     paymentMethod: row.payment_method,
-    paymentProvider: 'wave',
+    paymentProvider: row.payment_method || 'wave',
     waveSenderPhone: row.wave_sender_phone || '',
     waveTransactionRef: row.wave_transaction_ref || '',
     waveSessionId: row.wave_session_id || '',
@@ -233,7 +233,7 @@ export function createStore(adapterPromiseOrInstance) {
           wavePaymentUrl: process.env.WAVE_PAYMENT_URL || BRAND.defaultWavePaymentUrl,
           shippingDisclaimer: BRAND.shippingDisclaimer,
           announcementBanner:
-            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua & alentours dès 2 000 F · Paiement Wave & Suivi QR',
+            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison · Suivi QR',
           storeOpen: true,
           deliveryZones: DELIVERY_ZONES,
         };
@@ -695,7 +695,7 @@ export function createStore(adapterPromiseOrInstance) {
       announcementBanner:
         typeof stored.announcementBanner === 'string'
           ? stored.announcementBanner
-          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua & alentours dès 2 000 F · Paiement Wave',
+          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison',
       storeOpen: stored.storeOpen !== false,
       deliveryZones: storedZones.length > 0 ? storedZones : DELIVERY_ZONES,
     };
@@ -1092,7 +1092,10 @@ export function createStore(adapterPromiseOrInstance) {
 
       const netSubtotal = Math.max(0, subtotal - discountAmount);
       // Aucune livraison gratuite : tarif standard (1000/1500/2000 F) ou tarif Produit Lourd (2500 F Daloa / 5000 F hors Daloa)
-      const deliveryFee = computeZoneDeliveryFee(zone, { hasHeavyItem });
+      const deliveryFee = computeZoneDeliveryFee(zone, {
+        hasHeavyItem,
+        neighborhood: payload.neighborhood,
+      });
       const total = netSubtotal + deliveryFee;
 
       // Générer une référence unique PKD-XXXXXX + jeton secret pour le Code QR de suivi en direct
@@ -1125,7 +1128,7 @@ export function createStore(adapterPromiseOrInstance) {
           payload.neighborhood,
           payload.addressDetails || '',
           payload.deliverySlot,
-          'wave',
+          payload.paymentMethod,
           payload.waveSenderPhone || '',
           payload.waveTransactionRef || '',
           trackingToken,
@@ -1141,6 +1144,171 @@ export function createStore(adapterPromiseOrInstance) {
 
       return { order: mapOrderRow(inserted[0]), duplicate: false };
     });
+  }
+
+  // ---------------------------------------------------------------------------
+  // AVIS CLIENTS RÉELS
+  // Un avis déposé est « pending » : il n'apparaît publiquement qu'après
+  // validation en administration. La mention « achat vérifié » est automatique
+  // lorsque la référence de commande existe et que l'article y figure.
+  // ---------------------------------------------------------------------------
+  async function listApprovedReviews() {
+    await ensureReady();
+    const { rows } = await adapter.query(
+      `SELECT product_id, author_name, author_city, rating, comment, verified_purchase, created_at
+         FROM reviews WHERE status = 'approved' ORDER BY created_at DESC LIMIT 2000`
+    );
+    return rows.map((r) => ({
+      productId: r.product_id,
+      authorName: r.author_name,
+      authorCity: r.author_city,
+      rating: Number(r.rating),
+      comment: r.comment,
+      verifiedPurchase: Boolean(r.verified_purchase),
+      createdAt: r.created_at,
+    }));
+  }
+
+  async function listReviewsForProduct(productId) {
+    await ensureReady();
+    const { rows } = await adapter.query(
+      `SELECT * FROM reviews WHERE product_id = $1 AND status = 'approved' ORDER BY created_at DESC LIMIT 50`,
+      [productId]
+    );
+    return rows.map((r) => ({
+      id: r.id,
+      authorName: r.author_name,
+      authorCity: r.author_city,
+      rating: Number(r.rating),
+      comment: r.comment,
+      verifiedPurchase: Boolean(r.verified_purchase),
+      createdAt: r.created_at,
+    }));
+  }
+
+  async function createReview({ productId, orderReference, authorName, authorCity, rating, comment }) {
+    await ensureReady();
+    let verified = false;
+    if (orderReference) {
+      const { rows } = await adapter.query(
+        `SELECT items FROM orders WHERE reference = $1`,
+        [String(orderReference).trim().toUpperCase()]
+      );
+      if (rows[0]?.items) {
+        const items = Array.isArray(rows[0].items) ? rows[0].items : [];
+        verified = items.some((i) => i.productId === productId || i.id === productId);
+      }
+    }
+    const { rows } = await adapter.query(
+      `INSERT INTO reviews (product_id, order_reference, author_name, author_city, rating, comment, verified_purchase)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       ON CONFLICT (product_id, order_reference, author_name) DO NOTHING
+       RETURNING id`,
+      [
+        productId,
+        String(orderReference || '').trim().toUpperCase(),
+        authorName,
+        authorCity || 'Daloa',
+        rating,
+        comment || '',
+        verified,
+      ]
+    );
+    return { submitted: true, id: rows[0]?.id || null, verifiedPurchase: verified };
+  }
+
+  async function listAllReviews() {
+    await ensureReady();
+    const { rows } = await adapter.query(
+      `SELECT * FROM reviews ORDER BY created_at DESC LIMIT 500`
+    );
+    return rows.map((r) => ({
+      id: r.id,
+      productId: r.product_id,
+      orderReference: r.order_reference,
+      authorName: r.author_name,
+      authorCity: r.author_city,
+      rating: Number(r.rating),
+      comment: r.comment,
+      status: r.status,
+      verifiedPurchase: Boolean(r.verified_purchase),
+      createdAt: r.created_at,
+    }));
+  }
+
+  async function moderateReview(id, status) {
+    await ensureReady();
+    await adapter.query(`UPDATE reviews SET status = $2 WHERE id = $1`, [id, status]);
+    return { id, status };
+  }
+
+  // ---------------------------------------------------------------------------
+  // PANIERS ABANDONNÉS
+  // Le client saisit son numéro dans le panier avant de payer ; si la commande
+  // n'est pas finalisée, la relance apparaît dans l'admin avec un lien WhatsApp
+  // pré-rempli. Un seul enregistrement par numéro (upsert).
+  // ---------------------------------------------------------------------------
+  async function saveCartAbandonment({ customerPhone, customerName, items, subtotal }) {
+    await ensureReady();
+    const phoneNorm = normalizeIvorianPhone(customerPhone) || String(customerPhone || '').replace(/\D/g, '');
+    if (!phoneNorm || phoneNorm.length < 8) return { saved: false };
+    // Si le numéro a déjà une commande, ce n'est pas un abandon : on ignore.
+    const { rows: orderRows } = await adapter.query(
+      `SELECT 1 FROM orders WHERE customer_phone_norm = $1 LIMIT 1`,
+      [phoneNorm]
+    );
+    if (orderRows.length > 0) return { saved: false, reason: 'already_ordered' };
+
+    await adapter.query(
+      `INSERT INTO cart_abandonments (phone_norm, customer_phone, customer_name, items, subtotal, status)
+       VALUES ($1, $2, $3, $4::jsonb, $5, 'open')
+       ON CONFLICT (phone_norm) DO UPDATE
+         SET items = EXCLUDED.items,
+             subtotal = EXCLUDED.subtotal,
+             customer_name = COALESCE(NULLIF(EXCLUDED.customer_name, ''), cart_abandonments.customer_name),
+             updated_at = NOW(),
+             status = CASE WHEN cart_abandonments.status = 'converted' THEN 'converted' ELSE 'open' END`,
+      [
+        phoneNorm,
+        String(customerPhone || '').trim(),
+        String(customerName || '').trim(),
+        JSON.stringify(items || []),
+        Number(subtotal) || 0,
+      ]
+    );
+    return { saved: true };
+  }
+
+  async function listCartAbandonments() {
+    await ensureReady();
+    const { rows } = await adapter.query(
+      `SELECT * FROM cart_abandonments ORDER BY created_at DESC LIMIT 200`
+    );
+    return rows.map((r) => ({
+      id: r.id,
+      phoneNorm: r.phone_norm,
+      customerPhone: r.customer_phone || r.phone_norm,
+      customerName: r.customer_name,
+      items: Array.isArray(r.items) ? r.items : [],
+      subtotal: Number(r.subtotal),
+      status: r.status,
+      remindedAt: r.reminded_at,
+      createdAt: r.created_at,
+      updatedAt: r.updated_at,
+    }));
+  }
+
+  async function markCartAbandonment(id, status) {
+    await ensureReady();
+    await adapter.query(
+      `UPDATE cart_abandonments
+          SET status = $2,
+              reminded_at = CASE WHEN $2 = 'reminded' THEN NOW() ELSE reminded_at END,
+              updated_at = NOW()
+        WHERE id = $1`,
+      [id, status]
+    );
+    return { id, status };
   }
 
   async function trackOrder({ reference, phone, token }) {
@@ -1517,6 +1685,14 @@ export function createStore(adapterPromiseOrInstance) {
     upsertPromoCode,
     deletePromoCode,
     placeOrder,
+    listApprovedReviews,
+    listReviewsForProduct,
+    createReview,
+    listAllReviews,
+    moderateReview,
+    saveCartAbandonment,
+    listCartAbandonments,
+    markCartAbandonment,
     trackOrder,
     listOrders,
     updateOrderStatus,

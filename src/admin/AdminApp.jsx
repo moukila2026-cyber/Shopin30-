@@ -22,6 +22,8 @@ import {
   Copy,
   Check,
   QrCode,
+  Star,
+  ShoppingCart,
 } from 'lucide-react';
 import { CATEGORIES, formatFcfa, inferHeavyShipping } from '../../shared/catalog.js';
 import {
@@ -52,10 +54,14 @@ export default function AdminApp() {
   const [loginError, setLoginError] = React.useState('');
   const [loginBusy, setLoginBusy] = React.useState(false);
 
-  const [tab, setTab] = React.useState('orders'); // 'orders' | 'products' | 'promos' | 'agents' | 'stats' | 'settings'
+  const [tab, setTab] = React.useState('orders'); // 'orders' | 'products' | 'promos' | 'agents' | 'reviews' | 'carts' | 'stats' | 'settings'
   const [overview, setOverview] = React.useState(null);
   const [loadingData, setLoadingData] = React.useState(false);
   const [toast, setToast] = React.useState('');
+
+  // Avis en modération + relances panier abandonné
+  const [reviews, setReviews] = React.useState([]);
+  const [abandonments, setAbandonments] = React.useState([]);
 
   // Filtre commandes
   const [orderFilter, setOrderFilter] = React.useState('all');
@@ -123,6 +129,52 @@ export default function AdminApp() {
       setLoadingData(false);
     }
   }, []);
+
+  const loadModerationData = React.useCallback(async () => {
+    try {
+      const [rev, carts] = await Promise.all([
+        apiFetch('/api/admin/reviews').catch(() => ({ reviews: [] })),
+        apiFetch('/api/admin/cart-abandonments').catch(() => ({ abandonments: [] })),
+      ]);
+      setReviews(rev.reviews || []);
+      setAbandonments(carts.abandonments || []);
+    } catch {
+      // silencieux : les onglets restent vides sans bloquer l'admin
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (authState.authenticated) loadModerationData();
+  }, [authState.authenticated, loadModerationData]);
+
+  async function handleModerateReview(id, status) {
+    try {
+      await apiFetch(`/api/admin/reviews/${id}`, { method: 'PATCH', body: { status } });
+      setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
+      showToast(status === 'approved' ? 'Avis publié.' : 'Avis refusé.');
+    } catch (err) {
+      showToast(err.message || 'Action impossible.');
+    }
+  }
+
+  async function handleCartStatus(id, status) {
+    try {
+      await apiFetch(`/api/admin/cart-abandonments/${id}`, { method: 'PATCH', body: { status } });
+      setAbandonments((prev) => prev.map((a) => (a.id === id ? { ...a, status } : a)));
+    } catch (err) {
+      showToast(err.message || 'Action impossible.');
+    }
+  }
+
+  function buildReminderUrl(cart) {
+    let digits = String(cart.customerPhone || '').replace(/\D/g, '');
+    if (digits.length === 10 && /^0[157]/.test(digits)) digits = '225' + digits;
+    const articles = (cart.items || [])
+      .map((i) => `• ${i.quantity}× ${i.name}`)
+      .join('\n');
+    const msg = `Bonjour${cart.customerName ? ' ' + cart.customerName : ''}, ici Pèrôkadô (Daloa) 👋\n\nVotre panier vous attend :\n${articles}\n\nTotal articles : ${formatFcfa(cart.subtotal)}.\nSouhaitez-vous que nous finalisions la commande ? Répondez à ce message et nous préparons la livraison.`;
+    return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
+  }
 
   React.useEffect(() => {
     checkSession();
@@ -653,6 +705,18 @@ export default function AdminApp() {
             { id: 'products', label: `Catalogue (${products.length})`, icon: ShoppingBag, show: true },
             { id: 'promos', label: `Codes Promo (${promos.length})`, icon: Tag, show: isAdmin },
             { id: 'agents', label: `Équipe & Codes (${agents.length})`, icon: Users, show: isAdmin },
+            {
+              id: 'reviews',
+              label: `Avis (${reviews.filter((r) => r.status === 'pending').length})`,
+              icon: Star,
+              show: true,
+            },
+            {
+              id: 'carts',
+              label: `Panier abandonné (${abandonments.filter((a) => a.status === 'open').length})`,
+              icon: ShoppingCart,
+              show: true,
+            },
             { id: 'stats', label: 'Statistiques & Journal', icon: BarChart3, show: true },
             { id: 'settings', label: 'Zones & Paramètres', icon: Settings, show: isAdmin },
           ]
@@ -1212,6 +1276,164 @@ export default function AdminApp() {
         )}
 
         {/* ONGLET 5 : STATISTIQUES & JOURNAL */}
+        {/* ONGLET AVIS : modération avant publication */}
+        {tab === 'reviews' && (
+          <section className="space-y-3">
+            <div className="bg-white p-4 rounded-2xl border border-[#E5DEC9] text-xs text-stone-600">
+              Aucune note n’est générée automatiquement : seuls les avis clients validés ici
+              apparaissent sur la boutique, avec la mention « achat vérifié » lorsqu’une référence
+              de commande correspond.
+            </div>
+            {reviews.length === 0 ? (
+              <p className="text-sm text-stone-500 bg-white p-4 rounded-2xl border border-[#E5DEC9]">
+                Aucun avis pour le moment.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {reviews.map((r) => (
+                  <article
+                    key={r.id}
+                    className="bg-white p-4 rounded-2xl border border-[#E5DEC9] flex flex-col sm:flex-row sm:items-start gap-3"
+                  >
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="flex text-[#FFA41C]">
+                          {[1, 2, 3, 4, 5].map((n) => (
+                            <Star
+                              key={n}
+                              className={`w-3.5 h-3.5 ${n <= r.rating ? 'fill-[#FFA41C] text-[#FFA41C]' : 'text-[#DDD]'}`}
+                            />
+                          ))}
+                        </span>
+                        <strong className="text-stone-800">{r.authorName}</strong>
+                        <span className="text-stone-500">— {r.authorCity}</span>
+                        {r.verifiedPurchase && (
+                          <span className="text-emerald-700 font-bold">Achat vérifié</span>
+                        )}
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            r.status === 'approved'
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : r.status === 'rejected'
+                                ? 'bg-rose-100 text-rose-700'
+                                : 'bg-amber-100 text-amber-800'
+                          }`}
+                        >
+                          {r.status === 'approved' ? 'Publié' : r.status === 'rejected' ? 'Refusé' : 'En attente'}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-stone-500 font-mono">{r.productId}</p>
+                      {r.comment && <p className="text-sm text-stone-700">{r.comment}</p>}
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      {r.status !== 'approved' && (
+                        <button
+                          type="button"
+                          onClick={() => handleModerateReview(r.id, 'approved')}
+                          className="px-3 py-1.5 rounded-full bg-[#0F443E] text-white text-xs font-bold cursor-pointer"
+                        >
+                          Publier
+                        </button>
+                      )}
+                      {r.status !== 'rejected' && (
+                        <button
+                          type="button"
+                          onClick={() => handleModerateReview(r.id, 'rejected')}
+                          className="px-3 py-1.5 rounded-full bg-stone-100 text-stone-700 text-xs font-bold cursor-pointer"
+                        >
+                          Refuser
+                        </button>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ONGLET PANIERS ABANDONNÉS : relance WhatsApp en un clic */}
+        {tab === 'carts' && (
+          <section className="space-y-3">
+            <div className="bg-white p-4 rounded-2xl border border-[#E5DEC9] text-xs text-stone-600">
+              Un panier est enregistré dès qu’un client saisit son numéro au moment de commander et
+              ne valide pas. Cliquez sur « Relancer sur WhatsApp » : le message part avec le détail
+              du panier déjà rédigé.
+            </div>
+            {abandonments.length === 0 ? (
+              <p className="text-sm text-stone-500 bg-white p-4 rounded-2xl border border-[#E5DEC9]">
+                Aucun panier abandonné enregistré.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {abandonments.map((a) => (
+                  <article key={a.id} className="bg-white p-4 rounded-2xl border border-[#E5DEC9] space-y-2">
+                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                      <strong className="text-stone-800">{a.customerName || 'Client sans nom'}</strong>
+                      <span className="font-mono text-stone-600">{a.customerPhone}</span>
+                      <span className="font-bold text-[#0F443E]">{formatFcfa(a.subtotal)}</span>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          a.status === 'open'
+                            ? 'bg-amber-100 text-amber-800'
+                            : a.status === 'reminded'
+                              ? 'bg-sky-100 text-sky-800'
+                              : a.status === 'converted'
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : 'bg-stone-100 text-stone-600'
+                        }`}
+                      >
+                        {a.status === 'open'
+                          ? 'À relancer'
+                          : a.status === 'reminded'
+                            ? 'Relancé'
+                            : a.status === 'converted'
+                              ? 'Commande finalisée'
+                              : 'Ignoré'}
+                      </span>
+                      <span className="text-stone-400">
+                        {new Date(a.updatedAt || a.createdAt).toLocaleString('fr-FR')}
+                      </span>
+                    </div>
+                    <ul className="text-[11px] text-stone-600 space-y-0.5">
+                      {a.items.slice(0, 6).map((i, idx) => (
+                        <li key={idx}>
+                          • {i.quantity}× {i.name}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex flex-wrap gap-2">
+                      <a
+                        href={buildReminderUrl(a)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleCartStatus(a.id, 'reminded')}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] text-white text-xs font-bold"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" /> Relancer sur WhatsApp
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleCartStatus(a.id, 'converted')}
+                        className="px-3 py-1.5 rounded-full bg-stone-100 text-stone-700 text-xs font-bold cursor-pointer"
+                      >
+                        Marquer finalisé
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleCartStatus(a.id, 'ignored')}
+                        className="px-3 py-1.5 rounded-full bg-stone-100 text-stone-700 text-xs font-bold cursor-pointer"
+                      >
+                        Ignorer
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
         {tab === 'stats' && (
           <section className="grid lg:grid-cols-2 gap-6">
             <div className="bg-white p-5 rounded-3xl border border-[#E5DEC9] space-y-4">

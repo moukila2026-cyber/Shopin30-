@@ -23,6 +23,22 @@ export default defineConfig({
     sourcemap: false,
     target: 'es2020',
     rollupOptions: {
+      output: {
+        // Découpage du bundle : la librairie d'icônes, React et le QR code
+        // ne sont rechargés que lorsqu'ils changent (cache navigateur longue durée).
+        manualChunks(id) {
+          // Le catalogue (274 fiches) change à chaque arrivage : chunk séparé
+          // pour que le code applicatif reste en cache navigateur.
+          if (id.includes('/shared/catalog.js')) return 'catalog-data';
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('lucide-react')) return 'icons';
+          if (id.includes('qrcode')) return 'qrcode';
+          if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler')) {
+            return 'react-vendor';
+          }
+          return 'vendor';
+        },
+      },
       // Deux applications web totalement distinctes :
       // 1) index.html -> Boutique publique client
       // 2) admin.html -> Console Seller Central / Administration isolée

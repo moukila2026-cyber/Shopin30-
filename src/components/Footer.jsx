@@ -12,6 +12,7 @@ import {
   Scale,
   Cookie,
 } from 'lucide-react';
+import { CITIES, cityPath, rayonPath } from '../lib/router.js';
 import { BRAND, formatPhoneDisplay } from '../../shared/catalog.js';
 import { buildWhatsappServiceUrl } from '../lib/api.js';
 
@@ -74,7 +75,7 @@ export function Footer({
 
       {/* 3. Corps 5 colonnes complet #232F3E */}
       <div className="bg-[#232F3E]">
-        <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-sm">
+        <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-8 text-sm">
           {/* Col 1 : À propos de Pèrôkadô */}
           <div className="space-y-2.5">
             <h3 className="font-bold text-base text-white">À propos de Pèrôkadô</h3>
@@ -87,7 +88,7 @@ export function Footer({
             <div className="pt-1 space-y-1.5 text-xs text-[#FF9900] font-semibold">
               <p className="flex items-center gap-2">
                 <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
-                <span>Paiement Wave & Mobile Money</span>
+                <span>Wave · Orange Money · MTN · Moov · Espèces</span>
               </p>
               <p className="flex items-center gap-2">
                 <QrCode className="w-4 h-4 shrink-0" />
@@ -112,22 +113,50 @@ export function Footer({
                 { id: 'beaute-cadeaux', label: 'Beauté, Parfums & Coffrets' },
               ].map((cat) => (
                 <li key={cat.id}>
-                  <button
-                    type="button"
-                    onClick={() => {
+                  <a
+                    href={rayonPath(cat.id)}
+                    onClick={(e) => {
+                      // Navigation interne (SPA) tout en gardant une vraie URL crawlable
+                      e.preventDefault();
                       onSelectCategory?.(cat.id);
+                      window.history.pushState({ pkd: true }, '', rayonPath(cat.id));
                       document.getElementById('catalogue')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                     className="hover:underline hover:text-white text-left cursor-pointer"
                   >
                     {cat.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Col 3 : Tarifs Livraison & Produits lourds */}
+          {/* Col 3 : Villes desservies — maillage interne SEO local */}
+          <div className="space-y-2">
+            <h3 className="font-bold text-base text-white flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-[#FF9900]" />
+              <span>Nous livrons à</span>
+            </h3>
+            <ul className="space-y-1.5 text-xs text-[#DDDDDD]">
+              {CITIES.map((city) => (
+                <li key={city.slug}>
+                  <a
+                    href={cityPath(city.slug)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.history.pushState({ pkd: true }, '', cityPath(city.slug));
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }}
+                    className="hover:underline hover:text-white"
+                  >
+                    {city.name} <span className="text-[#999999]">· {city.fee.toLocaleString('fr-FR')} F</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 4 : Tarifs Livraison & Produits lourds */}
           <div className="space-y-2.5">
             <h3 className="font-bold text-base text-white flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-[#FF9900]" />
@@ -155,7 +184,7 @@ export function Footer({
             </p>
           </div>
 
-          {/* Col 4 : Informations Légales & Conformité CI */}
+          {/* Col 5 : Informations Légales & Conformité CI */}
           <div className="space-y-2">
             <h3 className="font-bold text-base text-white flex items-center gap-1.5">
               <Scale className="w-4 h-4 text-[#FF9900]" />
@@ -220,7 +249,7 @@ export function Footer({
             </ul>
           </div>
 
-          {/* Col 5 : Aide & Service Client */}
+          {/* Col 6 : Aide & Service Client */}
           <div className="space-y-2.5">
             <h3 className="font-bold text-base text-white">Service Client</h3>
             <ul className="space-y-2 text-xs text-[#DDDDDD]">

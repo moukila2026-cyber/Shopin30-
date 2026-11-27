@@ -22,7 +22,7 @@ const STATUS_META = {
     step: 1,
   },
   preparing: {
-    label: 'Paiement Wave validé — Colis en préparation à Daloa',
+    label: 'Paiement mobile money validé — Colis en préparation à Daloa',
     color: 'bg-[#EDFDFF] text-[#007185] border-[#99E6F2]',
     step: 2,
   },
@@ -299,8 +299,12 @@ export function OrderTrackerModal({ open, onClose, initialTrack, whatsappNumber 
                       <strong>Destination :</strong> {order.cityZoneName} — {order.neighborhood}
                     </p>
                     <p>
-                      <strong>Paiement Wave :</strong>{' '}
-                      {order.waveTransactionRef ? `Réf ${order.waveTransactionRef}` : 'Wave en ligne'}
+                      <strong>Paiement :</strong>{' '}
+                      {order.paymentMethod === 'especes-livraison'
+                        ? 'Espèces à la livraison'
+                        : order.waveTransactionRef
+                          ? `Réf ${order.waveTransactionRef}`
+                          : 'Mobile money en ligne'}
                     </p>
                   </div>
 
