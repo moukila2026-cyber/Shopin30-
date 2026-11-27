@@ -3,6 +3,7 @@
 // ==============================================================================
 import crypto from 'node:crypto';
 import { SCHEMA_SQL } from './schema.js';
+import { PRODUCT_GALLERIES } from '../shared/productGalleries.js';
 import {
   BRAND,
   DELIVERY_ZONES,
@@ -10,6 +11,7 @@ import {
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
   JOUETS_ENFANTS_PRODUCTS,
+  QUADS_ENFANTS_2026_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -145,6 +147,16 @@ function slugify(str) {
 function mapProductRow(row) {
   const compareAt = row.compare_at_price != null ? Number(row.compare_at_price) : null;
   const hasPhoto = Boolean(row.has_uploaded_photo);
+  const curated = !hasPhoto && PRODUCT_GALLERIES[row.id]?.original === row.image_url
+    ? PRODUCT_GALLERIES[row.id] : null;
+  const staticImage = row.image_url || '/images/products/placeholder.svg';
+  const photoUrl = (slot) => `/api/products/${encodeURIComponent(row.id)}/photo${slot === 1 ? '?' : `?slot=${slot}&`}v=${new Date(row.updated_at).getTime()}`;
+  const primaryImage = hasPhoto ? photoUrl(1) : (curated && !curated.primaryOriginal ? curated.images[0] : staticImage);
+  const fallbackSlots = curated ? (curated.galleryAfterPrimary || (curated.primaryOriginal ? curated.images : [staticImage, curated.images[1]])) : [
+    row.id === 'smart-cuisiniere-gaz-5-feux-inox' && !hasPhoto ? '/images/products/smart-plaque-5-bruleurs-laiton-dore-detail.jpg' : null,
+    null,
+  ];
+  const gallerySlots = [primaryImage, ...[2, 3].map((slot) => row[`has_photo_${slot}`] ? photoUrl(slot) : fallbackSlots[slot - 2])];
   return {
     id: row.id,
     slug: row.slug,
@@ -165,9 +177,12 @@ function mapProductRow(row) {
     shortDescription: row.short_description || '',
     description: row.description || '',
     specs: Array.isArray(row.specs) ? row.specs : [],
-    imageUrl: hasPhoto
-      ? `/api/products/${encodeURIComponent(row.id)}/photo?v=${new Date(row.updated_at).getTime()}`
-      : row.image_url || '/images/products/placeholder.svg',
+    imageUrl: primaryImage,
+    galleryUrls: gallerySlots.filter(Boolean),
+    generatedGalleryUrls: (curated?.generated || []).filter((url) => gallerySlots.includes(url)),
+    imaginedColorUrls: (curated?.imaginedColors || []).filter((url) => gallerySlots.includes(url)),
+    photoSlots: gallerySlots.map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
+    uploadedPhotoSlots: [hasPhoto, Boolean(row.has_photo_2), Boolean(row.has_photo_3)],
     staticImageUrl: row.image_url || '/images/products/placeholder.svg',
     hasUploadedPhoto: hasPhoto,
     updatedAt: row.updated_at,
@@ -233,7 +248,7 @@ export function createStore(adapterPromiseOrInstance) {
           wavePaymentUrl: process.env.WAVE_PAYMENT_URL || BRAND.defaultWavePaymentUrl,
           shippingDisclaimer: BRAND.shippingDisclaimer,
           announcementBanner:
-            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison · Suivi QR',
+            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Paiement Wave Côte d’Ivoire uniquement · Suivi QR',
           storeOpen: true,
           deliveryZones: DELIVERY_ZONES,
         };
@@ -373,6 +388,27 @@ export function createStore(adapterPromiseOrInstance) {
             );
           }
 
+          // Nouvel arrivage : ajouter sans écraser les stocks et prix gérés en administration.
+          const { rows: quadsSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_quads_enfants_2026_v1_synced'`
+          );
+          if (quadsSyncRows.length === 0) {
+            for (const p of QUADS_ENFANTS_2026_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy)
+                 VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                 ON CONFLICT (id) DO NOTHING`,
+                [p.id, p.slug, p.name, p.category, p.price, p.compareAtPrice, p.stock,
+                  p.badge || '', Boolean(p.featured), p.shortDescription, p.description,
+                  JSON.stringify(p.specs), p.imageUrl, inferHeavyShipping(p)]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value) VALUES ('catalog_quads_enfants_2026_v1_synced', '{"done":true}'::jsonb) ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
           // Synchronisation idempotente de la gamme Jouets, Jeux & Univers Enfants sur une base Neon existante
           const { rows: jouetsSyncRows } = await adapter.query(
             `SELECT 1 FROM store_settings WHERE key = 'catalog_jouets_v1_synced'`
@@ -497,61 +533,13 @@ export function createStore(adapterPromiseOrInstance) {
             );
           }
 
-          // Migration unique : les 2 serrures FORCE portaient des ids trop proches
-          // (btp-serrure-force-cle-123f / -134f) qui provoquaient des confusions en
-          // console. On les renomme en clair selon leur difference visible :
-          // 123F = rosace ETROITE, 134F = PLAQUE LONGUE. La ligne est conservee
-          // (prix, stock, photo) pour ne pas casser les liens existants.
-          const { rows: forceLockMigRows } = await adapter.query(
-            `SELECT 1 FROM store_settings WHERE key = 'btp_force_locks_rename_v1'`
-          );
-          if (forceLockMigRows.length === 0) {
-            const renames = [
-              [
-                'btp-serrure-force-cle-123f',
-                'btp-force-cle-123f-rosace-etroite',
-                'serrure-force-123f-rosace-etroite-cle-a-canon',
-                'Serrure Clé à Canon FORCE 123F — Rosace Étroite Inox (CLE-123F)',
-                'Rosace étroite',
-                '/images/products/btp-force-cle-123f-rosace-etroite.jpg',
-              ],
-              [
-                'btp-serrure-force-cle-134f',
-                'btp-force-cle-134f-plaque-longue',
-                'serrure-force-134f-plaque-longue-nickel-satine',
-                'Serrure Clé à Canon FORCE 134F — Plaque Longue Nickel Satiné (CLE-134F)',
-                'Plaque longue',
-                '/images/products/btp-force-cle-134f-plaque-longue.jpg',
-              ],
-            ];
-            for (const [oldId, newId, newSlug, newName, newBadge, newImage] of renames) {
-              await adapter.query(
-                `WITH moved_photo AS (
-                   DELETE FROM product_photos WHERE product_id = $1
-                   RETURNING mime_type, data
-                 )
-                 INSERT INTO product_photos (product_id, mime_type, data)
-                 SELECT $2, mime_type, data FROM moved_photo
-                 ON CONFLICT (product_id) DO NOTHING`,
-                [oldId, newId]
-              );
-              await adapter.query(
-                `UPDATE products SET id = $2, slug = $3, name = $4, badge = $5, image_url = $6
-                 WHERE id = $1
-                   AND NOT EXISTS (SELECT 1 FROM products WHERE id = $2)`,
-                [oldId, newId, newSlug, newName, newBadge, newImage]
-              );
-            }
-            await adapter.query(
-              `INSERT INTO store_settings (key, value)
-               VALUES ('btp_force_locks_rename_v1', '{"done":true}'::jsonb)
-               ON CONFLICT (key) DO NOTHING`
-            );
-          }
+          // Les anciennes références FORCE restent inchangées : renommer leur clé
+          // primaire peut détacher ou supprimer des photos déjà téléversées.
+          // Une éventuelle migration nécessite une sauvegarde et un traitement dédié.
 
           // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
           // retravailles aux couleurs Perokado + prix marche ivoirien).
-          // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
+          // ON CONFLICT DO NOTHING : conserve les fiches, prix et photos existants.
           // Cle v7 : ajoute les 15 references du lot 7 (Legrand : ID RX3 402025/402063/
           // 402026, ID DX3 411524, parafoudre 2P 410321, coffret 48 modules 135014,
           // sonnerie 41651, Dismatic 764519, telerupteur 412408, RJ45 Mosaic 076562,
@@ -575,18 +563,7 @@ export function createStore(adapterPromiseOrInstance) {
                   id, slug, name, category, price, compare_at_price, stock,
                   badge, featured, active, short_description, description, specs, image_url, is_heavy
                 ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
-                ON CONFLICT (id) DO UPDATE SET
-                  slug = EXCLUDED.slug,
-                  name = EXCLUDED.name,
-                  category = EXCLUDED.category,
-                  price = EXCLUDED.price,
-                  compare_at_price = EXCLUDED.compare_at_price,
-                  badge = EXCLUDED.badge,
-                  short_description = EXCLUDED.short_description,
-                  description = EXCLUDED.description,
-                  specs = EXCLUDED.specs,
-                  image_url = EXCLUDED.image_url,
-                  is_heavy = EXCLUDED.is_heavy`,
+                ON CONFLICT (id) DO NOTHING`,
                 [
                   p.id,
                   p.slug,
@@ -694,8 +671,8 @@ export function createStore(adapterPromiseOrInstance) {
           : BRAND.shippingDisclaimer,
       announcementBanner:
         typeof stored.announcementBanner === 'string'
-          ? stored.announcementBanner
-          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison',
+          ? stored.announcementBanner.replace('Wave, Orange Money, MTN, Moov & espèces à la livraison', 'Paiement Wave Côte d’Ivoire uniquement')
+          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Paiement Wave Côte d’Ivoire uniquement',
       storeOpen: stored.storeOpen !== false,
       deliveryZones: storedZones.length > 0 ? storedZones : DELIVERY_ZONES,
     };
@@ -833,13 +810,22 @@ export function createStore(adapterPromiseOrInstance) {
     return { deleted: true };
   }
 
-  async function saveProductPhoto(productId, mimeType, buffer, actor = 'admin') {
+  async function saveProductPhoto(productId, mimeType, buffer, actor = 'admin', slot = 1) {
     const db = await ensureReady();
     const prod = await db.query(`SELECT id FROM products WHERE id = $1`, [productId]);
     if (prod.rows.length === 0) throw new BusinessError('Produit introuvable.', 404);
 
     await db.withTransaction(async (tx) => {
-      await tx.query(
+      if (slot !== 1) {
+        await tx.query(
+          `INSERT INTO product_extra_photos (product_id, slot, mime_type, data, updated_at)
+           VALUES ($1, $2, $3, $4, NOW()) ON CONFLICT (product_id, slot)
+           DO UPDATE SET mime_type = EXCLUDED.mime_type, data = EXCLUDED.data, updated_at = NOW()`,
+          [productId, slot, mimeType, buffer]
+        );
+        await tx.query(`UPDATE products SET ${slot === 2 ? 'has_photo_2' : 'has_photo_3'} = TRUE, updated_at = NOW() WHERE id = $1`, [productId]);
+      } else {
+        await tx.query(
         `INSERT INTO product_photos (product_id, mime_type, data, updated_at)
          VALUES ($1, $2, $3, NOW())
          ON CONFLICT (product_id) DO UPDATE SET mime_type = EXCLUDED.mime_type, data = EXCLUDED.data, updated_at = NOW()`,
@@ -849,17 +835,20 @@ export function createStore(adapterPromiseOrInstance) {
         `UPDATE products SET has_uploaded_photo = TRUE, updated_at = NOW() WHERE id = $1`,
         [productId]
       );
+      }
     });
     await logAudit(actor, 'product.photo_upload', productId, { mimeType, bytes: buffer.length });
     const updated = await db.query(`SELECT * FROM products WHERE id = $1`, [productId]);
     return mapProductRow(updated.rows[0]);
   }
 
-  async function getProductPhoto(productId) {
+  async function getProductPhoto(productId, slot = 1) {
     const db = await ensureReady();
     const { rows } = await db.query(
-      `SELECT mime_type, data, updated_at FROM product_photos WHERE product_id = $1`,
-      [productId]
+      slot === 1
+        ? `SELECT mime_type, data, updated_at FROM product_photos WHERE product_id = $1`
+        : `SELECT mime_type, data, updated_at FROM product_extra_photos WHERE product_id = $1 AND slot = $2`,
+      slot === 1 ? [productId] : [productId, slot]
     );
     if (rows.length === 0) return null;
     return {
@@ -869,14 +858,19 @@ export function createStore(adapterPromiseOrInstance) {
     };
   }
 
-  async function deleteProductPhoto(productId, actor = 'admin') {
+  async function deleteProductPhoto(productId, actor = 'admin', slot = 1) {
     const db = await ensureReady();
     await db.withTransaction(async (tx) => {
-      await tx.query(`DELETE FROM product_photos WHERE product_id = $1`, [productId]);
+      if (slot !== 1) {
+        await tx.query(`DELETE FROM product_extra_photos WHERE product_id = $1 AND slot = $2`, [productId, slot]);
+        await tx.query(`UPDATE products SET ${slot === 2 ? 'has_photo_2' : 'has_photo_3'} = FALSE, updated_at = NOW() WHERE id = $1`, [productId]);
+      } else {
+        await tx.query(`DELETE FROM product_photos WHERE product_id = $1`, [productId]);
       await tx.query(
         `UPDATE products SET has_uploaded_photo = FALSE, updated_at = NOW() WHERE id = $1`,
         [productId]
       );
+      }
     });
     await logAudit(actor, 'product.photo_delete', productId, {});
     const updated = await db.query(`SELECT * FROM products WHERE id = $1`, [productId]);

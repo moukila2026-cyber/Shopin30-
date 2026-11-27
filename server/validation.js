@@ -34,13 +34,13 @@ export const PlaceOrderSchema = z.object({
   deliverySlot: z.string().refine((v) => validSlotIds.includes(v), {
     message: 'Créneau de livraison invalide.',
   }),
-  // Moyens de paiement : Wave, Orange Money, MTN MoMo, Moov Money ou espèces à la livraison
+  // Seul Wave Côte d’Ivoire est accepté pour les nouvelles commandes.
   paymentMethod: z
     .string()
     .trim()
     .refine((v) => validPaymentMethodIds.includes(v), {
       message:
-        'Moyen de paiement invalide. Choisissez Wave, Orange Money, MTN MoMo, Moov Money ou les espèces à la livraison.',
+        'Moyen de paiement invalide. Seul Wave Côte d’Ivoire est accepté.',
     }),
   waveSenderPhone: z
     .string()

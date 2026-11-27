@@ -374,7 +374,7 @@ export function Header({
             {/* Badge Wave à droite sur grands écrans */}
             <div className="hidden xl:flex items-center gap-1.5 ml-auto pl-3 text-[11px] font-semibold text-[#A7E6FF] shrink-0">
               <ShieldCheck className="w-4 h-4 text-[#009EE3]" />
-              <span>Wave, Orange Money, MTN Moov · Daloa dès 1 000 F</span>
+              <span>Wave Côte d’Ivoire uniquement · Daloa dès 1 000 F</span>
             </div>
           </div>
         </div>

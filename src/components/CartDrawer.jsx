@@ -25,7 +25,6 @@ import {
   BRAND,
   PAYMENT_METHODS,
   getPaymentMethod,
-  isCashOnDeliveryAllowed,
   computeZoneDeliveryFee,
   inferHeavyShipping,
 } from '../../shared/catalog.js';
@@ -74,7 +73,7 @@ export function CartDrawer({
   const [addressDetails, setAddressDetails] = React.useState('');
   const [deliverySlot, setDeliverySlot] = React.useState(DELIVERY_SLOTS[0].id);
 
-  // Moyens de paiement : Wave / Orange Money / MTN MoMo / Moov Money / espèces à la livraison
+  // Wave Côte d’Ivoire uniquement
   const [paymentMethodId, setPaymentMethodId] = React.useState('wave');
   const [waveSenderPhone, setWaveSenderPhone] = React.useState('');
   const [waveTransactionRef, setWaveTransactionRef] = React.useState('');
@@ -674,7 +673,7 @@ export function CartDrawer({
                 </div>
               </div>
 
-              {/* Bloc 2 : Même page de paiement, moyens ivoiriens et espèces à la livraison */}
+              {/* Bloc 2 : paiement Wave Côte d’Ivoire */}
               <div className="bg-white rounded-md border-2 border-[#009EE3] p-4 space-y-3">
                 <div className="flex items-center justify-between border-b border-[#EAEDED] pb-2">
                   <h3 className="text-sm font-bold text-[#0F1111] flex items-center gap-2">
@@ -689,17 +688,14 @@ export function CartDrawer({
                 {/* Sélecteur de moyen de paiement */}
                 <div className="space-y-2">
                   {PAYMENT_METHODS.map((method) => {
-                    const disabled = method.kind === 'cash' && !isCashOnDeliveryAllowed(selectedZone);
                     const selected = paymentMethodId === method.id;
                     return (
                       <label
                         key={method.id}
                         className={`flex items-start gap-2.5 p-2.5 rounded-md border text-xs cursor-pointer transition ${
-                          disabled
-                            ? 'bg-[#F7F8F8] border-[#EAEDED] text-[#888C8C] cursor-not-allowed'
-                            : selected
-                              ? 'border-[#009EE3] bg-[#EBF8FF] ring-1 ring-[#009EE3]'
-                              : 'border-[#D5D9D9] hover:border-[#888C8C]'
+                          selected
+                            ? 'border-[#009EE3] bg-[#EBF8FF] ring-1 ring-[#009EE3]'
+                            : 'border-[#D5D9D9] hover:border-[#888C8C]'
                         }`}
                       >
                         <input
@@ -707,18 +703,12 @@ export function CartDrawer({
                           name="pkd-payment-method"
                           value={method.id}
                           checked={selected}
-                          disabled={disabled}
                           onChange={() => setPaymentMethodId(method.id)}
                           className="mt-0.5 accent-[#009EE3]"
                         />
                         <span className="min-w-0">
                           <span className="block font-bold text-[#0F1111]">
                             {method.label}
-                            {method.kind === 'cash' && (
-                              <span className="ml-1 font-normal text-[10px] text-[#565959]">
-                                {disabled ? '(Daloa uniquement)' : '(Daloa uniquement)'}
-                              </span>
-                            )}
                           </span>
                           <span className="block text-[11px] text-[#565959] mt-0.5">
                             {method.description}
@@ -739,15 +729,8 @@ export function CartDrawer({
                             <strong>{getPaymentMethod(paymentMethodId).shortLabel}</strong> Pèrôkadô :
                           </span>
                           <strong className="text-base font-extrabold text-[#053B54] tracking-wide">
-                            {getPaymentMethod(paymentMethodId).merchantPhone || waveMerchantNumber}
+                            {waveMerchantNumber}
                           </strong>
-                          {getPaymentMethod(paymentMethodId).ussd && (
-                            <span className="block text-[10px] text-[#053B54]/80 mt-0.5">
-                              Depuis votre téléphone : composez{' '}
-                              <strong>{getPaymentMethod(paymentMethodId).ussd}</strong> puis choisissez
-                              « Paiement marchand ».
-                            </span>
-                          )}
                         </div>
                         <button
                           type="button"
@@ -803,17 +786,6 @@ export function CartDrawer({
                       </div>
                     </div>
                   </>
-                )}
-
-                {getPaymentMethod(paymentMethodId).kind === 'cash' && (
-                  <div className="bg-[#FFF8E1] rounded p-3 border border-[#FFE082] text-xs text-[#5D4037] space-y-1">
-                    <p className="font-bold">Vous payez au livreur, à la réception.</p>
-                    <p>
-                      Préparez <strong>{formatFcfa(grandTotal)}</strong> en espèces. Le colis est
-                      remis contre paiement ; un reçu avec Code QR de suivi vous est remis en même
-                      temps. Disponible à Daloa commune et périphérie uniquement.
-                    </p>
-                  </div>
                 )}
 
                 <div>

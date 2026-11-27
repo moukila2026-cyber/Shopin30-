@@ -70,11 +70,39 @@ test('1. Catalogue & Grille tarifaire : Daloa Commune 1000 F, Périphérie 1500 
   assert.equal(issia?.fee, 2000);
   assert.equal(vavoua?.fee, 2000);
 
-  // Moyens de paiement : 4 mobile money ivoiriens + espèces à la livraison
+  // Seul Wave Côte d’Ivoire est proposé
   assert.deepEqual(
     catalog.data.paymentMethods.map((m) => m.id),
-    ['wave', 'orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']
+    ['wave']
   );
+});
+
+test('Les galeries sélectionnées sont disponibles sur le catalogue', async () => {
+  const catalog = await reqJson('/api/catalog');
+  const blender = catalog.data.products.find((p) => p.id === 'smart-mixeur-pro-stpe-8879r');
+  const iron = catalog.data.products.find((p) => p.id === 'smart-fer-vapeur-stpfr-5104b');
+  assert.equal(blender.galleryUrls.length, 3);
+  assert.equal(iron.galleryUrls.length, 3);
+  const kettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-beige-stpe-251u');
+  assert.equal(kettle.galleryUrls.length, 3);
+  assert.deepEqual(kettle.imaginedColorUrls, ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png']);
+  assert.deepEqual(kettle.generatedGalleryUrls, kettle.imaginedColorUrls);
+  const redKettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-rouge-stpe-249rb');
+  assert.equal(redKettle.galleryUrls.length, 3);
+  assert.equal(redKettle.imaginedColorUrls.length, 2);
+  assert.ok(blender.imageUrl.startsWith('/images/gallery/'));
+});
+
+test('Nouveaux quads enfants : marge, livraison et stock à confirmer', async () => {
+  const catalog = await reqJson('/api/catalog');
+  for (const id of ['enfant-quad-rechargeable-noir-bleu', 'enfant-quad-rechargeable-noir-jaune']) {
+    const product = catalog.data.products.find((p) => p.id === id);
+    assert.ok(product);
+    assert.equal(product.price, 47000);
+    assert.equal(product.stock, 0);
+    assert.equal(product.isHeavy, false);
+    assert.deepEqual(product.generatedGalleryUrls, [product.imageUrl]);
+  }
 });
 
 test('2. Protection CSRF / Same-Origin et rejet des moyens de paiement inconnus', async () => {
@@ -268,6 +296,26 @@ test('5. Upload photo binaire sécurisé : rejette un faux fichier et accepte un
     body: minimalPng,
   });
   assert.equal(okRes.status, 200);
+  for (const slot of [2, 3]) {
+    const upload = await fetch(`${baseUrl}/api/admin/products/ecouteurs-airpulse-pro/photo?slot=${slot}`, {
+      method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/png' }, body: minimalPng,
+    });
+    assert.equal(upload.status, 200);
+    const photo = await fetch(`${baseUrl}/api/products/ecouteurs-airpulse-pro/photo?slot=${slot}`);
+    assert.equal(photo.status, 200);
+    assert.deepEqual(Buffer.from(await photo.arrayBuffer()), minimalPng);
+  }
+  const cat = await reqJson('/api/catalog');
+  const product = cat.data.products.find((p) => p.id === 'ecouteurs-airpulse-pro');
+  assert.equal(product.galleryUrls.length, 3);
+  assert.deepEqual(product.photoSlots, [true, true, true]);
+  const invalid = await fetch(`${baseUrl}/api/admin/products/ecouteurs-airpulse-pro/photo?slot=4`, {
+    method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/png' }, body: minimalPng,
+  });
+  assert.equal(invalid.status, 400);
+  const removed = await reqJson('/api/admin/products/ecouteurs-airpulse-pro/photo?slot=2', { method: 'DELETE', token });
+  assert.equal(removed.status, 200);
+  assert.deepEqual(removed.data.product.photoSlots, [true, false, true]);
 });
 
 test('6. Webhook Wave Business 100% automatique : rejette une fausse signature et valide automatiquement un paiement signé', async () => {
@@ -348,7 +396,7 @@ test('7. Gamme SMART TECHNOLOGY, séparation stricte Wave (+225 05 46 69 74 78) 
   assert.equal(cat.data.settings.whatsappNumber, '2250501303343');
   assert.deepEqual(
     cat.data.paymentMethods.map((m) => m.id),
-    ['wave', 'orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']
+    ['wave']
   );
 
   const smartFrigo = cat.data.products.find((p) => p.id === 'smart-frigo-4-portes-inverter-inox');
@@ -1191,61 +1239,29 @@ test('12. Arrivage BTP Décembre 2026 : 99 fiches retravaillées Pèrôkadô (lo
 });
 
 // ==============================================================================
-// 14. Nouveaux parcours : Orange Money / Moov / espèces à la livraison,
+// 14. Wave exclusivement,
 //     supplément quartier, avis réels modérés et relance panier abandonné.
 // ==============================================================================
-test('14. Paiement Orange Money accepté, espèces réservées à Daloa, quartier Zakoua majoré, avis modéré et panier abandonné', async () => {
-  const catalog = await reqJson('/api/catalog');
-  const payIds = catalog.data.paymentMethods.map((m) => m.id);
-  for (const id of ['orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']) {
-    assert.ok(payIds.includes(id), `moyen de paiement ${id} exposé`);
-  }
-
+test('14. Paiements non Wave refusés, quartier Zakoua majoré, avis modéré et panier abandonné', async () => {
   const baseOrder = {
-    requestId: 'req_orange_money_14a',
+    requestId: 'req_wave_14a',
     customerName: 'Yao Serge',
     customerPhone: '0744556677',
     cityZoneId: 'daloa-commune',
     neighborhood: 'Lobia',
     deliverySlot: 'apres-midi',
-    paymentMethod: 'orange-money',
+    paymentMethod: 'wave',
     waveSenderPhone: '0744556677',
-    waveTransactionRef: 'OM123456',
+    waveTransactionRef: 'WAVE123456',
     items: [{ productId: 'bouilloire-inox-2l', quantity: 1 }],
   };
 
-  const om = await reqJson('/api/orders', { method: 'POST', body: baseOrder });
-  assert.equal(om.status, 201, JSON.stringify(om.data));
-  assert.equal(om.data.order.paymentMethod, 'orange-money');
-  assert.equal(om.data.paymentProvider, 'orange-money');
-
-  // Espèces hors Daloa : refusé explicitement
-  const cashFar = await reqJson('/api/orders', {
-    method: 'POST',
-    body: {
-      ...baseOrder,
-      requestId: 'req_cash_issia_14b',
-      cityZoneId: 'expedition-issia',
-      neighborhood: 'Centre',
-      paymentMethod: 'especes-livraison',
-    },
-  });
-  assert.equal(cashFar.status, 400);
-  assert.equal(cashFar.data.code, 'CASH_NOT_ALLOWED');
-
-  // Espèces à Daloa : accepté, sans référence de transaction
-  const cashDaloa = await reqJson('/api/orders', {
-    method: 'POST',
-    body: {
-      ...baseOrder,
-      requestId: 'req_cash_daloa_14c',
-      paymentMethod: 'especes-livraison',
-      waveSenderPhone: '',
-      waveTransactionRef: '',
-    },
-  });
-  assert.equal(cashDaloa.status, 201, JSON.stringify(cashDaloa.data));
-  assert.equal(cashDaloa.data.order.paymentMethod, 'especes-livraison');
+  for (const method of ['orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']) {
+    const result = await reqJson('/api/orders', {
+      method: 'POST', body: { ...baseOrder, requestId: `req_rejected_${method}`, paymentMethod: method },
+    });
+    assert.equal(result.status, 400, `${method} doit être refusé`);
+  }
 
   // Supplément quartier : Zakoua = +250 F sur le tarif commune
   const zakoua = await reqJson('/api/orders', {
@@ -1254,7 +1270,7 @@ test('14. Paiement Orange Money accepté, espèces réservées à Daloa, quartie
       ...baseOrder,
       requestId: 'req_zakoua_14d',
       neighborhood: 'Zakoua',
-      waveTransactionRef: 'OM654321',
+      waveTransactionRef: 'WAVE654321',
     },
   });
   assert.equal(zakoua.status, 201, JSON.stringify(zakoua.data));
@@ -1326,4 +1342,35 @@ test('14. Paiement Orange Money accepté, espèces réservées à Daloa, quartie
   });
   assert.equal(reminded.status, 200);
   assert.equal(reminded.data.status, 'reminded');
+});
+
+test('Migration catalogue : conserve prix et photos des fiches existantes', async () => {
+  const { SCHEMA_SQL } = await import('../server/schema.js');
+  const { BTP_ARRIVAGE_DEC2026_PRODUCTS } = await import('../shared/catalog.js');
+  const db = await createDatabaseAdapter('');
+  const existingStore = createStore(db);
+  try {
+    await db.exec(SCHEMA_SQL);
+    const item = BTP_ARRIVAGE_DEC2026_PRODUCTS[0];
+    await db.query(`INSERT INTO products (id, slug, name, category, price, stock, image_url, has_uploaded_photo)
+      VALUES ($1, $2, 'Fiche personnalisée', $3, 123, 7, '/custom.jpg', TRUE)`, [item.id, item.slug, item.category]);
+    await db.query(`INSERT INTO products (id, slug, name, category, price, has_uploaded_photo)
+      VALUES ('btp-serrure-force-cle-123f', 'serrure-ancienne', 'Serrure ancienne', 'quincaillerie-btp', 321, TRUE)`);
+    const bytes = Buffer.from('photos sauvegardées');
+    for (const id of [item.id, 'btp-serrure-force-cle-123f']) {
+      await db.query('INSERT INTO product_photos (product_id, mime_type, data) VALUES ($1, $2, $3)', [id, 'image/png', bytes]);
+    }
+    await existingStore.ensureReady();
+    const { rows } = await db.query('SELECT price, stock, name, image_url, has_uploaded_photo FROM products WHERE id = $1', [item.id]);
+    assert.equal(rows[0].price, 123);
+    assert.equal(rows[0].stock, 7);
+    assert.equal(rows[0].name, 'Fiche personnalisée');
+    assert.equal(rows[0].image_url, '/custom.jpg');
+    for (const id of [item.id, 'btp-serrure-force-cle-123f']) {
+      const photo = await existingStore.getProductPhoto(id);
+      assert.deepEqual(Buffer.from(photo.data), bytes);
+    }
+  } finally {
+    await existingStore.close();
+  }
 });

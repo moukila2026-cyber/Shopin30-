@@ -1,3 +1,5 @@
+> **Mise à jour :** ce plan est historique. PEROKADO accepte désormais uniquement Wave Côte d’Ivoire ; les autres moyens de paiement évoqués ci-dessous ne sont plus proposés.
+
 # Pèrôkadô n°1 à Daloa — ce qui est fait et ce qu'il vous reste à faire
 
 > Dernière mise à jour : 27 novembre 2026 · PR #27 mergée (`f131c0f`) · déploiement Vercel production `READY`

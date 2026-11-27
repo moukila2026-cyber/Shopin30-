@@ -95,7 +95,7 @@ export function ProductCard({
   return (
     <article className="group bg-white border border-[#D5D9D9] rounded-md overflow-hidden flex flex-col hover:shadow-md transition duration-200">
       {/* Zone photo sur fond clair style Amazon */}
-      <div className="relative aspect-square bg-[#F7F8F8] p-2.5 sm:p-4 flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-square bg-white p-1 sm:p-2 flex items-center justify-center overflow-hidden">
         <img
           src={webpSrcSet(product.imageUrl, 800)}
           srcSet={[
@@ -111,9 +111,10 @@ export function ProductCard({
           onClick={() => onOpenDetail(product)}
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = '/images/products/placeholder.svg';
+            e.currentTarget.removeAttribute('srcset');
+            e.currentTarget.src = product.imageUrl || '/images/products/placeholder.svg';
           }}
-          className="max-w-full max-h-full object-contain group-hover:scale-105 transition duration-300 cursor-pointer mix-blend-multiply"
+          className="w-full h-full object-contain group-hover:scale-105 transition duration-300 cursor-pointer"
         />
 
         {/* Ruban Amazon Best-Seller / Choix Pèrôkadô en haut à gauche */}
@@ -263,9 +264,11 @@ export function ProductDetailModal({
 }) {
   const [qty, setQty] = React.useState(1);
   const [activeImageUrl, setActiveImageUrl] = React.useState(null);
+  const [zoomed, setZoomed] = React.useState(false);
 
   React.useEffect(() => {
     setActiveImageUrl(product?.imageUrl || null);
+    setZoomed(false);
   }, [product]);
 
   if (!product) return null;
@@ -280,15 +283,10 @@ export function ProductDetailModal({
   const zoneFee = computeProductDeliveryFee(product, selectedZone);
   const zoneName = selectedZone?.shortName || 'Daloa Commune';
 
-  const gallery =
-    Array.isArray(product.galleryUrls) && product.galleryUrls.length > 1
-      ? product.galleryUrls
-      : product.id === 'smart-cuisiniere-gaz-5-feux-inox'
-      ? [
-          product.imageUrl,
-          '/images/products/smart-plaque-5-bruleurs-laiton-dore-detail.jpg',
-        ]
-      : [product.imageUrl];
+  const gallery = Array.isArray(product.galleryUrls) && product.galleryUrls.length
+    ? product.galleryUrls
+    : [product.imageUrl];
+
 
   return (
     <div
@@ -299,7 +297,7 @@ export function ProductDetailModal({
       aria-label={product.name}
     >
       <div
-        className="relative bg-white rounded-lg max-w-5xl w-full overflow-hidden shadow-2xl border border-[#D5D9D9] my-auto max-h-[92dvh] overflow-y-auto overscroll-contain"
+        className="relative bg-white rounded-lg max-w-7xl w-full overflow-hidden shadow-2xl border border-[#D5D9D9] my-auto max-h-[92dvh] overflow-y-auto overscroll-contain"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Barre supérieure */}
@@ -320,8 +318,8 @@ export function ProductDetailModal({
         {/* Mise en page 3 colonnes façon page produit Amazon */}
         <div className="p-3.5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           {/* Colonne 1 : Image produit grand format + vignettes galerie éventuelles (5 cols) */}
-          <div className="lg:col-span-5 space-y-2.5">
-            <div className="bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-3 sm:p-6 flex items-center justify-center aspect-square max-h-[46vh] sm:max-h-none overflow-hidden">
+          <div className="lg:col-span-6 space-y-2.5">
+            <button type="button" onClick={() => setZoomed(!zoomed)} aria-label={zoomed ? 'Réduire la photo' : 'Agrandir la photo'} className="w-full bg-white border border-[#EAEDED] rounded-md p-1 flex items-center justify-center aspect-square overflow-hidden cursor-zoom-in">
               <img
                 src={webpSrcSet(activeImageUrl || product.imageUrl, 800)}
                 srcSet={[
@@ -334,25 +332,40 @@ export function ProductDetailModal({
                 decoding="async"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/images/products/placeholder.svg';
+                  e.currentTarget.removeAttribute('srcset');
+                  e.currentTarget.src = activeImageUrl || product.imageUrl || '/images/products/placeholder.svg';
                 }}
-                className="max-w-full max-h-full object-contain"
+                className={`w-full h-full object-contain transition-transform ${zoomed ? 'scale-150 cursor-zoom-out' : ''}`}
               />
-            </div>
+            </button>
+            {product.imaginedColorUrls?.length > 0 && (
+              <p className="text-xs font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded p-2">
+                Certaines images sont des illustrations IA de couleurs imaginées : elles ne représentent pas des couleurs disponibles à la vente. Le produit commandé correspond à la photo principale.
+              </p>
+            )}
+            {product.generatedGalleryUrls?.includes(activeImageUrl || product.imageUrl) && !product.imaginedColorUrls?.includes(activeImageUrl || product.imageUrl) && (
+              <p className="text-xs font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded p-2">
+                Illustration générée par IA à partir d’une photo du produit. Les détails peuvent différer de l’article réel.
+              </p>
+            )}
+            <p className="text-xs text-[#565959]">Touchez la photo pour agrandir.</p>
             {gallery.length > 1 && (
               <div className="flex items-center gap-2">
                 {gallery.map((imgUrl, idx) => (
                   <button
                     key={idx}
                     type="button"
-                    onClick={() => setActiveImageUrl(imgUrl)}
-                    className={`w-16 h-16 rounded border p-1 bg-[#F7F8F8] flex items-center justify-center cursor-pointer ${
+                    onClick={() => { setActiveImageUrl(imgUrl); setZoomed(false); }}
+                    aria-label={`Afficher ${product.generatedGalleryUrls?.includes(imgUrl) ? 'l’illustration générée par IA' : 'la photo'} ${idx + 1} de ${product.name}`}
+                    aria-pressed={(activeImageUrl || product.imageUrl) === imgUrl}
+                    className={`relative w-16 h-16 rounded border p-1 bg-[#F7F8F8] flex items-center justify-center cursor-pointer ${
                       (activeImageUrl || product.imageUrl) === imgUrl
                         ? 'border-2 border-[#C7511F] ring-1 ring-[#C7511F]'
                         : 'border-[#D5D9D9]'
                     }`}
                   >
                     <img src={imgUrl} alt="" className="max-w-full max-h-full object-contain" />
+                    {product.imaginedColorUrls?.includes(imgUrl) && <span className="absolute bottom-0 inset-x-0 bg-amber-100 text-amber-950 text-[9px] font-bold">IA · fictif</span>}
                   </button>
                 ))}
               </div>
@@ -360,7 +373,7 @@ export function ProductDetailModal({
           </div>
 
           {/* Colonne 2 : Titre, notes, prix, caractéristiques "À propos de cet article" (4 cols) */}
-          <div className="lg:col-span-4 space-y-3">
+          <div className="lg:col-span-3 space-y-3">
             {product.badge && (
               <span className="inline-block bg-[#232F3E] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-xs">
                 {product.badge}
@@ -511,7 +524,7 @@ export function ProductDetailModal({
               <div className="flex justify-between">
                 <span>Paiement</span>
                 <strong className="text-[#009EE3] flex items-center gap-1">
-                  <Lock className="w-3 h-3" /> Wave · OM · MTN · Moov
+                  <Lock className="w-3 h-3" /> Wave Côte d’Ivoire
                 </strong>
               </div>
               <div className="flex justify-between">

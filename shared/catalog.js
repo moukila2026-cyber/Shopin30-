@@ -96,57 +96,14 @@ export const DELIVERY_SLOTS = [
   { id: 'soir', label: 'Fin de journée (16h00 – 19h30)' },
 ];
 
-// Moyens de paiement acceptés par Pèrôkadô à Daloa.
-// Wave et Mobile Money : le client envoie le montant au numéro marchand puis
-// saisit la référence de transaction ; le paiement est vérifié avant expédition.
-// Espèces à la livraison : le livreur encaisse, aucun prépaiement.
+// Wave Côte d’Ivoire est le seul moyen de paiement accepté pour les nouvelles commandes.
 export const PAYMENT_METHODS = [
   {
     id: 'wave',
-    label: 'Wave Côte d’Ivoire (+225 05 46 69 74 78)',
+    label: 'Wave Côte d’Ivoire',
     shortLabel: 'Wave',
     kind: 'mobile-money',
-    merchantPhone: '+225 05 46 69 74 78',
-    description:
-      'Envoyez le montant au +225 05 46 69 74 78 depuis votre application Wave, puis saisissez la référence de la transaction. Vérification immédiate et Code QR de suivi en direct.',
-  },
-  {
-    id: 'orange-money',
-    label: 'Orange Money Côte d’Ivoire',
-    shortLabel: 'Orange Money',
-    kind: 'mobile-money',
-    merchantPhone: '+225 05 46 69 74 78',
-    ussd: '#144#',
-    description:
-      'Composez #144# › Transfert › Paiement marchand, envoyez le montant au +225 05 46 69 74 78, puis saisissez la référence reçue par SMS.',
-  },
-  {
-    id: 'mtn-momo',
-    label: 'MTN Mobile Money (MoMo)',
-    shortLabel: 'MTN MoMo',
-    kind: 'mobile-money',
-    merchantPhone: '+225 05 46 69 74 78',
-    ussd: '*133#',
-    description:
-      'Composez *133# › Paiement › Marchand, envoyez le montant au +225 05 46 69 74 78, puis saisissez la référence de la transaction.',
-  },
-  {
-    id: 'moov-money',
-    label: 'Moov Money (Flooz)',
-    shortLabel: 'Moov Money',
-    kind: 'mobile-money',
-    merchantPhone: '+225 05 46 69 74 78',
-    ussd: '*155#',
-    description:
-      'Composez *155# › Paiement marchand, envoyez le montant au +225 05 46 69 74 78, puis saisissez la référence de la transaction.',
-  },
-  {
-    id: 'especes-livraison',
-    label: 'Espèces à la livraison',
-    shortLabel: 'À la livraison',
-    kind: 'cash',
-    description:
-      'Vous réglez en espèces au livreur à la réception, uniquement dans Daloa et sa périphérie. Préparez le montant exact : nos livreurs ne disposent pas toujours de monnaie.',
+    description: 'Paiement exclusivement par Wave Côte d’Ivoire. Le paiement est vérifié avant expédition.',
   },
 ];
 
@@ -154,12 +111,6 @@ export const PAYMENT_METHOD_IDS = PAYMENT_METHODS.map((m) => m.id);
 
 export function getPaymentMethod(id) {
   return PAYMENT_METHODS.find((m) => m.id === id) || PAYMENT_METHODS[0];
-}
-
-/** Un paiement en espèces n'est possible que dans Daloa (commune et périphérie). */
-export function isCashOnDeliveryAllowed(zone) {
-  const id = String(zone?.id || '');
-  return id.startsWith('daloa-');
 }
 
 export const SMART_TECHNOLOGY_PRODUCTS = [
@@ -985,6 +936,42 @@ export const MOTOS_TRICYCLES_PRODUCTS = [
       'Suspension avant double ressort renforcé & lames arrière',
     ],
     imageUrl: '/images/products/moto-apsonic-tricycle-150-175.jpg',
+  },
+];
+
+// Quad électriques enfants : stock à confirmer avant toute commande.
+export const QUADS_ENFANTS_2026_PRODUCTS = [
+  {
+    id: 'enfant-quad-rechargeable-noir-bleu',
+    slug: 'quad-electrique-rechargeable-enfant-noir-bleu',
+    name: 'Quad électrique rechargeable enfant — Bleu & Noir',
+    category: 'jouets-enfants',
+    price: 47000,
+    compareAtPrice: null,
+    stock: 0,
+    badge: 'Nouveauté',
+    featured: false,
+    isHeavy: false,
+    shortDescription: 'Quad électrique rechargeable bleu et noir, avec guidon et quatre roues.',
+    description: 'Quad électrique rechargeable pour enfant, en bleu et noir. Le fournisseur indique une tranche de 0 à 3 ans ; l’âge minimum et les limites de poids sont à confirmer avant utilisation. Surveillance permanente d’un adulte indispensable.',
+    specs: ['Électrique rechargeable', 'Coloris bleu et noir', 'Quatre roues et guidon', 'Âge indiqué par le fournisseur : 0–3 ans, à vérifier', 'Utilisation sous surveillance d’un adulte'],
+    imageUrl: '/images/enfants/quad-noir-bleu.png',
+  },
+  {
+    id: 'enfant-quad-rechargeable-noir-jaune',
+    slug: 'quad-electrique-rechargeable-enfant-noir-jaune',
+    name: 'Quad électrique rechargeable enfant — Jaune & Noir',
+    category: 'jouets-enfants',
+    price: 47000,
+    compareAtPrice: null,
+    stock: 0,
+    badge: 'Nouveauté',
+    featured: false,
+    isHeavy: false,
+    shortDescription: 'Quad électrique rechargeable jaune et noir, avec guidon et quatre roues.',
+    description: 'Quad électrique rechargeable pour enfant, en jaune et noir. Le fournisseur indique une tranche de 0 à 3 ans ; l’âge minimum et les limites de poids sont à confirmer avant utilisation. Surveillance permanente d’un adulte indispensable.',
+    specs: ['Électrique rechargeable', 'Coloris jaune et noir', 'Quatre roues et guidon', 'Âge indiqué par le fournisseur : 0–3 ans, à vérifier', 'Utilisation sous surveillance d’un adulte'],
+    imageUrl: '/images/enfants/quad-noir-jaune.png',
   },
 ];
 
@@ -6167,6 +6154,7 @@ export const INITIAL_PRODUCTS = [
   ...MOTOS_TRICYCLES_PRODUCTS,
   ...SMART_TECHNOLOGY_PRODUCTS,
   ...JOUETS_ENFANTS_PRODUCTS,
+  ...QUADS_ENFANTS_2026_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
   {
     id: 'smartphone-nova-x12',

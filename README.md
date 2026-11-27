@@ -15,7 +15,7 @@ Propulsée par **React 19 + Vite + Tailwind CSS 4** côté interface, **Express 
   - **Daloa Périphérie** : `1 500 FCFA`
   - **Expédition vers Issia, Vavoua, Zoukougbeu, Bouaflé, Sinfra & autres villes** : `2 000 FCFA`
   - Mention explicite que le tarif dépend de la taille et du poids de la marchandise, avec lien direct vers le **Service Client**.
-- **5 moyens de paiement ivoiriens** : Wave, Orange Money (`#144#`), MTN MoMo (`*133#`), Moov Money (`*155#`) et **espèces à la livraison** (Daloa commune et périphérie uniquement). Le client copie le numéro marchand, paie depuis son application puis saisit sa référence de transaction ; le paiement par défaut peut aussi s'ouvrir directement via l'API Wave Business.
+- **Paiement exclusivement par Wave Côte d’Ivoire** : le client paie depuis son application puis saisit sa référence pour vérification ; le paiement peut aussi s’ouvrir via l’API Wave Business lorsqu’elle est configurée.
 - **Supplément quartier à Daloa** : grille de 16 quartiers (Lobia, Tazibouo, Commerce, Kennedy, Orly, Zakoua, Gonaté, Bédiala…) appliquant 0 à 250 F de supplément sur le tarif commune ou périphérie.
 - **Avis clients réels modérés** : formulaire de dépôt sur chaque fiche produit, mention « achat vérifié » automatique si la référence de commande correspond, publication après validation dans la console Seller Central. Aucune note n'est générée artificiellement.
 - **PWA installable** : manifest + service worker (cache du shell, images en stale-while-revalidate, catalogue en network-first) et raccourcis panier / suivi / rayon BTP.
