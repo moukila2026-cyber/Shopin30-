@@ -12,11 +12,9 @@ import { ZodError } from 'zod';
 import {
   CATEGORIES,
   DELIVERY_SLOTS,
-  DELIVERY_ZONES,
   PAYMENT_METHODS,
   BRAND,
   getPaymentMethod,
-  isCashOnDeliveryAllowed,
 } from '../shared/catalog.js';
 import { BusinessError, DatabaseUnavailableError } from './store.js';
 import {
@@ -484,24 +482,8 @@ export function createApp({ store, production = false, serveStatic = false } = {
       const payload = PlaceOrderSchema.parse(req.body);
       const waveApiActive = isWaveAutoCheckoutEnabled();
       const method = getPaymentMethod(payload.paymentMethod);
-      const isCash = method.kind === 'cash';
-
-      // Espèces à la livraison : possible uniquement dans Daloa (commune et périphérie).
-      if (isCash) {
-        const zone = DELIVERY_ZONES.find((z) => z.id === payload.cityZoneId);
-        if (!isCashOnDeliveryAllowed(zone || { id: payload.cityZoneId })) {
-          throw new BusinessError(
-            'Le paiement à la livraison est réservé à Daloa et sa périphérie. Choisissez Wave, Orange Money, MTN MoMo ou Moov Money pour une expédition.',
-            400,
-            'CASH_NOT_ALLOWED'
-          );
-        }
-      }
-
-      // Paiement Mobile Money (Wave, Orange Money, MTN MoMo, Moov Money) : le client
-      // envoie le montant au numéro marchand puis saisit la référence de la transaction.
-      // Si l'API Wave Business Checkout est activée, Wave s'ouvre directement à la place.
-      if (!isCash && !waveApiActive) {
+      // En mode direct, la référence Wave doit être vérifiée avant expédition.
+      if (!waveApiActive) {
         const digits = String(payload.waveSenderPhone || '').replace(/\D/g, '');
         if (digits.length < 8) {
           throw new BusinessError(
@@ -526,7 +508,7 @@ export function createApp({ store, production = false, serveStatic = false } = {
 
       let checkoutUrl = null;
 
-      if (waveApiActive && !isCash && method.id === 'wave' && !result.duplicate) {
+      if (waveApiActive && !result.duplicate) {
         const proto = isSecureRequest(req, production) ? 'https' : 'http';
         const reqHost = String(req.headers['x-forwarded-host'] || req.headers.host || 'localhost:3000')
           .split(',')[0]

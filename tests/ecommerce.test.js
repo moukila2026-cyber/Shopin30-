@@ -70,10 +70,10 @@ test('1. Catalogue & Grille tarifaire : Daloa Commune 1000 F, Périphérie 1500 
   assert.equal(issia?.fee, 2000);
   assert.equal(vavoua?.fee, 2000);
 
-  // Moyens de paiement : 4 mobile money ivoiriens + espèces à la livraison
+  // Seul Wave Côte d’Ivoire est proposé
   assert.deepEqual(
     catalog.data.paymentMethods.map((m) => m.id),
-    ['wave', 'orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']
+    ['wave']
   );
 });
 
@@ -348,7 +348,7 @@ test('7. Gamme SMART TECHNOLOGY, séparation stricte Wave (+225 05 46 69 74 78) 
   assert.equal(cat.data.settings.whatsappNumber, '2250501303343');
   assert.deepEqual(
     cat.data.paymentMethods.map((m) => m.id),
-    ['wave', 'orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']
+    ['wave']
   );
 
   const smartFrigo = cat.data.products.find((p) => p.id === 'smart-frigo-4-portes-inverter-inox');
@@ -1191,61 +1191,29 @@ test('12. Arrivage BTP Décembre 2026 : 99 fiches retravaillées Pèrôkadô (lo
 });
 
 // ==============================================================================
-// 14. Nouveaux parcours : Orange Money / Moov / espèces à la livraison,
+// 14. Wave exclusivement,
 //     supplément quartier, avis réels modérés et relance panier abandonné.
 // ==============================================================================
-test('14. Paiement Orange Money accepté, espèces réservées à Daloa, quartier Zakoua majoré, avis modéré et panier abandonné', async () => {
-  const catalog = await reqJson('/api/catalog');
-  const payIds = catalog.data.paymentMethods.map((m) => m.id);
-  for (const id of ['orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']) {
-    assert.ok(payIds.includes(id), `moyen de paiement ${id} exposé`);
-  }
-
+test('14. Paiements non Wave refusés, quartier Zakoua majoré, avis modéré et panier abandonné', async () => {
   const baseOrder = {
-    requestId: 'req_orange_money_14a',
+    requestId: 'req_wave_14a',
     customerName: 'Yao Serge',
     customerPhone: '0744556677',
     cityZoneId: 'daloa-commune',
     neighborhood: 'Lobia',
     deliverySlot: 'apres-midi',
-    paymentMethod: 'orange-money',
+    paymentMethod: 'wave',
     waveSenderPhone: '0744556677',
-    waveTransactionRef: 'OM123456',
+    waveTransactionRef: 'WAVE123456',
     items: [{ productId: 'bouilloire-inox-2l', quantity: 1 }],
   };
 
-  const om = await reqJson('/api/orders', { method: 'POST', body: baseOrder });
-  assert.equal(om.status, 201, JSON.stringify(om.data));
-  assert.equal(om.data.order.paymentMethod, 'orange-money');
-  assert.equal(om.data.paymentProvider, 'orange-money');
-
-  // Espèces hors Daloa : refusé explicitement
-  const cashFar = await reqJson('/api/orders', {
-    method: 'POST',
-    body: {
-      ...baseOrder,
-      requestId: 'req_cash_issia_14b',
-      cityZoneId: 'expedition-issia',
-      neighborhood: 'Centre',
-      paymentMethod: 'especes-livraison',
-    },
-  });
-  assert.equal(cashFar.status, 400);
-  assert.equal(cashFar.data.code, 'CASH_NOT_ALLOWED');
-
-  // Espèces à Daloa : accepté, sans référence de transaction
-  const cashDaloa = await reqJson('/api/orders', {
-    method: 'POST',
-    body: {
-      ...baseOrder,
-      requestId: 'req_cash_daloa_14c',
-      paymentMethod: 'especes-livraison',
-      waveSenderPhone: '',
-      waveTransactionRef: '',
-    },
-  });
-  assert.equal(cashDaloa.status, 201, JSON.stringify(cashDaloa.data));
-  assert.equal(cashDaloa.data.order.paymentMethod, 'especes-livraison');
+  for (const method of ['orange-money', 'mtn-momo', 'moov-money', 'especes-livraison']) {
+    const result = await reqJson('/api/orders', {
+      method: 'POST', body: { ...baseOrder, requestId: `req_rejected_${method}`, paymentMethod: method },
+    });
+    assert.equal(result.status, 400, `${method} doit être refusé`);
+  }
 
   // Supplément quartier : Zakoua = +250 F sur le tarif commune
   const zakoua = await reqJson('/api/orders', {
@@ -1254,7 +1222,7 @@ test('14. Paiement Orange Money accepté, espèces réservées à Daloa, quartie
       ...baseOrder,
       requestId: 'req_zakoua_14d',
       neighborhood: 'Zakoua',
-      waveTransactionRef: 'OM654321',
+      waveTransactionRef: 'WAVE654321',
     },
   });
   assert.equal(zakoua.status, 201, JSON.stringify(zakoua.data));

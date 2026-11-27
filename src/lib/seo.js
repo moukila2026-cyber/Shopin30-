@@ -28,7 +28,7 @@ export function buildOrganizationSchema(brand) {
     telephone: '+225 05 01 30 33 43',
     priceRange: '1 000 FCFA – 1 500 000 FCFA',
     currenciesAccepted: 'XOF',
-    paymentAccepted: 'Wave, Orange Money, MTN MoMo, Moov Money, Espèces à la livraison',
+    paymentAccepted: 'Wave Côte d’Ivoire',
     areaServed: [
       { '@type': 'City', name: 'Daloa' },
       { '@type': 'City', name: 'Issia' },

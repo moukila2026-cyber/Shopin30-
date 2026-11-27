@@ -233,7 +233,7 @@ export function createStore(adapterPromiseOrInstance) {
           wavePaymentUrl: process.env.WAVE_PAYMENT_URL || BRAND.defaultWavePaymentUrl,
           shippingDisclaimer: BRAND.shippingDisclaimer,
           announcementBanner:
-            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison · Suivi QR',
+            'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Paiement Wave Côte d’Ivoire uniquement · Suivi QR',
           storeOpen: true,
           deliveryZones: DELIVERY_ZONES,
         };
@@ -694,8 +694,8 @@ export function createStore(adapterPromiseOrInstance) {
           : BRAND.shippingDisclaimer,
       announcementBanner:
         typeof stored.announcementBanner === 'string'
-          ? stored.announcementBanner
-          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison',
+          ? stored.announcementBanner.replace('Wave, Orange Money, MTN, Moov & espèces à la livraison', 'Paiement Wave Côte d’Ivoire uniquement')
+          : 'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Paiement Wave Côte d’Ivoire uniquement',
       storeOpen: stored.storeOpen !== false,
       deliveryZones: storedZones.length > 0 ? storedZones : DELIVERY_ZONES,
     };
