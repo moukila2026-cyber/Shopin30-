@@ -6,6 +6,7 @@ import { SCHEMA_SQL } from './schema.js';
 import {
   BRAND,
   DELIVERY_ZONES,
+  BTP_ARRIVAGE_DEC2026_PRODUCTS,
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
   JOUETS_ENFANTS_PRODUCTS,
@@ -492,6 +493,57 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_cuisine_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
+          // retravailles aux couleurs Perokado + prix marche ivoirien).
+          // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
+          const { rows: btpDecSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v1_synced'`
+          );
+          if (btpDecSyncRows.length === 0) {
+            for (const p of BTP_ARRIVAGE_DEC2026_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO UPDATE SET
+                  slug = EXCLUDED.slug,
+                  name = EXCLUDED.name,
+                  category = EXCLUDED.category,
+                  price = EXCLUDED.price,
+                  compare_at_price = EXCLUDED.compare_at_price,
+                  badge = EXCLUDED.badge,
+                  short_description = EXCLUDED.short_description,
+                  description = EXCLUDED.description,
+                  specs = EXCLUDED.specs,
+                  image_url = EXCLUDED.image_url,
+                  is_heavy = EXCLUDED.is_heavy,
+                  updated_at = NOW()`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_btp_dec2026_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

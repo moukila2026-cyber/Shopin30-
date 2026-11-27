@@ -860,3 +860,50 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.deliveryFee, 1000);
   assert.equal(sugarOrder.data.order.total, 4500);
 });
+
+test('12. Arrivage BTP Décembre 2026 : 20 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+  const cat = await reqJson('/api/catalog');
+  assert.equal(cat.status, 200);
+
+  // [id, prix Pèrôkadô affiché sur la fiche retravaillée]
+  const expectedBtpDec = [
+    ['btp-griffe-159-cle-canon-luxe-124', 15500],
+    ['btp-griffe-gf11-1021-cle-canon', 15500],
+    ['btp-colonne-douche-noire-griffe-gs-g041', 45000],
+    ['btp-motopompe-essence-emtop-egwp8016', 150000],
+    ['btp-coffret-schneider-144-modules-lvsxt624', 389000],
+    ['btp-parafoudre-schneider-acti9-40ka-a9l40601', 179000],
+    ['btp-douille-b22-megalec-meg-db22n', 1500],
+    ['btp-disjoncteur-schneider-4p-63a-a9f74463', 79900],
+    ['btp-charniere-universelle-force-charn-uf', 3500],
+    ['btp-vis-rappel-gm-30g-force', 2500],
+    ['btp-tole-noire-acier-08mm-force-at8188', 32000],
+    ['btp-dpn-vigi-schneider-easy9-ez9d32610', 59000],
+    ['btp-souffleur-aspirateur-emtop-eabr6506', 32000],
+    ['btp-chaussure-securite-emtop-esbs71sb45', 17500],
+    ['btp-fiche-industrielle-megalec-5p-32a-meg-125g', 12500],
+    ['btp-canon-simple-5-cles-force-cle-s5-70', 6000],
+    ['btp-disjoncteur-compact-schneider-c25f6tm250', 1339000],
+    ['btp-oxyde-bleu-force-25kg', 250000],
+    ['btp-dpn-20a-schneider-easy9-ez9p32620', 6000],
+    ['btp-tirefond-tole-8x80-bleu-force', 4500],
+  ];
+  for (const [id, expectedPrice] of expectedBtpDec) {
+    const prod = cat.data.products.find((p) => p.id === id);
+    assert.ok(prod, `Produit BTP déc. 2026 ${id} présent dans le catalogue`);
+    assert.equal(prod.category, 'quincaillerie-btp');
+    assert.equal(prod.price, expectedPrice, `Prix Pèrôkadô exact pour ${id}`);
+    assert.ok(prod.compareAtPrice >= prod.price, `Prix barré cohérent pour ${id}`);
+    assert.equal(
+      prod.imageUrl,
+      `/images/products/${id}.jpg`,
+      `Visuel retravaillé Pèrôkadô pour ${id}`
+    );
+  }
+
+  // La motopompe et le disjoncteur compact restent des colis lourds (frais majorés).
+  for (const heavyId of ['btp-motopompe-essence-emtop-egwp8016', 'btp-disjoncteur-compact-schneider-c25f6tm250']) {
+    const prod = cat.data.products.find((p) => p.id === heavyId);
+    assert.equal(prod.isHeavy, true, `${heavyId} en livraison lourde`);
+  }
+});
