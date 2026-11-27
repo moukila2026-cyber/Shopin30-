@@ -533,61 +533,13 @@ export function createStore(adapterPromiseOrInstance) {
             );
           }
 
-          // Migration unique : les 2 serrures FORCE portaient des ids trop proches
-          // (btp-serrure-force-cle-123f / -134f) qui provoquaient des confusions en
-          // console. On les renomme en clair selon leur difference visible :
-          // 123F = rosace ETROITE, 134F = PLAQUE LONGUE. La ligne est conservee
-          // (prix, stock, photo) pour ne pas casser les liens existants.
-          const { rows: forceLockMigRows } = await adapter.query(
-            `SELECT 1 FROM store_settings WHERE key = 'btp_force_locks_rename_v1'`
-          );
-          if (forceLockMigRows.length === 0) {
-            const renames = [
-              [
-                'btp-serrure-force-cle-123f',
-                'btp-force-cle-123f-rosace-etroite',
-                'serrure-force-123f-rosace-etroite-cle-a-canon',
-                'Serrure Clé à Canon FORCE 123F — Rosace Étroite Inox (CLE-123F)',
-                'Rosace étroite',
-                '/images/products/btp-force-cle-123f-rosace-etroite.jpg',
-              ],
-              [
-                'btp-serrure-force-cle-134f',
-                'btp-force-cle-134f-plaque-longue',
-                'serrure-force-134f-plaque-longue-nickel-satine',
-                'Serrure Clé à Canon FORCE 134F — Plaque Longue Nickel Satiné (CLE-134F)',
-                'Plaque longue',
-                '/images/products/btp-force-cle-134f-plaque-longue.jpg',
-              ],
-            ];
-            for (const [oldId, newId, newSlug, newName, newBadge, newImage] of renames) {
-              await adapter.query(
-                `WITH moved_photo AS (
-                   DELETE FROM product_photos WHERE product_id = $1
-                   RETURNING mime_type, data
-                 )
-                 INSERT INTO product_photos (product_id, mime_type, data)
-                 SELECT $2, mime_type, data FROM moved_photo
-                 ON CONFLICT (product_id) DO NOTHING`,
-                [oldId, newId]
-              );
-              await adapter.query(
-                `UPDATE products SET id = $2, slug = $3, name = $4, badge = $5, image_url = $6
-                 WHERE id = $1
-                   AND NOT EXISTS (SELECT 1 FROM products WHERE id = $2)`,
-                [oldId, newId, newSlug, newName, newBadge, newImage]
-              );
-            }
-            await adapter.query(
-              `INSERT INTO store_settings (key, value)
-               VALUES ('btp_force_locks_rename_v1', '{"done":true}'::jsonb)
-               ON CONFLICT (key) DO NOTHING`
-            );
-          }
+          // Les anciennes références FORCE restent inchangées : renommer leur clé
+          // primaire peut détacher ou supprimer des photos déjà téléversées.
+          // Une éventuelle migration nécessite une sauvegarde et un traitement dédié.
 
           // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
           // retravailles aux couleurs Perokado + prix marche ivoirien).
-          // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
+          // ON CONFLICT DO NOTHING : conserve les fiches, prix et photos existants.
           // Cle v7 : ajoute les 15 references du lot 7 (Legrand : ID RX3 402025/402063/
           // 402026, ID DX3 411524, parafoudre 2P 410321, coffret 48 modules 135014,
           // sonnerie 41651, Dismatic 764519, telerupteur 412408, RJ45 Mosaic 076562,
@@ -611,18 +563,7 @@ export function createStore(adapterPromiseOrInstance) {
                   id, slug, name, category, price, compare_at_price, stock,
                   badge, featured, active, short_description, description, specs, image_url, is_heavy
                 ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
-                ON CONFLICT (id) DO UPDATE SET
-                  slug = EXCLUDED.slug,
-                  name = EXCLUDED.name,
-                  category = EXCLUDED.category,
-                  price = EXCLUDED.price,
-                  compare_at_price = EXCLUDED.compare_at_price,
-                  badge = EXCLUDED.badge,
-                  short_description = EXCLUDED.short_description,
-                  description = EXCLUDED.description,
-                  specs = EXCLUDED.specs,
-                  image_url = EXCLUDED.image_url,
-                  is_heavy = EXCLUDED.is_heavy`,
+                ON CONFLICT (id) DO NOTHING`,
                 [
                   p.id,
                   p.slug,

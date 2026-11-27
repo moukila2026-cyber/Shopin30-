@@ -1343,3 +1343,34 @@ test('14. Paiements non Wave refusés, quartier Zakoua majoré, avis modéré et
   assert.equal(reminded.status, 200);
   assert.equal(reminded.data.status, 'reminded');
 });
+
+test('Migration catalogue : conserve prix et photos des fiches existantes', async () => {
+  const { SCHEMA_SQL } = await import('../server/schema.js');
+  const { BTP_ARRIVAGE_DEC2026_PRODUCTS } = await import('../shared/catalog.js');
+  const db = await createDatabaseAdapter('');
+  const existingStore = createStore(db);
+  try {
+    await db.exec(SCHEMA_SQL);
+    const item = BTP_ARRIVAGE_DEC2026_PRODUCTS[0];
+    await db.query(`INSERT INTO products (id, slug, name, category, price, stock, image_url, has_uploaded_photo)
+      VALUES ($1, $2, 'Fiche personnalisée', $3, 123, 7, '/custom.jpg', TRUE)`, [item.id, item.slug, item.category]);
+    await db.query(`INSERT INTO products (id, slug, name, category, price, has_uploaded_photo)
+      VALUES ('btp-serrure-force-cle-123f', 'serrure-ancienne', 'Serrure ancienne', 'quincaillerie-btp', 321, TRUE)`);
+    const bytes = Buffer.from('photos sauvegardées');
+    for (const id of [item.id, 'btp-serrure-force-cle-123f']) {
+      await db.query('INSERT INTO product_photos (product_id, mime_type, data) VALUES ($1, $2, $3)', [id, 'image/png', bytes]);
+    }
+    await existingStore.ensureReady();
+    const { rows } = await db.query('SELECT price, stock, name, image_url, has_uploaded_photo FROM products WHERE id = $1', [item.id]);
+    assert.equal(rows[0].price, 123);
+    assert.equal(rows[0].stock, 7);
+    assert.equal(rows[0].name, 'Fiche personnalisée');
+    assert.equal(rows[0].image_url, '/custom.jpg');
+    for (const id of [item.id, 'btp-serrure-force-cle-123f']) {
+      const photo = await existingStore.getProductPhoto(id);
+      assert.deepEqual(Buffer.from(photo.data), bytes);
+    }
+  } finally {
+    await existingStore.close();
+  }
+});
