@@ -86,7 +86,7 @@ export function ProductCard({
   return (
     <article className="group bg-white border border-[#D5D9D9] rounded-md overflow-hidden flex flex-col hover:shadow-md transition duration-200">
       {/* Zone photo sur fond clair style Amazon */}
-      <div className="relative aspect-square bg-[#F7F8F8] p-4 flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-square bg-[#F7F8F8] p-2.5 sm:p-4 flex items-center justify-center overflow-hidden">
         <img
           src={product.imageUrl}
           alt={product.name}
@@ -102,7 +102,7 @@ export function ProductCard({
         {/* Ruban Amazon Best-Seller / Choix Pèrôkadô en haut à gauche */}
         {product.badge && (
           <span
-            className={`absolute top-0 left-0 px-2.5 py-1 text-[11px] font-bold tracking-tight rounded-br-md shadow-xs ${
+            className={`absolute top-0 left-0 max-w-[75%] truncate px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-tight rounded-br-md shadow-xs ${
               isTopSeller
                 ? 'bg-[#E67A00] text-white'
                 : 'bg-[#232F3E] text-white'
@@ -117,7 +117,7 @@ export function ProductCard({
           type="button"
           onClick={() => onToggleFavorite(product.id)}
           aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 hover:bg-white shadow-xs border border-[#EAEDED] flex items-center justify-center transition cursor-pointer"
+          className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 hover:bg-white shadow-xs border border-[#EAEDED] flex items-center justify-center transition cursor-pointer"
         >
           <Heart
             className={`w-4 h-4 ${
@@ -136,11 +136,11 @@ export function ProductCard({
       </div>
 
       {/* Corps fiche produit dense et informatif style Amazon */}
-      <div className="p-3.5 flex-1 flex flex-col justify-between gap-2">
+      <div className="p-2.5 sm:p-3.5 flex-1 flex flex-col justify-between gap-2">
         <div className="space-y-1">
           <h3
             onClick={() => onOpenDetail(product)}
-            className="text-sm font-medium text-[#0F1111] hover:text-[#C7511F] leading-snug line-clamp-2 cursor-pointer"
+            className="text-xs sm:text-sm font-medium text-[#0F1111] hover:text-[#C7511F] leading-snug line-clamp-2 cursor-pointer"
           >
             {product.name}
           </h3>
@@ -164,7 +164,7 @@ export function ProductCard({
           {/* Prix grand format typographique Amazon */}
           <div className="pt-0.5">
             <div className="flex items-baseline gap-1">
-              <span className="text-xl sm:text-2xl font-bold text-[#0F1111] leading-none">
+              <span className="text-lg sm:text-2xl font-bold text-[#0F1111] leading-none">
                 {formatNumberSpaced(product.price)}
               </span>
               <span className="text-xs font-bold text-[#0F1111]">FCFA</span>
@@ -201,13 +201,18 @@ export function ProductCard({
             type="button"
             disabled={outOfStock}
             onClick={() => onAddToCart(product, 1)}
-            className={`w-full py-2 px-3 rounded-full text-xs font-medium border shadow-2xs transition cursor-pointer ${
+            className={`w-full py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-xs font-medium border shadow-2xs transition cursor-pointer ${
               outOfStock
                 ? 'bg-[#EAEDED] border-[#D5D9D9] text-[#888C8C] cursor-not-allowed'
                 : 'bg-[#FFD814] hover:bg-[#F7CA00] border-[#FCD200] text-[#0F1111]'
             }`}
           >
-            {inCartQty > 0 ? `Ajouté au panier (${inCartQty})` : 'Ajouter au panier'}
+            <span className="sm:hidden">
+              {inCartQty > 0 ? `Ajouté (${inCartQty})` : 'Ajouter au panier'}
+            </span>
+            <span className="hidden sm:inline">
+              {inCartQty > 0 ? `Ajouté au panier (${inCartQty})` : 'Ajouter au panier'}
+            </span>
           </button>
 
           {!outOfStock && onBuyNow && (
@@ -216,7 +221,8 @@ export function ProductCard({
               onClick={() => onBuyNow(product)}
               className="w-full py-1.5 px-3 rounded-full text-xs font-medium bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[#0F1111] shadow-2xs transition cursor-pointer"
             >
-              Acheter maintenant (Wave)
+              <span className="sm:hidden">Acheter (Wave)</span>
+              <span className="hidden sm:inline">Acheter maintenant (Wave)</span>
             </button>
           )}
         </div>
@@ -274,12 +280,12 @@ export function ProductDetailModal({
       aria-label={product.name}
     >
       <div
-        className="relative bg-white rounded-lg max-w-5xl w-full overflow-hidden shadow-2xl border border-[#D5D9D9] my-auto max-h-[92vh] overflow-y-auto"
+        className="relative bg-white rounded-lg max-w-5xl w-full overflow-hidden shadow-2xl border border-[#D5D9D9] my-auto max-h-[92dvh] overflow-y-auto overscroll-contain"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Barre supérieure */}
         <div className="sticky top-0 z-10 bg-[#F0F2F2] px-5 py-3 border-b border-[#D5D9D9] flex items-center justify-between">
-          <span className="text-xs text-[#565959] font-medium truncate pr-4">
+          <span className="text-[11px] sm:text-xs text-[#565959] font-medium truncate pr-2 sm:pr-4 min-w-0">
             Pèrôkadô › Catalogue › <strong className="text-[#0F1111]">{product.name}</strong>
           </span>
           <button
@@ -293,10 +299,10 @@ export function ProductDetailModal({
         </div>
 
         {/* Mise en page 3 colonnes façon page produit Amazon */}
-        <div className="p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="p-3.5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           {/* Colonne 1 : Image produit grand format + vignettes galerie éventuelles (5 cols) */}
           <div className="lg:col-span-5 space-y-2.5">
-            <div className="bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-6 flex items-center justify-center aspect-square">
+            <div className="bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-3 sm:p-6 flex items-center justify-center aspect-square max-h-[46vh] sm:max-h-none overflow-hidden">
               <img
                 src={activeImageUrl || product.imageUrl}
                 alt={product.name}
@@ -395,7 +401,7 @@ export function ProductDetailModal({
 
           {/* Colonne 3 : LA "BUY BOX" ENCADRÉE D'AMAZON (3 cols) */}
           <div className="lg:col-span-3 border border-[#D5D9D9] rounded-lg p-4 space-y-3 bg-white">
-            <div className="text-xl font-bold text-[#0F1111]">{formatFcfa(product.price)}</div>
+            <div className="text-lg sm:text-xl font-bold text-[#0F1111]">{formatFcfa(product.price)}</div>
 
             <div className="text-xs text-[#0F1111] space-y-1">
               <p>

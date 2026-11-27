@@ -62,7 +62,7 @@ export function LegalModal({ openTab, onClose, onSelectTab, whatsappNumber, onRe
       aria-label="Informations légales et conditions Pèrôkadô"
     >
       <div
-        className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-[#D5D9D9]"
+        className="bg-white rounded-xl max-w-4xl w-full max-h-[90dvh] flex flex-col overflow-hidden shadow-2xl border border-[#D5D9D9]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* En-tête */}
@@ -353,7 +353,7 @@ export function CookieConsentBanner({ visible, onAcceptAll, onEssentialOnly, onO
     <div
       role="region"
       aria-label="Gestion des cookies"
-      className="fixed bottom-0 inset-x-0 z-40 p-3 sm:p-4 pointer-events-none"
+      className="fixed bottom-0 inset-x-0 z-40 p-2.5 sm:p-4 pb-[max(0.625rem,env(safe-area-inset-bottom))] pointer-events-none"
     >
       <div className="max-w-4xl mx-auto bg-[#131921] text-white border border-[#37475A] rounded-xl shadow-2xl p-4 sm:p-5 pointer-events-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1 text-xs leading-relaxed">

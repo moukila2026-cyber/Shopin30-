@@ -235,19 +235,20 @@ export function CartDrawer({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-end bg-black/60"
+      className="fixed inset-0 z-50 flex justify-end bg-black/60 overscroll-contain"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label="Panier et commande Pèrôkadô"
+      style={{ height: '100dvh' }}
     >
       <div
-        className="w-full max-w-lg bg-[#EAEDED] h-full flex flex-col shadow-2xl border-l border-[#D5D9D9]"
+        className="w-full max-w-lg bg-[#EAEDED] h-full min-h-0 flex flex-col shadow-2xl border-l border-[#D5D9D9]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* En-tête sombre #232F3E style Amazon Checkout */}
-        <div className="px-5 py-3.5 bg-[#232F3E] text-white flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+        <div className="flex-none px-4 sm:px-5 py-3 sm:py-3.5 bg-[#232F3E] text-white flex items-center justify-between">
+          <div className="flex items-center gap-2 min-w-0">
             {step === 'checkout' && (
               <button
                 type="button"
@@ -259,10 +260,17 @@ export function CartDrawer({
               </button>
             )}
             <ShoppingCart className="w-5 h-5 text-[#FF9900]" />
-            <h2 className="text-base sm:text-lg font-bold">
-              {step === 'cart' && 'Panier Pèrôkadô'}
-              {step === 'checkout' && 'Passer la commande (Wave)'}
-              {step === 'confirmed' && 'Confirmation & Code QR de suivi'}
+            <h2 className="text-sm sm:text-lg font-bold truncate leading-tight">
+              <span className="sm:hidden">
+                {step === 'cart' && 'Panier'}
+                {step === 'checkout' && 'Commande Wave'}
+                {step === 'confirmed' && 'Commande confirmée'}
+              </span>
+              <span className="hidden sm:inline">
+                {step === 'cart' && 'Panier Pèrôkadô'}
+                {step === 'checkout' && 'Passer la commande (Wave)'}
+                {step === 'confirmed' && 'Confirmation & Code QR de suivi'}
+              </span>
             </h2>
           </div>
           <button
@@ -278,7 +286,7 @@ export function CartDrawer({
         {/* ÉTAPE 1 : PANIER */}
         {step === 'cart' && (
           <>
-            <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3.5 sm:p-4 space-y-3.5">
               {detailedItems.length === 0 ? (
                 <div className="bg-white rounded-md p-8 border border-[#D5D9D9] text-center space-y-3">
                   <div className="w-16 h-16 mx-auto rounded-full bg-[#F7FAFA] border border-[#D5D9D9] flex items-center justify-center">
@@ -326,8 +334,8 @@ export function CartDrawer({
                   {/* Liste des articles style Amazon Cart */}
                   <div className="bg-white rounded-md border border-[#D5D9D9] divide-y divide-[#EAEDED]">
                     {detailedItems.map(({ product, quantity, lineTotal }) => (
-                      <div key={product.id} className="flex gap-3.5 p-3.5">
-                        <div className="w-20 h-20 rounded bg-[#F7F8F8] border border-[#EAEDED] p-1.5 flex items-center justify-center shrink-0">
+                      <div key={product.id} className="flex gap-3 sm:gap-3.5 p-3 sm:p-3.5">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded bg-[#F7F8F8] border border-[#EAEDED] p-1.5 flex items-center justify-center shrink-0">
                           <img
                             src={product.imageUrl}
                             alt={product.name}
@@ -348,7 +356,7 @@ export function CartDrawer({
                             </p>
                           </div>
 
-                          <div className="flex items-center justify-between pt-2">
+                          <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
                             <div className="flex items-center gap-2">
                               <div className="inline-flex items-center rounded-full border-2 border-[#FFD814] bg-[#F7FAFA] shadow-2xs">
                                 <button
@@ -436,7 +444,7 @@ export function CartDrawer({
             </div>
 
             {detailedItems.length > 0 && (
-              <div className="p-4 bg-white border-t border-[#D5D9D9] space-y-3">
+              <div className="flex-none p-3.5 sm:p-4 bg-white border-t border-[#D5D9D9] space-y-2.5 sm:space-y-3 pb-[max(0.875rem,env(safe-area-inset-bottom))]">
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between text-[#0F1111]">
                     <span>
@@ -477,8 +485,8 @@ export function CartDrawer({
 
         {/* ÉTAPE 2 : LIVRAISON & PAIEMENT EN LIGNE WAVE UNIQUEMENT */}
         {step === 'checkout' && (
-          <form onSubmit={handleSubmitOrder} className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
+          <form onSubmit={handleSubmitOrder} className="flex-1 min-h-0 flex flex-col overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3.5 sm:p-4 space-y-3.5">
               {submitError && (
                 <div className="flex items-start gap-2 p-3 rounded-md bg-[#FCF4F4] border border-[#CC0C39] text-xs text-[#CC0C39]">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -731,7 +739,7 @@ export function CartDrawer({
             </div>
 
             {/* Récapitulatif final style Amazon */}
-            <div className="p-4 bg-white border-t border-[#D5D9D9] space-y-2.5">
+            <div className="flex-none p-3.5 sm:p-4 bg-white border-t border-[#D5D9D9] space-y-2.5 pb-[max(0.875rem,env(safe-area-inset-bottom))]">
               <div className="space-y-1 text-xs text-[#565959]">
                 <div className="flex justify-between">
                   <span>Articles :</span>
@@ -771,7 +779,7 @@ export function CartDrawer({
 
         {/* ÉTAPE 3 : CONFIRMATION AVEC RÉFÉRENCE + CODE QR DE SUIVI EN DIRECT */}
         {step === 'confirmed' && confirmedData?.order && (
-          <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3.5 sm:p-5 space-y-4">
             <div className="bg-white rounded-md p-5 border border-[#D5D9D9] text-center space-y-4">
               <div className="w-12 h-12 mx-auto rounded-full bg-[#E8F8E8] text-[#007600] flex items-center justify-center">
                 <CheckCircle2 className="w-7 h-7" />

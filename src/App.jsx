@@ -316,7 +316,7 @@ export default function App() {
       )}
 
       {/* SECTION CATALOGUE STYLE AMAZON : COLONNE FILTRES À GAUCHE + GRILLE 4 COLONNES */}
-      <main id="catalogue" className="flex-1 max-w-[1500px] w-full mx-auto px-3 sm:px-6 pt-6 pb-10">
+      <main id="catalogue" className="flex-1 max-w-[1500px] w-full mx-auto px-2 sm:px-6 pt-4 sm:pt-6 pb-10">
         {/* Bandeau info si la base de production Vercel attend encore DATABASE_URL */}
         {catalogData.error && (
           <div className="mb-5 p-3.5 rounded-md bg-white border-l-4 border-[#FF9900] shadow-xs flex items-start gap-3 text-xs text-[#0F1111]">
@@ -547,7 +547,7 @@ export default function App() {
                         Voir tout le rayon →
                       </button>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
                       {items.map((product) => (
                         <ProductCard
                           key={product.id}
@@ -566,7 +566,7 @@ export default function App() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
