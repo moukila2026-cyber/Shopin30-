@@ -6,6 +6,15 @@ if (!response.ok) throw new Error(`Catalogue HTTP ${response.status}`);
 const { products, paymentMethods } = await response.json();
 if (!Array.isArray(products) || !products.length) throw new Error('Catalogue vide ou invalide');
 if (paymentMethods?.length !== 1 || paymentMethods[0].id !== 'wave') throw new Error('Configuration paiement inattendue');
+const otherResponse = await fetch('https://shopin30-market.vercel.app/api/catalog', { signal: AbortSignal.timeout(30000) });
+if (!otherResponse.ok) throw new Error(`Autre catalogue HTTP ${otherResponse.status}`);
+const otherProducts = (await otherResponse.json()).products;
+const publicIds = new Set(products.map(p => p.id));
+const missing = otherProducts.filter(p => !publicIds.has(p.id));
+const otherUploads = otherProducts.reduce((count, p) => count + (p.uploadedPhotoSlots || []).filter(Boolean).length, 0);
+const comparison = `Autre site: ${otherProducts.length} produits, ${otherUploads} photos televersees; ${missing.length} produits absents sur perokado.com`;
+console.log(comparison, missing.map(p => p.id).join(', '));
+if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `comparison=${comparison}\n`);
 const images = new Map();
 let uploaded = 0;
 for (const p of products) {
