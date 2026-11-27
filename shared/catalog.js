@@ -1259,6 +1259,570 @@ export const JOUETS_ENFANTS_PRODUCTS = [
 ];
 
 // ==============================================================================
+// ARRIVAGE BTP DÉCEMBRE 2026 — Visuels retravaillés aux couleurs Pèrôkadô
+// (logo Pèrôkadô + prix marché ivoirien sur chaque fiche), synchronisé en base
+// via server/store.js (clé catalog_btp_dec2026_v1_synced).
+// ==============================================================================
+export const BTP_ARRIVAGE_DEC2026_PRODUCTS = [
+  // ---------------------------------------------------------------------------
+  // ARRIVAGE DÉCEMBRE 2026 — Visuels retravaillés aux couleurs Pèrôkadô
+  // (logo Pèrôkadô + prix marché ivoirien affiché sur chaque fiche)
+  // ---------------------------------------------------------------------------
+  {
+    id: 'btp-griffe-159-cle-canon-luxe-124',
+    slug: 'serrure-cle-canon-luxe-124-inox-griffe-159',
+    name: 'Serrure Clé à Canon Luxe 124 Inox Griffe — GRIFFE-159',
+    category: 'quincaillerie-btp',
+    price: 15500,
+    compareAtPrice: 18500,
+    stock: 15,
+    badge: 'Inox Brossé',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure à encastrer Griffe 159 (modèle canon luxe 124) en acier inoxydable brossé, poignée droite et jeu de clés.',
+    description:
+      'La serrure Griffe 159 « clé à canon luxe 124 » associe une plaque longue en inox brossé anti-traces à une poignée droite ergonomique. Livrée complète avec canon et clés pour portes d’entrée, chambres et bureaux.',
+    specs: [
+      'Marque Griffe · Réf. GRIFFE-159 · Finition inox brossé',
+      'Plaque longue + poignée droite confort',
+      'Cylindre à canon sécurisé livré avec clés',
+      'Portes bois intérieures & extérieures'
+    ],
+    imageUrl: '/images/products/btp-griffe-159-cle-canon-luxe-124.jpg',
+  },
+  {
+    id: 'btp-griffe-gf11-1021-cle-canon',
+    slug: 'serrure-cle-canon-luxe-griffe-gf-11-1021',
+    name: 'Serrure Clé à Canon Luxe Griffe — GF-11-1021',
+    category: 'quincaillerie-btp',
+    price: 15500,
+    compareAtPrice: 18500,
+    stock: 15,
+    badge: 'Luxe',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure Griffe GF-11-1021 finition satinée : platine longue, poignée courbée design et canon avec clés.',
+    description:
+      'Élégante et robuste, la serrure Griffe GF-11-1021 habille les portes principales, chambres et bureaux. Sa poignée courbée offre une prise en main agréable et son canon laiton fiabilise la fermeture.',
+    specs: [
+      'Marque Griffe · Réf. GF-11-1021',
+      'Platine longue rectangulaire finition satinée',
+      'Poignée courbée design + canon laiton avec clés',
+      'Installation standard sur porte bois'
+    ],
+    imageUrl: '/images/products/btp-griffe-gf11-1021-cle-canon.jpg',
+  },
+  {
+    id: 'btp-colonne-douche-noire-griffe-gs-g041',
+    slug: 'colonne-douche-noire-led-griffe-gs-g041',
+    name: 'Colonne de Douche Noire avec Affichage Digital Griffe — GS-G041',
+    category: 'quincaillerie-btp',
+    price: 45000,
+    compareAtPrice: 52000,
+    stock: 8,
+    badge: 'Douche Design Noire',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Colonne de douche noire Griffe GS-G041 : pomme à effet pluie, douchette à main, buse hydromassante et affichage digital de température.',
+    description:
+      'Donnez un look hôtel à votre salle de bain ! La colonne de douche Griffe GS-G041 en finition noire mat combine une pomme de douche rectangulaire effet pluie, une douchette à main et un afficheur digital de température.',
+    specs: [
+      'Marque Griffe · Réf. GS-G041 · Finition noire mat',
+      'Pomme de douche rectangulaire effet pluie + douchette à main',
+      'Afficheur digital de température intégré',
+      'Ensemble complet prêt à poser (colonne, flexibles, mitigeur)'
+    ],
+    imageUrl: '/images/products/btp-colonne-douche-noire-griffe-gs-g041.jpg',
+  },
+  {
+    id: 'btp-motopompe-essence-emtop-egwp8016',
+    slug: 'motopompe-a-eau-essence-80mm-3-pouces-7hp-1000l-min-emtop-egwp8016',
+    name: 'Motopompe à Eau Essence 80 mm (3") 7,0 HP 1000 L/min EMTOP — EGWP8016',
+    category: 'quincaillerie-btp',
+    price: 150000,
+    compareAtPrice: 175000,
+    stock: 6,
+    badge: 'Irrigation & Chantier',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Motopompe essence EMTOP EGWP8016 3" (80 mm) 7,0 HP, débit 1000 L/min, réservoir 3,6 L et châssis tubulaire renforcé.',
+    description:
+      'Parfaite pour irriguer les champs, vider une fosse ou alimenter un chantier : la motopompe EMTOP EGWP8016 aspire et refoule jusqu’à 1000 L/min sur 3 pouces. Moteur essence 7,0 HP, démarrage manuel et cadre acier protecteur.',
+    specs: [
+      'Marque EMTOP · Réf. EGWP8016 · "Faire la différence"',
+      'Moteur essence 7,0 HP · Réservoir 3,6 L',
+      'Diamètre 80 mm (3") · Débit 1000 L/min',
+      'Châssis tubulaire acier + raccords inclus'
+    ],
+    imageUrl: '/images/products/btp-motopompe-essence-emtop-egwp8016.jpg',
+  },
+  {
+    id: 'btp-coffret-schneider-144-modules-lvsxt624',
+    slug: 'coffret-electrique-144-modules-6-rangees-schneider-lvsxt624',
+    name: 'Coffret Électrique 144 Modules 6 Rangées Sans Porte Schneider PrismaSet XS — LVSXT624',
+    category: 'quincaillerie-btp',
+    price: 389000,
+    compareAtPrice: 425000,
+    stock: 3,
+    badge: '144 Modules Pro',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Coffret apparent Schneider PrismaSet XS LVSXT624 : 6 rangées de 24 modules (144 modules), sans porte, IP30/IK08.',
+    description:
+      'Pour les installations tertiaires et les grands projets de Daloa : ce coffret PrismaSet XS LVSXT624 offre 6 rangées de 24 modules avec bornier de terre et rails amovibles. Habillage plastique auto-extinguible, IP30 sans porte.',
+    specs: [
+      'Marque Schneider Electric · Réf. LVSXT624 · Gamme PrismaSet XS',
+      '6 rangées × 24 modules = 144 modules · Montage en saillie',
+      'Livré sans porte · IP30 / IK08 · 125 A',
+      'Bornier de terre et plaques amovibles inclus'
+    ],
+    imageUrl: '/images/products/btp-coffret-schneider-144-modules-lvsxt624.jpg',
+  },
+  {
+    id: 'btp-parafoudre-schneider-acti9-40ka-a9l40601',
+    slug: 'parafoudre-3pn-40ka-avec-report-schneider-acti9-iprd40r-a9l40601',
+    name: 'Parafoudre 3P+N 40 kA 350 V avec Report de Signalisation Schneider Acti9 iPRD40r — A9L40601',
+    category: 'quincaillerie-btp',
+    price: 179000,
+    compareAtPrice: 205000,
+    stock: 4,
+    badge: 'Protection Foudre Pro',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Parafoudre triphasé + neutre Schneider A9L40601 (Acti9 iPRD40r) : 40 kA, 350 V, cartouches débrochables et report de signalisation.',
+    description:
+      'Protégez ateliers, immeubles et tableaux tertiaires contre la foudre : le parafoudre Acti9 iPRD40r A9L40601 encaisse jusqu’à 40 kA en 3P+N avec report de signalisation pour surveiller l’état des cartouches à distance.',
+    specs: [
+      'Marque Schneider Electric · Réf. A9L40601 · Acti9 iPRD40r',
+      '3P+N · Imax 40 kA · Uc 350 V · Type 2',
+      'Cartouches débrochables remplaçables',
+      'Report de signalisation (contact auxiliaire) · Rail DIN'
+    ],
+    imageUrl: '/images/products/btp-parafoudre-schneider-acti9-40ka-a9l40601.jpg',
+  },
+  {
+    id: 'btp-douille-b22-megalec-meg-db22n',
+    slug: 'douille-b22-baionnette-megalec-meg-db22n',
+    name: 'Douille B22 à Baïonnette Megalec — MEG-DB22N',
+    category: 'quincaillerie-btp',
+    price: 1500,
+    compareAtPrice: 2000,
+    stock: 60,
+    badge: 'Megalec',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Douille B22 à baïonnette Megalec, corps bakélite blanche et contacts laiton pour ampoules à culot B22.',
+    description:
+      'Remplacez facilement une douille usée : la douille B22 Megalec MEG-DB22N offre un serrage baïonnette sûr et des contacts laiton durables pour vos points lumineux intérieurs et extérieurs.',
+    specs: [
+      'Marque Megalec · Réf. MEG-DB22N',
+      'Culot B22 à baïonnette · Corps bakélite blanche',
+      'Contacts intérieurs laiton haute conductivité',
+      'Compatible ampoules LED, fluocompactes et incandescentes B22'
+    ],
+    imageUrl: '/images/products/btp-douille-b22-megalec-meg-db22n.jpg',
+  },
+  {
+    id: 'btp-disjoncteur-schneider-4p-63a-a9f74463',
+    slug: 'disjoncteur-rail-4p-63a-schneider-acti9-ic60n-a9f74463',
+    name: 'Disjoncteur sur Rail 4P 63 A Schneider Acti9 iC60N — A9F74463',
+    category: 'quincaillerie-btp',
+    price: 79900,
+    compareAtPrice: 92000,
+    stock: 6,
+    badge: 'Schneider Original',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur tétrapolaire 4P 63 A courbe C Schneider Acti9 iC60N (A9F74463) pour tableaux tertiaires et industriels.',
+    description:
+      'Le disjoncteur Schneider Acti9 iC60N A9F74463 protège les circuits triphasés 63 A contre surcharges et courts-circuits. Montage rail DIN, courbe C, qualité certifiée pour tableaux professionnels.',
+    specs: [
+      'Marque Schneider Electric · Réf. A9F74463 · Acti9 iC60N',
+      '4 pôles · 63 A · Courbe C',
+      'Pouvoir de coupure 10 kA · Montage rail DIN',
+      'Tableaux tertiaires, ateliers et installations triphasées'
+    ],
+    imageUrl: '/images/products/btp-disjoncteur-schneider-4p-63a-a9f74463.jpg',
+  },
+  {
+    id: 'btp-charniere-universelle-force-charn-uf',
+    slug: 'charniere-universelle-008-force-charn-uf',
+    name: 'Charnière Universelle 008 FORCE — CHARN-UF',
+    category: 'quincaillerie-btp',
+    price: 3500,
+    compareAtPrice: 4500,
+    stock: 40,
+    badge: 'FORCE First Choice',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Charnière universelle FORCE 008 en acier zingué doré, pour portes et placards — boîte de qualité « first choice ».',
+    description:
+      'La charnière universelle FORCE CHARN-UF 008 se monte sur portes bois, placards et meubles. Acier zingué anticorrosion, axe solide et perçages prêts à visser.',
+    specs: [
+      'Marque FORCE · Réf. CHARN-UF (modèle 008)',
+      'Acier zingué doré anticorrosion',
+      'Universelle : portes, placards et meubles',
+      'Qualité « First Choice » · Conditionnement FORCE'
+    ],
+    imageUrl: '/images/products/btp-charniere-universelle-force-charn-uf.jpg',
+  },
+  {
+    id: 'btp-vis-rappel-gm-30g-force',
+    slug: 'vis-de-rappel-gm-30g-force-vis-rf',
+    name: 'Vis de Rappel GM 30 g FORCE — VIS-RF',
+    category: 'quincaillerie-btp',
+    price: 2500,
+    compareAtPrice: 3500,
+    stock: 50,
+    badge: 'Serrurerie FORCE',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Vis de rappel GM FORCE (VIS-RF) à ressort, boîtier zingué doré : rappel automatique des portes et placards.',
+    description:
+      'Petite pièce, grand confort : la vis de rappel FORCE VIS-RF referme automatiquement portes et placards. Boîtier métal zingué doré, ressort réglable et pose en applique rapide.',
+    specs: [
+      'Marque FORCE · Réf. VIS-RF · Modèle GM',
+      'Boîtier acier zingué doré · Ressort de rappel',
+      'Se monte en applique sur porte ou placard',
+      'Livré en sachet de 30 g'
+    ],
+    imageUrl: '/images/products/btp-vis-rappel-gm-30g-force.jpg',
+  },
+  {
+    id: 'btp-tole-noire-acier-08mm-force-at8188',
+    slug: 'feuille-tole-noire-acier-08mm-1x2m-force-at8188',
+    name: 'Feuille de Tôle Noire Acier 0,8 mm — 1 × 2 m FORCE — FORCE-AT8188',
+    category: 'quincaillerie-btp',
+    price: 32000,
+    compareAtPrice: 37500,
+    stock: 12,
+    badge: 'Acier 8/10',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Feuille de tôle noire en acier laminé 0,8 mm (8/10) au format 1 × 2 m, motif décoratif embossé pour portes et façades.',
+    description:
+      'Feuille de tôle noire FORCE AT8188 en acier 8/10 (0,8 mm) : idéale pour habiller portes, portails, façades et travaux de tôlerie. Le motif embossé apporte une finition décorative immédiate.',
+    specs: [
+      'Marque FORCE · Réf. FORCE-AT8188',
+      'Acier noir laminé 0,8 mm (8/10)',
+      'Format 1 × 2 m · Motif décoratif embossé',
+      'Portes, portails, façades et tôlerie générale'
+    ],
+    imageUrl: '/images/products/btp-tole-noire-acier-08mm-force-at8188.jpg',
+  },
+  {
+    id: 'btp-dpn-vigi-schneider-easy9-ez9d32610',
+    slug: 'disjoncteur-differentiel-dpn-vigi-2p-10a-30ma-schneider-easy9-ez9d32610',
+    name: 'Disjoncteur Différentiel DPN Vigi 2P 10 A 30 mA Schneider Easy9 — EZ9D32610',
+    category: 'quincaillerie-btp',
+    price: 59000,
+    compareAtPrice: 68000,
+    stock: 5,
+    badge: 'Schneider Easy9',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur différentiel Schneider Easy9 EZ9D32610 : 1P+N 10 A, sensibilité 30 mA, courbe C, protection des personnes et des circuits.',
+    description:
+      'Le DPN Vigi Easy9 EZ9D32610 combine disjonction 10 A et protection différentielle 30 mA : il coupe le circuit en cas de fuite de courant et protège ainsi les occupants et les appareils.',
+    specs: [
+      'Marque Schneider Electric · Réf. EZ9D32610 · Gamme Easy9',
+      '1P+N · 10 A · Courbe C · 30 mA',
+      'Protection des personnes contre les fuites de courant',
+      'Bouton test mensuel · Montage rail DIN'
+    ],
+    imageUrl: '/images/products/btp-dpn-vigi-schneider-easy9-ez9d32610.jpg',
+  },
+  {
+    id: 'btp-souffleur-aspirateur-emtop-eabr6506',
+    slug: 'souffleur-aspirateur-650w-emtop-eabr6506',
+    name: 'Souffleur / Aspirateur 650 W 4,0 m³/min EMTOP — EABR6506',
+    category: 'quincaillerie-btp',
+    price: 32000,
+    compareAtPrice: 38000,
+    stock: 10,
+    badge: '650 W',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Souffleur-aspirateur EMTOP EABR6506 650 W, débit 4,0 m³/min, vitesse variable 0–16 500 tr/min avec sac à poussière.',
+    description:
+      'Nettoyez cours, ateliers, véhicules et chantiers en un éclair : le souffleur-aspirateur EMTOP EABR6506 développe 650 W et un débit d’air de 4,0 m³/min, avec vitesse variable et accessoires de soufflage.',
+    specs: [
+      'Marque EMTOP · Réf. EABR6506',
+      'Puissance 650 W · 0–16 500 tr/min',
+      'Débit d’air 4,0 m³/min · Vitesse variable',
+      'Livré avec buse de soufflage et sac à poussière'
+    ],
+    imageUrl: '/images/products/btp-souffleur-aspirateur-emtop-eabr6506.jpg',
+  },
+  {
+    id: 'btp-chaussure-securite-emtop-esbs71sb45',
+    slug: 'chaussure-de-securite-noire-pointure-45-emtop-esbs71sb45',
+    name: 'Chaussure de Sécurité Noire Pointure 45 EMTOP — ESBS71SB45',
+    category: 'quincaillerie-btp',
+    price: 17500,
+    compareAtPrice: 21000,
+    stock: 12,
+    badge: 'Embout Acier SB',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Chaussure de sécurité montante EMTOP ESBS71SB45 pointure 45 : embout acier, norme SB, semelle antidérapante et tige traitée déperlante.',
+    description:
+      'Pour les chantiers, ateliers et usines : la chaussure EMTOP ESBS71SB45 protège des chocs grâce à son embout acier et garde le pied au sec (tige déperlante, semelle double densité antidérapante).',
+    specs: [
+      'Marque EMTOP · Réf. ESBS71SB45 · Pointure 45',
+      'Embout de protection acier · Norme SB',
+      'Semelle PU double densité antidérapante',
+      'Tige cuir traitée déperlante · Lacets rouges'
+    ],
+    imageUrl: '/images/products/btp-chaussure-securite-emtop-esbs71sb45.jpg',
+  },
+  {
+    id: 'btp-fiche-industrielle-megalec-5p-32a-meg-125g',
+    slug: 'socle-prise-industriel-femelle-5p-32a-ip44-megalec-meg-125g',
+    name: 'Fiche Industrielle Femelle Apparente 5P 32 A IP44 Megalec — MEG-125G',
+    category: 'quincaillerie-btp',
+    price: 12500,
+    compareAtPrice: 15500,
+    stock: 10,
+    badge: 'Triphasé 32 A',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Socle prise industrielle femelle apparent 5P (3P+N+T) 32 A 400 V IP44 Megalec, clapet rouge de protection.',
+    description:
+      'Alimentez machines, ateliers et groupes électrogènes en toute sécurité : ce socle prise Megalec MEG-125G 5P 32 A IP44 supporte les fortes intensités et résiste aux poussières et projections d’eau.',
+    specs: [
+      'Marque Megalec · Réf. MEG-125G',
+      '5 pôles (3P+N+T) · 32 A · 400 V',
+      'Indice de protection IP44 · Clapet rouge',
+      'Ateliers, machines-outils et groupes électrogènes'
+    ],
+    imageUrl: '/images/products/btp-fiche-industrielle-megalec-5p-32a-meg-125g.jpg',
+  },
+  {
+    id: 'btp-canon-simple-5-cles-force-cle-s5-70',
+    slug: 'canon-simple-5-cles-70mm-force-cle-s5-70',
+    name: 'Canon Simple 5 Clés 70 mm FORCE — CLE-S5-70',
+    category: 'quincaillerie-btp',
+    price: 6000,
+    compareAtPrice: 7500,
+    stock: 25,
+    badge: '5 Clés',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Cylindre de sûreté FORCE CLE-S5-70 longueur 70 mm, livré avec 5 clés et sa vis de fixation.',
+    description:
+      'Remplacez un cylindre fatigué par le canon FORCE CLE-S5-70 : 70 mm de longueur, pêne laiton, 5 clés fournies et vis de fixation incluses pour une pose immédiate sur porte bois.',
+    specs: [
+      'Marque FORCE · Réf. CLE-S5-70',
+      'Longueur cylindre 70 mm',
+      'Livré avec 5 clés + vis de fixation',
+      'Pêne et barillet métal haute résistance'
+    ],
+    imageUrl: '/images/products/btp-canon-simple-5-cles-force-cle-s5-70.jpg',
+  },
+  {
+    id: 'btp-disjoncteur-compact-schneider-c25f6tm250',
+    slug: 'disjoncteur-compact-250a-4p3d-schneider-compact-nsx250f-c25f6tm250',
+    name: 'Disjoncteur Compact 250 A 4P3D 36 kA Schneider ComPacT NSX250F — C25F6TM250',
+    category: 'quincaillerie-btp',
+    price: 1339000,
+    compareAtPrice: 1400000,
+    stock: 2,
+    badge: 'NSX250F · Pro',
+    featured: true,
+    isHeavy: true,
+    shortDescription:
+      'Disjoncteur boîtier moulé Schneider ComPacT NSX250F C25F6TM250 : déclencheur TM-D 250 A, 4P3D, 36 kA à 415 V, montage fixe.',
+    description:
+      'Pour les tableaux généraux d’immeubles, usines et gros chantiers : le ComPacT NSX250F C25F6TM250 encaisse 250 A avec un pouvoir de coupure de 36 kA. Déclencheur magnéto-thermique TM-D réglable et montage fixe.',
+    specs: [
+      'Marque Schneider Electric · Réf. C25F6TM250',
+      'ComPacT NSX250F · Déclencheur TM-D 250 A',
+      '4P3D (neutre non protégé) · 36 kA / 415 V',
+      'Montage fixe · Commande par maneton'
+    ],
+    imageUrl: '/images/products/btp-disjoncteur-compact-schneider-c25f6tm250.jpg',
+  },
+  {
+    id: 'btp-oxyde-bleu-force-25kg',
+    slug: 'oxyde-de-fer-bleu-25kg-force-25',
+    name: 'Oxyde de Fer Bleu 25 kg FORCE — FORCE-25',
+    category: 'quincaillerie-btp',
+    price: 250000,
+    compareAtPrice: 280000,
+    stock: 8,
+    badge: 'Pigment Béton',
+    featured: false,
+    isHeavy: true,
+    shortDescription:
+      'Sac de 25 kg d’oxyde de fer bleu FORCE-25 : pigment puissant pour béton, ciment, mortier et peintures.',
+    description:
+      'Colorez bétons décoratifs, dalles, pavés et enduits avec l’oxyde de fer bleu FORCE-25. Poudre fine à fort pouvoir colorant, conditionnée en sac de 25 kg — dosage régulier et tenue à la lumière.',
+    specs: [
+      'Marque FORCE · Réf. FORCE-25 · « Iron Oxide Blue »',
+      'Sac 25 kg (poids net) · Poudre fine',
+      'Béton, ciment, mortier, enduits et peintures',
+      'Fort pouvoir colorant · Bonne tenue à la lumière'
+    ],
+    imageUrl: '/images/products/btp-oxyde-bleu-force-25kg.jpg',
+  },
+  {
+    id: 'btp-dpn-20a-schneider-easy9-ez9p32620',
+    slug: 'disjoncteur-dpn-20a-courbe-c-schneider-easy9-ez9p32620',
+    name: 'Disjoncteur DPN 20 A Courbe C Schneider Easy9 — EZ9P32620',
+    category: 'quincaillerie-btp',
+    price: 6000,
+    compareAtPrice: 7500,
+    stock: 25,
+    badge: 'Schneider Easy9',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Disjoncteur unipolaire + neutre 20 A courbe C Schneider Easy9 EZ9P32620, montage sur rail DIN, 4,5 kA.',
+    description:
+      'Protégez éclairage et prises avec le DPN Easy9 EZ9P32620 : 1P+N 20 A courbe C, 4,5 kA, montage rail DIN. La référence la plus demandée pour les petits tableaux de maisons et boutiques.',
+    specs: [
+      'Marque Schneider Electric · Réf. EZ9P32620 · Gamme Easy9',
+      '1P+N · 20 A · Courbe C',
+      'Pouvoir de coupure 4,5 kA · Rail DIN',
+      'Maisons, boutiques et petits tableaux'
+    ],
+    imageUrl: '/images/products/btp-dpn-20a-schneider-easy9-ez9p32620.jpg',
+  },
+  {
+    id: 'btp-tirefond-tole-8x80-bleu-force',
+    slug: 'tirefond-de-tole-8x80mm-bleu-force-avec-cavaliers',
+    name: 'Kit Tirefonds de Tôle 8×80 mm Bleu FORCE — TIR-8X80F (Cavaliers & Rondelles Étanches)',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 40,
+    badge: 'Toiture BTP',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Tirefonds de fixation de tôles 8×80 mm en acier bichromaté FORCE avec cavaliers bleus, rondelles métal et joints d’étanchéité.',
+    description:
+      'Assurez une fixation solide et 100 % étanche de vos tôles de toiture ! Ce kit FORCE (Réf. TIR-8X80F) réunit les tirefonds 8×80 mm anticorrosion, les cavaliers de maintien bleus et les rondelles d’étanchéité.',
+    specs: [
+      'Marque FORCE · Réf. TIR-8X80F · Dimensions : 8 × 80 mm',
+      'Acier bichromaté haute résistance anti-rouille',
+      'Livré avec cavaliers bleus, rondelles acier et joints étanches',
+      'Indispensable pour pose de tôles bac alu et toitures'
+    ],
+    imageUrl: '/images/products/btp-tirefond-tole-8x80-bleu-force.jpg',
+  },
+  {
+    id: 'btp-interrupteur-differentiel-megalec-4p-63a-id4p63a30ma',
+    slug: 'interrupteur-differentiel-megalec-4p-63a-30ma-id4p63a30ma',
+    name: 'Interrupteur Différentiel MEGALEC 4P 63 A 30 mA — ID4P63A30MA',
+    category: 'quincaillerie-btp',
+    price: 55000,
+    compareAtPrice: 63000,
+    stock: 12,
+    badge: 'MEGALEC',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Interrupteur différentiel tétrapolaire MEGALEC 4P 63 A 30 mA type AC, 400 V, 4 modules sur rail DIN.',
+    description:
+      'L’interrupteur différentiel MEGALEC ID4P63A30MA protège les personnes contre les contacts indirects sur les installations triphasées ou tétrapolaires. 4 pôles, 63 A, sensibilité 30 mA type AC, tension d’emploi 400 V, encombrement 4 modules sur rail DIN : la référence attendue pour les tableaux de villas, boutiques et ateliers.',
+    specs: [
+      'Marque MEGALEC · Réf. ID4P63A30MA',
+      '4 pôles (3P+N) · 63 A · 30 mA type AC',
+      'Tension d’emploi 400 V · 4 modules rail DIN',
+      'Protection des personnes — tableaux triphasés'
+    ],
+    imageUrl: '/images/products/btp-interrupteur-differentiel-megalec-4p-63a-id4p63a30ma.jpg',
+  },
+  {
+    id: 'btp-griffe-gf11-1024-cle-canon',
+    slug: 'serrure-cle-a-canon-luxe-griffe-gf-11-1024',
+    name: 'Serrure Clé à Canon Luxe Griffe — GF-11-1024',
+    category: 'quincaillerie-btp',
+    price: 15500,
+    compareAtPrice: 18500,
+    stock: 15,
+    badge: 'Griffe',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure à encastrer Griffe GF-11-1024 « clé à canon luxe » : plaque longue noire, béquille droite et jeu de clés.',
+    description:
+      'La serrure Griffe GF-11-1024 reprend le dessin « clé à canon luxe » : plaque longue finition noire, béquille droite et canon livré avec ses clés. Un modèle robuste et sobre, très demandé pour les portes d’entrée, chambres et bureaux.',
+    specs: [
+      'Marque Griffe · Réf. GF-11-1024 · Finition noire',
+      'Plaque longue + béquille droite',
+      'Cylindre à canon livré avec clés',
+      'Portes bois intérieures & extérieures'
+    ],
+    imageUrl: '/images/products/btp-griffe-gf11-1024-cle-canon.jpg',
+  },
+  {
+    id: 'btp-targette-porte-force-178',
+    slug: 'targette-crochets-dores-force-178-zx-14',
+    name: 'Douzaine de Targettes Dorées FORCE — FORCE-178 (ZX-14)',
+    category: 'quincaillerie-btp',
+    price: 7500,
+    compareAtPrice: 9000,
+    stock: 20,
+    badge: 'Lot × 12',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Douzaine de targettes / verrous de porte dorés FORCE FORCE-178 (modèle ZX-14), acier traité anticorrosion.',
+    description:
+      'Vendu par douzaine, ce lot de targettes FORCE FORCE-178 (ZX-14) assure le verrouillage des portes, portails et fenêtres. Acier traité finition dorée, pêne coulissant et gâche fournie : un classique de quincaillerie pour les chantiers et les revendeurs.',
+    specs: [
+      'Marque FORCE · Réf. FORCE-178 · Modèle ZX-14',
+      'Conditionnement : douzaine (12 pièces)',
+      'Acier traité, finition dorée anticorrosion',
+      'Pêne coulissant + gâche — portes et fenêtres'
+    ],
+    imageUrl: '/images/products/btp-targette-porte-force-178.jpg',
+  },
+  {
+    id: 'btp-tirefond-tole-8x80-vert-force-ttvd',
+    slug: 'tirefond-de-tole-8x80mm-vert-force-ttvd-avec-cavaliers',
+    name: 'Kit Tirefonds de Tôle 8×80 mm Vert FORCE — TTVD (Cavaliers & Rondelles Étanches)',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 40,
+    badge: 'Toiture BTP',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Tirefonds de fixation de tôles 8×80 mm acier bichromaté FORCE avec cavaliers verts, rondelles et joints d’étanchéité.',
+    description:
+      'Fixation solide et étanche des tôles de toiture : ce kit FORCE TTVD réunit les tirefonds 8×80 mm anticorrosion, les cavaliers de maintien verts et les rondelles d’étanchéité. La version verte s’accorde aux tôles et bacs acier de teinte foncée.',
+    specs: [
+      'Marque FORCE · Réf. TTVD · Dimensions : 8 × 80 mm',
+      'Acier bichromaté haute résistance anti-rouille',
+      'Livré avec cavaliers verts, rondelles et joints étanches',
+      'Indispensable pour pose de tôles bac alu et toitures'
+    ],
+    imageUrl: '/images/products/btp-tirefond-tole-8x80-vert-force-ttvd.jpg',
+  },
+];
+
+// ==============================================================================
 // GAMME QUINCAILLERIE, OUTILLAGE INGCO/DINGQI & SANITAIRES FRENCIA (27 PRODUITS)
 // ==============================================================================
 export const QUINCAILLERIE_BTP_PRODUCTS = [
@@ -1953,29 +2517,6 @@ export const QUINCAILLERIE_BTP_PRODUCTS = [
     imageUrl: '/images/products/btp-serrure-griffe-gf11-1023.jpg',
   },
   {
-    id: 'btp-tirefond-tole-8x80-bleu-force',
-    slug: 'tirefond-de-tole-8x80mm-bleu-force-avec-cavaliers',
-    name: 'Kit Tirefonds de Tôle 8×80 mm Bleu FORCE — Cavaliers & Rondelles Étanches',
-    category: 'quincaillerie-btp',
-    price: 4500,
-    compareAtPrice: 6000,
-    stock: 40,
-    badge: 'Toiture BTP',
-    featured: false,
-    isHeavy: false,
-    shortDescription:
-      'Tirefonds de fixation de tôles 8×80 mm en acier bichromaté FORCE avec cavaliers bleus, rondelles métal et joints d’étanchéité.',
-    description:
-      'Assurez une fixation solide et 100 % étanche de vos tôles de toiture ! Ce kit FORCE (Réf. TTBF) réunit les tirefonds 8×80 mm anticorrosion, les cavaliers de maintien bleus et les rondelles d’étanchéité.',
-    specs: [
-      'Marque FORCE · Réf. TTBF · Dimensions : 8 × 80 mm',
-      'Acier bichromaté haute résistance anti-rouille',
-      'Livré avec cavaliers bleus, rondelles acier et joints étanches',
-      'Indispensable pour pose de tôles bac alu et toitures'
-    ],
-    imageUrl: '/images/products/btp-tirefond-tole-8x80-bleu-force.jpg',
-  },
-  {
     id: 'btp-disjoncteur-schneider-easy9-2p-25a',
     slug: 'disjoncteur-sur-rail-2p-25a-schneider-easy9-ez9f32225',
     name: 'Disjoncteur sur Rail 2P 25A Schneider Electric Easy9 — EZ9F32225',
@@ -2320,6 +2861,7 @@ export const QUINCAILLERIE_BTP_PRODUCTS = [
     ],
     imageUrl: '/images/products/btp-dismatique-megalec-meg-dis.jpg',
   },
+
 ];
 
 // ==============================================================================
@@ -3832,6 +4374,7 @@ export const CUISINE_MAISON_PRODUCTS = [
 
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
+  ...BTP_ARRIVAGE_DEC2026_PRODUCTS,
   ...NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   ...MOTOS_TRICYCLES_PRODUCTS,
   ...SMART_TECHNOLOGY_PRODUCTS,
