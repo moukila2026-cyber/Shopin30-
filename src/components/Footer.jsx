@@ -88,7 +88,7 @@ export function Footer({
             <div className="pt-1 space-y-1.5 text-xs text-[#FF9900] font-semibold">
               <p className="flex items-center gap-2">
                 <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
-                <span>Wave · Orange Money · MTN · Moov · Espèces</span>
+                <span>Wave Côte d’Ivoire uniquement</span>
               </p>
               <p className="flex items-center gap-2">
                 <QrCode className="w-4 h-4 shrink-0" />

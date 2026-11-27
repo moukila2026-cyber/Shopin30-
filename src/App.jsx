@@ -83,7 +83,7 @@ export default function App() {
       wavePaymentUrl: BRAND.defaultWavePaymentUrl,
       shippingDisclaimer: BRAND.shippingDisclaimer,
       announcementBanner:
-        'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison · Suivi QR',
+        'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Paiement Wave Côte d’Ivoire uniquement · Suivi QR',
       storeOpen: true,
       deliveryZones: DELIVERY_ZONES,
     },

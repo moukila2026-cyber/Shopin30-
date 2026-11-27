@@ -339,7 +339,7 @@ export default function AdminApp() {
     }
   }
 
-  async function handleUploadPhoto(productId, file) {
+  async function handleUploadPhoto(productId, file, slot) {
     if (!file) return;
     if (file.size > 4 * 1024 * 1024) {
       window.alert('Image trop lourde (max 4 Mo).');
@@ -347,16 +347,25 @@ export default function AdminApp() {
     }
     try {
       const buf = await file.arrayBuffer();
-      await apiFetch(`/api/admin/products/${encodeURIComponent(productId)}/photo`, {
+      await apiFetch(`/api/admin/products/${encodeURIComponent(productId)}/photo?slot=${slot}`, {
         method: 'PUT',
         headers: { 'Content-Type': file.type || 'image/jpeg' },
         body: buf,
       });
-      showToast('Photo produit enregistrée dans Neon !');
+      showToast(`Photo ${slot} enregistrée !`);
       await loadOverview();
     } catch (err) {
       window.alert(err.message);
     }
+  }
+
+  async function handleDeletePhoto(productId, slot) {
+    if (!window.confirm(`Retirer la photo ${slot} ?`)) return;
+    try {
+      await apiFetch(`/api/admin/products/${encodeURIComponent(productId)}/photo?slot=${slot}`, { method: 'DELETE' });
+      showToast('Photo retirée.');
+      await loadOverview();
+    } catch (err) { window.alert(err.message); }
   }
 
   async function handleCreatePromo(e) {
@@ -1007,33 +1016,27 @@ export default function AdminApp() {
                   </div>
 
                   {isAdmin && (
-                    <div className="pt-2 border-t border-[#EFE9D8] flex items-center justify-between gap-2">
-                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FAF7F0] hover:bg-[#EFE9D8] text-xs font-semibold text-[#0F443E] cursor-pointer">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Photo</span>
-                        <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          className="hidden"
-                          onChange={(e) => handleUploadPhoto(p.id, e.target.files?.[0])}
-                        />
-                      </label>
-
+                    <div className="pt-2 border-t border-[#EFE9D8] space-y-2">
+                      <p className="text-xs text-stone-600">Photos du même produit : {(p.photoSlots || [true]).filter(Boolean).length}/3</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[1, 2, 3].map((slot) => (
+                          <div key={slot} className="flex items-center gap-1">
+                            <label className="inline-flex items-center gap-1 px-2 py-1.5 rounded-full bg-[#FAF7F0] hover:bg-[#EFE9D8] text-xs font-semibold text-[#0F443E] cursor-pointer">
+                              <Upload className="w-3 h-3" /> Photo {slot}{p.photoSlots?.[slot - 1] ? ' ✓' : ' +'}
+                              <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden"
+                                onChange={(e) => { handleUploadPhoto(p.id, e.target.files?.[0], slot); e.target.value = ''; }} />
+                            </label>
+                            {slot > 1 && p.uploadedPhotoSlots?.[slot - 1] && (
+                              <button type="button" onClick={() => handleDeletePhoto(p.id, slot)} aria-label={`Retirer la photo ${slot} de ${p.name}`} className="text-red-700 p-1"><XCircle className="w-4 h-4" /></button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                       <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => openEditProductModal(p)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#0F443E] text-white text-xs font-semibold cursor-pointer"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          <span>Modifier</span>
+                        <button type="button" onClick={() => openEditProductModal(p)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#0F443E] text-white text-xs font-semibold cursor-pointer">
+                          <Edit3 className="w-3.5 h-3.5" /> Modifier
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteProduct(p)}
-                          className="p-1.5 rounded-full text-stone-400 hover:text-red-600 cursor-pointer"
-                          title="Supprimer"
-                        >
+                        <button type="button" onClick={() => handleDeleteProduct(p)} className="p-1.5 rounded-full text-stone-400 hover:text-red-600 cursor-pointer" title="Supprimer">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>

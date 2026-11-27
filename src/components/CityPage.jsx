@@ -100,10 +100,7 @@ export function CityPage({ city, products, onOpenProduct, onSelectCategory, cate
             <CreditCard className="w-4 h-4 text-[#C7511F]" /> Paiement accepté
           </h2>
           <p className="text-[11px] text-[#565959] leading-relaxed">
-            Wave, Orange Money, MTN Mobile Money et Moov Money, avec saisie de la référence de transaction pour validation immédiate.
-            {city.slug === 'daloa'
-              ? ' Les espèces à la livraison sont également acceptées à Daloa commune et périphérie.'
-              : ` Le paiement à la livraison n’est pas disponible hors Daloa : réglez avant l’expédition par mobile money.`}
+            Paiement exclusivement par Wave Côte d’Ivoire, avant la livraison ou l’expédition. En mode direct, la référence de transaction est vérifiée avant expédition.
           </p>
         </article>
         <article className="bg-white rounded-md border border-[#D5D9D9] p-4 space-y-1.5">
