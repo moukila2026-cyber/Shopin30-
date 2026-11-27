@@ -861,7 +861,7 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.total, 4500);
 });
 
-test('12. Arrivage BTP Décembre 2026 : 59 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+test('12. Arrivage BTP Décembre 2026 : 79 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
 
@@ -928,6 +928,28 @@ test('12. Arrivage BTP Décembre 2026 : 59 fiches retravaillées Pèrôkadô (lo
     ['btp-emtop-compacteur-plaque-reversible-160kg-epct091612', 1550000],
     ['btp-emtop-chaussure-securite-kaki-44-esbs32sb44', 19500],
     ['btp-emtop-bottes-securite-45-erbtls1p45', 22000],
+    // Lot 5 — Legrand
+    ['btp-legrand-bouton-poussoir-gris-plexo-069820l', 14500],
+    ['btp-legrand-prise-2pt-blanc-urbano-ub3111wh', 6500],
+    ['btp-legrand-coffret-36-modules-encastre-137017', 24900],
+    ['btp-legrand-interrupteur-horaire-analogique-412790', 82000],
+    ['btp-legrand-interrupteur-dvv-blanc-urbano-ub2220wh', 7500],
+    ['btp-legrand-griffe-standard-plexo-84900', 6500],
+    ['btp-legrand-interrupteur-svv-blanc-urbano-ub2210wh', 5500],
+    ['btp-legrand-prise-2pt-blanc-mosaic-278111l', 6900],
+    ['btp-legrand-parafoudre-4p-t2-20ka-410323', 55000],
+    ['btp-legrand-dpn-16a-rx3-419949', 4500],
+    ['btp-legrand-detecteur-mouvement-encastre-48941', 75900],
+    ['btp-legrand-prise-tv-blanc-niloe-np4102wh', 7900],
+    ['btp-legrand-collier-embase-31900', 600],
+    ['btp-legrand-dpn-10a-rx3-419947', 4500],
+    ['btp-legrand-interrupteur-differentiel-4p-25a-300ma-411664', 115000],
+    ['btp-legrand-prise-2pt-gris-etanche-069831l', 16900],
+    // Lot 5 — Midea Lighting
+    ['btp-midea-spot-led-encastre-12w-3000k-mdl-dl40r12w-033k', 6500],
+    ['btp-midea-ruban-led-rgb-50m-mdl-std8w-05', 50000],
+    ['btp-midea-reglette-led-120m-45w-mdl-bll1245w', 8500],
+    ['btp-midea-ampoule-led-5w-e27-6500k-mdl-bua4505w', 1700],
   ];
   for (const [id, expectedPrice] of expectedBtpDec) {
     const prod = cat.data.products.find((p) => p.id === id);
@@ -972,6 +994,51 @@ test('12. Arrivage BTP Décembre 2026 : 59 fiches retravaillées Pèrôkadô (lo
       `Ancien id ambigu ${gone} supprime`
     );
   }
+
+  // Lot 5 : les paires quasi identiques doivent rester distinguables sans ambiguite
+  // (DPN 10 A / 16 A, Urbano SVV / DVV, Plexo prise / poussoir, ampoule E27 / B22).
+  const find = (id) => cat.data.products.find((p) => p.id === id);
+
+  const dpn10 = find('btp-legrand-dpn-10a-rx3-419947');
+  const dpn16 = find('btp-legrand-dpn-16a-rx3-419949');
+  assert.ok(dpn10 && dpn16, 'Les 2 DPN RX3 sont presents');
+  assert.notEqual(dpn10.slug, dpn16.slug);
+  assert.notEqual(dpn10.imageUrl, dpn16.imageUrl);
+  assert.match(dpn10.badge, /C10/);
+  assert.match(dpn16.badge, /C16/);
+  assert.match(dpn10.name, /10 A/);
+  assert.match(dpn16.name, /16 A/);
+  assert.ok(dpn10.specs.some((s) => /419949/.test(s)), 'Le DPN 10 A renvoie au 16 A');
+  assert.ok(dpn16.specs.some((s) => /419947/.test(s)), 'Le DPN 16 A renvoie au 10 A');
+
+  const svv = find('btp-legrand-interrupteur-svv-blanc-urbano-ub2210wh');
+  const dvv = find('btp-legrand-interrupteur-dvv-blanc-urbano-ub2220wh');
+  assert.ok(svv && dvv, 'Les 2 interrupteurs Urbano sont presents');
+  assert.notEqual(svv.imageUrl, dvv.imageUrl);
+  assert.match(svv.badge, /^SIMPLE/i);
+  assert.match(dvv.badge, /^DOUBLE/i);
+  assert.ok(svv.specs.some((s) => /UB2220WH/.test(s)), 'Le SVV renvoie au DVV');
+  assert.ok(dvv.specs.some((s) => /UB2210WH/.test(s)), 'Le DVV renvoie au SVV');
+
+  const plexoPrise = find('btp-legrand-prise-2pt-gris-etanche-069831l');
+  const plexoPoussoir = find('btp-legrand-bouton-poussoir-gris-plexo-069820l');
+  assert.ok(plexoPrise && plexoPoussoir, 'Les 2 appareils Plexo gris sont presents');
+  assert.notEqual(plexoPrise.imageUrl, plexoPoussoir.imageUrl);
+  assert.match(plexoPrise.badge, /^Prise/i);
+  assert.match(plexoPoussoir.badge, /^Poussoir/i);
+  assert.ok(plexoPrise.specs.some((s) => /069820L/.test(s)), 'La prise cite le poussoir');
+  assert.ok(plexoPoussoir.specs.some((s) => /069831L/.test(s)), 'Le poussoir cite la prise');
+
+  const bulbE27 = find('btp-midea-ampoule-led-5w-e27-6500k-mdl-bua4505w');
+  const bulbB22 = find('btp-midea-ampoule-led-5w-b22-mdl-bua4505w-226500');
+  assert.ok(bulbE27 && bulbB22, 'Les 2 ampoules 5 W Midea sont presentes');
+  assert.notEqual(bulbE27.imageUrl, bulbB22.imageUrl);
+  assert.match(bulbE27.badge, /E27/);
+  assert.match(bulbB22.badge, /B22/);
+  assert.match(bulbE27.name, /E27/);
+  assert.match(bulbB22.name, /B22/);
+  assert.ok(bulbE27.specs.some((s) => /B22/.test(s)), 'L’ampoule E27 renvoie a la B22');
+  assert.ok(bulbB22.specs.some((s) => /E27/.test(s)), 'L’ampoule B22 renvoie a la E27');
 
   // La motopompe et le disjoncteur compact restent des colis lourds (frais majorés).
   for (const heavyId of ['btp-motopompe-essence-emtop-egwp8016', 'btp-disjoncteur-compact-schneider-c25f6tm250']) {
