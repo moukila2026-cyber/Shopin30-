@@ -17,6 +17,7 @@ import {
   formatFcfa,
 } from '../shared/catalog.js';
 import { apiFetch } from './lib/api.js';
+import { orderFestiveCategories } from './lib/featuredCategories.js';
 import {
   parseRoute,
   pushRoute,
@@ -348,7 +349,7 @@ export default function App() {
   const shouldGroupByCategory = activeCategory === 'all' && !hasSearchQuery && !onlyFavorites;
   const groupedCategories = React.useMemo(() => {
     if (!shouldGroupByCategory) return [];
-    const cats = (catalogData.categories || CATEGORIES).filter((c) => c.id !== 'all');
+    const cats = orderFestiveCategories(catalogData.categories || CATEGORIES).filter((c) => c.id !== 'all');
     const groups = cats
       .map((cat) => ({
         category: cat,
@@ -388,7 +389,7 @@ export default function App() {
         }}
         onOpenTrack={() => setTrackOpen(true)}
         activeCategory={activeCategory}
-        categories={catalogData.categories}
+        categories={orderFestiveCategories(catalogData.categories || CATEGORIES)}
         onSelectCategory={(catId) => {
           setOnlyFavorites(false);
           setActiveCategory(catId);

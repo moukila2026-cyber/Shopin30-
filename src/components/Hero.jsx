@@ -31,7 +31,7 @@ const BANNERS = [
     title: 'Voiture F1 R/C Fumée, Motos à Construire, Caisses Enregistreuses & Loisirs Créatifs',
     subtitle:
       'Idées cadeaux dès 3 500 FCFA : Perles Heishi SentoSphère, UNO Spin, Dinettes Inox & Métal, Pistolets à eau électriques et Coloriage 38-en-1 Stitch. Paiement Wave & Suivi QR.',
-    ctaLabel: 'Voir les 14 Jouets & Jeux Enfants',
+    ctaLabel: 'Découvrir les jouets & véhicules enfants',
     targetCategory: 'jouets-enfants',
     darkText: true,
   },
@@ -71,15 +71,18 @@ const BANNERS = [
   {
     id: 'mode-cadeaux',
     image: '/images/banners/banner-mode-cadeaux.jpg',
-    tag: 'HIGH-TECH, MODE & COFFRETS CADEAUX',
-    title: 'Smartphones, Audio Bluetooth, Parfums Prestige & Idées Cadeaux',
+    tag: 'MODE & ACCESSOIRES — SÉLECTION DES FÊTES',
+    title: 'Mode & accessoires : des idées pour les fêtes',
     subtitle:
-      'Commandez en ligne en quelques secondes (Wave / Mobile Money) et suivez votre marchandise en direct par Code QR.',
-    ctaLabel: 'Découvrir High-Tech & Cadeaux',
-    targetCategory: 'high-tech',
+      'Découvrez la sélection mode Pèrôkadô pour les fêtes de fin d’année. Paiement Wave Côte d’Ivoire et suivi par code QR.',
+    ctaLabel: 'Découvrir Mode & Accessoires',
+    targetCategory: 'mode',
     darkText: true,
   },
-];
+].sort((a, b) => {
+  const rank = { 'jouets-enfants': 0, 'mode-cadeaux': 1 };
+  return (rank[a.id] ?? 2) - (rank[b.id] ?? 2);
+});
 
 export function Hero({
   products = [],
@@ -107,6 +110,7 @@ export function Hero({
   const motosItems = pickByCategory('motos-tricycles', 4);
   const allMotos = products.filter((p) => p.category === 'motos-tricycles');
   const allJouets = products.filter((p) => p.category === 'jouets-enfants').sort((a, b) => Number(b.id.startsWith('enfant-')) - Number(a.id.startsWith('enfant-')));
+  const allMode = products.filter((p) => p.category === 'mode');
   const allQuincaillerie = products.filter((p) => p.category === 'quincaillerie-btp');
   const froidItems = pickByCategory('froid', 4);
   const lavageCuissonItems = pickByCategory('lavage-cuisson', 4);
@@ -218,6 +222,27 @@ export function Hero({
 
         {/* 2. RANGÉE DE 4 CARTES CATÉGORIES CHEVAUCHANT LA BANNIÈRE (-mt-16 / -mt-28) COMME SUR AMAZON */}
         <div className="relative z-10 -mt-12 sm:-mt-24 px-2 sm:px-6 grid grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
+          {/* Les deux premiers accès mettent en avant les rayons des fêtes. */}
+          {[{ id: 'jouets-enfants', label: 'Jouets & véhicules enfants', items: allJouets }, { id: 'mode', label: 'Mode & accessoires', items: allMode }].filter((group) => group.items.length > 0).map((group) => (
+            <section key={group.id} className="bg-white p-2.5 sm:p-5 border border-[#f3d8ca] shadow-xs flex flex-col justify-between rounded-md">
+              <div>
+                <span className="text-[10px] font-extrabold text-[#a20d32] uppercase tracking-wide">Sélection des fêtes</span>
+                <h2 className="text-sm sm:text-lg font-bold text-[#0F1111] mb-3">{group.label}</h2>
+                <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
+                  {group.items.slice(0, 4).map((item) => (
+                    <button key={item.id} type="button" onClick={() => onSelectProduct?.(item)} className="text-left group cursor-pointer">
+                      <div className="aspect-square bg-[#fff7f2] rounded p-2 flex items-center justify-center overflow-hidden">
+                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain group-hover:scale-105 transition" />
+                      </div>
+                      <p className="text-[11px] mt-1 line-clamp-1 font-medium">{item.name}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button type="button" onClick={() => { onSelectCategory?.(group.id); scrollToCatalog(); }} className="mt-4 text-xs font-semibold text-[#007185] hover:underline text-left cursor-pointer">Voir tout le rayon →</button>
+            </section>
+          ))}
+
           {/* CARTE 1 : Motos & Tricycles Cargo */}
           <div className="bg-white p-2.5 sm:p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
@@ -404,6 +429,100 @@ export function Hero({
         </div>
       </div>
 
+      {/* 2B. SECTION DÉDIÉE JOUETS, JEUX & UNIVERS ENFANTS PÈRÔKADÔ */}
+      {allJouets.length > 0 && (
+        <div id="section-jouets" className="mt-5 px-3 sm:px-6">
+          <div className="bg-gradient-to-br from-[#fff9ef] via-white to-[#fff1f0] p-5 sm:p-7 border border-[#f3d8ca] rounded-xl shadow-sm">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="bg-[#CC0C39] text-white text-[11px] font-extrabold px-2 py-0.5 rounded-xs tracking-wide">
+                  MAGIE DES FÊTES · IDÉES CADEAUX
+                </span>
+                <h2 className="text-lg sm:text-xl font-bold text-[#0F1111]">
+                  Des étoiles dans leurs yeux : jouets & véhicules pour les fêtes
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectCategory?.('jouets-enfants');
+                  scrollToCatalog();
+                }}
+                className="text-xs sm:text-sm font-semibold text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
+              >
+                Ouvrir tout le rayon Jouets & Enfants ({allJouets.length}) →
+              </button>
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+              {allJouets.map((toy) => (
+                <button
+                  key={toy.id}
+                  type="button"
+                  onClick={() => onSelectProduct?.(toy)}
+                  className="w-48 sm:w-56 shrink-0 text-left group border border-[#EAEDED] hover:border-[#FF9900] rounded-md p-3 bg-white transition cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="h-40 sm:h-44 bg-[#F7F8F8] rounded-xs p-2.5 flex items-center justify-center overflow-hidden mb-2.5 relative">
+                      {toy.badge && (
+                        <span className="absolute top-1.5 left-1.5 bg-[#232F3E] text-white text-[10px] font-bold px-2 py-0.5 rounded-xs">
+                          {toy.badge}
+                        </span>
+                      )}
+                      <img
+                        src={toy.imageUrl}
+                        alt={toy.name}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-200 mix-blend-multiply"
+                      />
+                    </div>
+                    <p className="text-xs font-semibold text-[#0F1111] line-clamp-2 group-hover:text-[#C7511F] leading-snug">
+                      {toy.name}
+                    </p>
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-[#F0F2F2]">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-sm font-extrabold text-[#B12704]">
+                        {formatFcfa(toy.price)}
+                      </span>
+                      {toy.compareAtPrice > toy.price && (
+                        <span className="text-[11px] text-[#565959] line-through">
+                          {formatFcfa(toy.compareAtPrice)}
+                        </span>
+                      )}
+                    </div>
+                    <span className="block text-[11px] text-[#007600] font-medium mt-0.5">
+                      {toy.stock <= 0 ? 'Temporairement en rupture' : toy.stock <= 5 ? `Plus que ${toy.stock} en stock · Livraison dès 1 000 F` : 'En stock · Livraison dès 1 000 F'}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {allMode.length > 0 && (
+        <section id="section-mode-fetes" className="mt-5 px-3 sm:px-6">
+          <div className="bg-gradient-to-br from-[#fff7ee] via-white to-[#fff1f3] p-5 sm:p-7 border border-[#f3d8ca] rounded-xl shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div><span className="text-[11px] font-extrabold text-[#a20d32] uppercase tracking-wide">Les fêtes en beauté</span><h2 className="text-lg sm:text-xl font-bold">Mode & accessoires pour les fêtes</h2></div>
+              <button type="button" onClick={() => { onSelectCategory?.('mode'); scrollToCatalog(); }} className="text-sm font-semibold text-[#007185] hover:underline cursor-pointer">Voir toute la mode ({allMode.length}) →</button>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {allMode.map((item) => (
+                <button key={item.id} type="button" onClick={() => onSelectProduct?.(item)} className="w-48 sm:w-56 shrink-0 text-left border border-[#EAEDED] hover:border-[#FF9900] rounded-md p-3 bg-white cursor-pointer">
+                  <div className="h-40 sm:h-44 bg-[#F7F8F8] rounded p-2 flex items-center justify-center"><img src={item.imageUrl} alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain" /></div>
+                  <p className="mt-2 text-xs font-semibold line-clamp-2">{item.name}</p>
+                  <p className="mt-2 text-sm font-extrabold text-[#B12704]">{formatFcfa(item.price)}</p>
+                  <p className="mt-1 text-[11px] font-medium text-[#007600]">{item.stock <= 0 ? 'Temporairement en rupture' : item.stock <= 5 ? `Plus que ${item.stock} en stock` : 'En stock'}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 2A. SECTION DÉDIÉE QUINCAILLERIE, OUTILLAGE INGCO & SANITAIRES FRENCIA */}
       {allQuincaillerie.length > 0 && (
         <div id="section-quincaillerie" className="mt-5 px-3 sm:px-6">
@@ -470,79 +589,6 @@ export function Hero({
                       {tool.isHeavy
                         ? 'En stock · Produit lourd 2 500 F / 5 000 F'
                         : 'En stock · Livraison dès 1 000 F'}
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 2B. SECTION DÉDIÉE JOUETS, JEUX & UNIVERS ENFANTS PÈRÔKADÔ */}
-      {allJouets.length > 0 && (
-        <div id="section-jouets" className="mt-5 px-3 sm:px-6">
-          <div className="bg-gradient-to-br from-[#fff9ef] via-white to-[#fff1f0] p-5 sm:p-7 border border-[#f3d8ca] rounded-xl shadow-sm">
-            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="bg-[#CC0C39] text-white text-[11px] font-extrabold px-2 py-0.5 rounded-xs tracking-wide">
-                  MAGIE DES FÊTES · IDÉES CADEAUX
-                </span>
-                <h2 className="text-lg sm:text-xl font-bold text-[#0F1111]">
-                  Des étoiles dans leurs yeux : jouets & véhicules pour les fêtes
-                </h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  onSelectCategory?.('jouets-enfants');
-                  scrollToCatalog();
-                }}
-                className="text-xs sm:text-sm font-semibold text-[#007185] hover:text-[#C7511F] hover:underline cursor-pointer"
-              >
-                Ouvrir tout le rayon Jouets & Enfants ({allJouets.length}) →
-              </button>
-            </div>
-
-            <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
-              {allJouets.map((toy) => (
-                <button
-                  key={toy.id}
-                  type="button"
-                  onClick={() => onSelectProduct?.(toy)}
-                  className="w-48 sm:w-56 shrink-0 text-left group border border-[#EAEDED] hover:border-[#FF9900] rounded-md p-3 bg-white transition cursor-pointer flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="h-40 sm:h-44 bg-[#F7F8F8] rounded-xs p-2.5 flex items-center justify-center overflow-hidden mb-2.5 relative">
-                      {toy.badge && (
-                        <span className="absolute top-1.5 left-1.5 bg-[#232F3E] text-white text-[10px] font-bold px-2 py-0.5 rounded-xs">
-                          {toy.badge}
-                        </span>
-                      )}
-                      <img
-                        src={toy.imageUrl}
-                        alt={toy.name}
-                        loading="lazy"
-                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-200 mix-blend-multiply"
-                      />
-                    </div>
-                    <p className="text-xs font-semibold text-[#0F1111] line-clamp-2 group-hover:text-[#C7511F] leading-snug">
-                      {toy.name}
-                    </p>
-                  </div>
-                  <div className="mt-2 pt-2 border-t border-[#F0F2F2]">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="text-sm font-extrabold text-[#B12704]">
-                        {formatFcfa(toy.price)}
-                      </span>
-                      {toy.compareAtPrice > toy.price && (
-                        <span className="text-[11px] text-[#565959] line-through">
-                          {formatFcfa(toy.compareAtPrice)}
-                        </span>
-                      )}
-                    </div>
-                    <span className="block text-[11px] text-[#007600] font-medium mt-0.5">
-                      {toy.stock <= 0 ? 'Temporairement en rupture' : toy.stock <= 5 ? `Plus que ${toy.stock} en stock · Livraison dès 1 000 F` : 'En stock · Livraison dès 1 000 F'}
                     </span>
                   </div>
                 </button>
