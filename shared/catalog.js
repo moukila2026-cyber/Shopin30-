@@ -1728,6 +1728,98 @@ export const BTP_ARRIVAGE_DEC2026_PRODUCTS = [
     ],
     imageUrl: '/images/products/btp-tirefond-tole-8x80-bleu-force.jpg',
   },
+  {
+    id: 'btp-interrupteur-differentiel-megalec-4p-63a-id4p63a30ma',
+    slug: 'interrupteur-differentiel-megalec-4p-63a-30ma-id4p63a30ma',
+    name: 'Interrupteur Différentiel MEGALEC 4P 63 A 30 mA — ID4P63A30MA',
+    category: 'quincaillerie-btp',
+    price: 55000,
+    compareAtPrice: 63000,
+    stock: 12,
+    badge: 'MEGALEC',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Interrupteur différentiel tétrapolaire MEGALEC 4P 63 A 30 mA type AC, 400 V, 4 modules sur rail DIN.',
+    description:
+      'L’interrupteur différentiel MEGALEC ID4P63A30MA protège les personnes contre les contacts indirects sur les installations triphasées ou tétrapolaires. 4 pôles, 63 A, sensibilité 30 mA type AC, tension d’emploi 400 V, encombrement 4 modules sur rail DIN : la référence attendue pour les tableaux de villas, boutiques et ateliers.',
+    specs: [
+      'Marque MEGALEC · Réf. ID4P63A30MA',
+      '4 pôles (3P+N) · 63 A · 30 mA type AC',
+      'Tension d’emploi 400 V · 4 modules rail DIN',
+      'Protection des personnes — tableaux triphasés'
+    ],
+    imageUrl: '/images/products/btp-interrupteur-differentiel-megalec-4p-63a-id4p63a30ma.jpg',
+  },
+  {
+    id: 'btp-griffe-gf11-1024-cle-canon',
+    slug: 'serrure-cle-a-canon-luxe-griffe-gf-11-1024',
+    name: 'Serrure Clé à Canon Luxe Griffe — GF-11-1024',
+    category: 'quincaillerie-btp',
+    price: 15500,
+    compareAtPrice: 18500,
+    stock: 15,
+    badge: 'Griffe',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Serrure à encastrer Griffe GF-11-1024 « clé à canon luxe » : plaque longue noire, béquille droite et jeu de clés.',
+    description:
+      'La serrure Griffe GF-11-1024 reprend le dessin « clé à canon luxe » : plaque longue finition noire, béquille droite et canon livré avec ses clés. Un modèle robuste et sobre, très demandé pour les portes d’entrée, chambres et bureaux.',
+    specs: [
+      'Marque Griffe · Réf. GF-11-1024 · Finition noire',
+      'Plaque longue + béquille droite',
+      'Cylindre à canon livré avec clés',
+      'Portes bois intérieures & extérieures'
+    ],
+    imageUrl: '/images/products/btp-griffe-gf11-1024-cle-canon.jpg',
+  },
+  {
+    id: 'btp-targette-porte-force-178',
+    slug: 'targette-crochets-dores-force-178-zx-14',
+    name: 'Douzaine de Targettes Dorées FORCE — FORCE-178 (ZX-14)',
+    category: 'quincaillerie-btp',
+    price: 7500,
+    compareAtPrice: 9000,
+    stock: 20,
+    badge: 'Lot × 12',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Douzaine de targettes / verrous de porte dorés FORCE FORCE-178 (modèle ZX-14), acier traité anticorrosion.',
+    description:
+      'Vendu par douzaine, ce lot de targettes FORCE FORCE-178 (ZX-14) assure le verrouillage des portes, portails et fenêtres. Acier traité finition dorée, pêne coulissant et gâche fournie : un classique de quincaillerie pour les chantiers et les revendeurs.',
+    specs: [
+      'Marque FORCE · Réf. FORCE-178 · Modèle ZX-14',
+      'Conditionnement : douzaine (12 pièces)',
+      'Acier traité, finition dorée anticorrosion',
+      'Pêne coulissant + gâche — portes et fenêtres'
+    ],
+    imageUrl: '/images/products/btp-targette-porte-force-178.jpg',
+  },
+  {
+    id: 'btp-tirefond-tole-8x80-vert-force-ttvd',
+    slug: 'tirefond-de-tole-8x80mm-vert-force-ttvd-avec-cavaliers',
+    name: 'Kit Tirefonds de Tôle 8×80 mm Vert FORCE — TTVD (Cavaliers & Rondelles Étanches)',
+    category: 'quincaillerie-btp',
+    price: 4500,
+    compareAtPrice: 6000,
+    stock: 40,
+    badge: 'Toiture BTP',
+    featured: false,
+    isHeavy: false,
+    shortDescription:
+      'Tirefonds de fixation de tôles 8×80 mm acier bichromaté FORCE avec cavaliers verts, rondelles et joints d’étanchéité.',
+    description:
+      'Fixation solide et étanche des tôles de toiture : ce kit FORCE TTVD réunit les tirefonds 8×80 mm anticorrosion, les cavaliers de maintien verts et les rondelles d’étanchéité. La version verte s’accorde aux tôles et bacs acier de teinte foncée.',
+    specs: [
+      'Marque FORCE · Réf. TTVD · Dimensions : 8 × 80 mm',
+      'Acier bichromaté haute résistance anti-rouille',
+      'Livré avec cavaliers verts, rondelles et joints étanches',
+      'Indispensable pour pose de tôles bac alu et toitures'
+    ],
+    imageUrl: '/images/products/btp-tirefond-tole-8x80-vert-force-ttvd.jpg',
+  },
 ];
 
 // ==============================================================================

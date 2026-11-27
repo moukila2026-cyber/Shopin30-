@@ -861,7 +861,7 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.total, 4500);
 });
 
-test('12. Arrivage BTP Décembre 2026 : 20 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+test('12. Arrivage BTP Décembre 2026 : 24 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
 
@@ -887,6 +887,10 @@ test('12. Arrivage BTP Décembre 2026 : 20 fiches retravaillées Pèrôkadô (lo
     ['btp-oxyde-bleu-force-25kg', 250000],
     ['btp-dpn-20a-schneider-easy9-ez9p32620', 6000],
     ['btp-tirefond-tole-8x80-bleu-force', 4500],
+    ['btp-interrupteur-differentiel-megalec-4p-63a-id4p63a30ma', 55000],
+    ['btp-griffe-gf11-1024-cle-canon', 15500],
+    ['btp-targette-porte-force-178', 7500],
+    ['btp-tirefond-tole-8x80-vert-force-ttvd', 4500],
   ];
   for (const [id, expectedPrice] of expectedBtpDec) {
     const prod = cat.data.products.find((p) => p.id === id);

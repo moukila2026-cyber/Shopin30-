@@ -500,8 +500,10 @@ export function createStore(adapterPromiseOrInstance) {
           // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
           // retravailles aux couleurs Perokado + prix marche ivoirien).
           // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
+          // Cle v2 : ajoute les 4 references du lot 2 (ID4P63A30MA, GF-11-1024,
+          // FORCE-178, TTVD) sur les bases ou la cle v1 a deja ete posee.
           const { rows: btpDecSyncRows } = await adapter.query(
-            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v1_synced'`
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v2_synced'`
           );
           if (btpDecSyncRows.length === 0) {
             for (const p of BTP_ARRIVAGE_DEC2026_PRODUCTS) {
@@ -542,7 +544,7 @@ export function createStore(adapterPromiseOrInstance) {
             }
             await adapter.query(
               `INSERT INTO store_settings (key, value)
-               VALUES ('catalog_btp_dec2026_v1_synced', '{"done":true}'::jsonb)
+               VALUES ('catalog_btp_dec2026_v2_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }
