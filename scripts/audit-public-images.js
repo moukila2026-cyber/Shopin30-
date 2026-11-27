@@ -1,3 +1,4 @@
+import { appendFileSync } from 'node:fs';
 // Vérifie les images du catalogue public sans authentification ni modification de données.
 const base = 'https://perokado.com';
 const response = await fetch(`${base}/api/catalog`, { signal: AbortSignal.timeout(30000) });
@@ -33,6 +34,8 @@ async function worker() {
   }
 }
 await Promise.all(Array.from({length: 5}, worker));
-console.log(`Produits actifs : ${products.length} ; images distinctes : ${images.size} ; emplacements téléversés : ${uploaded} ; erreurs : ${errors.length}`);
+const summary = `${products.length} produits, ${images.size} images, ${uploaded} photos televersees, ${errors.length} erreurs`;
+console.log(summary);
+if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `summary=${summary}\n`);
 for (const e of errors) console.error(e);
 if (errors.length) process.exitCode = 1;

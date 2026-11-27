@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  statuses: write
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -13,4 +14,15 @@ jobs:
         with:
           node-version: 22
       - name: Vérifier le catalogue et chaque image
+        id: audit
         run: node scripts/audit-public-images.js
+      - name: Publier le résumé
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SUMMARY: ${{ steps.audit.outputs.summary }}
+          OUTCOME: ${{ steps.audit.outcome }}
+        run: |
+          state=failure
+          if [ "$OUTCOME" = success ]; then state=success; fi
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" -f state="$state" -f context="audit-images-public" -f description="${SUMMARY:-Audit interrompu}" -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null
