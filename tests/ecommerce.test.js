@@ -84,12 +84,11 @@ test('Les galeries sélectionnées sont disponibles sur le catalogue', async () 
   assert.equal(blender.galleryUrls.length, 3);
   assert.equal(iron.galleryUrls.length, 3);
   const kettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-beige-stpe-251u');
-  assert.equal(kettle.galleryUrls.length, 3);
-  assert.deepEqual(kettle.imaginedColorUrls, ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png']);
-  assert.deepEqual(kettle.generatedGalleryUrls, kettle.imaginedColorUrls);
+  assert.equal(kettle.galleryUrls.length, 2);
+  assert.deepEqual(kettle.imaginedColorUrls, []);
   const redKettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-rouge-stpe-249rb');
-  assert.equal(redKettle.galleryUrls.length, 3);
-  assert.equal(redKettle.imaginedColorUrls.length, 2);
+  assert.equal(redKettle.galleryUrls.length, 1);
+  assert.deepEqual(redKettle.imaginedColorUrls, []);
   assert.ok(blender.imageUrl.startsWith('/images/gallery/'));
 });
 

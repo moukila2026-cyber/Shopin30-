@@ -24,9 +24,7 @@ export const PRODUCT_GALLERIES = {
   'smart-bouilloire-rouge-stpe-249rb': {
     original: '/images/products/smart-bouilloire-inox-rouge-1-8l.jpg',
     primaryOriginal: true,
-    images: ['/images/gallery/bouilloire-rouge-ia-bleu.png', '/images/gallery/bouilloire-rouge-ia-blanc.png'],
-    generated: ['/images/gallery/bouilloire-rouge-ia-bleu.png', '/images/gallery/bouilloire-rouge-ia-blanc.png'],
-    imaginedColors: ['/images/gallery/bouilloire-rouge-ia-bleu.png', '/images/gallery/bouilloire-rouge-ia-blanc.png'],
+    images: [],
   },
   'smart-fer-sec-stpfr-5103': {
     original: '/images/products/smart-fer-sec-bleu-stpfr-5103.jpg',
@@ -40,10 +38,8 @@ export const PRODUCT_GALLERIES = {
   },
   'smart-bouilloire-beige-stpe-251u': {
     original: '/images/products/smart-bouilloire-beige-1-7l-stpe-251u.jpg',
-    images: ['/images/gallery/stpe-251u-profil.jpg', '/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
-    galleryAfterPrimary: ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
-    generated: ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
-    imaginedColors: ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
+    images: ['/images/gallery/stpe-251u-profil.jpg'],
+    galleryAfterPrimary: ['/images/products/smart-bouilloire-beige-1-7l-stpe-251u.jpg'],
   },
   'beaute-tondeuse-rowenta-nomad-tn1410f0': {
     original: '/images/products/beaute-tondeuse-rowenta-nomad-tn1410f0.jpg',
