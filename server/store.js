@@ -552,7 +552,11 @@ export function createStore(adapterPromiseOrInstance) {
           // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
           // retravailles aux couleurs Perokado + prix marche ivoirien).
           // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
-          // Cle v6 : ajoute les 5 references du lot 6 (Legrand : TX3 403612, peigne HX3
+          // Cle v7 : ajoute les 15 references du lot 7 (Legrand : ID RX3 402025/402063/
+          // 402026, ID DX3 411524, parafoudre 2P 410321, coffret 48 modules 135014,
+          // sonnerie 41651, Dismatic 764519, telerupteur 412408, RJ45 Mosaic 076562,
+          // prise TV UB4112WH ; Midea : ruban 12 W 50 m 6500 K, spot apparent 18 W,
+          // ampoule 9 W E27, bouton poussoir EUPRDB/N). Cle v6 ajoutait les 5 du lot 6 (Legrand : TX3 403612, peigne HX3
           // 404926, DX3-ID 411506, RX3 419747 ; Midea Lighting : projecteur 200 W
           // MDL-FLF200W-033000K). Cle v5 ajoutait les 20 references du lot 5 (Plexo
           // 069820L/069831L,
@@ -562,7 +566,7 @@ export function createStore(adapterPromiseOrInstance) {
           // ampoule 5 W E27, reglette BLL1245W, ruban STD8W-05, spot DL40R12W) sur les
           // bases ou v1/v2/v3/v4 sont deja posees.
           const { rows: btpDecSyncRows } = await adapter.query(
-            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v6_synced'`
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v7_synced'`
           );
           if (btpDecSyncRows.length === 0) {
             for (const p of BTP_ARRIVAGE_DEC2026_PRODUCTS) {
@@ -603,7 +607,7 @@ export function createStore(adapterPromiseOrInstance) {
             }
             await adapter.query(
               `INSERT INTO store_settings (key, value)
-               VALUES ('catalog_btp_dec2026_v6_synced', '{"done":true}'::jsonb)
+               VALUES ('catalog_btp_dec2026_v7_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

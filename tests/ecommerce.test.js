@@ -861,7 +861,7 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.total, 4500);
 });
 
-test('12. Arrivage BTP Décembre 2026 : 84 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+test('12. Arrivage BTP Décembre 2026 : 99 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
 
@@ -956,6 +956,22 @@ test('12. Arrivage BTP Décembre 2026 : 84 fiches retravaillées Pèrôkadô (lo
     ['btp-midea-projecteur-led-200w-mdl-flf200w-03', 52000],
     ['btp-legrand-interrupteur-differentiel-2p-63a-30ma-411506', 79000],
     ['btp-legrand-disjoncteur-rx3-4p-63a-419747', 89000],
+    // Lot 7 — Legrand (différentiels, parafoudre, coffret, appareillage) et Midea
+    ['btp-legrand-interrupteur-differentiel-2p-25a-300ma-dx3-411524', 79000],
+    ['btp-legrand-interrupteur-differentiel-2p-40a-30ma-rx3-402025', 37500],
+    ['btp-legrand-interrupteur-differentiel-4p-40a-30ma-rx3-402063', 69000],
+    ['btp-legrand-interrupteur-differentiel-2p-63a-30ma-rx3-402026', 229000],
+    ['btp-legrand-parafoudre-2p-t2-20ka-410321', 45000],
+    ['btp-legrand-coffret-48-modules-encastre-135014', 79000],
+    ['btp-legrand-sonnerie-2-tons-41651', 24500],
+    ['btp-legrand-sonnette-niloe-20a-764519', 17500],
+    ['btp-legrand-telerupteur-cx3-1p-16a-412408', 21500],
+    ['btp-legrand-prise-rj45-cat6-ftp-mosaic-76562', 25000],
+    ['btp-legrand-prise-tv-urbano-ub4112wh', 6900],
+    ['btp-midea-ruban-led-12w-50m-6500k-mdl-std12w-02-6500', 55000],
+    ['btp-midea-spot-led-18w-apparent-blanc-6500k-mdl-dlm60r18w-03', 10500],
+    ['btp-midea-ampoule-led-9w-e27-6500k-mdl-bua6009w', 2500],
+    ['btp-midea-bouton-poussoir-gris-neon-ip55-euprdb-n', 3500],
   ];
   for (const [id, expectedPrice] of expectedBtpDec) {
     const prod = cat.data.products.find((p) => p.id === id);
@@ -1078,6 +1094,84 @@ test('12. Arrivage BTP Décembre 2026 : 84 fiches retravaillées Pèrôkadô (lo
   assert.match(flf50.badge, /50 W/);
   assert.ok(flf200.specs.some((s) => /FLF100W/.test(s)), 'Le 200 W cite le 100 W');
   assert.ok(flf200.specs.some((s) => /3000 K/.test(s)), 'Le 200 W est bien en 3000 K');
+
+  // Lot 7 : les quatre interrupteurs differentiels doivente rester distincts
+  // (2P 25 A 300 mA / 2P 40 A 30 mA / 4P 40 A 30 mA / 2P 63 A 30 mA).
+  const id25 = find('btp-legrand-interrupteur-differentiel-2p-25a-300ma-dx3-411524');
+  const id40_2p = find('btp-legrand-interrupteur-differentiel-2p-40a-30ma-rx3-402025');
+  const id40_4p = find('btp-legrand-interrupteur-differentiel-4p-40a-30ma-rx3-402063');
+  const id63 = find('btp-legrand-interrupteur-differentiel-2p-63a-30ma-rx3-402026');
+  const ids7 = [id25, id40_2p, id40_4p, id63];
+  assert.ok(ids7.every(Boolean), 'Les 4 interrupteurs differentiels du lot 7 sont presents');
+  assert.equal(new Set(ids7.map((p) => p.imageUrl)).size, 4, '4 visuels distincts pour les 4 ID');
+  assert.match(id25.badge, /25 A 300 mA/);
+  assert.match(id40_2p.badge, /2P 40 A 30 mA/);
+  assert.match(id40_4p.badge, /4P 40 A 30 mA/);
+  assert.match(id63.badge, /2P 63 A 30 mA/);
+  assert.ok(id25.specs.some((s) => /411506/.test(s)), 'L’ID 25 A renvoie au DX3 63 A');
+  assert.ok(id40_2p.specs.some((s) => /402063/.test(s)), 'L’ID 2P 40 A renvoie au 4P 40 A');
+  assert.ok(id40_4p.specs.some((s) => /402025/.test(s)), 'L’ID 4P 40 A renvoie au 2P 40 A');
+  assert.ok(id63.specs.some((s) => /411506/.test(s)), 'Le RX3 63 A renvoie au DX3 63 A');
+
+  // Lot 7 : parafoudres (2P vs 4P) et coffrets (48 vs 36 modules) explicites.
+  const spd2 = find('btp-legrand-parafoudre-2p-t2-20ka-410321');
+  const spd4 = find('btp-legrand-parafoudre-4p-t2-20ka-410323');
+  assert.ok(spd2 && spd4, 'Les 2 parafoudres Legrand sont presents');
+  assert.notEqual(spd2.imageUrl, spd4.imageUrl);
+  assert.match(spd2.badge, /2P/);
+  assert.match(spd4.badge, /4P/);
+  assert.ok(spd2.specs.some((s) => /410323/.test(s)), 'Le parafoudre 2P renvoie au 4P');
+  assert.ok(spd4.specs.some((s) => /410321/.test(s)), 'Le parafoudre 4P renvoie au 2P');
+
+  const c48 = find('btp-legrand-coffret-48-modules-encastre-135014');
+  const c36 = find('btp-legrand-coffret-36-modules-encastre-137017');
+  assert.ok(c48 && c36, 'Les 2 coffrets Legrand sont presents');
+  assert.notEqual(c48.imageUrl, c36.imageUrl);
+  assert.match(c48.badge, /48 modules/);
+  assert.match(c36.badge, /36 modules/);
+  assert.ok(c48.specs.some((s) => /137017/.test(s)), 'Le coffret 48 renvoie au 36');
+  assert.ok(c36.specs.some((s) => /135014/.test(s)), 'Le coffret 36 renvoie au 48');
+
+  // Lot 7 : trois prises murales differentes (RJ45 / TV passage / TV Niloé).
+  const rj45 = find('btp-legrand-prise-rj45-cat6-ftp-mosaic-76562');
+  const tvU = find('btp-legrand-prise-tv-urbano-ub4112wh');
+  const tvN = find('btp-legrand-prise-tv-blanc-niloe-np4102wh');
+  assert.ok(rj45 && tvU && tvN, 'Les 3 prises murales sont presentes');
+  assert.equal(new Set([rj45.imageUrl, tvU.imageUrl, tvN.imageUrl]).size, 3);
+  assert.match(rj45.badge, /RJ45/);
+  assert.match(tvU.badge, /TV/);
+  assert.ok(rj45.specs.some((s) => /UB4112WH/.test(s)), 'La RJ45 renvoie a la prise TV');
+
+  // Lot 7 : sonnerie murale vs sonnette Dismatic encastree (appareils tres differents).
+  const carillon = find('btp-legrand-sonnerie-2-tons-41651');
+  const dismatic = find('btp-legrand-sonnette-niloe-20a-764519');
+  assert.ok(carillon && dismatic, 'La sonnerie et la Dismatic sont presentes');
+  assert.notEqual(carillon.imageUrl, dismatic.imageUrl);
+  assert.ok(carillon.specs.some((s) => /764519/.test(s)), 'La sonnerie cite la Dismatic');
+  assert.ok(dismatic.specs.some((s) => /41651/.test(s)), 'La Dismatic cite la sonnerie');
+
+  // Lot 7 : ruban 6500 K vs ruban RGB, spot apparent vs encastre, ampoule E27 vs B22.
+  const rubanBlanc = find('btp-midea-ruban-led-12w-50m-6500k-mdl-std12w-02-6500');
+  const rubanRgb = find('btp-midea-ruban-led-rgb-50m-mdl-std8w-05');
+  assert.ok(rubanBlanc && rubanRgb, 'Les 2 rubans 50 m sont presents');
+  assert.notEqual(rubanBlanc.imageUrl, rubanRgb.imageUrl);
+  assert.match(rubanBlanc.badge, /6500 K/);
+  assert.match(rubanRgb.badge, /RGB/);
+  assert.ok(rubanBlanc.specs.some((s) => /STD8W-05/.test(s)), 'Le ruban blanc renvoie au RGB');
+
+  const spotApp = find('btp-midea-spot-led-18w-apparent-blanc-6500k-mdl-dlm60r18w-03');
+  const spotEnc = find('btp-midea-spot-led-encastre-8w-4000k-mdl-dl35r08w-03');
+  assert.ok(spotApp && spotEnc, 'Spot apparent et spot encastre presents');
+  assert.notEqual(spotApp.imageUrl, spotEnc.imageUrl);
+  assert.ok(spotApp.specs.some((s) => /DL35R08W/.test(s)), 'Le spot apparent cite l’encastre');
+
+  const bulb9E27 = find('btp-midea-ampoule-led-9w-e27-6500k-mdl-bua6009w');
+  const bulb9B22 = find('btp-midea-ampoule-led-9w-b22-mdl-bua609w-226500');
+  assert.ok(bulb9E27 && bulb9B22, 'Les 2 ampoules 9 W sont presentes');
+  assert.notEqual(bulb9E27.imageUrl, bulb9B22.imageUrl);
+  assert.match(bulb9E27.badge, /E27/);
+  assert.match(bulb9B22.badge, /9 W/);
+  assert.ok(bulb9E27.specs.some((s) => /B22/.test(s)), 'L’ampoule 9 W E27 renvoie a la B22');
 
   // Le peigne HX3 est le complement des appareils modulaires 63 A.
   const hx3 = find('btp-legrand-peigne-raccordement-hx3-404926');
