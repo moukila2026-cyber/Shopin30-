@@ -594,6 +594,32 @@ export function createStore(adapterPromiseOrInstance) {
           );
         }
 
+        // Stock et prix confirmés par le commerçant : appliquer une seule fois,
+        // puis laisser l'administration et les commandes gérer les quantités.
+        await adapter.withTransaction(async (tx) => {
+          const marker = await tx.query(
+            `INSERT INTO store_settings (key, value)
+             VALUES ('catalog_vehicules_enfants_fetes_v2', '{"done":true}'::jsonb)
+             ON CONFLICT (key) DO NOTHING RETURNING key`
+          );
+          if (!marker.rows.length) return;
+          for (const p of QUADS_ENFANTS_2026_PRODUCTS) {
+            await tx.query(
+              `INSERT INTO products (id, slug, name, category, price, compare_at_price, stock,
+                badge, featured, active, short_description, description, specs, image_url, is_heavy)
+               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+               ON CONFLICT DO NOTHING`,
+              [p.id, p.slug, p.name, p.category, p.price, p.compareAtPrice, p.stock,
+                p.badge || '', Boolean(p.featured), p.shortDescription, p.description,
+                JSON.stringify(p.specs), p.imageUrl, inferHeavyShipping(p)]
+            );
+            await tx.query(
+              `UPDATE products SET price = $2, compare_at_price = NULL, stock = $3, updated_at = NOW()
+               WHERE id = $1`, [p.id, p.price, p.stock]
+            );
+          }
+        });
+
         // Migration idempotente unique du numéro Wave marchand officiel (+225 05 46 69 74 78),
         // distinct du numéro WhatsApp Service Client (+225 05 01 30 33 43)
         const { rows: wavePhoneMigRows } = await adapter.query(

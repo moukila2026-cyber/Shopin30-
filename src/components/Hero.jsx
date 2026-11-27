@@ -106,7 +106,7 @@ export function Hero({
 
   const motosItems = pickByCategory('motos-tricycles', 4);
   const allMotos = products.filter((p) => p.category === 'motos-tricycles');
-  const allJouets = products.filter((p) => p.category === 'jouets-enfants');
+  const allJouets = products.filter((p) => p.category === 'jouets-enfants').sort((a, b) => Number(b.id.startsWith('enfant-')) - Number(a.id.startsWith('enfant-')));
   const allQuincaillerie = products.filter((p) => p.category === 'quincaillerie-btp');
   const froidItems = pickByCategory('froid', 4);
   const lavageCuissonItems = pickByCategory('lavage-cuisson', 4);
@@ -482,14 +482,14 @@ export function Hero({
       {/* 2B. SECTION DÉDIÉE JOUETS, JEUX & UNIVERS ENFANTS PÈRÔKADÔ */}
       {allJouets.length > 0 && (
         <div id="section-jouets" className="mt-5 px-3 sm:px-6">
-          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs">
+          <div className="bg-gradient-to-br from-[#fff9ef] via-white to-[#fff1f0] p-5 sm:p-7 border border-[#f3d8ca] rounded-xl shadow-sm">
             <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="bg-[#CC0C39] text-white text-[11px] font-extrabold px-2 py-0.5 rounded-xs tracking-wide">
-                  NOUVEAU RAYON JOUETS & ENFANTS
+                  MAGIE DES FÊTES · IDÉES CADEAUX
                 </span>
                 <h2 className="text-lg sm:text-xl font-bold text-[#0F1111]">
-                  Jouets, Jeux de Société, Construction STEM, Dinettes & Idées Cadeaux Enfants
+                  Des étoiles dans leurs yeux : jouets & véhicules pour les fêtes
                 </h2>
               </div>
               <button
@@ -542,7 +542,7 @@ export function Hero({
                       )}
                     </div>
                     <span className="block text-[11px] text-[#007600] font-medium mt-0.5">
-                      En stock · Livraison dès 1 000 F
+                      {toy.stock <= 0 ? 'Temporairement en rupture' : toy.stock <= 5 ? `Plus que ${toy.stock} en stock · Livraison dès 1 000 F` : 'En stock · Livraison dès 1 000 F'}
                     </span>
                   </div>
                 </button>

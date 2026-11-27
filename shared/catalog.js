@@ -939,16 +939,16 @@ export const MOTOS_TRICYCLES_PRODUCTS = [
   },
 ];
 
-// Quad électriques enfants : stock à confirmer avant toute commande.
+// Véhicules enfants : quantités initiales confirmées par la boutique.
 export const QUADS_ENFANTS_2026_PRODUCTS = [
   {
     id: 'enfant-quad-rechargeable-noir-bleu',
     slug: 'quad-electrique-rechargeable-enfant-noir-bleu',
     name: 'Quad électrique rechargeable enfant — Bleu & Noir',
     category: 'jouets-enfants',
-    price: 47000,
+    price: 45000,
     compareAtPrice: null,
-    stock: 0,
+    stock: 3,
     badge: 'Nouveauté',
     featured: false,
     isHeavy: false,
@@ -962,9 +962,9 @@ export const QUADS_ENFANTS_2026_PRODUCTS = [
     slug: 'quad-electrique-rechargeable-enfant-noir-jaune',
     name: 'Quad électrique rechargeable enfant — Jaune & Noir',
     category: 'jouets-enfants',
-    price: 47000,
+    price: 45000,
     compareAtPrice: null,
-    stock: 0,
+    stock: 3,
     badge: 'Nouveauté',
     featured: false,
     isHeavy: false,
@@ -972,6 +972,42 @@ export const QUADS_ENFANTS_2026_PRODUCTS = [
     description: 'Quad électrique rechargeable pour enfant, en jaune et noir. Le fournisseur indique une tranche de 0 à 3 ans ; l’âge minimum et les limites de poids sont à confirmer avant utilisation. Surveillance permanente d’un adulte indispensable.',
     specs: ['Électrique rechargeable', 'Coloris jaune et noir', 'Quatre roues et guidon', 'Âge indiqué par le fournisseur : 0–3 ans, à vérifier', 'Utilisation sous surveillance d’un adulte'],
     imageUrl: '/images/enfants/quad-noir-jaune.png',
+  },
+  {
+    id: 'enfant-quad-racing-jaune', slug: 'quad-electrique-enfant-jaune-racing',
+    name: 'Quad électrique enfant — Jaune sportif', category: 'jouets-enfants', price: 45000, compareAtPrice: null,
+    stock: 3, badge: 'Idée cadeau', featured: false, isHeavy: false,
+    shortDescription: 'Quad jaune avec selle noire, guidon et quatre roues.',
+    description: 'Quad jaune avec selle noire, guidon et quatre roues. Électrique rechargeable selon le fournisseur. Âge indiqué : 0–3 ans, à vérifier avec le fabricant avant utilisation. Utilisation sous surveillance permanente d’un adulte ; vérifier les limites de poids et la sécurité.',
+    specs: ['Électrique rechargeable', 'Âge fournisseur : 0–3 ans — à vérifier', 'Surveillance permanente d’un adulte'],
+    imageUrl: '/images/enfants/quad-racing-jaune.png',
+  },
+  {
+    id: 'enfant-quad-bleu-4-roues', slug: 'quad-electrique-enfant-bleu-4-roues',
+    name: 'Quad électrique enfant — Bleu', category: 'jouets-enfants', price: 50000, compareAtPrice: null,
+    stock: 3, badge: 'Idée cadeau', featured: false, isHeavy: false,
+    shortDescription: 'Quad bleu avec guidon, dossier et quatre roues.',
+    description: 'Quad bleu avec guidon, dossier et quatre roues. Électrique rechargeable selon le fournisseur. Âge indiqué : 0–3 ans, à vérifier avec le fabricant avant utilisation. Utilisation sous surveillance permanente d’un adulte ; vérifier les limites de poids et la sécurité.',
+    specs: ['Électrique rechargeable', 'Âge fournisseur : 0–3 ans — à vérifier', 'Surveillance permanente d’un adulte'],
+    imageUrl: '/images/enfants/quad-bleu-4roues.png',
+  },
+  {
+    id: 'enfant-tricycle-chopper-jaune', slug: 'tricycle-electrique-enfant-chopper-jaune-noir',
+    name: 'Tricycle électrique enfant — Chopper jaune & noir', category: 'jouets-enfants', price: 50000, compareAtPrice: null,
+    stock: 3, badge: 'Idée cadeau', featured: false, isHeavy: false,
+    shortDescription: 'Tricycle jaune et noir avec dossier, pare-brise et deux phares.',
+    description: 'Tricycle jaune et noir avec dossier, pare-brise et deux phares. Électrique rechargeable selon le fournisseur. Âge indiqué : 0–3 ans, à vérifier avec le fabricant avant utilisation. Utilisation sous surveillance permanente d’un adulte ; vérifier les limites de poids et la sécurité.',
+    specs: ['Électrique rechargeable', 'Âge fournisseur : 0–3 ans — à vérifier', 'Surveillance permanente d’un adulte'],
+    imageUrl: '/images/enfants/tricycle-chopper-jaune.png',
+  },
+  {
+    id: 'enfant-scooter-jaune-noir', slug: 'scooter-electrique-enfant-jaune-noir',
+    name: 'Scooter électrique enfant — Jaune & noir', category: 'jouets-enfants', price: 85000, compareAtPrice: null,
+    stock: 3, badge: 'Idée cadeau', featured: false, isHeavy: false,
+    shortDescription: 'Scooter jaune et noir avec coffre arrière ; USB et Bluetooth indiqués par le fournisseur.',
+    description: 'Scooter jaune et noir avec coffre arrière ; USB et Bluetooth indiqués par le fournisseur. Électrique rechargeable selon le fournisseur. Âge indiqué : 0–8 ans, à vérifier avec le fabricant avant utilisation. Utilisation sous surveillance permanente d’un adulte ; vérifier les limites de poids et la sécurité.',
+    specs: ['Électrique rechargeable', 'Âge fournisseur : 0–8 ans — à vérifier', 'Surveillance permanente d’un adulte'],
+    imageUrl: '/images/enfants/scooter-jaune-noir.png',
   },
 ];
 

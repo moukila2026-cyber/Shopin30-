@@ -12,3 +12,5 @@ Références sélectionnées en comparant le modèle et la photo du catalogue. L
 | Schneider A9L40601 | a9l40601-face.jpg | https://www.se.com/fr/fr/product/A9L40601/ |
 
 Les produits sans photos supplémentaires identifiées conservent leur image d'origine. Les photos importées par l'administrateur restent prioritaires.
+
+Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `quad-bleu-4roues.png`, `tricycle-chopper-jaune.png`, `scooter-jaune-noir.png`) sont des illustrations générées par IA à partir des photos fournies par le commerçant, sans texte ni prix incrusté. Leurs détails peuvent différer des articles réels.
