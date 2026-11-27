@@ -1,6 +1,18 @@
 // Photos supplémentaires identifiées par référence. Les photos issues de la
 // base administrateur restent prioritaires sur ces vues du catalogue.
 export const PRODUCT_GALLERIES = {
+  'enfant-quad-rechargeable-noir-bleu': {
+    original: '/images/enfants/quad-noir-bleu.png',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/enfants/quad-noir-bleu.png'],
+  },
+  'enfant-quad-rechargeable-noir-jaune': {
+    original: '/images/enfants/quad-noir-jaune.png',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/enfants/quad-noir-jaune.png'],
+  },
   'smart-mixeur-pro-stpe-8879r': {
     original: '/images/products/smart-mixeur-pro-2en1-stpe-8879r.jpg',
     images: ['/images/gallery/stpe-8879r-face.jpg', '/images/gallery/stpe-8879r-accessoires.jpg'],
@@ -8,8 +20,9 @@ export const PRODUCT_GALLERIES = {
   'smart-bouilloire-rouge-stpe-249rb': {
     original: '/images/products/smart-bouilloire-inox-rouge-1-8l.jpg',
     primaryOriginal: true,
-    images: ['/images/gallery/bouilloire-rouge-ia-1.png'],
-    generated: ['/images/gallery/bouilloire-rouge-ia-1.png'],
+    images: ['/images/gallery/bouilloire-rouge-ia-bleu.png', '/images/gallery/bouilloire-rouge-ia-blanc.png'],
+    generated: ['/images/gallery/bouilloire-rouge-ia-bleu.png', '/images/gallery/bouilloire-rouge-ia-blanc.png'],
+    imaginedColors: ['/images/gallery/bouilloire-rouge-ia-bleu.png', '/images/gallery/bouilloire-rouge-ia-blanc.png'],
   },
   'smart-fer-sec-stpfr-5103': {
     original: '/images/products/smart-fer-sec-bleu-stpfr-5103.jpg',
@@ -23,8 +36,10 @@ export const PRODUCT_GALLERIES = {
   },
   'smart-bouilloire-beige-stpe-251u': {
     original: '/images/products/smart-bouilloire-beige-1-7l-stpe-251u.jpg',
-    images: ['/images/gallery/stpe-251u-profil.jpg', '/images/gallery/stpe-251u-ia-angle.png'],
-    generated: ['/images/gallery/stpe-251u-ia-angle.png'],
+    images: ['/images/gallery/stpe-251u-profil.jpg', '/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
+    galleryAfterPrimary: ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
+    generated: ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
+    imaginedColors: ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png'],
   },
   'beaute-tondeuse-rowenta-nomad-tn1410f0': {
     original: '/images/products/beaute-tondeuse-rowenta-nomad-tn1410f0.jpg',

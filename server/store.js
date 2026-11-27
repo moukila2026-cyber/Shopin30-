@@ -11,6 +11,7 @@ import {
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
   JOUETS_ENFANTS_PRODUCTS,
+  QUADS_ENFANTS_2026_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -151,7 +152,7 @@ function mapProductRow(row) {
   const staticImage = row.image_url || '/images/products/placeholder.svg';
   const photoUrl = (slot) => `/api/products/${encodeURIComponent(row.id)}/photo${slot === 1 ? '?' : `?slot=${slot}&`}v=${new Date(row.updated_at).getTime()}`;
   const primaryImage = hasPhoto ? photoUrl(1) : (curated && !curated.primaryOriginal ? curated.images[0] : staticImage);
-  const fallbackSlots = curated ? (curated.primaryOriginal ? curated.images : [staticImage, curated.images[1]]) : [
+  const fallbackSlots = curated ? (curated.galleryAfterPrimary || (curated.primaryOriginal ? curated.images : [staticImage, curated.images[1]])) : [
     row.id === 'smart-cuisiniere-gaz-5-feux-inox' && !hasPhoto ? '/images/products/smart-plaque-5-bruleurs-laiton-dore-detail.jpg' : null,
     null,
   ];
@@ -179,6 +180,7 @@ function mapProductRow(row) {
     imageUrl: primaryImage,
     galleryUrls: gallerySlots.filter(Boolean),
     generatedGalleryUrls: (curated?.generated || []).filter((url) => gallerySlots.includes(url)),
+    imaginedColorUrls: (curated?.imaginedColors || []).filter((url) => gallerySlots.includes(url)),
     photoSlots: gallerySlots.map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
     uploadedPhotoSlots: [hasPhoto, Boolean(row.has_photo_2), Boolean(row.has_photo_3)],
     staticImageUrl: row.image_url || '/images/products/placeholder.svg',
@@ -383,6 +385,27 @@ export function createStore(adapterPromiseOrInstance) {
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_motos_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Nouvel arrivage : ajouter sans écraser les stocks et prix gérés en administration.
+          const { rows: quadsSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_quads_enfants_2026_v1_synced'`
+          );
+          if (quadsSyncRows.length === 0) {
+            for (const p of QUADS_ENFANTS_2026_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy)
+                 VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                 ON CONFLICT (id) DO NOTHING`,
+                [p.id, p.slug, p.name, p.category, p.price, p.compareAtPrice, p.stock,
+                  p.badge || '', Boolean(p.featured), p.shortDescription, p.description,
+                  JSON.stringify(p.specs), p.imageUrl, inferHeavyShipping(p)]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value) VALUES ('catalog_quads_enfants_2026_v1_synced', '{"done":true}'::jsonb) ON CONFLICT (key) DO NOTHING`
             );
           }
 
