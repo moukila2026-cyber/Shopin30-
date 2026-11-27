@@ -96,15 +96,71 @@ export const DELIVERY_SLOTS = [
   { id: 'soir', label: 'Fin de journée (16h00 – 19h30)' },
 ];
 
-// Paiement en ligne 100% Wave Côte d'Ivoire (sans frais d'agrégateur)
+// Moyens de paiement acceptés par Pèrôkadô à Daloa.
+// Wave et Mobile Money : le client envoie le montant au numéro marchand puis
+// saisit la référence de transaction ; le paiement est vérifié avant expédition.
+// Espèces à la livraison : le livreur encaisse, aucun prépaiement.
 export const PAYMENT_METHODS = [
   {
     id: 'wave',
-    label: 'Paiement sécurisé Wave Côte d’Ivoire (+225 05 46 69 74 78)',
+    label: 'Wave Côte d’Ivoire (+225 05 46 69 74 78)',
+    shortLabel: 'Wave',
+    kind: 'mobile-money',
+    merchantPhone: '+225 05 46 69 74 78',
     description:
-      'Réglez votre commande via Wave Côte d’Ivoire uniquement (aucun paiement à la livraison) et obtenez immédiatement votre référence avec Code QR de suivi en direct.',
+      'Envoyez le montant au +225 05 46 69 74 78 depuis votre application Wave, puis saisissez la référence de la transaction. Vérification immédiate et Code QR de suivi en direct.',
+  },
+  {
+    id: 'orange-money',
+    label: 'Orange Money Côte d’Ivoire',
+    shortLabel: 'Orange Money',
+    kind: 'mobile-money',
+    merchantPhone: '+225 05 46 69 74 78',
+    ussd: '#144#',
+    description:
+      'Composez #144# › Transfert › Paiement marchand, envoyez le montant au +225 05 46 69 74 78, puis saisissez la référence reçue par SMS.',
+  },
+  {
+    id: 'mtn-momo',
+    label: 'MTN Mobile Money (MoMo)',
+    shortLabel: 'MTN MoMo',
+    kind: 'mobile-money',
+    merchantPhone: '+225 05 46 69 74 78',
+    ussd: '*133#',
+    description:
+      'Composez *133# › Paiement › Marchand, envoyez le montant au +225 05 46 69 74 78, puis saisissez la référence de la transaction.',
+  },
+  {
+    id: 'moov-money',
+    label: 'Moov Money (Flooz)',
+    shortLabel: 'Moov Money',
+    kind: 'mobile-money',
+    merchantPhone: '+225 05 46 69 74 78',
+    ussd: '*155#',
+    description:
+      'Composez *155# › Paiement marchand, envoyez le montant au +225 05 46 69 74 78, puis saisissez la référence de la transaction.',
+  },
+  {
+    id: 'especes-livraison',
+    label: 'Espèces à la livraison',
+    shortLabel: 'À la livraison',
+    kind: 'cash',
+    description:
+      'Vous réglez en espèces au livreur à la réception, uniquement dans Daloa et sa périphérie. Préparez le montant exact : nos livreurs ne disposent pas toujours de monnaie.',
   },
 ];
+
+export const PAYMENT_METHOD_IDS = PAYMENT_METHODS.map((m) => m.id);
+
+export function getPaymentMethod(id) {
+  return PAYMENT_METHODS.find((m) => m.id === id) || PAYMENT_METHODS[0];
+}
+
+/** Un paiement en espèces n'est possible que dans Daloa (commune et périphérie). */
+export function isCashOnDeliveryAllowed(zone) {
+  const id = String(zone?.id || '');
+  return id.startsWith('daloa-');
+}
 
 export const SMART_TECHNOLOGY_PRODUCTS = [
   // ================= FROID : RÉFRIGÉRATEURS & VITRINES SMART TECHNOLOGY =================
@@ -6427,11 +6483,59 @@ export function isDaloaZone(zoneOrId) {
   return id.toLowerCase().startsWith('daloa');
 }
 
-export function computeZoneDeliveryFee(zone, { hasHeavyItem = false } = {}) {
+// ------------------------------------------------------------------------------
+// TARIFS PAR QUARTIER (Daloa)
+// Les quartiers réels de Daloa n'ont pas tous la même accessibilité : Lobia,
+// Tazibouo et Commerce sont dans le cœur de ville, tandis que Gonaté, Bédiala ou
+// Zaïbo demandent un déplacement plus long. On applique un supplément de 0 à
+// 500 F selon le quartier, sans jamais dépasser le tarif périphérie.
+// ------------------------------------------------------------------------------
+export const DALOA_NEIGHBORHOODS = [
+  // Cœur de ville : tarif commune standard (1 000 F)
+  { name: 'Lobia', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Tazibouo', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Commerce', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Kennedy', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Abattoir', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Orly', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Soleil', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Cité Sogefiha', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Gbeuliville', zoneId: 'daloa-commune', surcharge: 0 },
+  { name: 'Air France', zoneId: 'daloa-commune', surcharge: 0 },
+  // Quartiers excentrés mais desservis par nos livreurs : +250 F
+  { name: 'Zakoua', zoneId: 'daloa-commune', surcharge: 250 },
+  { name: 'Bribouo', zoneId: 'daloa-peripherie', surcharge: 0 },
+  { name: 'Gbokora', zoneId: 'daloa-peripherie', surcharge: 0 },
+  { name: 'Gonaté', zoneId: 'daloa-peripherie', surcharge: 0 },
+  { name: 'Bédiala', zoneId: 'daloa-peripherie', surcharge: 0 },
+  { name: 'Zaïbo', zoneId: 'daloa-peripherie', surcharge: 0 },
+];
+
+export function findNeighborhood(name) {
+  const needle = String(name || '').trim().toLowerCase();
+  if (!needle) return null;
+  return (
+    DALOA_NEIGHBORHOODS.find((n) => n.name.toLowerCase() === needle) ||
+    DALOA_NEIGHBORHOODS.find((n) => needle.includes(n.name.toLowerCase())) ||
+    null
+  );
+}
+
+/** Supplément de livraison lié au quartier (0 à 500 F). */
+export function computeNeighborhoodSurcharge(zone, neighborhood) {
+  if (!isDaloaZone(zone)) return 0;
+  const match = findNeighborhood(neighborhood);
+  if (!match || match.zoneId !== zone?.id) return 0;
+  return Math.min(500, Math.max(0, Number(match.surcharge) || 0));
+}
+
+export function computeZoneDeliveryFee(zone, { hasHeavyItem = false, neighborhood = '' } = {}) {
   const baseFee = Math.max(100, Number(zone?.fee || 1000));
-  if (!hasHeavyItem) return baseFee;
+  // Supplément quartier (Daloa uniquement) : appliqué aussi aux produits lourds.
+  const surcharge = computeNeighborhoodSurcharge(zone, neighborhood);
+  if (!hasHeavyItem) return baseFee + surcharge;
   const minHeavyFee = isDaloaZone(zone) ? HEAVY_DALOA_DELIVERY_FEE : HEAVY_EXPEDITION_DELIVERY_FEE;
-  return Math.max(baseFee, minHeavyFee);
+  return Math.max(baseFee, minHeavyFee) + surcharge;
 }
 
 export function computeProductDeliveryFee(product, zone) {

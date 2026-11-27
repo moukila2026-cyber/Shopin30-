@@ -15,19 +15,17 @@ import {
   computeProductDeliveryFee,
   inferHeavyShipping,
 } from '../../shared/catalog.js';
-import { buildWhatsappServiceUrl } from '../lib/api.js';
+import { buildWhatsappServiceUrl, apiFetch } from '../lib/api.js';
+import { ProductReviews } from './ProductReviews.jsx';
 
-// Note et nombre d'avis déterministes et réalistes par produit pour un rendu e-commerce authentique
-function getProductRatingMeta(id = '') {
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
-  }
-  const ratings = [4.5, 4.6, 4.7, 4.8, 4.9];
-  const rating = ratings[hash % ratings.length];
-  const count = 28 + (hash % 190);
-  const boughtMonth = 20 + (hash % 80);
-  return { rating, count, boughtMonth };
+// Notes issues uniquement des avis clients réellement publiés (table reviews).
+// Un produit sans avis n'affiche aucune note : c'est une exigence de sincérité
+// commerciale et une règle Google pour les extraits enrichis (Review snippet).
+function getProductRatingMeta(product = {}) {
+  const count = Number(product.reviewCount || 0);
+  const rating = Number(product.rating || 0);
+  if (!count || !rating) return { rating: 0, count: 0 };
+  return { rating, count };
 }
 
 function StarRating({ rating, count }) {
@@ -58,6 +56,17 @@ function formatNumberSpaced(amount) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
+/**
+ * Convertit /images/products/x.jpg en /images/products/webp/x-800.webp.
+ * Les photos d'origine restent servies en repli pour les navigateurs anciens.
+ */
+export function webpSrcSet(imageUrl, width) {
+  const url = String(imageUrl || '');
+  const match = url.match(/^(.*\/)products\/([^/]+)\.(jpe?g|png)$/i);
+  if (!match) return url;
+  return `${match[1]}products/webp/${match[2]}-${width}.webp`;
+}
+
 export function ProductCard({
   product,
   inCartQty,
@@ -74,7 +83,7 @@ export function ProductCard({
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
       : null;
 
-  const { rating, count, boughtMonth } = getProductRatingMeta(product.id);
+  const { rating, count } = getProductRatingMeta(product);
   const isHeavy = inferHeavyShipping(product);
   const zoneFee = computeProductDeliveryFee(product, selectedZone);
   const zoneName = selectedZone?.shortName || 'Daloa Commune';
@@ -88,9 +97,17 @@ export function ProductCard({
       {/* Zone photo sur fond clair style Amazon */}
       <div className="relative aspect-square bg-[#F7F8F8] p-2.5 sm:p-4 flex items-center justify-center overflow-hidden">
         <img
-          src={product.imageUrl}
+          src={webpSrcSet(product.imageUrl, 800)}
+          srcSet={[
+            `${webpSrcSet(product.imageUrl, 400)} 400w`,
+            `${webpSrcSet(product.imageUrl, 800)} 800w`,
+          ].join(', ')}
+          sizes="(max-width: 640px) 50vw, (max-width: 1280px) 33vw, 25vw"
+          width="400"
+          height="400"
           alt={product.name}
           loading="lazy"
+          decoding="async"
           onClick={() => onOpenDetail(product)}
           onError={(e) => {
             e.currentTarget.onerror = null;
@@ -145,11 +162,13 @@ export function ProductCard({
             {product.name}
           </h3>
 
-          <StarRating rating={rating} count={count} />
-
-          <p className="text-[11px] text-[#565959]">
-            Plus de {boughtMonth} achetés récemment à Daloa & alentours
-          </p>
+          {count > 0 ? (
+            <StarRating rating={rating} count={count} />
+          ) : (
+            <p className="text-[11px] text-[#565959]">
+              Soyez le premier à donner votre avis
+            </p>
+          )}
 
           {/* Badge Vente Flash rouge #CC0C39 comme Amazon */}
           {discountPct && (
@@ -222,7 +241,7 @@ export function ProductCard({
               className="w-full py-1.5 px-3 rounded-full text-xs font-medium bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[#0F1111] shadow-2xs transition cursor-pointer"
             >
               <span className="sm:hidden">Acheter (Wave)</span>
-              <span className="hidden sm:inline">Acheter maintenant (Wave)</span>
+              <span className="hidden sm:inline">Acheter maintenant</span>
             </button>
           )}
         </div>
@@ -251,7 +270,7 @@ export function ProductDetailModal({
 
   if (!product) return null;
   const outOfStock = product.stock <= 0;
-  const { rating, count } = getProductRatingMeta(product.id);
+  const { rating, count } = getProductRatingMeta(product);
   const discountPct =
     product.compareAtPrice && product.compareAtPrice > product.price
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
@@ -304,8 +323,15 @@ export function ProductDetailModal({
           <div className="lg:col-span-5 space-y-2.5">
             <div className="bg-[#F7F8F8] border border-[#EAEDED] rounded-md p-3 sm:p-6 flex items-center justify-center aspect-square max-h-[46vh] sm:max-h-none overflow-hidden">
               <img
-                src={activeImageUrl || product.imageUrl}
+                src={webpSrcSet(activeImageUrl || product.imageUrl, 800)}
+                srcSet={[
+                  `${webpSrcSet(activeImageUrl || product.imageUrl, 400)} 400w`,
+                  `${webpSrcSet(activeImageUrl || product.imageUrl, 800)} 800w`,
+                ].join(', ')}
+                sizes="(max-width: 1024px) 92vw, 40vw"
                 alt={product.name}
+                loading="eager"
+                decoding="async"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = '/images/products/placeholder.svg';
@@ -345,7 +371,13 @@ export function ProductDetailModal({
             </h2>
 
             <div className="pb-2 border-b border-[#EAEDED]">
-              <StarRating rating={rating} count={count} />
+              {count > 0 ? (
+                <StarRating rating={rating} count={count} />
+              ) : (
+                <p className="text-[11px] text-[#565959]">
+                  Pas encore d’avis — soyez le premier à noter cet article.
+                </p>
+              )}
             </div>
 
             <div className="space-y-1 pb-3 border-b border-[#EAEDED]">
@@ -466,7 +498,7 @@ export function ProductDetailModal({
                   }}
                   className="w-full py-2 px-4 rounded-full bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-xs font-medium text-[#0F1111] shadow-2xs cursor-pointer"
                 >
-                  Acheter maintenant (Wave)
+                  Acheter maintenant
                 </button>
               )}
             </div>
@@ -479,7 +511,7 @@ export function ProductDetailModal({
               <div className="flex justify-between">
                 <span>Paiement</span>
                 <strong className="text-[#009EE3] flex items-center gap-1">
-                  <Lock className="w-3 h-3" /> Wave uniquement
+                  <Lock className="w-3 h-3" /> Wave · OM · MTN · Moov
                 </strong>
               </div>
               <div className="flex justify-between">
@@ -500,6 +532,8 @@ export function ProductDetailModal({
               <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
               <span>Question sur le poids ? Service Client</span>
             </a>
+
+            <ProductReviews product={product} initialReviews={product.reviews || []} />
           </div>
         </div>
       </div>

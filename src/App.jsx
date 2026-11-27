@@ -14,14 +14,32 @@ import {
   BRAND,
   INITIAL_PRODUCTS,
   matchesProductSearch,
+  formatFcfa,
 } from '../shared/catalog.js';
 import { apiFetch } from './lib/api.js';
+import {
+  parseRoute,
+  pushRoute,
+  replaceRoute,
+  productPath,
+  rayonPath,
+  cityPath,
+  getCity,
+  CITIES,
+} from './lib/router.js';
+import {
+  buildProductSchema,
+  buildBreadcrumbSchema,
+  buildStoreItemListSchema,
+  injectJsonLd,
+} from './lib/seo.js';
 import { Header } from './components/Header.jsx';
 import { Hero } from './components/Hero.jsx';
 import { ProductCard, ProductDetailModal } from './components/ProductCard.jsx';
 import { CartDrawer } from './components/CartDrawer.jsx';
 import { OrderTrackerModal } from './components/OrderTrackerModal.jsx';
 import { Footer } from './components/Footer.jsx';
+import { CityPage } from './components/CityPage.jsx';
 import {
   CookieConsentBanner,
   LegalModal,
@@ -32,6 +50,7 @@ import {
 const CART_STORAGE_KEY = 'pkd_cart_v1';
 const FAV_STORAGE_KEY = 'pkd_favs_v1';
 const ZONE_STORAGE_KEY = 'pkd_zone_v1';
+const PAGE_SIZE = 24;
 
 const PRICE_RANGES = [
   { id: 'all', label: 'Tous les prix', min: 0, max: Infinity },
@@ -64,7 +83,7 @@ export default function App() {
       wavePaymentUrl: BRAND.defaultWavePaymentUrl,
       shippingDisclaimer: BRAND.shippingDisclaimer,
       announcementBanner:
-        'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition Issia, Vavoua & alentours dès 2 000 F · Paiement Wave & Suivi QR',
+        'Livraison Daloa Commune 1 000 F · Périphérie 1 500 F · Expédition dès 2 000 F · Wave, Orange Money, MTN, Moov & espèces à la livraison · Suivi QR',
       storeOpen: true,
       deliveryZones: DELIVERY_ZONES,
     },
@@ -83,8 +102,11 @@ export default function App() {
   const [sortBy, setSortBy] = React.useState('featured');
   const [onlyPromos, setOnlyPromos] = React.useState(false);
   const [onlyFavorites, setOnlyFavorites] = React.useState(false);
+  // Pagination : 24 produits par page (chargement progressif des 274 fiches)
+  const [visibleCount, setVisibleCount] = React.useState(PAGE_SIZE);
 
   const [selectedProduct, setSelectedProduct] = React.useState(null);
+  const [route, setRoute] = React.useState(() => parseRoute());
   const [cartOpen, setCartOpen] = React.useState(false);
   const [cartInitialStep, setCartInitialStep] = React.useState('cart');
   const [trackOpen, setTrackOpen] = React.useState(false);
@@ -130,6 +152,72 @@ export default function App() {
     loadCatalog();
   }, [loadCatalog]);
 
+  // ---------------------------------------------------------------------------
+  // ROUTAGE URL : /produit/:slug, /rayon/:id, /ville/:slug (liens du sitemap).
+  // Le catalogue est pré-chargé depuis INITIAL_PRODUCTS, donc le rendu est
+  // immédiat même si /api/catalog n'a pas encore répondu.
+  // ---------------------------------------------------------------------------
+  const applyRoute = React.useCallback((nextRoute) => {
+    setRoute(nextRoute);
+    if (nextRoute.name === 'product') {
+      const found = INITIAL_PRODUCTS.find(
+        (p) => p.slug === nextRoute.param || p.id === nextRoute.param
+      );
+      if (found) setSelectedProduct(found);
+      return;
+    }
+    // Les autres routes sont de vraies pages : la fiche produit se referme.
+    setSelectedProduct(null);
+    if (nextRoute.name === 'rayon') {
+      setActiveCategory(nextRoute.param);
+      setOnlyFavorites(false);
+      setSearchQuery('');
+    }
+  }, []);
+
+  React.useEffect(() => {
+    applyRoute(parseRoute());
+    const onPop = () => applyRoute(parseRoute());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [applyRoute]);
+
+  // Une fois le catalogue serveur chargé, on réhydrate la fiche produit par slug
+  React.useEffect(() => {
+    if (route.name !== 'product' || selectedProduct) return;
+    const found = catalogData.products.find(
+      (p) => p.slug === route.param || p.id === route.param
+    );
+    if (found) setSelectedProduct(found);
+  }, [route, catalogData.products, selectedProduct]);
+
+  // SEO : données structurées Product + fil d'Ariane sur la fiche ouverte
+  React.useEffect(() => {
+    if (!selectedProduct) {
+      document.getElementById('pkd-jsonld-product')?.remove();
+      return;
+    }
+    injectJsonLd('pkd-jsonld-product', buildProductSchema(selectedProduct));
+    injectJsonLd(
+      'pkd-jsonld-breadcrumb',
+      buildBreadcrumbSchema([
+        { name: 'Accueil', url: '/' },
+        { name: 'Catalogue', url: '/' },
+        { name: selectedProduct.name, url: productPath(selectedProduct.slug || selectedProduct.id) },
+      ])
+    );
+    document.title = `${selectedProduct.name} — ${formatFcfa(selectedProduct.price)} | Pèrôkadô Daloa`;
+  }, [selectedProduct]);
+
+  // SEO : liste des produits de la page d'accueil (ItemList)
+  React.useEffect(() => {
+    if (route.name !== 'home' || !catalogData.products.length) return;
+    injectJsonLd(
+      'pkd-jsonld-itemlist',
+      buildStoreItemListSchema(catalogData.products, catalogData.categories)
+    );
+  }, [route.name, catalogData.products, catalogData.categories]);
+
   React.useEffect(() => {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
@@ -171,6 +259,21 @@ export default function App() {
       }
       return [...prev, { productId: product.id, quantity: Math.min(product.stock, qty) }];
     });
+  }
+
+  // Ouvre une fiche produit et met l'URL à jour (/produit/:slug) pour le partage
+  function openProduct(product) {
+    setSelectedProduct(product);
+    if (product?.slug) pushRoute(productPath(product.slug));
+  }
+
+  function closeProduct() {
+    setSelectedProduct(null);
+    // On revient à la page d'où la fiche a été ouverte (accueil, rayon ou ville)
+    if (route.name === 'product') {
+      pushRoute('/');
+      setRoute({ name: 'home' });
+    }
   }
 
   function handleBuyNow(product, qty = 1) {
@@ -237,6 +340,10 @@ export default function App() {
       return Number(b.featured) - Number(a.featured);
     });
 
+  // Chargement progressif : on n'affiche que les N premiers résultats filtrés
+  const pagedProducts = filteredProducts.slice(0, visibleCount);
+  const hasMore = filteredProducts.length > visibleCount;
+
   // Regroupement par catégorie lorsque la vue « Tous les rayons » est affichée
   const shouldGroupByCategory = activeCategory === 'all' && !hasSearchQuery && !onlyFavorites;
   const groupedCategories = React.useMemo(() => {
@@ -259,7 +366,13 @@ export default function App() {
     return groups;
   }, [shouldGroupByCategory, catalogData.categories, filteredProducts]);
 
-  const showHero = !searchQuery.trim() && !onlyFavorites;
+  // Toute modification de filtre ou de tri repart de la première page
+  React.useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [activeCategory, priceRangeId, onlyInStock, onlyPromos, onlyFavorites, searchQuery, sortBy]);
+
+  const showHero = route.name === 'home' && !searchQuery.trim() && !onlyFavorites;
+  const currentCity = route.name === 'ville' ? getCity(route.param) : null;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#EAEDED] text-[#0F1111]">
@@ -315,8 +428,24 @@ export default function App() {
         />
       )}
 
+      {/* PAGE VILLE : /ville/:slug — contenu local SEO + sélection produits */}
+      {route.name === 'ville' && currentCity && (
+        <CityPage
+          city={currentCity}
+          products={catalogData.products}
+          categories={catalogData.categories}
+          onOpenProduct={openProduct}
+          onOpenTrack={() => setTrackOpen(true)}
+        />
+      )}
+
       {/* SECTION CATALOGUE STYLE AMAZON : COLONNE FILTRES À GAUCHE + GRILLE 4 COLONNES */}
-      <main id="catalogue" className="flex-1 max-w-[1500px] w-full mx-auto px-2 sm:px-6 pt-4 sm:pt-6 pb-10">
+      <main
+        id="catalogue"
+        className={`flex-1 max-w-[1500px] w-full mx-auto px-2 sm:px-6 pt-4 sm:pt-6 pb-10 ${
+          route.name === 'ville' ? 'hidden' : ''
+        }`}
+      >
         {/* Bandeau info si la base de production Vercel attend encore DATABASE_URL */}
         {catalogData.error && (
           <div className="mb-5 p-3.5 rounded-md bg-white border-l-4 border-[#FF9900] shadow-xs flex items-start gap-3 text-xs text-[#0F1111]">
@@ -467,7 +596,7 @@ export default function App() {
               </ul>
             </div>
 
-            {/* Rappel Livraison & Paiement Wave */}
+            {/* Rappel Livraison & Paiement */}
             <div className="pt-4 border-t border-[#EAEDED] space-y-2 text-[11px] text-[#565959]">
               <p className="font-bold text-[#0F1111] flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5 text-[#C7511F]" />
@@ -548,7 +677,7 @@ export default function App() {
                       </button>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
-                      {items.map((product) => (
+                      {items.slice(0, 8).map((product) => (
                         <ProductCard
                           key={product.id}
                           product={product}
@@ -556,7 +685,7 @@ export default function App() {
                           onToggleFavorite={handleToggleFavorite}
                           onAddToCart={handleAddToCart}
                           onBuyNow={handleBuyNow}
-                          onOpenDetail={setSelectedProduct}
+                          onOpenDetail={openProduct}
                           inCartQty={cartQtyMap.get(product.id) || 0}
                           selectedZone={selectedZone}
                         />
@@ -566,21 +695,45 @@ export default function App() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    isFavorite={favorites.includes(product.id)}
-                    onToggleFavorite={handleToggleFavorite}
-                    onAddToCart={handleAddToCart}
-                    onBuyNow={handleBuyNow}
-                    onOpenDetail={setSelectedProduct}
-                    inCartQty={cartQtyMap.get(product.id) || 0}
-                    selectedZone={selectedZone}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
+                  {pagedProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      isFavorite={favorites.includes(product.id)}
+                      onToggleFavorite={handleToggleFavorite}
+                      onAddToCart={handleAddToCart}
+                      onBuyNow={handleBuyNow}
+                      onOpenDetail={openProduct}
+                      inCartQty={cartQtyMap.get(product.id) || 0}
+                      selectedZone={selectedZone}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination : chargement progressif par tranches de 24 */}
+                <div className="mt-6 space-y-2">
+                  <p className="text-center text-[11px] text-[#565959]">
+                    {Math.min(visibleCount, filteredProducts.length)} article
+                    {Math.min(visibleCount, filteredProducts.length) > 1 ? 's' : ''} affiché
+                    {Math.min(visibleCount, filteredProducts.length) > 1 ? 's' : ''} sur{' '}
+                    {filteredProducts.length}
+                  </p>
+                  {hasMore && (
+                    <div className="flex justify-center">
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+                        className="px-6 py-2.5 rounded-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] text-[#0F1111] text-xs font-bold cursor-pointer shadow-2xs"
+                      >
+                        Afficher {Math.min(PAGE_SIZE, filteredProducts.length - visibleCount)} articles
+                        de plus
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -623,7 +776,7 @@ export default function App() {
 
       <ProductDetailModal
         product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
+        onClose={closeProduct}
         onAddToCart={handleAddToCart}
         onBuyNow={handleBuyNow}
         selectedZone={selectedZone}

@@ -87,14 +87,16 @@ export function buildWhatsappOrderUrl(whatsappNumber, order) {
   const cleanNum = String(whatsappNumber || '2250501303343').replace(/\D/g, '');
   const trackingUrl = buildOrderTrackingUrl(order);
   const lines = [
-    `Bonjour *Pèrôkadô* ! Je viens de régler ma commande en ligne par *Wave* :`,
+    `Bonjour *Pèrôkadô* ! Je viens de passer commande :`,
     ``,
     `*Référence :* ${order.reference}`,
     `*Client :* ${order.customerName} (${order.customerPhone})`,
     `*Zone / Expédition :* ${order.cityZoneName} — ${order.neighborhood}`,
     order.addressDetails ? `*Repère :* ${order.addressDetails}` : null,
     `*Créneau :* ${order.deliverySlot}`,
-    `*Paiement Wave :* ${order.waveSenderPhone || order.customerPhone} (Réf Wave : ${order.waveTransactionRef || 'communiquée'})`,
+    order.paymentMethod === 'especes-livraison'
+      ? `*Paiement :* espèces à la livraison`
+      : `*Paiement mobile money :* ${order.waveSenderPhone || order.customerPhone} (Réf : ${order.waveTransactionRef || 'communiquée'})`,
     ``,
     `*Articles :*`,
     ...order.items.map(
@@ -105,7 +107,9 @@ export function buildWhatsappOrderUrl(whatsappNumber, order) {
       ? `*Remise (${order.promoCode}) :* -${order.discountAmount.toLocaleString('fr-FR')} FCFA`
       : null,
     `*Livraison / Expédition (base) :* ${order.deliveryFee.toLocaleString('fr-FR')} FCFA`,
-    `*TOTAL PAYÉ PAR WAVE :* *${order.total.toLocaleString('fr-FR')} FCFA*`,
+    order.paymentMethod === 'especes-livraison'
+      ? `*TOTAL À RÉGLER AU LIVREUR :* *${order.total.toLocaleString('fr-FR')} FCFA*`
+      : `*TOTAL PAYÉ :* *${order.total.toLocaleString('fr-FR')} FCFA*`,
     order.customerNote ? `\n*Note :* ${order.customerNote}` : null,
     ``,
     `*Lien de suivi en direct :* ${trackingUrl}`,

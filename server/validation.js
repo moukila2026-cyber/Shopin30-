@@ -2,10 +2,11 @@
 // PÈRÔKADÔ — Validation stricte des entrées (Zod v4)
 // ==============================================================================
 import { z } from 'zod';
-import { CATEGORIES, DELIVERY_SLOTS } from '../shared/catalog.js';
+import { CATEGORIES, DELIVERY_SLOTS, PAYMENT_METHOD_IDS } from '../shared/catalog.js';
 
 const validCategoryIds = CATEGORIES.filter((c) => c.id !== 'all').map((c) => c.id);
 const validSlotIds = DELIVERY_SLOTS.map((s) => s.id);
+const validPaymentMethodIds = PAYMENT_METHOD_IDS;
 
 export const OrderItemInputSchema = z.object({
   productId: z.string().trim().min(1).max(120),
@@ -33,10 +34,14 @@ export const PlaceOrderSchema = z.object({
   deliverySlot: z.string().refine((v) => validSlotIds.includes(v), {
     message: 'Créneau de livraison invalide.',
   }),
-  // Paiement en ligne UNIQUEMENT par Wave
-  paymentMethod: z.literal('wave', {
-    error: 'Le paiement en ligne s’effectue uniquement par Wave.',
-  }),
+  // Moyens de paiement : Wave, Orange Money, MTN MoMo, Moov Money ou espèces à la livraison
+  paymentMethod: z
+    .string()
+    .trim()
+    .refine((v) => validPaymentMethodIds.includes(v), {
+      message:
+        'Moyen de paiement invalide. Choisissez Wave, Orange Money, MTN MoMo, Moov Money ou les espèces à la livraison.',
+    }),
   waveSenderPhone: z
     .string()
     .trim()
@@ -152,4 +157,41 @@ export const StoreSettingsUpdateSchema = z.object({
     .min(1)
     .max(25)
     .optional(),
+});
+
+// Avis client : note 1 à 5, commentaire court, nom affichable, référence de
+// commande facultative (elle déclenche la mention « achat vérifié »).
+export const ReviewSchema = z.object({
+  productId: z.string().trim().min(1).max(160),
+  orderReference: z.string().trim().max(40).optional().default(''),
+  authorName: z.string().trim().min(2).max(60),
+  authorCity: z.string().trim().max(60).optional().default('Daloa'),
+  rating: z.coerce.number().int().min(1).max(5),
+  comment: z.string().trim().max(1200).optional().default(''),
+});
+
+export const ReviewModerationSchema = z.object({
+  status: z.enum(['approved', 'rejected', 'pending']),
+});
+
+export const CartAbandonmentSchema = z.object({
+  customerPhone: z.string().trim().min(8).max(20),
+  customerName: z.string().trim().max(60).optional().default(''),
+  subtotal: z.coerce.number().int().min(0).max(100000000).optional().default(0),
+  items: z
+    .array(
+      z.object({
+        productId: z.string().trim().min(1).max(160),
+        name: z.string().trim().max(300).optional().default(''),
+        quantity: z.coerce.number().int().min(1).max(999),
+        lineTotal: z.coerce.number().int().min(0).max(100000000).optional().default(0),
+      })
+    )
+    .max(60)
+    .optional()
+    .default([]),
+});
+
+export const CartAbandonmentStatusSchema = z.object({
+  status: z.enum(['open', 'reminded', 'converted', 'ignored']),
 });

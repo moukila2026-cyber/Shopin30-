@@ -23,6 +23,9 @@ import {
   formatFcfa,
   DELIVERY_SLOTS,
   BRAND,
+  PAYMENT_METHODS,
+  getPaymentMethod,
+  isCashOnDeliveryAllowed,
   computeZoneDeliveryFee,
   inferHeavyShipping,
 } from '../../shared/catalog.js';
@@ -71,7 +74,8 @@ export function CartDrawer({
   const [addressDetails, setAddressDetails] = React.useState('');
   const [deliverySlot, setDeliverySlot] = React.useState(DELIVERY_SLOTS[0].id);
 
-  // Paiement en ligne Wave uniquement
+  // Moyens de paiement : Wave / Orange Money / MTN MoMo / Moov Money / espèces à la livraison
+  const [paymentMethodId, setPaymentMethodId] = React.useState('wave');
   const [waveSenderPhone, setWaveSenderPhone] = React.useState('');
   const [waveTransactionRef, setWaveTransactionRef] = React.useState('');
   const [customerNote, setCustomerNote] = React.useState('');
@@ -107,6 +111,43 @@ export function CartDrawer({
       setSubmitError('');
     }
   }, [open, initialStep]);
+
+  // ---------------------------------------------------------------------------
+  // RELANCE PANIER ABANDONNÉ
+  // Dès qu'un numéro valide est saisi à l'étape commande, on l'enregistre avec le
+  // contenu du panier. Si la commande n'aboutit pas, la relance apparaît dans
+  // l'admin avec un message WhatsApp prêt à envoyer.
+  // ---------------------------------------------------------------------------
+  React.useEffect(() => {
+    if (!open || step === 'confirmed') return undefined;
+    const digits = String(customerPhone || '').replace(/\D/g, '');
+    if (digits.length < 8) return undefined;
+    const timer = setTimeout(() => {
+      const itemsForReminder = cartItems
+        .map((ci) => {
+          const prod = productsMap.get(ci.productId);
+          if (!prod) return null;
+          return {
+            productId: prod.id,
+            name: prod.name,
+            quantity: ci.quantity,
+            lineTotal: prod.price * ci.quantity,
+          };
+        })
+        .filter(Boolean);
+      if (!itemsForReminder.length) return;
+      apiFetch('/api/cart-abandonment', {
+        method: 'POST',
+        body: {
+          customerPhone,
+          customerName,
+          items: itemsForReminder,
+          subtotal: itemsForReminder.reduce((acc, i) => acc + i.lineTotal, 0),
+        },
+      }).catch(() => {});
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [open, step, customerPhone, customerName, cartItems, productsMap]);
 
   // Génération locale du Code QR haute précision pointant vers le lien de suivi en direct
   React.useEffect(() => {
@@ -146,7 +187,7 @@ export function CartDrawer({
   const selectedZone =
     zones.find((z) => z.id === cityZoneId) ||
     zones[0] || { id: 'daloa-commune', fee: 1000, shortName: 'Daloa Commune' };
-  const deliveryFee = computeZoneDeliveryFee(selectedZone, { hasHeavyItem });
+  const deliveryFee = computeZoneDeliveryFee(selectedZone, { hasHeavyItem, neighborhood });
   const grandTotal = netSubtotal + deliveryFee;
 
   const waveMerchantNumber = settings?.wavePhone || BRAND.defaultWavePhone;
@@ -188,7 +229,7 @@ export function CartDrawer({
           neighborhood,
           addressDetails,
           deliverySlot,
-          paymentMethod: 'wave',
+          paymentMethod: paymentMethodId,
           waveSenderPhone: waveSenderPhone.trim() || customerPhone.trim(),
           waveTransactionRef: waveTransactionRef.trim(),
           customerNote,
@@ -337,8 +378,15 @@ export function CartDrawer({
                       <div key={product.id} className="flex gap-3 sm:gap-3.5 p-3 sm:p-3.5">
                         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded bg-[#F7F8F8] border border-[#EAEDED] p-1.5 flex items-center justify-center shrink-0">
                           <img
-                            src={product.imageUrl}
+                            src={product.imageUrl.replace(
+                              /^(.*\/)products\/([^/]+)\.(jpe?g|png)$/i,
+                              '$1products/webp/$2-400.webp'
+                            )}
                             alt={product.name}
+                            loading="lazy"
+                            decoding="async"
+                            width="80"
+                            height="80"
                             onError={(e) => {
                               e.currentTarget.onerror = null;
                               e.currentTarget.src = '/images/products/placeholder.svg';
@@ -547,7 +595,7 @@ export function CartDrawer({
                     className="w-full px-3 py-2 rounded bg-[#F0F2F2] border border-[#888C8C] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#007185]"
                   >
                     {zones.map((z) => {
-                      const effectiveFee = computeZoneDeliveryFee(z, { hasHeavyItem });
+                      const effectiveFee = computeZoneDeliveryFee(z, { hasHeavyItem, neighborhood });
                       return (
                         <option key={z.id} value={z.id}>
                           {z.shortName} — {formatFcfa(effectiveFee)}
@@ -626,46 +674,80 @@ export function CartDrawer({
                 </div>
               </div>
 
-              {/* Bloc 2 : Paiement en ligne 100% Wave Côte d'Ivoire */}
+              {/* Bloc 2 : Même page de paiement, moyens ivoiriens et espèces à la livraison */}
               <div className="bg-white rounded-md border-2 border-[#009EE3] p-4 space-y-3">
                 <div className="flex items-center justify-between border-b border-[#EAEDED] pb-2">
                   <h3 className="text-sm font-bold text-[#0F1111] flex items-center gap-2">
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#009EE3] text-white font-extrabold text-xs">
-                      W
+                      2
                     </span>
-                    <span>2. Paiement sécurisé Wave Côte d’Ivoire uniquement</span>
+                    <span>Paiement</span>
                   </h3>
                   <Lock className="w-4 h-4 text-[#009EE3]" />
                 </div>
 
-                {waveAutoCheckout ? (
-                  <div className="bg-[#EBF8FF] rounded p-3.5 border border-[#B3E5FC] text-xs text-[#053B54] space-y-1.5">
-                    <p className="font-bold flex items-center gap-1.5">
-                      <Smartphone className="w-4 h-4 text-[#009EE3] shrink-0" />
-                      <span>Paiement Wave Business 100% Automatique (0 F de surcoût)</span>
-                    </p>
-                    <p>
-                      En cliquant sur le bouton ci-dessous, votre application{' '}
-                      <strong>Wave</strong> s’ouvrira automatiquement avec le montant exact de{' '}
-                      <strong>{formatFcfa(grandTotal)}</strong>. Dès confirmation dans Wave, votre
-                      commande passe automatiquement en préparation avec votre{' '}
-                      <strong>Code QR de suivi en direct</strong>.
-                    </p>
-                  </div>
-                ) : (
+                {/* Sélecteur de moyen de paiement */}
+                <div className="space-y-2">
+                  {PAYMENT_METHODS.map((method) => {
+                    const disabled = method.kind === 'cash' && !isCashOnDeliveryAllowed(selectedZone);
+                    const selected = paymentMethodId === method.id;
+                    return (
+                      <label
+                        key={method.id}
+                        className={`flex items-start gap-2.5 p-2.5 rounded-md border text-xs cursor-pointer transition ${
+                          disabled
+                            ? 'bg-[#F7F8F8] border-[#EAEDED] text-[#888C8C] cursor-not-allowed'
+                            : selected
+                              ? 'border-[#009EE3] bg-[#EBF8FF] ring-1 ring-[#009EE3]'
+                              : 'border-[#D5D9D9] hover:border-[#888C8C]'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="pkd-payment-method"
+                          value={method.id}
+                          checked={selected}
+                          disabled={disabled}
+                          onChange={() => setPaymentMethodId(method.id)}
+                          className="mt-0.5 accent-[#009EE3]"
+                        />
+                        <span className="min-w-0">
+                          <span className="block font-bold text-[#0F1111]">
+                            {method.label}
+                            {method.kind === 'cash' && (
+                              <span className="ml-1 font-normal text-[10px] text-[#565959]">
+                                {disabled ? '(Daloa uniquement)' : '(Daloa uniquement)'}
+                              </span>
+                            )}
+                          </span>
+                          <span className="block text-[11px] text-[#565959] mt-0.5">
+                            {method.description}
+                          </span>
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                {getPaymentMethod(paymentMethodId).kind === 'mobile-money' && (
                   <>
                     <div className="bg-[#EBF8FF] rounded p-3 border border-[#B3E5FC] space-y-2 text-xs">
                       <div className="flex items-center justify-between gap-2">
-                        <div>
+                        <div className="min-w-0">
                           <span className="text-[11px] text-[#565959] block">
-                            Envoyez exactement <strong>{formatFcfa(grandTotal)}</strong> au n° Wave Paiements Pèrôkadô :
+                            Envoyez exactement <strong>{formatFcfa(grandTotal)}</strong> au numéro{' '}
+                            <strong>{getPaymentMethod(paymentMethodId).shortLabel}</strong> Pèrôkadô :
                           </span>
                           <strong className="text-base font-extrabold text-[#053B54] tracking-wide">
-                            {waveMerchantNumber}
+                            {getPaymentMethod(paymentMethodId).merchantPhone || waveMerchantNumber}
                           </strong>
-                          <span className="block text-[10px] text-[#053B54]/80 mt-0.5">
-                            (Numéro dédié uniquement aux encaissements Wave — Assistance WhatsApp au +225 05 01 30 33 43)
-                          </span>
+                          {getPaymentMethod(paymentMethodId).ussd && (
+                            <span className="block text-[10px] text-[#053B54]/80 mt-0.5">
+                              Depuis votre téléphone : composez{' '}
+                              <strong>{getPaymentMethod(paymentMethodId).ussd}</strong> puis choisissez
+                              « Paiement marchand ».
+                            </span>
+                          )}
                         </div>
                         <button
                           type="button"
@@ -677,7 +759,7 @@ export function CartDrawer({
                         </button>
                       </div>
 
-                      {wavePaymentUrl && (
+                      {paymentMethodId === 'wave' && wavePaymentUrl && (
                         <a
                           href={wavePaymentUrl}
                           target="_blank"
@@ -694,7 +776,7 @@ export function CartDrawer({
                     <div className="grid sm:grid-cols-2 gap-2.5">
                       <div>
                         <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
-                          Votre n° Wave émetteur *
+                          Votre n° {getPaymentMethod(paymentMethodId).shortLabel} émetteur *
                         </label>
                         <input
                           type="tel"
@@ -707,7 +789,7 @@ export function CartDrawer({
                       </div>
                       <div>
                         <label className="block text-[11px] font-bold text-[#0F1111] mb-1">
-                          ID / Référence transaction Wave *
+                          ID / Référence de transaction *
                         </label>
                         <input
                           type="text"
@@ -721,6 +803,17 @@ export function CartDrawer({
                       </div>
                     </div>
                   </>
+                )}
+
+                {getPaymentMethod(paymentMethodId).kind === 'cash' && (
+                  <div className="bg-[#FFF8E1] rounded p-3 border border-[#FFE082] text-xs text-[#5D4037] space-y-1">
+                    <p className="font-bold">Vous payez au livreur, à la réception.</p>
+                    <p>
+                      Préparez <strong>{formatFcfa(grandTotal)}</strong> en espèces. Le colis est
+                      remis contre paiement ; un reçu avec Code QR de suivi vous est remis en même
+                      temps. Disponible à Daloa commune et périphérie uniquement.
+                    </p>
+                  </div>
                 )}
 
                 <div>
@@ -864,9 +957,15 @@ export function CartDrawer({
                   {confirmedData.order.neighborhood}
                 </p>
                 <p>
-                  <strong>Paiement Wave :</strong> Réf{' '}
-                  <code>{confirmedData.order.waveTransactionRef}</code> (
-                  {formatFcfa(confirmedData.order.total)})
+                  <strong>{getPaymentMethod(confirmedData.order.paymentMethod).shortLabel} :</strong>{' '}
+                  {confirmedData.order.waveTransactionRef ? (
+                    <>
+                      Réf <code>{confirmedData.order.waveTransactionRef}</code> (
+                      {formatFcfa(confirmedData.order.total)})
+                    </>
+                  ) : (
+                    <>à régler au livreur — {formatFcfa(confirmedData.order.total)}</>
+                  )}
                 </p>
               </div>
             </div>

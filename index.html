@@ -6,11 +6,17 @@
     <title>Pèrôkadô : Boutique en ligne à Daloa, Issia, Vavoua & Côte d’Ivoire — High-Tech, Mode, Beauté, Maison</title>
     <meta
       name="description"
-      content="Pèrôkadô : commandez vos articles High-Tech, Mode, Beauté, Cadeaux et Électroménager au meilleur prix à Daloa et villes aux alentours. Paiement Wave sécurisé et suivi de colis en direct par Code QR."
+      content="Pèrôkadô : 274 articles High-Tech, Électroménager, Quincaillerie BTP, Mode & Maison à Daloa. Livraison dès 1 000 F, paiement Wave, Orange Money, MTN MoMo, Moov Money ou à la livraison. Suivi de colis par Code QR."
     />
     <meta name="theme-color" content="#131921" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png" />
     <link rel="apple-touch-icon" href="/images/icon-512.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Pèrôkadô" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <link rel="canonical" href="https://perokado.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://perokado.com/" />
@@ -21,6 +27,75 @@
       content="Électroménager SMART TECHNOLOGY (Frigos, Lave-linge, Gazinières), High-Tech, Mode & Maison. Livraison Daloa dès 1 000 F · Expédition Issia, Vavoua & Côte d’Ivoire. Paiement Wave & Suivi Code QR."
     />
     <meta property="og:image" content="https://perokado.com/images/og-perokado.png" />
+    <!-- Données structurées : commerçant local (Google Business / Rich Results) + site -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "OnlineStore",
+        "@id": "https://perokado.com/#organization",
+        "name": "Pèrôkadô",
+        "alternateName": "PEROKADO",
+        "url": "https://perokado.com/",
+        "logo": "https://perokado.com/images/icon-512.png",
+        "image": "https://perokado.com/images/og-perokado.png",
+        "description": "Boutique en ligne de quincaillerie BTP, électroménager, high-tech, mode et maison à Daloa, Côte d'Ivoire. Livraison dans tout le Haut-Sassandra.",
+        "telephone": "+225 05 01 30 33 43",
+        "priceRange": "1 000 – 500 000 FCFA",
+        "currenciesAccepted": "XOF",
+        "paymentAccepted": "Wave, Orange Money, MTN Mobile Money, Moov Money, espèces à la livraison",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Daloa",
+          "addressRegion": "Haut-Sassandra",
+          "addressCountry": "CI"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": 6.8778, "longitude": -6.4502 },
+        "areaServed": [
+          { "@type": "City", "name": "Daloa" },
+          { "@type": "City", "name": "Issia" },
+          { "@type": "City", "name": "Vavoua" },
+          { "@type": "City", "name": "Zoukougbeu" },
+          { "@type": "City", "name": "Bouaflé" },
+          { "@type": "City", "name": "Sinfra" },
+          { "@type": "City", "name": "Gagnoa" },
+          { "@type": "City", "name": "Soubré" }
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "08:00",
+            "closes": "19:30"
+          }
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+225 05 01 30 33 43",
+          "contactType": "customer service",
+          "areaServed": "CI",
+          "availableLanguage": ["French"]
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://perokado.com/#website",
+        "url": "https://perokado.com/",
+        "name": "Pèrôkadô",
+        "inLanguage": "fr-CI",
+        "publisher": { "@id": "https://perokado.com/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://perokado.com/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </head>
   <body class="bg-[#EAEDED] text-[#0F1111] antialiased selection:bg-[#FF9900]/30 selection:text-[#0F1111]">
     <div id="root"></div>
