@@ -939,6 +939,42 @@ export const MOTOS_TRICYCLES_PRODUCTS = [
   },
 ];
 
+// Quad électriques enfants : stock à confirmer avant toute commande.
+export const QUADS_ENFANTS_2026_PRODUCTS = [
+  {
+    id: 'enfant-quad-rechargeable-noir-bleu',
+    slug: 'quad-electrique-rechargeable-enfant-noir-bleu',
+    name: 'Quad électrique rechargeable enfant — Bleu & Noir',
+    category: 'jouets-enfants',
+    price: 47000,
+    compareAtPrice: null,
+    stock: 0,
+    badge: 'Nouveauté',
+    featured: false,
+    isHeavy: false,
+    shortDescription: 'Quad électrique rechargeable bleu et noir, avec guidon et quatre roues.',
+    description: 'Quad électrique rechargeable pour enfant, en bleu et noir. Le fournisseur indique une tranche de 0 à 3 ans ; l’âge minimum et les limites de poids sont à confirmer avant utilisation. Surveillance permanente d’un adulte indispensable.',
+    specs: ['Électrique rechargeable', 'Coloris bleu et noir', 'Quatre roues et guidon', 'Âge indiqué par le fournisseur : 0–3 ans, à vérifier', 'Utilisation sous surveillance d’un adulte'],
+    imageUrl: '/images/enfants/quad-noir-bleu.png',
+  },
+  {
+    id: 'enfant-quad-rechargeable-noir-jaune',
+    slug: 'quad-electrique-rechargeable-enfant-noir-jaune',
+    name: 'Quad électrique rechargeable enfant — Jaune & Noir',
+    category: 'jouets-enfants',
+    price: 47000,
+    compareAtPrice: null,
+    stock: 0,
+    badge: 'Nouveauté',
+    featured: false,
+    isHeavy: false,
+    shortDescription: 'Quad électrique rechargeable jaune et noir, avec guidon et quatre roues.',
+    description: 'Quad électrique rechargeable pour enfant, en jaune et noir. Le fournisseur indique une tranche de 0 à 3 ans ; l’âge minimum et les limites de poids sont à confirmer avant utilisation. Surveillance permanente d’un adulte indispensable.',
+    specs: ['Électrique rechargeable', 'Coloris jaune et noir', 'Quatre roues et guidon', 'Âge indiqué par le fournisseur : 0–3 ans, à vérifier', 'Utilisation sous surveillance d’un adulte'],
+    imageUrl: '/images/enfants/quad-noir-jaune.png',
+  },
+];
+
 // ================= JOUETS, JEUX DE SOCIÉTÉ, LOISIRS CRÉATIFS & UNIVERS ENFANTS =================
 export const JOUETS_ENFANTS_PRODUCTS = [
   {
@@ -6118,6 +6154,7 @@ export const INITIAL_PRODUCTS = [
   ...MOTOS_TRICYCLES_PRODUCTS,
   ...SMART_TECHNOLOGY_PRODUCTS,
   ...JOUETS_ENFANTS_PRODUCTS,
+  ...QUADS_ENFANTS_2026_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
   {
     id: 'smartphone-nova-x12',

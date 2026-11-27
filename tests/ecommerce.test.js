@@ -85,8 +85,24 @@ test('Les galeries sélectionnées sont disponibles sur le catalogue', async () 
   assert.equal(iron.galleryUrls.length, 3);
   const kettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-beige-stpe-251u');
   assert.equal(kettle.galleryUrls.length, 3);
-  assert.deepEqual(kettle.generatedGalleryUrls, ['/images/gallery/stpe-251u-ia-angle.png']);
+  assert.deepEqual(kettle.imaginedColorUrls, ['/images/gallery/stpe-251u-ia-bleu.png', '/images/gallery/stpe-251u-ia-vert.png']);
+  assert.deepEqual(kettle.generatedGalleryUrls, kettle.imaginedColorUrls);
+  const redKettle = catalog.data.products.find((p) => p.id === 'smart-bouilloire-rouge-stpe-249rb');
+  assert.equal(redKettle.galleryUrls.length, 3);
+  assert.equal(redKettle.imaginedColorUrls.length, 2);
   assert.ok(blender.imageUrl.startsWith('/images/gallery/'));
+});
+
+test('Nouveaux quads enfants : marge, livraison et stock à confirmer', async () => {
+  const catalog = await reqJson('/api/catalog');
+  for (const id of ['enfant-quad-rechargeable-noir-bleu', 'enfant-quad-rechargeable-noir-jaune']) {
+    const product = catalog.data.products.find((p) => p.id === id);
+    assert.ok(product);
+    assert.equal(product.price, 47000);
+    assert.equal(product.stock, 0);
+    assert.equal(product.isHeavy, false);
+    assert.deepEqual(product.generatedGalleryUrls, [product.imageUrl]);
+  }
 });
 
 test('2. Protection CSRF / Same-Origin et rejet des moyens de paiement inconnus', async () => {
