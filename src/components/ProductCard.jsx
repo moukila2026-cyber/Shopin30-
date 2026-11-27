@@ -340,12 +340,12 @@ export function ProductDetailModal({
             </button>
             {product.imaginedColorUrls?.length > 0 && (
               <p className="text-xs font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded p-2">
-                Certaines images sont des illustrations IA de couleurs imaginées : elles ne représentent pas des couleurs disponibles à la vente. Le produit commandé correspond à la photo principale.
+                Certaines images montrent des couleurs imaginées : elles ne représentent pas des couleurs disponibles à la vente. Le produit commandé correspond à la photo principale.
               </p>
             )}
             {product.generatedGalleryUrls?.includes(activeImageUrl || product.imageUrl) && !product.imaginedColorUrls?.includes(activeImageUrl || product.imageUrl) && (
               <p className="text-xs font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded p-2">
-                Illustration générée par IA à partir d’une photo du produit. Les détails peuvent différer de l’article réel.
+                Image illustrative : les détails peuvent différer de l’article réel.
               </p>
             )}
             <p className="text-xs text-[#565959]">Touchez la photo pour agrandir.</p>
@@ -356,7 +356,7 @@ export function ProductDetailModal({
                     key={idx}
                     type="button"
                     onClick={() => { setActiveImageUrl(imgUrl); setZoomed(false); }}
-                    aria-label={`Afficher ${product.generatedGalleryUrls?.includes(imgUrl) ? 'l’illustration générée par IA' : 'la photo'} ${idx + 1} de ${product.name}`}
+                    aria-label={`Afficher l’image ${idx + 1} de ${product.name}`}
                     aria-pressed={(activeImageUrl || product.imageUrl) === imgUrl}
                     className={`relative w-16 h-16 rounded border p-1 bg-[#F7F8F8] flex items-center justify-center cursor-pointer ${
                       (activeImageUrl || product.imageUrl) === imgUrl
@@ -365,7 +365,7 @@ export function ProductDetailModal({
                     }`}
                   >
                     <img src={imgUrl} alt="" className="max-w-full max-h-full object-contain" />
-                    {product.imaginedColorUrls?.includes(imgUrl) && <span className="absolute bottom-0 inset-x-0 bg-amber-100 text-amber-950 text-[9px] font-bold">IA · fictif</span>}
+                    {product.imaginedColorUrls?.includes(imgUrl) && <span className="absolute bottom-0 inset-x-0 bg-amber-100 text-amber-950 text-[9px] font-bold">Couleur fictive</span>}
                   </button>
                 ))}
               </div>
