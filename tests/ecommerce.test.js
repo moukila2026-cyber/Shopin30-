@@ -861,7 +861,7 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.total, 4500);
 });
 
-test('12. Arrivage BTP Décembre 2026 : 24 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+test('12. Arrivage BTP Décembre 2026 : 40 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
 
@@ -891,6 +891,22 @@ test('12. Arrivage BTP Décembre 2026 : 24 fiches retravaillées Pèrôkadô (lo
     ['btp-griffe-gf11-1024-cle-canon', 15500],
     ['btp-targette-porte-force-178', 7500],
     ['btp-tirefond-tole-8x80-vert-force-ttvd', 4500],
+    ['btp-disjoncteur-schneider-2p-63a-a9f74263', 25000],
+    ['btp-griffe-gf11-1028-cle-canon', 15500],
+    ['btp-interrupteur-differentiel-megalec-4p-40a-id4p40a30ma', 45000],
+    ['btp-fiche-industrielle-megalec-3p-16a-meg-013g', 6500],
+    ['btp-fiche-industrielle-megalec-5p-32a-meg-025g', 11500],
+    ['btp-serrure-force-cle-s-101-1919', 9500],
+    ['btp-fiche-industrielle-megalec-4p-16a-meg-114g', 6000],
+    ['btp-cle-douche-griffe-162', 8500],
+    ['btp-serrure-force-cle-123f', 9500],
+    ['btp-disjoncteur-megalec-2p-63a-d2p63a', 15000],
+    ['btp-pompe-immergee-emtop-1500w-ewppd15001', 175000],
+    ['btp-tirefond-tole-8x80-rouge-force-ttrf', 4500],
+    ['btp-fiche-industrielle-megalec-3p-32a-meg-023g', 8500],
+    ['btp-fiche-industrielle-megalec-4p-16a-meg-014g', 7000],
+    ['btp-chauffe-eau-electrique-force-50l-force-417', 85000],
+    ['btp-griffe-164-cle-canon-lux-chrome', 12500],
   ];
   for (const [id, expectedPrice] of expectedBtpDec) {
     const prod = cat.data.products.find((p) => p.id === id);
