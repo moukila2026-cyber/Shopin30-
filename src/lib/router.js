@@ -79,7 +79,7 @@ export const CITIES = [
     highlights: [
       'Expédition 2 000 F, colis remis au transporteur le jour même',
       'Retrait en gare UTB ou AVS à Issia',
-      'Paiement Wave, Orange Money, MTN MoMo ou Moov Money',
+      'Paiement Wave Côte d’Ivoire uniquement',
       'Suivi du colis par Code QR jusqu’au retrait',
     ],
   },
@@ -165,7 +165,7 @@ export const CITIES = [
       'Expédition 2 000 F',
       'Réfrigérateurs et congélateurs emballés d’origine',
       'Garantie constructeur conservée',
-      'Paiement Wave / Orange Money / MTN / Moov',
+      'Paiement Wave Côte d’Ivoire uniquement',
     ],
   },
   {
