@@ -142,7 +142,7 @@ export function OrderTrackerModal({ open, onClose, initialTrack, whatsappNumber 
       aria-label="Suivi de marchandise en direct"
     >
       <div
-        className="bg-white rounded-lg max-w-lg w-full overflow-hidden shadow-2xl border border-[#D5D9D9] max-h-[92vh] flex flex-col"
+        className="bg-white rounded-lg max-w-lg w-full overflow-hidden shadow-2xl border border-[#D5D9D9] max-h-[92dvh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Barre supérieure style Amazon */}

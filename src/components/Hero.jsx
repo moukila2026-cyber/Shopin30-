@@ -125,7 +125,7 @@ export function Hero({
     <section className="max-w-[1500px] w-full mx-auto">
       {/* 1. CARROUSEL BANNIÈRE PLEINE LARGEUR AVEC FONDU DÉGRADÉ BAS (Style Amazon) */}
       <div className="relative overflow-hidden">
-        <div className="relative h-[300px] sm:h-[390px] lg:h-[460px] w-full">
+        <div className="relative h-[260px] sm:h-[390px] lg:h-[460px] w-full">
           <img
             key={currentSlide.id}
             src={currentSlide.image}
@@ -144,8 +144,8 @@ export function Hero({
           <div className="absolute inset-x-0 bottom-0 h-28 sm:h-40 bg-gradient-to-t from-[#EAEDED] via-[#EAEDED]/75 to-transparent pointer-events-none" />
 
           {/* Contenu éditorial de la bannière */}
-          <div className="absolute inset-0 flex items-start sm:items-center pb-20 sm:pb-28 px-6 sm:px-14 lg:px-20">
-            <div className="max-w-xl space-y-2.5 sm:space-y-3.5 pt-6 sm:pt-0">
+          <div className="absolute inset-0 flex items-start sm:items-center pb-16 sm:pb-28 px-4 sm:px-14 lg:px-20">
+            <div className="max-w-xl space-y-2 sm:space-y-3.5 pt-5 sm:pt-0">
               <span
                 className={`inline-block text-[11px] font-extrabold tracking-wider px-2.5 py-1 rounded-xs ${
                   currentSlide.darkText
@@ -217,17 +217,17 @@ export function Hero({
         </div>
 
         {/* 2. RANGÉE DE 4 CARTES CATÉGORIES CHEVAUCHANT LA BANNIÈRE (-mt-16 / -mt-28) COMME SUR AMAZON */}
-        <div className="relative z-10 -mt-14 sm:-mt-24 px-3 sm:px-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="relative z-10 -mt-12 sm:-mt-24 px-2 sm:px-6 grid grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
           {/* CARTE 1 : Motos & Tricycles Cargo */}
-          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
+          <div className="bg-white p-2.5 sm:p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
-                <h2 className="text-lg font-bold text-[#0F1111]">Motos & Tricycles Cargo</h2>
-                <span className="px-2 py-0.5 rounded-xs bg-[#CC0C39] text-white text-[10px] font-extrabold shrink-0">
+                <h2 className="text-xs sm:text-lg font-bold text-[#0F1111] leading-tight">Motos &amp; Tricycles Cargo</h2>
+                <span className="hidden sm:inline px-2 py-0.5 rounded-xs bg-[#CC0C39] text-white text-[10px] font-extrabold shrink-0">
                   NOUVEAU
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
                 {motosItems.map((item) => (
                   <button
                     key={item.id}
@@ -262,10 +262,10 @@ export function Hero({
           </div>
 
           {/* CARTE 2 : Réfrigérateurs & Vitrines SMART TECHNOLOGY */}
-          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
+          <div className="bg-white p-2.5 sm:p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-bold text-[#0F1111] mb-3">Réfrigérateurs & Vitrines SMART</h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
                 {froidItems.map((item) => (
                   <button
                     key={item.id}
@@ -300,10 +300,10 @@ export function Hero({
           </div>
 
           {/* CARTE 3 : Lave-linge & Gazinières SMART TECHNOLOGY */}
-          <div className="bg-white p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
+          <div className="bg-white p-2.5 sm:p-5 border border-[#D5D9D9]/80 shadow-xs flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-bold text-[#0F1111] mb-3">Lave-Linge & Gazinières Inox</h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
                 {lavageCuissonItems.map((item) => (
                   <button
                     key={item.id}

@@ -68,7 +68,7 @@ export function Header({
       <header className="sticky top-0 z-40 shadow-md">
         {/* 1. BARRE PRINCIPALE #131921 (Style Amazon) */}
         <div className="bg-[#131921] text-white">
-          <div className="max-w-[1500px] mx-auto px-2 sm:px-4 py-2 flex items-center gap-2 sm:gap-3">
+          <div className="max-w-[1500px] mx-auto px-2 sm:px-4 py-2 flex items-center gap-1 sm:gap-3 min-w-0">
             {/* Bouton Menu Mobile */}
             <button
               type="button"
@@ -97,15 +97,17 @@ export function Header({
                 alt="Logo Pèrôkadô"
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-contain shrink-0 drop-shadow-sm"
               />
-              <div className="leading-none">
+              <div className="leading-none min-w-0">
                 <div className="flex items-baseline gap-0.5">
-                  <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white">
+                  <span className="hidden min-[360px]:inline text-base sm:text-xl font-extrabold tracking-tight text-white truncate">
                     pèrôkadô
                   </span>
-                  <span className="text-xs font-bold text-[#FF9900]">.com</span>
+                  <span className="hidden min-[360px]:inline text-xs font-bold text-[#FF9900]">
+                    .com
+                  </span>
                 </div>
-                <span className="block text-[10px] text-[#CCCCCC] font-medium">
-                  Daloa & Expédition
+                <span className="hidden min-[360px]:block text-[10px] text-[#CCCCCC] font-medium">
+                  Daloa &amp; Expédition
                 </span>
               </div>
             </a>
@@ -246,9 +248,10 @@ export function Header({
                 <span className="hidden sm:block text-[11px] text-[#CCCCCC] leading-none">
                   Suivi en direct
                 </span>
-                <span className="text-xs font-bold text-white flex items-center gap-1 mt-0.5">
-                  <QrCode className="w-4 h-4 text-[#FF9900]" />
-                  <span>Commandes & QR</span>
+                <span className="text-[11px] sm:text-xs font-bold text-white flex items-center gap-1 mt-0.5 whitespace-nowrap">
+                  <QrCode className="w-4 h-4 text-[#FF9900] shrink-0" />
+                  <span className="hidden min-[400px]:inline">Commandes &amp; QR</span>
+                  <span className="min-[400px]:hidden">Suivi</span>
                 </span>
               </button>
 
