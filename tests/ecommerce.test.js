@@ -861,7 +861,7 @@ test('11. Rayon Cuisine & Art de la table : 8 produits showroom (sucriers, soupi
   assert.equal(sugarOrder.data.order.total, 4500);
 });
 
-test('12. Arrivage BTP Décembre 2026 : 40 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
+test('12. Arrivage BTP Décembre 2026 : 59 fiches retravaillées Pèrôkadô (logo + prix marché ivoirien) présentes avec leurs prix exacts', async () => {
   const cat = await reqJson('/api/catalog');
   assert.equal(cat.status, 200);
 
@@ -899,7 +899,7 @@ test('12. Arrivage BTP Décembre 2026 : 40 fiches retravaillées Pèrôkadô (lo
     ['btp-serrure-force-cle-s-101-1919', 9500],
     ['btp-fiche-industrielle-megalec-4p-16a-meg-114g', 6000],
     ['btp-cle-douche-griffe-162', 8500],
-    ['btp-serrure-force-cle-123f', 9500],
+    ['btp-force-cle-123f-rosace-etroite', 9500],
     ['btp-disjoncteur-megalec-2p-63a-d2p63a', 15000],
     ['btp-pompe-immergee-emtop-1500w-ewppd15001', 175000],
     ['btp-tirefond-tole-8x80-rouge-force-ttrf', 4500],
@@ -907,6 +907,27 @@ test('12. Arrivage BTP Décembre 2026 : 40 fiches retravaillées Pèrôkadô (lo
     ['btp-fiche-industrielle-megalec-4p-16a-meg-014g', 7000],
     ['btp-chauffe-eau-electrique-force-50l-force-417', 85000],
     ['btp-griffe-164-cle-canon-lux-chrome', 12500],
+    // Lot 4 — Midea Lighting
+    ['btp-midea-spot-led-apparent-9w-mdl-spcl09w65-01', 6500],
+    ['btp-midea-interrupteur-dvv-etanche-encastre-euprk22', 4500],
+    ['btp-midea-spot-led-encastre-8w-4000k-mdl-dl35r08w-03', 4500],
+    ['btp-midea-globe-led-24w-6500k-mdl-clr24w-03', 12000],
+    ['btp-midea-projecteur-led-100w-mdl-flf100w-036', 24000],
+    ['btp-midea-ampoule-led-15w-b22-mdl-bua6015w-6500-b22', 2500],
+    ['btp-midea-ampoule-led-5w-b22-mdl-bua4505w-226500', 1700],
+    ['btp-midea-globe-led-24w-3-couleurs-mdl-clr24w-04', 15500],
+    ['btp-midea-spot-led-encastre-8w-3000k-mdl-dl35r08w-03-3000', 4500],
+    ['btp-midea-projecteur-led-50w-mdl-flf50w-036', 16500],
+    ['btp-midea-ampoule-led-9w-b22-mdl-bua609w-226500', 2000],
+    // Lot 4 — EMTOP
+    ['btp-emtop-groupe-electrogene-diesel-7kva-edgrs711-1', 1290000],
+    ['btp-emtop-pompe-immergee-1100w-ewppd11001', 140000],
+    ['btp-emtop-bottes-securite-44-erbtls1p44', 22000],
+    ['btp-emtop-surpresseur-1500w-ewppj15001', 132000],
+    ['btp-emtop-pinces-isolees-3-pcs-epls0331', 16500],
+    ['btp-emtop-compacteur-plaque-reversible-160kg-epct091612', 1550000],
+    ['btp-emtop-chaussure-securite-kaki-44-esbs32sb44', 19500],
+    ['btp-emtop-bottes-securite-45-erbtls1p45', 22000],
   ];
   for (const [id, expectedPrice] of expectedBtpDec) {
     const prod = cat.data.products.find((p) => p.id === id);
@@ -918,6 +939,37 @@ test('12. Arrivage BTP Décembre 2026 : 40 fiches retravaillées Pèrôkadô (lo
       prod.imageUrl,
       `/images/products/${id}.jpg`,
       `Visuel retravaillé Pèrôkadô pour ${id}`
+    );
+  }
+
+  // Les 2 serrures FORCE CLE-123F / CLE-134F doivent rester identifiables sans
+  // ambiguite : ids, slugs, badges et visuels distincts (rosace etroite vs plaque longue).
+  const lock123 = cat.data.products.find((p) => p.id === 'btp-force-cle-123f-rosace-etroite');
+  const lock134 = cat.data.products.find((p) => p.id === 'btp-force-cle-134f-plaque-longue');
+  assert.ok(lock123 && lock134, 'Les 2 serrures FORCE sont presentes');
+  assert.notEqual(lock123.id, lock134.id);
+  assert.notEqual(lock123.slug, lock134.slug);
+  assert.notEqual(lock123.imageUrl, lock134.imageUrl);
+  assert.match(lock123.name, /123F/);
+  assert.match(lock134.name, /134F/);
+  assert.match(lock123.name, /Rosace Étroite/i);
+  assert.match(lock134.name, /Plaque Longue/i);
+  assert.equal(lock123.badge, 'Rosace étroite');
+  assert.equal(lock134.badge, 'Plaque longue');
+  assert.ok(
+    lock123.specs.some((s) => /134F/.test(s)),
+    'La 123F cite la 134F pour eviter la confusion'
+  );
+  assert.ok(
+    lock134.specs.some((s) => /123F/.test(s)),
+    'La 134F cite la 123F pour eviter la confusion'
+  );
+  // Aucun vestige des anciens ids ambigus
+  for (const gone of ['btp-serrure-force-cle-123f', 'btp-serrure-force-cle-134f']) {
+    assert.equal(
+      cat.data.products.some((p) => p.id === gone),
+      false,
+      `Ancien id ambigu ${gone} supprime`
     );
   }
 

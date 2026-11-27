@@ -497,14 +497,68 @@ export function createStore(adapterPromiseOrInstance) {
             );
           }
 
+          // Migration unique : les 2 serrures FORCE portaient des ids trop proches
+          // (btp-serrure-force-cle-123f / -134f) qui provoquaient des confusions en
+          // console. On les renomme en clair selon leur difference visible :
+          // 123F = rosace ETROITE, 134F = PLAQUE LONGUE. La ligne est conservee
+          // (prix, stock, photo) pour ne pas casser les liens existants.
+          const { rows: forceLockMigRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'btp_force_locks_rename_v1'`
+          );
+          if (forceLockMigRows.length === 0) {
+            const renames = [
+              [
+                'btp-serrure-force-cle-123f',
+                'btp-force-cle-123f-rosace-etroite',
+                'serrure-force-123f-rosace-etroite-cle-a-canon',
+                'Serrure Clé à Canon FORCE 123F — Rosace Étroite Inox (CLE-123F)',
+                'Rosace étroite',
+                '/images/products/btp-force-cle-123f-rosace-etroite.jpg',
+              ],
+              [
+                'btp-serrure-force-cle-134f',
+                'btp-force-cle-134f-plaque-longue',
+                'serrure-force-134f-plaque-longue-nickel-satine',
+                'Serrure Clé à Canon FORCE 134F — Plaque Longue Nickel Satiné (CLE-134F)',
+                'Plaque longue',
+                '/images/products/btp-force-cle-134f-plaque-longue.jpg',
+              ],
+            ];
+            for (const [oldId, newId, newSlug, newName, newBadge, newImage] of renames) {
+              await adapter.query(
+                `WITH moved_photo AS (
+                   DELETE FROM product_photos WHERE product_id = $1
+                   RETURNING mime_type, data
+                 )
+                 INSERT INTO product_photos (product_id, mime_type, data)
+                 SELECT $2, mime_type, data FROM moved_photo
+                 ON CONFLICT (product_id) DO NOTHING`,
+                [oldId, newId]
+              );
+              await adapter.query(
+                `UPDATE products SET id = $2, slug = $3, name = $4, badge = $5, image_url = $6
+                 WHERE id = $1
+                   AND NOT EXISTS (SELECT 1 FROM products WHERE id = $2)`,
+                [oldId, newId, newSlug, newName, newBadge, newImage]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('btp_force_locks_rename_v1', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
           // Synchronisation idempotente de l'arrivage BTP decembre 2026 (visuels
           // retravailles aux couleurs Perokado + prix marche ivoirien).
           // ON CONFLICT (id) DO UPDATE : met a jour les fiches existantes sans creer de doublon.
-          // Cle v3 : ajoute les 16 references du lot 3 (Schneider A9F74263, Megalec
-          // ID4P40A30MA/D2P63A, fiches P17, serrures Griffe & FORCE, pompe EMTOP,
-          // chauffe-eau FORCE-417) sur les bases ou les cles v1/v2 sont deja posees.
+          // Cle v4 : ajoute les 19 references du lot 4 (Midea Lighting : spots, globes,
+          // ampoules, projecteurs, interrupteur EUPRK22 ; EMTOP : groupe diesel EDGRS711-1,
+          // pompe EWPPD11001, surpresseur EWPPJ15001, pinces EPLS0331, compacteur
+          // EPCT091612, bottes & chaussures de securite) sur les bases ou v1/v2/v3
+          // sont deja posees. Corrige aussi les ids des 2 serrures FORCE.
           const { rows: btpDecSyncRows } = await adapter.query(
-            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v3_synced'`
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_btp_dec2026_v4_synced'`
           );
           if (btpDecSyncRows.length === 0) {
             for (const p of BTP_ARRIVAGE_DEC2026_PRODUCTS) {
@@ -545,7 +599,7 @@ export function createStore(adapterPromiseOrInstance) {
             }
             await adapter.query(
               `INSERT INTO store_settings (key, value)
-               VALUES ('catalog_btp_dec2026_v3_synced', '{"done":true}'::jsonb)
+               VALUES ('catalog_btp_dec2026_v4_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }
