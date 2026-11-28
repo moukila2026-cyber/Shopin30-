@@ -103,6 +103,19 @@ export const PRODUCT_GALLERIES = {
       '/images/products/chaussures-new-balance-1906-6.jpg',
     ],
   },
+  'chaussures-nike-air-max-95': {
+    original: '/images/products/chaussures-nike-air-max-95-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/chaussures-nike-air-max-95-2.jpg',
+      '/images/products/chaussures-nike-air-max-95-3.jpg',
+    ],
+    extraImages: [
+      '/images/products/chaussures-nike-air-max-95-4.jpg',
+      '/images/products/chaussures-nike-air-max-95-5.jpg',
+      '/images/products/chaussures-nike-air-max-95-6.jpg',
+    ],
+  },
   // Arrivage Mode Timberland & New Balance (nov. 2026) : photo studio unique
   // par modèle, générée pour la fiche (voir SOURCES_PHOTOS_PRODUITS.md).
   'timberland-bot-6-pouces-premium': {

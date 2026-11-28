@@ -6298,6 +6298,40 @@ export const CHAUSSURES_MODE_PRODUCTS = [
   },
 ];
 
+// ================= CHAUSSURES MODE : NIKE AIR MAX 95 =================
+// Arrivage commerçant du 28/11/2026 : Nike Air Max 95 neuve dans son carton,
+// pointures 40 à 45, 30 000 F. Photos WhatsApp copiées telles quelles.
+export const CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS = [
+  {
+    id: 'chaussures-nike-air-max-95',
+    slug: 'nike-air-max-95-neuve-avec-carton-pointures-40-a-45',
+    name: 'Nike Air Max 95 Neuve avec Carton — Pointures 40 à 45',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: null,
+    stock: 10,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'Nike Air Max 95 neuve dans son carton, pointures 40 à 45.',
+    description:
+      'Nike Air Max 95 neuve livrée dans son carton d’origine, pointures disponibles du 40 au 45 (précisez votre pointure en note à la commande). Coloris gris rehaussé de vert volt, coussin d’air Air Max visible au talon et à l’avant-pied : le classique Nike des années 90, neuf et prêt à porter.',
+    specs: [
+      'Pointures 40 à 45 (précisez en note)',
+      'Neuve avec carton d’origine',
+      'Modèle Air Max 95 · coloris gris & vert volt',
+    ],
+    imageUrl: '/images/products/chaussures-nike-air-max-95-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-nike-air-max-95-1.jpg',
+      '/images/products/chaussures-nike-air-max-95-2.jpg',
+      '/images/products/chaussures-nike-air-max-95-3.jpg',
+      '/images/products/chaussures-nike-air-max-95-4.jpg',
+      '/images/products/chaussures-nike-air-max-95-5.jpg',
+      '/images/products/chaussures-nike-air-max-95-6.jpg',
+    ],
+  },
+];
+
 // ================= MODE : TIMBERLAND & NEW BALANCE =================
 // Arrivage Mode (nov. 2026) : 3 Timberland (bottes cuir) + 3 New Balance
 // (sneakers running rétro). Photos studio sur fond blanc générées pour la
@@ -6442,6 +6476,7 @@ export const INITIAL_PRODUCTS = [
   ...QUADS_ENFANTS_2026_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
   ...CHAUSSURES_MODE_PRODUCTS,
+  ...CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS,
   ...MODE_Timberland_NEWBALANCE_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
