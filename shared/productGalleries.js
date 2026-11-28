@@ -55,4 +55,42 @@ export const PRODUCT_GALLERIES = {
     primaryOriginal: true,
     images: ['/images/gallery/a9l40601-face.jpg'],
   },
+  // Arrivage Mode Timberland & New Balance (nov. 2026) : photo studio unique
+  // par modèle, générée pour la fiche (voir SOURCES_PHOTOS_PRODUITS.md).
+  'timberland-bot-6-pouces-premium': {
+    original: '/images/products/mode-timberland-bot-6-pouces-premium.jpg',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/products/mode-timberland-bot-6-pouces-premium.jpg'],
+  },
+  'timberland-chelsea-noir-cuir': {
+    original: '/images/products/mode-timberland-chelsea-noir.jpg',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/products/mode-timberland-chelsea-noir.jpg'],
+  },
+  'timberland-euro-hiker-randonnee': {
+    original: '/images/products/mode-timberland-euro-hiker-randonnee.jpg',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/products/mode-timberland-euro-hiker-randonnee.jpg'],
+  },
+  'new-balance-574-gris': {
+    original: '/images/products/mode-new-balance-574-gris.jpg',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/products/mode-new-balance-574-gris.jpg'],
+  },
+  'new-balance-990v6-gris': {
+    original: '/images/products/mode-new-balance-990v6-gris.jpg',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/products/mode-new-balance-990v6-gris.jpg'],
+  },
+  'new-balance-327-blanc': {
+    original: '/images/products/mode-new-balance-327-blanc.jpg',
+    primaryOriginal: true,
+    images: [],
+    generated: ['/images/products/mode-new-balance-327-blanc.jpg'],
+  },
 };

@@ -27,7 +27,7 @@ export default defineConfig({
         // Découpage du bundle : la librairie d'icônes, React et le QR code
         // ne sont rechargés que lorsqu'ils changent (cache navigateur longue durée).
         manualChunks(id) {
-          // Le catalogue (274 fiches) change à chaque arrivage : chunk séparé
+          // Le catalogue (286 fiches) change à chaque arrivage : chunk séparé
           // pour que le code applicatif reste en cache navigateur.
           if (id.includes('/shared/catalog.js')) return 'catalog-data';
           if (!id.includes('node_modules')) return undefined;

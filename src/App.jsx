@@ -103,7 +103,7 @@ export default function App() {
   const [sortBy, setSortBy] = React.useState('featured');
   const [onlyPromos, setOnlyPromos] = React.useState(false);
   const [onlyFavorites, setOnlyFavorites] = React.useState(false);
-  // Pagination : 24 produits par page (chargement progressif des 274 fiches)
+  // Pagination : 24 produits par page (chargement progressif des 286 fiches)
   const [visibleCount, setVisibleCount] = React.useState(PAGE_SIZE);
 
   const [selectedProduct, setSelectedProduct] = React.useState(null);
