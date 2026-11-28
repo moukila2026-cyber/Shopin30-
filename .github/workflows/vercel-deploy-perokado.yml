@@ -1,0 +1,89 @@
+# ==============================================================================
+# PÈRÔKADÔ — Déploiement automatique de perokado.com (projet Vercel "perokado")
+# ------------------------------------------------------------------------------
+# Pourquoi ce workflow ?
+#   Le domaine public perokado.com est porté par le projet Vercel "perokado".
+#   Son intégration Git native a cessé de déclencher des déploiements de
+#   production après la PR #39, si bien que les arrivages fusionnés dans `main`
+#   (PR #40 → #43 : fiches chaussures + photos) n'apparaissaient plus en ligne.
+#   Ce workflow garantit qu'à CHAQUE fusion dans `main`, le projet "perokado"
+#   est redéployé en production depuis le dernier commit — de façon fiable et
+#   contrôlée par le dépôt (il ne peut plus s'arrêter en silence).
+#
+# Pré-requis (à faire une seule fois, par le propriétaire du dépôt) :
+#   Ajouter le secret GitHub Actions `VERCEL_TOKEN` :
+#     1. Créer un token sur https://vercel.com/account/tokens (scope "Full Access").
+#     2. GitHub → dépôt → Settings → Secrets and variables → Actions →
+#        New repository secret → nom : VERCEL_TOKEN, valeur : le token.
+#   (Ne jamais coller ce token dans une issue, un commentaire ou le code.)
+# ==============================================================================
+name: Déployer perokado.com (production)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Un seul déploiement production à la fois ; on n'annule pas un build en cours.
+concurrency:
+  group: vercel-perokado-production
+  cancel-in-progress: false
+
+jobs:
+  deploy-perokado:
+    name: Redéployer le projet Vercel "perokado" depuis main
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Vérifier la présence du secret VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error title=Secret manquant::Ajoutez le secret VERCEL_TOKEN (Settings → Secrets and variables → Actions). Token à créer sur https://vercel.com/account/tokens"
+            exit 1
+          fi
+
+      - name: Déclencher le déploiement de production (source Git = main)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_TEAM_ID: team_hkcZeM9ZQiwld6zErZ9iVC6T
+          VERCEL_PROJECT_ID: prj_1vhlZkCoAYgx7o7VlCkOCQHIMpPk
+          REPO_ID: "1452984232"
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          payload=$(cat <<JSON
+          {
+            "name": "perokado",
+            "target": "production",
+            "gitSource": {
+              "type": "github",
+              "ref": "main",
+              "sha": "$COMMIT_SHA",
+              "repoId": "$REPO_ID"
+            }
+          }
+          JSON
+          )
+          endpoint="https://api.vercel.com/v13/deployments?projectId=${VERCEL_PROJECT_ID}&teamId=${VERCEL_TEAM_ID}"
+          echo "→ POST $endpoint (commit $COMMIT_SHA)"
+          resp=$(curl -sS -X POST "$endpoint" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload")
+          echo "Réponse Vercel : $resp"
+          if ! echo "$resp" | grep -q '"id"'; then
+            echo "::error::Le déploiement Vercel a échoué (voir la réponse ci-dessus)."
+            exit 1
+          fi
+          dep_id=$(echo "$resp" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p' | head -1)
+          dep_url=$(echo "$resp" | sed -n 's/.*"url":"\([^"]*\)".*/\1/p' | head -1)
+          {
+            echo "### ✅ Déploiement production de perokado.com déclenché"
+            echo "- Commit : \`$COMMIT_SHA\`"
+            echo "- Deployment : \`$dep_id\`"
+            echo "- URL : https://$dep_url"
+            echo "- Suivi : https://vercel.com/moukila/perokado/${dep_id#dpl_}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "✅ Déploiement production créé : $dep_id (https://$dep_url)"
