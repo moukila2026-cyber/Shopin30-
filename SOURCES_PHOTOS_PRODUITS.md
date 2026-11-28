@@ -14,3 +14,14 @@ Références sélectionnées en comparant le modèle et la photo du catalogue. L
 Les produits sans photos supplémentaires identifiées conservent leur image d'origine. Les photos importées par l'administrateur restent prioritaires.
 
 Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `quad-bleu-4roues.png`, `tricycle-chopper-jaune.png`, `scooter-jaune-noir.png`) sont des illustrations générées par IA à partir des photos fournies par le commerçant, sans texte ni prix incrusté. Leurs détails peuvent différer des articles réels.
+
+## Arrivage Chaussures Mode (27/11/2026) — photos commerçant telles quelles
+
+20 photos fournies directement par le commerçant (fichiers WhatsApp `IMG-20261127-WA0012` à `IMG-20261127-WA0031`), copiées dans `public/images/products/` **sans aucune retouche** (sommes de contrôle identiques aux originaux). Les dérivés WebP 400/800 px de `public/images/products/webp/` sont générés par `node scripts/optimize-images.mjs` pour économiser la data mobile ; les JPEG d'origine restent servis pour le zoom et en repli.
+
+| Produit | Fichiers ajoutés | Source |
+| --- | --- | --- |
+| Chaussures Timberland neuves (4 coloris : blanc, wheat, bleu, rouge) | chaussures-timberland-neuves-1.jpg … -4.jpg | Photos commerçant (WhatsApp 27/11/2026) |
+| New Balance 1906R avec carton (coloris argent) | chaussures-new-balance-1906r-1.jpg … -5.jpg | Photos commerçant (WhatsApp 27/11/2026) |
+| New Balance 1906D neuve avec carton (coloris crème) | chaussures-new-balance-1906d-1.jpg … -5.jpg | Photos commerçant (WhatsApp 27/11/2026) |
+| New Balance 1906 avec carton (coloris blanc) | chaussures-new-balance-1906-1.jpg … -6.jpg | Photos commerçant (WhatsApp 27/11/2026) |
