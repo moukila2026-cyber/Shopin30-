@@ -115,12 +115,12 @@ test('Véhicules enfants : six modèles, prix et stock confirmé', async () => {
 test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carton confirmés', async () => {
   const catalog = await reqJson('/api/catalog');
   const expected = {
-    'chaussures-timberland-neuves': { price: 30000, stock: 5 },
-    'chaussures-new-balance-1906r': { price: 25000, stock: 6 },
-    'chaussures-new-balance-1906d': { price: 30000, stock: 8 },
-    'chaussures-new-balance-1906': { price: 25000, stock: 10 },
+    'chaussures-timberland-neuves': { price: 30000, stock: 5, views: 4 },
+    'chaussures-new-balance-1906r': { price: 25000, stock: 6, views: 5 },
+    'chaussures-new-balance-1906d': { price: 30000, stock: 8, views: 5 },
+    'chaussures-new-balance-1906': { price: 25000, stock: 10, views: 6 },
   };
-  for (const [id, { price, stock }] of Object.entries(expected)) {
+  for (const [id, { price, stock, views }] of Object.entries(expected)) {
     const product = catalog.data.products.find((p) => p.id === id);
     assert.ok(product, id);
     assert.equal(product.price, price);
@@ -128,6 +128,12 @@ test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carto
     assert.equal(product.category, 'mode');
     assert.equal(product.isHeavy, false);
     assert.ok(product.imageUrl.startsWith('/images/products/chaussures-'), id);
+    // Galerie complète des photos commerçant (telles quelles), main incluse
+    assert.equal(product.galleryUrls.length, views, id);
+    assert.equal(product.galleryUrls[0], product.imageUrl, id);
+    for (const url of product.galleryUrls) {
+      assert.ok(url.startsWith('/images/products/chaussures-'), `${id} ${url}`);
+    }
   }
   const timberland = catalog.data.products.find((p) => p.id === 'chaussures-timberland-neuves');
   assert.match(timberland.name, /Timberland/);

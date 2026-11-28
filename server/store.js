@@ -158,6 +158,13 @@ function mapProductRow(row) {
     null,
   ];
   const gallerySlots = [primaryImage, ...[2, 3].map((slot) => row[`has_photo_${slot}`] ? photoUrl(slot) : fallbackSlots[slot - 2])];
+  // Vues catalogue supplémentaires (ex. : coloris d'un même arrivage chaussures) :
+  // ajoutées après les 3 emplacements DB, uniquement sans photo téléversée.
+  if (curated?.extraImages?.length) {
+    for (const url of curated.extraImages) {
+      if (!gallerySlots.includes(url)) gallerySlots.push(url);
+    }
+  }
   return {
     id: row.id,
     slug: row.slug,
@@ -182,7 +189,7 @@ function mapProductRow(row) {
     galleryUrls: gallerySlots.filter(Boolean),
     generatedGalleryUrls: (curated?.generated || []).filter((url) => gallerySlots.includes(url)),
     imaginedColorUrls: (curated?.imaginedColors || []).filter((url) => gallerySlots.includes(url)),
-    photoSlots: gallerySlots.map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
+    photoSlots: gallerySlots.slice(0, 3).map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
     uploadedPhotoSlots: [hasPhoto, Boolean(row.has_photo_2), Boolean(row.has_photo_3)],
     staticImageUrl: row.image_url || '/images/products/placeholder.svg',
     hasUploadedPhoto: hasPhoto,

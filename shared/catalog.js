@@ -6206,7 +6206,13 @@ export const CHAUSSURES_MODE_PRODUCTS = [
       'Chaussures neuves — sans carton',
       'Stock très limité',
     ],
-    imageUrl: '/images/products/chaussures-timberland-neuves.jpg',
+    imageUrl: '/images/products/chaussures-timberland-neuves-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-timberland-neuves-1.jpg',
+      '/images/products/chaussures-timberland-neuves-2.jpg',
+      '/images/products/chaussures-timberland-neuves-3.jpg',
+      '/images/products/chaussures-timberland-neuves-4.jpg',
+    ],
   },
   {
     id: 'chaussures-new-balance-1906r',
@@ -6226,7 +6232,14 @@ export const CHAUSSURES_MODE_PRODUCTS = [
       'Neuve avec carton d’origine',
       'Modèle 1906R rétro running',
     ],
-    imageUrl: '/images/products/chaussures-new-balance-1906r.jpg',
+    imageUrl: '/images/products/chaussures-new-balance-1906r-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-new-balance-1906r-1.jpg',
+      '/images/products/chaussures-new-balance-1906r-2.jpg',
+      '/images/products/chaussures-new-balance-1906r-3.jpg',
+      '/images/products/chaussures-new-balance-1906r-4.jpg',
+      '/images/products/chaussures-new-balance-1906r-5.jpg',
+    ],
   },
   {
     id: 'chaussures-new-balance-1906d',
@@ -6246,7 +6259,14 @@ export const CHAUSSURES_MODE_PRODUCTS = [
       'Neuve avec carton d’origine',
       'Modèle 1906D rétro premium',
     ],
-    imageUrl: '/images/products/chaussures-new-balance-1906d.jpg',
+    imageUrl: '/images/products/chaussures-new-balance-1906d-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-new-balance-1906d-1.jpg',
+      '/images/products/chaussures-new-balance-1906d-2.jpg',
+      '/images/products/chaussures-new-balance-1906d-3.jpg',
+      '/images/products/chaussures-new-balance-1906d-4.jpg',
+      '/images/products/chaussures-new-balance-1906d-5.jpg',
+    ],
   },
   {
     id: 'chaussures-new-balance-1906',
@@ -6266,7 +6286,15 @@ export const CHAUSSURES_MODE_PRODUCTS = [
       'Neuve avec carton d’origine',
       'Modèle 1906 rétro running',
     ],
-    imageUrl: '/images/products/chaussures-new-balance-1906.jpg',
+    imageUrl: '/images/products/chaussures-new-balance-1906-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-new-balance-1906-1.jpg',
+      '/images/products/chaussures-new-balance-1906-2.jpg',
+      '/images/products/chaussures-new-balance-1906-3.jpg',
+      '/images/products/chaussures-new-balance-1906-4.jpg',
+      '/images/products/chaussures-new-balance-1906-5.jpg',
+      '/images/products/chaussures-new-balance-1906-6.jpg',
+    ],
   },
 ];
 
