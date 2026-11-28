@@ -55,6 +55,54 @@ export const PRODUCT_GALLERIES = {
     primaryOriginal: true,
     images: ['/images/gallery/a9l40601-face.jpg'],
   },
+  // Arrivage chaussures Mode (photos commerçant, telles quelles, 27/11/2026) :
+  // chaque référence expose tous ses coloris / angles en galerie.
+  'chaussures-timberland-neuves': {
+    original: '/images/products/chaussures-timberland-neuves-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/chaussures-timberland-neuves-2.jpg',
+      '/images/products/chaussures-timberland-neuves-3.jpg',
+    ],
+    extraImages: ['/images/products/chaussures-timberland-neuves-4.jpg'],
+  },
+  'chaussures-new-balance-1906r': {
+    original: '/images/products/chaussures-new-balance-1906r-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/chaussures-new-balance-1906r-2.jpg',
+      '/images/products/chaussures-new-balance-1906r-3.jpg',
+    ],
+    extraImages: [
+      '/images/products/chaussures-new-balance-1906r-4.jpg',
+      '/images/products/chaussures-new-balance-1906r-5.jpg',
+    ],
+  },
+  'chaussures-new-balance-1906d': {
+    original: '/images/products/chaussures-new-balance-1906d-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/chaussures-new-balance-1906d-2.jpg',
+      '/images/products/chaussures-new-balance-1906d-3.jpg',
+    ],
+    extraImages: [
+      '/images/products/chaussures-new-balance-1906d-4.jpg',
+      '/images/products/chaussures-new-balance-1906d-5.jpg',
+    ],
+  },
+  'chaussures-new-balance-1906': {
+    original: '/images/products/chaussures-new-balance-1906-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/chaussures-new-balance-1906-2.jpg',
+      '/images/products/chaussures-new-balance-1906-3.jpg',
+    ],
+    extraImages: [
+      '/images/products/chaussures-new-balance-1906-4.jpg',
+      '/images/products/chaussures-new-balance-1906-5.jpg',
+      '/images/products/chaussures-new-balance-1906-6.jpg',
+    ],
+  },
   // Arrivage Mode Timberland & New Balance (nov. 2026) : photo studio unique
   // par modèle, générée pour la fiche (voir SOURCES_PHOTOS_PRODUITS.md).
   'timberland-bot-6-pouces-premium': {

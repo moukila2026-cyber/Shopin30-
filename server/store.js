@@ -13,6 +13,7 @@ import {
   JOUETS_ENFANTS_PRODUCTS,
   QUADS_ENFANTS_2026_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
+  CHAUSSURES_MODE_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   MODE_Timberland_NEWBALANCE_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -158,6 +159,13 @@ function mapProductRow(row) {
     null,
   ];
   const gallerySlots = [primaryImage, ...[2, 3].map((slot) => row[`has_photo_${slot}`] ? photoUrl(slot) : fallbackSlots[slot - 2])];
+  // Vues catalogue supplémentaires (ex. : coloris d'un même arrivage chaussures) :
+  // ajoutées après les 3 emplacements DB, uniquement sans photo téléversée.
+  if (curated?.extraImages?.length) {
+    for (const url of curated.extraImages) {
+      if (!gallerySlots.includes(url)) gallerySlots.push(url);
+    }
+  }
   return {
     id: row.id,
     slug: row.slug,
@@ -182,7 +190,7 @@ function mapProductRow(row) {
     galleryUrls: gallerySlots.filter(Boolean),
     generatedGalleryUrls: (curated?.generated || []).filter((url) => gallerySlots.includes(url)),
     imaginedColorUrls: (curated?.imaginedColors || []).filter((url) => gallerySlots.includes(url)),
-    photoSlots: gallerySlots.map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
+    photoSlots: gallerySlots.slice(0, 3).map((url) => Boolean(url && !url.endsWith('/placeholder.svg'))),
     uploadedPhotoSlots: [hasPhoto, Boolean(row.has_photo_2), Boolean(row.has_photo_3)],
     staticImageUrl: row.image_url || '/images/products/placeholder.svg',
     hasUploadedPhoto: hasPhoto,
@@ -590,6 +598,44 @@ export function createStore(adapterPromiseOrInstance) {
             );
           }
 
+          // Synchronisation idempotente de l'arrivage Chaussures Mode (Timberland
+          // neuves sans carton + New Balance 1906R / 1906D / 1906 avec carton).
+          // ON CONFLICT DO NOTHING : conserve les fiches, prix et stocks existants.
+          const { rows: chaussuresSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_chaussures_mode_v1_synced'`
+          );
+          if (chaussuresSyncRows.length === 0) {
+            for (const p of CHAUSSURES_MODE_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_chaussures_mode_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
           // Synchronisation idempotente de l'arrivage Mode Timberland & New Balance
           // (6 chaussures : 3 Timberland + 3 New Balance, photos studio).
           // ON CONFLICT DO NOTHING : conserve les fiches, prix et photos existants.
@@ -628,6 +674,7 @@ export function createStore(adapterPromiseOrInstance) {
                ON CONFLICT (key) DO NOTHING`
             );
           }
+
 
           await adapter.query(
             `UPDATE products SET name = REPLACE(name, '\`', '') WHERE name LIKE '%\`%'`

@@ -112,6 +112,41 @@ test('Véhicules enfants : six modèles, prix et stock confirmé', async () => {
   }
 });
 
+test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carton confirmés', async () => {
+  const catalog = await reqJson('/api/catalog');
+  const expected = {
+    'chaussures-timberland-neuves': { price: 30000, stock: 5, views: 4 },
+    'chaussures-new-balance-1906r': { price: 25000, stock: 6, views: 5 },
+    'chaussures-new-balance-1906d': { price: 30000, stock: 8, views: 5 },
+    'chaussures-new-balance-1906': { price: 25000, stock: 10, views: 6 },
+  };
+  for (const [id, { price, stock, views }] of Object.entries(expected)) {
+    const product = catalog.data.products.find((p) => p.id === id);
+    assert.ok(product, id);
+    assert.equal(product.price, price);
+    assert.equal(product.stock, stock);
+    assert.equal(product.category, 'mode');
+    assert.equal(product.isHeavy, false);
+    assert.ok(product.imageUrl.startsWith('/images/products/chaussures-'), id);
+    // Galerie complète des photos commerçant (telles quelles), main incluse
+    assert.equal(product.galleryUrls.length, views, id);
+    assert.equal(product.galleryUrls[0], product.imageUrl, id);
+    for (const url of product.galleryUrls) {
+      assert.ok(url.startsWith('/images/products/chaussures-'), `${id} ${url}`);
+    }
+  }
+  const timberland = catalog.data.products.find((p) => p.id === 'chaussures-timberland-neuves');
+  assert.match(timberland.name, /Timberland/);
+  assert.match(timberland.shortDescription, /sans carton/);
+  const nb1906r = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906r');
+  assert.match(nb1906r.name, /1906R/);
+  assert.match(nb1906r.shortDescription, /avec carton/);
+  const nb1906d = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906d');
+  assert.match(nb1906d.name, /1906D/);
+  const nb1906 = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906');
+  assert.match(nb1906.name, /New Balance 1906/);
+});
+
 test('Mode Timberland & New Balance : six chaussures, prix, stock et images', async () => {
   const catalog = await reqJson('/api/catalog');
   const expected = {
@@ -136,10 +171,11 @@ test('Mode Timberland & New Balance : six chaussures, prix, stock et images', as
     assert.deepEqual(product.generatedGalleryUrls, [product.imageUrl]);
   }
   // Recherche par marque : Timberland et New Balance doivent retrouver leurs fiches
+  // (3 références studio + arrivage commerçant : 1 Timberland et 3 New Balance 1906)
   const timber = catalog.data.products.filter((p) => /timberland/i.test(p.name));
   const nb = catalog.data.products.filter((p) => /new balance/i.test(p.name));
-  assert.equal(timber.length, 3);
-  assert.equal(nb.length, 3);
+  assert.equal(timber.length, 4);
+  assert.equal(nb.length, 6);
 });
 
 test('La mise à jour unique du stock des véhicules ne remet pas le stock après une commande', async () => {
