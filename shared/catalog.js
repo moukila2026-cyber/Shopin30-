@@ -6183,6 +6183,93 @@ export const CUISINE_MAISON_PRODUCTS = [
   },
 ];
 
+// ================= CHAUSSURES MODE : TIMBERLAND & NEW BALANCE 1906 =================
+// Arrivage chaussures neuves (annonce commerçant) : Timberland sans carton,
+// New Balance 1906R / 1906D / 1906 livrées avec carton. Pointures à préciser
+// à la commande (note client) car le stock est réparti par pointure.
+export const CHAUSSURES_MODE_PRODUCTS = [
+  {
+    id: 'chaussures-timberland-neuves',
+    slug: 'chaussures-timberland-neuves-pointures-40-a-45',
+    name: 'Chaussures Timberland Neuves — Pointures 40 à 45 (Sans Carton)',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: 38000,
+    stock: 5,
+    badge: 'Stock très limité',
+    featured: false,
+    shortDescription: 'Bottines Timberland neuves, pointures 40 à 45, sans carton. Stock très limité.',
+    description:
+      'Chaussures Timberland neuves de qualité premium, pointures disponibles du 40 au 45 (précisez votre pointure en note à la commande). Livrées sans carton. Stock très limité : premier arrivé, premier servi !',
+    specs: [
+      'Pointures 40 à 45 (précisez en note)',
+      'Chaussures neuves — sans carton',
+      'Stock très limité',
+    ],
+    imageUrl: '/images/products/chaussures-timberland-neuves.jpg',
+  },
+  {
+    id: 'chaussures-new-balance-1906r',
+    slug: 'new-balance-1906r-avec-carton-pointures-40-41',
+    name: 'New Balance 1906R avec Carton — Pointures 40-41',
+    category: 'mode',
+    price: 25000,
+    compareAtPrice: 32000,
+    stock: 6,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'New Balance 1906R neuve avec carton, pointures 40-41.',
+    description:
+      'New Balance 1906R neuve livrée avec son carton d’origine, pointures disponibles 40 et 41 (précisez votre pointure en note à la commande). Le modèle rétro running emblématique, confortable et stylé au quotidien.',
+    specs: [
+      'Pointures 40 et 41 (précisez en note)',
+      'Neuve avec carton d’origine',
+      'Modèle 1906R rétro running',
+    ],
+    imageUrl: '/images/products/chaussures-new-balance-1906r.jpg',
+  },
+  {
+    id: 'chaussures-new-balance-1906d',
+    slug: 'new-balance-1906d-neuve-avec-carton-pointures-40-a-44',
+    name: 'New Balance 1906D Neuve avec Carton — Pointures 40 à 44',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: 38000,
+    stock: 8,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'New Balance 1906D neuve avec carton, pointures 40 à 44.',
+    description:
+      'New Balance 1906D neuve livrée avec son carton d’origine, pointures disponibles du 40 au 44 (précisez votre pointure en note à la commande). Design rétro premium, mesh respirant et semelle confortable pour un style urbain affirmé.',
+    specs: [
+      'Pointures 40 à 44 (précisez en note)',
+      'Neuve avec carton d’origine',
+      'Modèle 1906D rétro premium',
+    ],
+    imageUrl: '/images/products/chaussures-new-balance-1906d.jpg',
+  },
+  {
+    id: 'chaussures-new-balance-1906',
+    slug: 'new-balance-1906-avec-carton-pointures-40-a-45',
+    name: 'New Balance 1906 avec Carton — Pointures 40 à 45',
+    category: 'mode',
+    price: 25000,
+    compareAtPrice: 32000,
+    stock: 10,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'New Balance 1906 neuve avec carton, pointures 40 à 45.',
+    description:
+      'New Balance 1906 neuve livrée avec son carton d’origine, pointures disponibles du 40 au 45 (précisez votre pointure en note à la commande). Le classique rétro running New Balance, polyvalent et confortable toute la journée.',
+    specs: [
+      'Pointures 40 à 45 (précisez en note)',
+      'Neuve avec carton d’origine',
+      'Modèle 1906 rétro running',
+    ],
+    imageUrl: '/images/products/chaussures-new-balance-1906.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...BTP_ARRIVAGE_DEC2026_PRODUCTS,
@@ -6192,6 +6279,7 @@ export const INITIAL_PRODUCTS = [
   ...JOUETS_ENFANTS_PRODUCTS,
   ...QUADS_ENFANTS_2026_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
+  ...CHAUSSURES_MODE_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',

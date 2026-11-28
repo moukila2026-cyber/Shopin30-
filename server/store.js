@@ -13,6 +13,7 @@ import {
   JOUETS_ENFANTS_PRODUCTS,
   QUADS_ENFANTS_2026_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
+  CHAUSSURES_MODE_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   QUINCAILLERIE_BTP_PRODUCTS,
@@ -585,6 +586,45 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_btp_dec2026_v7_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente de l'arrivage Chaussures Mode (Timberland
+          // neuves sans carton + New Balance 1906R / 1906D / 1906 avec carton).
+          // ON CONFLICT DO NOTHING : conserve les fiches, prix et stocks existants.
+          const { rows: chaussuresSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_chaussures_mode_v1_synced'`
+          );
+          if (chaussuresSyncRows.length === 0) {
+            for (const p of CHAUSSURES_MODE_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_chaussures_mode_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

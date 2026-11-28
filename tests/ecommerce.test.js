@@ -112,6 +112,35 @@ test('Véhicules enfants : six modèles, prix et stock confirmé', async () => {
   }
 });
 
+test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carton confirmés', async () => {
+  const catalog = await reqJson('/api/catalog');
+  const expected = {
+    'chaussures-timberland-neuves': { price: 30000, stock: 5 },
+    'chaussures-new-balance-1906r': { price: 25000, stock: 6 },
+    'chaussures-new-balance-1906d': { price: 30000, stock: 8 },
+    'chaussures-new-balance-1906': { price: 25000, stock: 10 },
+  };
+  for (const [id, { price, stock }] of Object.entries(expected)) {
+    const product = catalog.data.products.find((p) => p.id === id);
+    assert.ok(product, id);
+    assert.equal(product.price, price);
+    assert.equal(product.stock, stock);
+    assert.equal(product.category, 'mode');
+    assert.equal(product.isHeavy, false);
+    assert.ok(product.imageUrl.startsWith('/images/products/chaussures-'), id);
+  }
+  const timberland = catalog.data.products.find((p) => p.id === 'chaussures-timberland-neuves');
+  assert.match(timberland.name, /Timberland/);
+  assert.match(timberland.shortDescription, /sans carton/);
+  const nb1906r = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906r');
+  assert.match(nb1906r.name, /1906R/);
+  assert.match(nb1906r.shortDescription, /avec carton/);
+  const nb1906d = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906d');
+  assert.match(nb1906d.name, /1906D/);
+  const nb1906 = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906');
+  assert.match(nb1906.name, /New Balance 1906/);
+});
+
 test('La mise à jour unique du stock des véhicules ne remet pas le stock après une commande', async () => {
   const db = await createDatabaseAdapter('');
   const first = createStore(db);
