@@ -15,6 +15,7 @@ import {
   MOTOS_TRICYCLES_PRODUCTS,
   CHAUSSURES_MODE_PRODUCTS,
   CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS,
+  CHAUSSURES_KAYANO_CAMPUS_TN_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   MODE_Timberland_NEWBALANCE_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -674,6 +675,46 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_nike_air_max_95_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente de l'arrivage sneakers du 28/11/2026 :
+          // ASICS GEL-Kayano 14, Adidas Campus x Bad Bunny, Nike Air Max TN
+          // (prix annoncés + 5 000 F). ON CONFLICT DO NOTHING : conserve les
+          // fiches, prix et stocks déjà gérés dans /gestion.
+          const { rows: sneakersSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_chaussures_kayano_campus_tn_v1_synced'`
+          );
+          if (sneakersSyncRows.length === 0) {
+            for (const p of CHAUSSURES_KAYANO_CAMPUS_TN_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_chaussures_kayano_campus_tn_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

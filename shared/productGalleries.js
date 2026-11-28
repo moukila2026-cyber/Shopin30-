@@ -116,6 +116,27 @@ export const PRODUCT_GALLERIES = {
       '/images/products/chaussures-nike-air-max-95-6.jpg',
     ],
   },
+  'chaussures-asics-gel-kayano-14': {
+    original: '/images/products/chaussures-asics-gel-kayano-14-1.jpg',
+    primaryOriginal: true,
+    images: ['/images/products/chaussures-asics-gel-kayano-14-2.jpg'],
+    extraImages: [],
+  },
+  'chaussures-adidas-campus-bad-bunny': {
+    original: '/images/products/chaussures-adidas-campus-bad-bunny-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/chaussures-adidas-campus-bad-bunny-2.jpg',
+      '/images/products/chaussures-adidas-campus-bad-bunny-3.jpg',
+    ],
+    extraImages: ['/images/products/chaussures-adidas-campus-bad-bunny-4.jpg'],
+  },
+  'chaussures-nike-air-max-tn': {
+    original: '/images/products/chaussures-nike-air-max-tn-1.jpg',
+    primaryOriginal: true,
+    images: ['/images/products/chaussures-nike-air-max-tn-2.jpg'],
+    extraImages: [],
+  },
   // Arrivage Mode Timberland & New Balance (nov. 2026) : photo studio unique
   // par modèle, générée pour la fiche (voir SOURCES_PHOTOS_PRODUITS.md).
   'timberland-bot-6-pouces-premium': {

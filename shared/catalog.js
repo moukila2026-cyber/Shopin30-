@@ -6332,6 +6332,87 @@ export const CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS = [
   },
 ];
 
+// ========= CHAUSSURES : ASICS GEL-KAYANO 14, ADIDAS CAMPUS × BAD BUNNY, NIKE AIR MAX TN =========
+// Arrivage commerçant du 28/11/2026 (prix annoncés + 5 000 F appliqués) :
+// ASICS Gel-Kayano 14 et Adidas Campus × Bad Bunny à 24 000 F, Nike Air Max TN
+// à 23 000 F — tous neufs avec carton. Photos WhatsApp telles quelles.
+export const CHAUSSURES_KAYANO_CAMPUS_TN_PRODUCTS = [
+  {
+    id: 'chaussures-asics-gel-kayano-14',
+    slug: 'asics-gel-kayano-14-avec-carton-pointures-40-a-45',
+    name: 'ASICS GEL-Kayano 14 avec Carton — Pointures 40 à 45',
+    category: 'mode',
+    price: 24000,
+    compareAtPrice: null,
+    stock: 10,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'ASICS GEL-Kayano 14 neuve avec carton, pointures 40 à 45.',
+    description:
+      'ASICS GEL-Kayano 14 neuve livrée avec son carton d’origine, pointures disponibles du 40 au 45 (précisez votre pointure en note à la commande). Coloris blanc & bleu gris métallisé : le mythique runner ASICS à l’amorti GEL, aussi confortable en course qu’en style urbain.',
+    specs: [
+      'Pointures 40 à 45 (précisez en note)',
+      'Neuve avec carton d’origine',
+      'Modèle GEL-Kayano 14 · coloris blanc & bleu gris',
+    ],
+    imageUrl: '/images/products/chaussures-asics-gel-kayano-14-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-asics-gel-kayano-14-1.jpg',
+      '/images/products/chaussures-asics-gel-kayano-14-2.jpg',
+    ],
+  },
+  {
+    id: 'chaussures-adidas-campus-bad-bunny',
+    slug: 'adidas-campus-bad-bunny-avec-carton-pointures-38-a-45',
+    name: 'Adidas Campus × Bad Bunny avec Carton — Pointures 38 à 45',
+    category: 'mode',
+    price: 24000,
+    compareAtPrice: null,
+    stock: 10,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'Adidas Campus × Bad Bunny neuve avec carton, pointures 38 à 45, plusieurs coloris.',
+    description:
+      'Adidas Campus × Bad Bunny neuve livrée avec son carton d’origine, pointures disponibles du 38 au 45 (précisez votre pointure et votre coloris en note à la commande : olive, noir ou taupe). La collaboration Bad Bunny sur base Campus : languette matelassée amovible, semelle plateforme crème et style rétro premium.',
+    specs: [
+      'Pointures 38 à 45 (précisez en note)',
+      'Coloris olive, noir ou taupe (précisez en note)',
+      'Neuve avec carton d’origine',
+    ],
+    imageUrl: '/images/products/chaussures-adidas-campus-bad-bunny-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-adidas-campus-bad-bunny-1.jpg',
+      '/images/products/chaussures-adidas-campus-bad-bunny-2.jpg',
+      '/images/products/chaussures-adidas-campus-bad-bunny-3.jpg',
+      '/images/products/chaussures-adidas-campus-bad-bunny-4.jpg',
+    ],
+  },
+  {
+    id: 'chaussures-nike-air-max-tn',
+    slug: 'nike-air-max-tn-avec-carton-pointures-38-a-45',
+    name: 'Nike Air Max TN avec Carton — Pointures 38 à 45',
+    category: 'mode',
+    price: 23000,
+    compareAtPrice: null,
+    stock: 10,
+    badge: 'Avec carton',
+    featured: false,
+    shortDescription: 'Nike Air Max TN neuve avec carton, pointures 38 à 45.',
+    description:
+      'Nike Air Max TN neuve livrée avec son carton d’origine, pointures disponibles du 38 au 45 (précisez votre pointure en note à la commande). Coloris blanc & gris rehaussé de orange : bulles d’air Air Max visibles et look Tuned emblématique.',
+    specs: [
+      'Pointures 38 à 45 (précisez en note)',
+      'Neuve avec carton d’origine',
+      'Modèle Air Max TN · coloris blanc, gris & orange',
+    ],
+    imageUrl: '/images/products/chaussures-nike-air-max-tn-1.jpg',
+    galleryUrls: [
+      '/images/products/chaussures-nike-air-max-tn-1.jpg',
+      '/images/products/chaussures-nike-air-max-tn-2.jpg',
+    ],
+  },
+];
+
 // ================= MODE : TIMBERLAND & NEW BALANCE =================
 // Arrivage Mode (nov. 2026) : 3 Timberland (bottes cuir) + 3 New Balance
 // (sneakers running rétro). Photos studio sur fond blanc générées pour la
@@ -6477,6 +6558,7 @@ export const INITIAL_PRODUCTS = [
   ...CUISINE_MAISON_PRODUCTS,
   ...CHAUSSURES_MODE_PRODUCTS,
   ...CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS,
+  ...CHAUSSURES_KAYANO_CAMPUS_TN_PRODUCTS,
   ...MODE_Timberland_NEWBALANCE_PRODUCTS,
   {
     id: 'smartphone-nova-x12',

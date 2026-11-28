@@ -120,6 +120,10 @@ test('Chaussures Mode : Timberland, New Balance 1906 et Nike Air Max 95, prix, p
     'chaussures-new-balance-1906d': { price: 30000, stock: 8, views: 5 },
     'chaussures-new-balance-1906': { price: 25000, stock: 10, views: 6 },
     'chaussures-nike-air-max-95': { price: 30000, stock: 10, views: 6 },
+    // Arrivage sneakers 28/11/2026 : prix annoncés + 5 000 F
+    'chaussures-asics-gel-kayano-14': { price: 24000, stock: 10, views: 2 },
+    'chaussures-adidas-campus-bad-bunny': { price: 24000, stock: 10, views: 4 },
+    'chaussures-nike-air-max-tn': { price: 23000, stock: 10, views: 2 },
   };
   for (const [id, { price, stock, views }] of Object.entries(expected)) {
     const product = catalog.data.products.find((p) => p.id === id);
@@ -149,6 +153,12 @@ test('Chaussures Mode : Timberland, New Balance 1906 et Nike Air Max 95, prix, p
   const nike = catalog.data.products.find((p) => p.id === 'chaussures-nike-air-max-95');
   assert.match(nike.name, /Air Max 95/);
   assert.match(nike.shortDescription, /carton/);
+  const kayano = catalog.data.products.find((p) => p.id === 'chaussures-asics-gel-kayano-14');
+  assert.match(kayano.name, /GEL-Kayano 14/);
+  const adidas = catalog.data.products.find((p) => p.id === 'chaussures-adidas-campus-bad-bunny');
+  assert.match(adidas.name, /Bad Bunny/);
+  const tn = catalog.data.products.find((p) => p.id === 'chaussures-nike-air-max-tn');
+  assert.match(tn.name, /Air Max TN/);
 });
 
 test('Mode Timberland & New Balance : six chaussures, prix, stock et images', async () => {
