@@ -112,13 +112,14 @@ test('Véhicules enfants : six modèles, prix et stock confirmé', async () => {
   }
 });
 
-test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carton confirmés', async () => {
+test('Chaussures Mode : Timberland, New Balance 1906 et Nike Air Max 95, prix, pointures et carton confirmés', async () => {
   const catalog = await reqJson('/api/catalog');
   const expected = {
     'chaussures-timberland-neuves': { price: 30000, stock: 5, views: 4 },
     'chaussures-new-balance-1906r': { price: 25000, stock: 6, views: 5 },
     'chaussures-new-balance-1906d': { price: 30000, stock: 8, views: 5 },
     'chaussures-new-balance-1906': { price: 25000, stock: 10, views: 6 },
+    'chaussures-nike-air-max-95': { price: 30000, stock: 10, views: 6 },
   };
   for (const [id, { price, stock, views }] of Object.entries(expected)) {
     const product = catalog.data.products.find((p) => p.id === id);
@@ -145,6 +146,9 @@ test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carto
   assert.match(nb1906d.name, /1906D/);
   const nb1906 = catalog.data.products.find((p) => p.id === 'chaussures-new-balance-1906');
   assert.match(nb1906.name, /New Balance 1906/);
+  const nike = catalog.data.products.find((p) => p.id === 'chaussures-nike-air-max-95');
+  assert.match(nike.name, /Air Max 95/);
+  assert.match(nike.shortDescription, /carton/);
 });
 
 test('Mode Timberland & New Balance : six chaussures, prix, stock et images', async () => {

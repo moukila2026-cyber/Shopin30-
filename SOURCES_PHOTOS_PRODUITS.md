@@ -26,6 +26,13 @@ Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `qu
 | New Balance 1906D neuve avec carton (coloris crème) | chaussures-new-balance-1906d-1.jpg … -5.jpg | Photos commerçant (WhatsApp 27/11/2026) |
 | New Balance 1906 avec carton (coloris blanc) | chaussures-new-balance-1906-1.jpg … -6.jpg | Photos commerçant (WhatsApp 27/11/2026) |
 
+## Arrivage Nike Air Max 95 (28/11/2026) — photos commerçant telles quelles
+
+6 photos fournies directement par le commerçant (fichiers WhatsApp `IMG-20261128-WA0000` à `IMG-20261128-WA0005`), copiées dans `public/images/products/` **sans aucune retouche** (sommes de contrôle identiques aux originaux). Dérivés WebP 400/800 px via `node scripts/optimize-images.mjs`.
+
+| Produit | Fichiers ajoutés | Source |
+| --- | --- | --- |
+| Nike Air Max 95 neuve avec carton (gris & vert volt) | chaussures-nike-air-max-95-1.jpg … -6.jpg | Photos commerçant (WhatsApp 28/11/2026) |
 ## Arrivage Mode Timberland & New Balance (nov. 2026)
 
 Les six photos studio ci-dessous sont des visuels générés par IA pour la fiche produit (fond blanc, sans texte ni prix incrusté), dans le même esprit que les véhicules enfants ci-dessus. Les détails (logo, finitions, coloris exacts) peuvent différer des articles réels livrés ; les photos réelles du commerçant, téléversées dans `/admin`, restent prioritaires.

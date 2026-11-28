@@ -14,6 +14,7 @@ import {
   QUADS_ENFANTS_2026_PRODUCTS,
   MOTOS_TRICYCLES_PRODUCTS,
   CHAUSSURES_MODE_PRODUCTS,
+  CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
   MODE_Timberland_NEWBALANCE_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
@@ -633,6 +634,46 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_chaussures_mode_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente de l'arrivage Nike Air Max 95 (28/11/2026,
+          // photos commerçant telles quelles). Cle dediee : les bases ou
+          // catalog_chaussures_mode_v1_synced est deja pose recoivent aussi cette
+          // fiche. ON CONFLICT DO NOTHING : conserve prix et stocks existants.
+          const { rows: nikeSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_nike_air_max_95_v1_synced'`
+          );
+          if (nikeSyncRows.length === 0) {
+            for (const p of CHAUSSURES_NIKE_AIR_MAX_95_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_nike_air_max_95_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }
