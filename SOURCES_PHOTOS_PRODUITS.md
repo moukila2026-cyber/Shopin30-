@@ -33,6 +33,15 @@ Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `qu
 | Produit | Fichiers ajoutés | Source |
 | --- | --- | --- |
 | Nike Air Max 95 neuve avec carton (gris & vert volt) | chaussures-nike-air-max-95-1.jpg … -6.jpg | Photos commerçant (WhatsApp 28/11/2026) |
+## Arrivage sneakers ASICS / Adidas × Bad Bunny / Nike TN (28/11/2026) — photos commerçant telles quelles
+
+8 photos fournies directement par le commerçant (fichiers WhatsApp `IMG-20261128-WA0007` à `IMG-20261128-WA0014`), copiées dans `public/images/products/` **sans aucune retouche** (sommes de contrôle identiques aux originaux). Prix affichés = prix annoncés + 5 000 F, à la demande du commerçant. Dérivés WebP 400/800 px via `node scripts/optimize-images.mjs`.
+
+| Produit | Fichiers ajoutés | Source |
+| --- | --- | --- |
+| ASICS GEL-Kayano 14 avec carton (blanc & bleu gris) | chaussures-asics-gel-kayano-14-1.jpg … -2.jpg | Photos commerçant (WhatsApp 28/11/2026) |
+| Adidas Campus × Bad Bunny avec carton (olive, noir, taupe) | chaussures-adidas-campus-bad-bunny-1.jpg … -4.jpg | Photos commerçant (WhatsApp 28/11/2026) |
+| Nike Air Max TN avec carton (blanc, gris & orange) | chaussures-nike-air-max-tn-1.jpg … -2.jpg | Photos commerçant (WhatsApp 28/11/2026) |
 ## Arrivage Mode Timberland & New Balance (nov. 2026)
 
 Les six photos studio ci-dessous sont des visuels générés par IA pour la fiche produit (fond blanc, sans texte ni prix incrusté), dans le même esprit que les véhicules enfants ci-dessus. Les détails (logo, finitions, coloris exacts) peuvent différer des articles réels livrés ; les photos réelles du commerçant, téléversées dans `/admin`, restent prioritaires.
