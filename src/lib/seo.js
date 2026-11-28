@@ -141,6 +141,8 @@ function inferBrandName(product) {
   if (/smart technology/i.test(name)) return 'SMART TECHNOLOGY';
   if (/force/i.test(name)) return 'FORCE';
   if (/schneider/i.test(name)) return 'Schneider Electric';
+  if (/timberland/i.test(name)) return 'Timberland';
+  if (/new balance/i.test(name)) return 'New Balance';
   return 'Pèrôkadô';
 }
 

@@ -14,3 +14,16 @@ Références sélectionnées en comparant le modèle et la photo du catalogue. L
 Les produits sans photos supplémentaires identifiées conservent leur image d'origine. Les photos importées par l'administrateur restent prioritaires.
 
 Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `quad-bleu-4roues.png`, `tricycle-chopper-jaune.png`, `scooter-jaune-noir.png`) sont des illustrations générées par IA à partir des photos fournies par le commerçant, sans texte ni prix incrusté. Leurs détails peuvent différer des articles réels.
+
+## Arrivage Mode Timberland & New Balance (nov. 2026)
+
+Les six photos studio ci-dessous sont des visuels générés par IA pour la fiche produit (fond blanc, sans texte ni prix incrusté), dans le même esprit que les véhicules enfants ci-dessus. Les détails (logo, finitions, coloris exacts) peuvent différer des articles réels livrés ; les photos réelles du commerçant, téléversées dans `/admin`, restent prioritaires.
+
+| Produit | Fichier | Source |
+| --- | --- | --- |
+| Timberland Bot 6 Pouces Premium Wheat | mode-timberland-bot-6-pouces-premium.jpg | Généré par IA (studio, fond blanc) |
+| Timberland Chelsea Noir Cuir | mode-timberland-chelsea-noir.jpg | Généré par IA (studio, fond blanc) |
+| Timberland Euro Hiker Randonnée | mode-timberland-euro-hiker-randonnee.jpg | Généré par IA (studio, fond blanc) |
+| New Balance 574 Gris | mode-new-balance-574-gris.jpg | Généré par IA (studio, fond blanc) |
+| New Balance 990v6 Gris Premium | mode-new-balance-990v6-gris.jpg | Généré par IA (studio, fond blanc) |
+| New Balance 327 Blanc & Beige | mode-new-balance-327-blanc.jpg | Généré par IA (studio, fond blanc) |
