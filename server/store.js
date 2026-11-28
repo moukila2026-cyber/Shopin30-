@@ -8,6 +8,7 @@ import {
   BRAND,
   DELIVERY_ZONES,
   BTP_ARRIVAGE_DEC2026_PRODUCTS,
+  CHAUSSURES_MODE_2026_PRODUCTS,
   INITIAL_PRODUCTS,
   INITIAL_PROMO_CODES,
   JOUETS_ENFANTS_PRODUCTS,
@@ -157,6 +158,13 @@ function mapProductRow(row) {
     null,
   ];
   const gallerySlots = [primaryImage, ...[2, 3].map((slot) => row[`has_photo_${slot}`] ? photoUrl(slot) : fallbackSlots[slot - 2])];
+  // Galeries multi-photos (chaussures Mode 2026) : ajouter les vues au-delà des slots 2-3
+  // sans modifier les fiches existantes (<= 2 vues supplémentaires => aucun changement).
+  if (curated && Array.isArray(curated.images) && curated.images.length > 2 && !curated.galleryAfterPrimary) {
+    for (const extraUrl of curated.images.slice(2)) {
+      if (extraUrl && !gallerySlots.includes(extraUrl)) gallerySlots.push(extraUrl);
+    }
+  }
   return {
     id: row.id,
     slug: row.slug,
@@ -585,6 +593,45 @@ export function createStore(adapterPromiseOrInstance) {
             await adapter.query(
               `INSERT INTO store_settings (key, value)
                VALUES ('catalog_btp_dec2026_v7_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
+          // Synchronisation idempotente des chaussures Mode 2026 (Timberland 4 coloris
+          // + New Balance 1906 / 1906R / 1906D, photos commercant telles quelles).
+          // ON CONFLICT DO NOTHING : n'ecrase jamais un prix/stock/photo modifie dans /gestion.
+          const { rows: chaussuresSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_chaussures_mode_2026_v1_synced'`
+          );
+          if (chaussuresSyncRows.length === 0) {
+            for (const p of CHAUSSURES_MODE_2026_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_chaussures_mode_2026_v1_synced', '{"done":true}'::jsonb)
                ON CONFLICT (key) DO NOTHING`
             );
           }

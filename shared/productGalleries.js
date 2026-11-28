@@ -55,4 +55,37 @@ export const PRODUCT_GALLERIES = {
     primaryOriginal: true,
     images: ['/images/gallery/a9l40601-face.jpg'],
   },
+  // Chaussures Mode 2026 : photos commerçant telles quelles (sans retouche).
+  // primaryOriginal: true => imageUrl reste la photo principale, images = vues suivantes.
+  'mode-new-balance-1906-blanc': {
+    original: '/images/products/mode-new-balance-1906-blanc-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/mode-new-balance-1906-blanc-2.jpg',
+      '/images/products/mode-new-balance-1906-blanc-3.jpg',
+      '/images/products/mode-new-balance-1906-blanc-4.jpg',
+      '/images/products/mode-new-balance-1906-blanc-5.jpg',
+      '/images/products/mode-new-balance-1906-blanc-6.jpg',
+    ],
+  },
+  'mode-new-balance-1906r-gris': {
+    original: '/images/products/mode-new-balance-1906r-gris-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/mode-new-balance-1906r-gris-2.jpg',
+      '/images/products/mode-new-balance-1906r-gris-3.jpg',
+      '/images/products/mode-new-balance-1906r-gris-4.jpg',
+      '/images/products/mode-new-balance-1906r-gris-5.jpg',
+    ],
+  },
+  'mode-new-balance-1906d-beige': {
+    original: '/images/products/mode-new-balance-1906d-beige-1.jpg',
+    primaryOriginal: true,
+    images: [
+      '/images/products/mode-new-balance-1906d-beige-2.jpg',
+      '/images/products/mode-new-balance-1906d-beige-3.jpg',
+      '/images/products/mode-new-balance-1906d-beige-4.jpg',
+      '/images/products/mode-new-balance-1906d-beige-5.jpg',
+    ],
+  },
 };

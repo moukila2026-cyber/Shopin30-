@@ -14,3 +14,17 @@ Références sélectionnées en comparant le modèle et la photo du catalogue. L
 Les produits sans photos supplémentaires identifiées conservent leur image d'origine. Les photos importées par l'administrateur restent prioritaires.
 
 Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `quad-bleu-4roues.png`, `tricycle-chopper-jaune.png`, `scooter-jaune-noir.png`) sont des illustrations générées par IA à partir des photos fournies par le commerçant, sans texte ni prix incrusté. Leurs détails peuvent différer des articles réels.
+
+## Chaussures Mode 2026 — Photos commerçant telles quelles (27/11/2026)
+
+20 photos fournies par le commerçant, copiées sans retouche ni génération IA (octets d'origine conservés, vignettes WebP générées en plus pour le chargement rapide).
+
+| Produit | Fichiers | Source |
+| --- | --- | --- |
+| Timberland Botte Blanche | mode-timberland-botte-blanc.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0031.jpg) |
+| Timberland Botte Jaune (Wheat) | mode-timberland-botte-jaune.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0030.jpg) |
+| Timberland Botte Bleue | mode-timberland-botte-bleu.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0029.jpg) |
+| Timberland Botte Rouge | mode-timberland-botte-rouge.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0028.jpg) |
+| New Balance 1906 Blanc (6 vues) | mode-new-balance-1906-blanc-1.jpg … -6.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0012.jpg … WA0017.jpg) |
+| New Balance 1906R Gris & Noir (5 vues) | mode-new-balance-1906r-gris-1.jpg … -5.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0018.jpg … WA0022.jpg) |
+| New Balance 1906D Beige Suède (5 vues) | mode-new-balance-1906d-beige-1.jpg … -5.jpg | Photos commerçant 27/11/2026 (IMG-20261127-WA0023.jpg … WA0027.jpg) |

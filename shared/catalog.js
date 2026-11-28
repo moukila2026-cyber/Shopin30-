@@ -6183,6 +6183,182 @@ export const CUISINE_MAISON_PRODUCTS = [
   },
 ];
 
+// ==============================================================================
+// CHAUSSURES MODE 2026 — Timberland & New Balance 1906 (photos commerçant telles quelles)
+// Prix, pointures et carton/sans carton conformes aux indications du commerçant.
+// Photos : 20 visuels fournis le 27/11/2026, copiés sans retouche ni IA.
+// ==============================================================================
+export const CHAUSSURES_MODE_2026_PRODUCTS = [
+  {
+    id: 'mode-timberland-botte-blanc',
+    slug: 'botte-timberland-blanche-pointures-40-45',
+    name: 'Botte Timberland Blanche — Pointures 40 à 45 (Sans carton)',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Stock limité',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Botte Timberland blanche neuve, pointures 40 à 45, vendue sans carton. Stock très limité — commandez vite !',
+    description:
+      'Botte Timberland blanche neuve au style iconique, semelle crantée antidérapante et tige montante confortable. Vendue sans carton (sans boîte) au prix de 30 000 FCFA. Pointures disponibles : 40 à 45 — précisez votre pointure dans la note de commande. Disponible aussi en jaune (Wheat), bleu et rouge : voir les autres fiches Timberland. Stock très limité, vérifiez la disponibilité avant de commander.',
+    specs: [
+      'Marque Timberland · Botte montante neuve',
+      'Pointures disponibles : 40 à 45 (précisez votre pointure en note de commande)',
+      'Vendue sans carton (sans boîte)',
+      'Coloris : Blanc (aussi disponible en Jaune, Bleu et Rouge)',
+      'Stock très limité — commande rapide recommandée',
+    ],
+    imageUrl: '/images/products/mode-timberland-botte-blanc.jpg',
+  },
+  {
+    id: 'mode-timberland-botte-jaune',
+    slug: 'botte-timberland-jaune-wheat-pointures-40-45',
+    name: 'Botte Timberland Jaune (Wheat) — Pointures 40 à 45 (Sans carton)',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Stock limité',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Botte Timberland jaune Wheat neuve, pointures 40 à 45, vendue sans carton. Stock très limité — commandez vite !',
+    description:
+      'La célèbre botte Timberland jaune Wheat neuve, en daim nubuck et semelle crantée, pour un style intemporel et une tenue parfaite en ville comme au quotidien. Vendue sans carton (sans boîte) au prix de 30 000 FCFA. Pointures disponibles : 40 à 45 — précisez votre pointure dans la note de commande. Disponible aussi en blanc, bleu et rouge : voir les autres fiches Timberland. Stock très limité, vérifiez la disponibilité avant de commander.',
+    specs: [
+      'Marque Timberland · Botte montante jaune Wheat neuve',
+      'Pointures disponibles : 40 à 45 (précisez votre pointure en note de commande)',
+      'Vendue sans carton (sans boîte)',
+      'Coloris : Jaune Wheat (aussi disponible en Blanc, Bleu et Rouge)',
+      'Stock très limité — commande rapide recommandée',
+    ],
+    imageUrl: '/images/products/mode-timberland-botte-jaune.jpg',
+  },
+  {
+    id: 'mode-timberland-botte-bleu',
+    slug: 'botte-timberland-bleue-pointures-40-45',
+    name: 'Botte Timberland Bleue — Pointures 40 à 45 (Sans carton)',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Stock limité',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Botte Timberland bleue neuve, pointures 40 à 45, vendue sans carton. Stock très limité — commandez vite !',
+    description:
+      'Botte Timberland bleue neuve au style iconique, semelle crantée blanche et tige montante confortable. Vendue sans carton (sans boîte) au prix de 30 000 FCFA. Pointures disponibles : 40 à 45 — précisez votre pointure dans la note de commande. Disponible aussi en blanc, jaune (Wheat) et rouge : voir les autres fiches Timberland. Stock très limité, vérifiez la disponibilité avant de commander.',
+    specs: [
+      'Marque Timberland · Botte montante neuve',
+      'Pointures disponibles : 40 à 45 (précisez votre pointure en note de commande)',
+      'Vendue sans carton (sans boîte)',
+      'Coloris : Bleu (aussi disponible en Blanc, Jaune et Rouge)',
+      'Stock très limité — commande rapide recommandée',
+    ],
+    imageUrl: '/images/products/mode-timberland-botte-bleu.jpg',
+  },
+  {
+    id: 'mode-timberland-botte-rouge',
+    slug: 'botte-timberland-rouge-pointures-40-45',
+    name: 'Botte Timberland Rouge — Pointures 40 à 45 (Sans carton)',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Stock limité',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'Botte Timberland rouge neuve, pointures 40 à 45, vendue sans carton. Stock très limité — commandez vite !',
+    description:
+      'Botte Timberland rouge neuve au style iconique, semelle crantée blanche et tige montante confortable. Vendue sans carton (sans boîte) au prix de 30 000 FCFA. Pointures disponibles : 40 à 45 — précisez votre pointure dans la note de commande. Disponible aussi en blanc, jaune (Wheat) et bleu : voir les autres fiches Timberland. Stock très limité, vérifiez la disponibilité avant de commander.',
+    specs: [
+      'Marque Timberland · Botte montante neuve',
+      'Pointures disponibles : 40 à 45 (précisez votre pointure en note de commande)',
+      'Vendue sans carton (sans boîte)',
+      'Coloris : Rouge (aussi disponible en Blanc, Jaune et Bleu)',
+      'Stock très limité — commande rapide recommandée',
+    ],
+    imageUrl: '/images/products/mode-timberland-botte-rouge.jpg',
+  },
+  {
+    id: 'mode-new-balance-1906-blanc',
+    slug: 'new-balance-1906-blanc-pointures-40-45-avec-carton',
+    name: 'New Balance 1906 Blanc — Pointures 40 à 45 (Avec carton)',
+    category: 'mode',
+    price: 25000,
+    compareAtPrice: null,
+    stock: 8,
+    badge: 'Avec carton',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'New Balance 1906 blanche neuve avec carton, pointures 40 à 45. Livrée avec semelles intérieures d’origine.',
+    description:
+      'Sneaker New Balance 1906 blanche neuve, livrée avec son carton d’origine et ses semelles intérieures. Mesh respirant, empiècements synthétiques et amorti N-ERGY pour un confort toute la journée. Prix : 25 000 FCFA avec carton. Pointures disponibles : 40 à 45 — précisez votre pointure dans la note de commande. Photos réelles du commerçant, sans retouche.',
+    specs: [
+      'Marque New Balance · Modèle 1906 Blanc neuf',
+      'Pointures disponibles : 40 à 45 (précisez votre pointure en note de commande)',
+      'Livrée avec carton d’origine + semelles intérieures',
+      'Amorti N-ERGY · Mesh respirant et empiècements synthétiques',
+      'Photos réelles fournies par le commerçant, sans retouche',
+    ],
+    imageUrl: '/images/products/mode-new-balance-1906-blanc-1.jpg',
+  },
+  {
+    id: 'mode-new-balance-1906r-gris',
+    slug: 'new-balance-1906r-gris-noir-pointures-40-41-avec-carton',
+    name: 'New Balance 1906R Gris & Noir — Pointures 40-41 (Avec carton)',
+    category: 'mode',
+    price: 25000,
+    compareAtPrice: null,
+    stock: 5,
+    badge: 'Avec carton',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'New Balance 1906R grise et noire neuve avec carton, pointures 40-41 uniquement. Stock limité.',
+    description:
+      'Sneaker New Balance 1906R grise et noire neuve, livrée avec son carton d’origine. Mesh technique, empiècements argentés et amorti N-ERGY pour un style runner rétro et un confort durable. Prix : 25 000 FCFA avec carton. Pointures disponibles : 40 et 41 uniquement — précisez votre pointure dans la note de commande. Photos réelles du commerçant, sans retouche.',
+    specs: [
+      'Marque New Balance · Modèle 1906R Gris & Noir neuf',
+      'Pointures disponibles : 40 et 41 uniquement (précisez votre pointure en note)',
+      'Livrée avec carton d’origine',
+      'Amorti N-ERGY · Mesh technique et empiècements argentés',
+      'Photos réelles fournies par le commerçant, sans retouche',
+    ],
+    imageUrl: '/images/products/mode-new-balance-1906r-gris-1.jpg',
+  },
+  {
+    id: 'mode-new-balance-1906d-beige',
+    slug: 'new-balance-1906d-beige-suede-pointures-40-44-avec-carton',
+    name: 'New Balance 1906D Beige Suède — Pointures 40 à 44 (Avec carton)',
+    category: 'mode',
+    price: 30000,
+    compareAtPrice: null,
+    stock: 6,
+    badge: 'Avec carton',
+    featured: true,
+    isHeavy: false,
+    shortDescription:
+      'New Balance 1906D beige en suède neuve avec carton, pointures 40 à 44. Édition premium.',
+    description:
+      'Sneaker New Balance 1906D beige en suède neuve, livrée avec son carton d’origine. Superpositions en suède premium, mesh blanc et amorti N-ERGY : le modèle le plus habillé de la gamme 1906. Prix : 30 000 FCFA avec carton. Pointures disponibles : 40 à 44 — précisez votre pointure dans la note de commande. Photos réelles du commerçant, sans retouche.',
+    specs: [
+      'Marque New Balance · Modèle 1906D Beige Suède neuf',
+      'Pointures disponibles : 40 à 44 (précisez votre pointure en note de commande)',
+      'Livrée avec carton d’origine',
+      'Superpositions suède premium · Amorti N-ERGY',
+      'Photos réelles fournies par le commerçant, sans retouche',
+    ],
+    imageUrl: '/images/products/mode-new-balance-1906d-beige-1.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...BTP_ARRIVAGE_DEC2026_PRODUCTS,
@@ -6192,6 +6368,7 @@ export const INITIAL_PRODUCTS = [
   ...JOUETS_ENFANTS_PRODUCTS,
   ...QUADS_ENFANTS_2026_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
+  ...CHAUSSURES_MODE_2026_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',
