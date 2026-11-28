@@ -15,6 +15,7 @@ import {
   MOTOS_TRICYCLES_PRODUCTS,
   CHAUSSURES_MODE_PRODUCTS,
   CUISINE_MAISON_PRODUCTS,
+  MODE_Timberland_NEWBALANCE_PRODUCTS,
   NOUVEAUTES_SMART_MOBILIER_PRODUCTS,
   QUINCAILLERIE_BTP_PRODUCTS,
   SMART_TECHNOLOGY_PRODUCTS,
@@ -635,6 +636,45 @@ export function createStore(adapterPromiseOrInstance) {
                ON CONFLICT (key) DO NOTHING`
             );
           }
+          // Synchronisation idempotente de l'arrivage Mode Timberland & New Balance
+          // (6 chaussures : 3 Timberland + 3 New Balance, photos studio).
+          // ON CONFLICT DO NOTHING : conserve les fiches, prix et photos existants.
+          const { rows: modeSyncRows } = await adapter.query(
+            `SELECT 1 FROM store_settings WHERE key = 'catalog_mode_timberland_newbalance_v1_synced'`
+          );
+          if (modeSyncRows.length === 0) {
+            for (const p of MODE_Timberland_NEWBALANCE_PRODUCTS) {
+              await adapter.query(
+                `INSERT INTO products (
+                  id, slug, name, category, price, compare_at_price, stock,
+                  badge, featured, active, short_description, description, specs, image_url, is_heavy
+                ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,TRUE,$10,$11,$12::jsonb,$13,$14)
+                ON CONFLICT (id) DO NOTHING`,
+                [
+                  p.id,
+                  p.slug,
+                  p.name,
+                  p.category,
+                  p.price,
+                  p.compareAtPrice,
+                  p.stock,
+                  p.badge || '',
+                  Boolean(p.featured),
+                  p.shortDescription || '',
+                  p.description || '',
+                  JSON.stringify(p.specs || []),
+                  p.imageUrl,
+                  inferHeavyShipping(p),
+                ]
+              );
+            }
+            await adapter.query(
+              `INSERT INTO store_settings (key, value)
+               VALUES ('catalog_mode_timberland_newbalance_v1_synced', '{"done":true}'::jsonb)
+               ON CONFLICT (key) DO NOTHING`
+            );
+          }
+
 
           await adapter.query(
             `UPDATE products SET name = REPLACE(name, '\`', '') WHERE name LIKE '%\`%'`

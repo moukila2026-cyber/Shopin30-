@@ -147,6 +147,37 @@ test('Chaussures Mode : Timberland et New Balance 1906, prix, pointures et carto
   assert.match(nb1906.name, /New Balance 1906/);
 });
 
+test('Mode Timberland & New Balance : six chaussures, prix, stock et images', async () => {
+  const catalog = await reqJson('/api/catalog');
+  const expected = {
+    'timberland-bot-6-pouces-premium': { price: 79900, stock: 10, image: '/images/products/mode-timberland-bot-6-pouces-premium.jpg' },
+    'timberland-chelsea-noir-cuir': { price: 69900, stock: 8, image: '/images/products/mode-timberland-chelsea-noir.jpg' },
+    'timberland-euro-hiker-randonnee': { price: 74900, stock: 9, image: '/images/products/mode-timberland-euro-hiker-randonnee.jpg' },
+    'new-balance-574-gris': { price: 59900, stock: 14, image: '/images/products/mode-new-balance-574-gris.jpg' },
+    'new-balance-990v6-gris': { price: 99900, stock: 6, image: '/images/products/mode-new-balance-990v6-gris.jpg' },
+    'new-balance-327-blanc': { price: 54900, stock: 12, image: '/images/products/mode-new-balance-327-blanc.jpg' },
+  };
+  for (const [id, exp] of Object.entries(expected)) {
+    const product = catalog.data.products.find((p) => p.id === id);
+    assert.ok(product, id);
+    assert.equal(product.category, 'mode');
+    assert.equal(product.price, exp.price);
+    assert.equal(product.stock, exp.stock);
+    assert.equal(product.imageUrl, exp.image);
+    assert.equal(product.isHeavy, false);
+    assert.ok(product.slug && product.slug.length > 3, `${id} slug`);
+    assert.ok(product.shortDescription.length > 20, `${id} description courte`);
+    assert.ok(Array.isArray(product.specs) && product.specs.length >= 3, `${id} specs`);
+    assert.deepEqual(product.generatedGalleryUrls, [product.imageUrl]);
+  }
+  // Recherche par marque : Timberland et New Balance doivent retrouver leurs fiches
+  // (3 références studio + arrivage commerçant : 1 Timberland et 3 New Balance 1906)
+  const timber = catalog.data.products.filter((p) => /timberland/i.test(p.name));
+  const nb = catalog.data.products.filter((p) => /new balance/i.test(p.name));
+  assert.equal(timber.length, 4);
+  assert.equal(nb.length, 6);
+});
+
 test('La mise à jour unique du stock des véhicules ne remet pas le stock après une commande', async () => {
   const db = await createDatabaseAdapter('');
   const first = createStore(db);

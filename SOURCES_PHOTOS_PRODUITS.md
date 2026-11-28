@@ -25,3 +25,16 @@ Les quatre nouveaux visuels des véhicules enfants (`quad-racing-jaune.png`, `qu
 | New Balance 1906R avec carton (coloris argent) | chaussures-new-balance-1906r-1.jpg … -5.jpg | Photos commerçant (WhatsApp 27/11/2026) |
 | New Balance 1906D neuve avec carton (coloris crème) | chaussures-new-balance-1906d-1.jpg … -5.jpg | Photos commerçant (WhatsApp 27/11/2026) |
 | New Balance 1906 avec carton (coloris blanc) | chaussures-new-balance-1906-1.jpg … -6.jpg | Photos commerçant (WhatsApp 27/11/2026) |
+
+## Arrivage Mode Timberland & New Balance (nov. 2026)
+
+Les six photos studio ci-dessous sont des visuels générés par IA pour la fiche produit (fond blanc, sans texte ni prix incrusté), dans le même esprit que les véhicules enfants ci-dessus. Les détails (logo, finitions, coloris exacts) peuvent différer des articles réels livrés ; les photos réelles du commerçant, téléversées dans `/admin`, restent prioritaires.
+
+| Produit | Fichier | Source |
+| --- | --- | --- |
+| Timberland Bot 6 Pouces Premium Wheat | mode-timberland-bot-6-pouces-premium.jpg | Généré par IA (studio, fond blanc) |
+| Timberland Chelsea Noir Cuir | mode-timberland-chelsea-noir.jpg | Généré par IA (studio, fond blanc) |
+| Timberland Euro Hiker Randonnée | mode-timberland-euro-hiker-randonnee.jpg | Généré par IA (studio, fond blanc) |
+| New Balance 574 Gris | mode-new-balance-574-gris.jpg | Généré par IA (studio, fond blanc) |
+| New Balance 990v6 Gris Premium | mode-new-balance-990v6-gris.jpg | Généré par IA (studio, fond blanc) |
+| New Balance 327 Blanc & Beige | mode-new-balance-327-blanc.jpg | Généré par IA (studio, fond blanc) |

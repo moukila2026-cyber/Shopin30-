@@ -1,7 +1,7 @@
 // ==============================================================================
 // Générateur de sitemap Pèrôkadô
 // Usage : node scripts/generate-sitemap.mjs
-// Écrit public/sitemap.xml : accueil, rayons, 274 fiches produit, pages villes.
+// Écrit public/sitemap.xml : accueil, rayons, 286 fiches produit, pages villes.
 // ==============================================================================
 import fs from 'node:fs';
 import path from 'node:path';
@@ -48,7 +48,7 @@ for (const cat of CATEGORIES.filter((c) => c.id !== 'all')) {
   parts.push(url(`${SITE}/rayon/${cat.id}`, { changefreq: 'daily', priority: '0.8' }));
 }
 
-// Fiches produit (274)
+// Fiches produit (286)
 for (const p of INITIAL_PRODUCTS) {
   parts.push(url(`${SITE}/produit/${encodeURIComponent(p.slug || p.id)}`, { priority: '0.6' }));
 }

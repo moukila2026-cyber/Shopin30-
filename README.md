@@ -19,7 +19,7 @@ Propulsée par **React 19 + Vite + Tailwind CSS 4** côté interface, **Express 
 - **Supplément quartier à Daloa** : grille de 16 quartiers (Lobia, Tazibouo, Commerce, Kennedy, Orly, Zakoua, Gonaté, Bédiala…) appliquant 0 à 250 F de supplément sur le tarif commune ou périphérie.
 - **Avis clients réels modérés** : formulaire de dépôt sur chaque fiche produit, mention « achat vérifié » automatique si la référence de commande correspond, publication après validation dans la console Seller Central. Aucune note n'est générée artificiellement.
 - **PWA installable** : manifest + service worker (cache du shell, images en stale-while-revalidate, catalogue en network-first) et raccourcis panier / suivi / rayon BTP.
-- **SEO local** : JSON-LD `OnlineStore`, `WebSite`, `Product`, `BreadcrumbList`, `ItemList` ; sitemap de 292 URL (`/produit/:slug`, `/rayon/:id`, `/ville/:slug`) ; 8 pages villes avec contenu local et maillage interne.
+- **SEO local** : JSON-LD `OnlineStore`, `WebSite`, `Product`, `BreadcrumbList`, `ItemList` ; sitemap de 304 URL (`/produit/:slug`, `/rayon/:id`, `/ville/:slug`) ; 8 pages villes avec contenu local et maillage interne.
 - **Chargement progressif** : 24 produits par page avec bouton « Afficher plus », images WebP 400/800 px en `srcset`, bundle découpé (react / icons / qrcode / catalogue).
 - **Génération immédiate de Référence + Code QR de suivi en direct** :
   - Chaque commande génère une référence `PKD-XXXXXX` et un **Code QR téléchargeable** intégrant un jeton cryptographique sécurisé.

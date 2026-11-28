@@ -6298,6 +6298,140 @@ export const CHAUSSURES_MODE_PRODUCTS = [
   },
 ];
 
+// ================= MODE : TIMBERLAND & NEW BALANCE =================
+// Arrivage Mode (nov. 2026) : 3 Timberland (bottes cuir) + 3 New Balance
+// (sneakers running rétro). Photos studio sur fond blanc générées pour la
+// fiche produit — voir SOURCES_PHOTOS_PRODUITS.md. Pointures 40 à 45 à
+// préciser en note de commande (stock par pointure sur demande).
+export const MODE_Timberland_NEWBALANCE_PRODUCTS = [
+  {
+    id: 'timberland-bot-6-pouces-premium',
+    slug: 'timberland-bot-6-pouces-premium-impermeable',
+    name: 'Bot Timberland Premium 6 Pouces Imperméable — Cuir Wheat / Miel',
+    category: 'mode',
+    price: 79900,
+    compareAtPrice: 95000,
+    stock: 10,
+    badge: 'Iconique',
+    featured: true,
+    shortDescription: 'Le bot 6 pouces légendaire en cuir pleine fleur imperméable, semelle crantée antidérapante et col matelassé.',
+    description:
+      'L’icône absolue de Timberland : le bot 6 pouces Premium en cuir pleine fleur imperméable couleur wheat/miel, avec sa semelle en caoutchouc crantée reconnaissable entre toutes. Conçu pour durer des années, il allie style workwear authentique et confort quotidien — parfait pour le travail, la ville et les sorties à Daloa comme en expédition. Col matelassé anti-fatigue, lacets renforcés et finitions cousues main.',
+    specs: [
+      'Marque Timberland · Bot Premium 6 pouces · Cuir pleine fleur imperméable',
+      'Pointures 40 à 45 (précisez votre pointure en note de commande)',
+      'Semelle caoutchouc crantée antidérapante · Col matelassé confort',
+      'Entretien : brosse douce + spray imperméabilisant cuir',
+    ],
+    imageUrl: '/images/products/mode-timberland-bot-6-pouces-premium.jpg',
+  },
+  {
+    id: 'timberland-chelsea-noir-cuir',
+    slug: 'timberland-chelsea-noir-cuir-homme',
+    name: 'Bot Chelsea Timberland Noir Cuir Lisse — Homme',
+    category: 'mode',
+    price: 69900,
+    compareAtPrice: 85000,
+    stock: 8,
+    badge: 'Nouveauté',
+    featured: false,
+    shortDescription: 'Chelsea en cuir noir lisse, panneaux élastiques latéraux et semelle crantée — élégant du bureau au week-end.',
+    description:
+      'La Chelsea Timberland en cuir noir lisse est la botte habillée par excellence : silhouette épurée, panneaux élastiques latéraux pour un enfichage rapide et semelle crantée qui garde l’ADN robuste de la marque. Elle se porte avec un jean, un pantalon chino ou une tenue de cérémonie, sans jamais sacrifier le confort de marche.',
+    specs: [
+      'Marque Timberland · Chelsea cuir lisse noir · Homme',
+      'Pointures 40 à 45 (précisez votre pointure en note de commande)',
+      'Panneaux élastiques latéraux · Tirette arrière · Semelle crantée',
+      'Entretien : chiffon doux + crème cuir noir',
+    ],
+    imageUrl: '/images/products/mode-timberland-chelsea-noir.jpg',
+  },
+  {
+    id: 'timberland-euro-hiker-randonnee',
+    slug: 'timberland-euro-hiker-randonnee-impermeable',
+    name: 'Bot Randonnée Timberland Euro Hiker Imperméable — Daim Marron',
+    category: 'mode',
+    price: 74900,
+    compareAtPrice: 89000,
+    stock: 9,
+    badge: 'Choix Pèrôkadô',
+    featured: false,
+    shortDescription: 'Bot de randonnée en daim marron imperméable, crochets métalliques et semelle outdoor ultra-adhérente.',
+    description:
+      'La Euro Hiker Timberland est pensée pour les terrains difficiles : tige en daim marron imperméable, crochets et œillets métalliques pour un laçage précis et une semelle outdoor à crampons profonds. Maintien de la cheville renforcé, embout protégé et confort de marche longue durée — idéale pour les déplacements, le travail de terrain et les voyages.',
+    specs: [
+      'Marque Timberland · Euro Hiker · Daim imperméable marron',
+      'Pointures 40 à 45 (précisez votre pointure en note de commande)',
+      'Crochets métalliques · Semelle outdoor crampons profonds',
+      'Embout renforcé · Membrane imperméable · Maintien cheville',
+    ],
+    imageUrl: '/images/products/mode-timberland-euro-hiker-randonnee.jpg',
+  },
+  {
+    id: 'new-balance-574-gris',
+    slug: 'new-balance-574-gris-classique',
+    name: 'Sneakers New Balance 574 Gris Classique — Daim & Mesh',
+    category: 'mode',
+    price: 59900,
+    compareAtPrice: 72000,
+    stock: 14,
+    badge: 'Meilleure vente',
+    featured: true,
+    shortDescription: 'L’iconique 574 en daim gris et mesh respirant, logo N blanc et semelle ENCAP amortissante — le running rétro intemporel.',
+    description:
+      'La New Balance 574 est la sneaker rétro-running la plus vendue au monde : daim gris premium et mesh respirant, grand logo N blanc et semelle ENCAP qui absorbe les chocs à chaque pas. Elle va avec tout — jean, short, tenue de sport ou de ville — et reste confortable du matin au soir. Un indispensable du vestiaire, du lycée au bureau.',
+    specs: [
+      'Marque New Balance · Modèle 574 · Gris / Blanc',
+      'Pointures 40 à 45 (précisez votre pointure en note de commande)',
+      'Tige daim + mesh respirant · Semelle ENCAP amortissante',
+      'Semelle extérieure caoutchouc carbone · Lacets plats',
+    ],
+    imageUrl: '/images/products/mode-new-balance-574-gris.jpg',
+  },
+  {
+    id: 'new-balance-990v6-gris',
+    slug: 'new-balance-990v6-gris-premium',
+    name: 'Sneakers New Balance 990v6 Gris Premium — Made in USA',
+    category: 'mode',
+    price: 99900,
+    compareAtPrice: 119000,
+    stock: 6,
+    badge: 'Premium USA',
+    featured: true,
+    shortDescription: 'La 990v6 haut de gamme : daim gris premium, mesh technique et semelle FuelCell + ENCAP pour un confort maximal.',
+    description:
+      'La 990v6 est le sommet de la gamme New Balance Made in USA : daim gris premium, mesh technique respirant et double amorti FuelCell + ENCAP pour une sensation de marche incomparable. Finitions soignées, détails réfléchissants et silhouette athlétique — la sneaker premium pour ceux qui ne veulent aucun compromis sur le confort et le style.',
+    specs: [
+      'Marque New Balance · Modèle 990v6 · Gris premium',
+      'Pointures 40 à 45 (précisez votre pointure en note de commande)',
+      'Amorti FuelCell + ENCAP · Daim premium + mesh technique',
+      'Détails réfléchissants · Semelle caoutchouc haute adhérence',
+    ],
+    imageUrl: '/images/products/mode-new-balance-990v6-gris.jpg',
+  },
+  {
+    id: 'new-balance-327-blanc',
+    slug: 'new-balance-327-blanc-beige-vintage',
+    name: 'Sneakers New Balance 327 Blanc & Beige Vintage — Unisexe',
+    category: 'mode',
+    price: 54900,
+    compareAtPrice: 65000,
+    stock: 12,
+    badge: 'Nouveauté',
+    featured: false,
+    shortDescription: 'Inspiration running des années 70 : daim beige, toile crème, grand N blanc et semelle gomme — style vintage assumé.',
+    description:
+      'La New Balance 327 puise dans les archives running des années 70 : daim beige, toile crème, grand logo N blanc et semelle gomme à crampons. Sa silhouette allongée et ses couleurs vintage en font la sneaker tendance du moment, unisexe et facile à assortir à toutes les tenues décontractées.',
+    specs: [
+      'Marque New Balance · Modèle 327 · Blanc / Beige vintage · Unisexe',
+      'Pointures 40 à 45 (précisez votre pointure en note de commande)',
+      'Tige daim + toile · Grand logo N · Semelle gomme crantée',
+      'Style running années 70 · Confort quotidien',
+    ],
+    imageUrl: '/images/products/mode-new-balance-327-blanc.jpg',
+  },
+];
+
 export const INITIAL_PRODUCTS = [
   ...QUINCAILLERIE_BTP_PRODUCTS,
   ...BTP_ARRIVAGE_DEC2026_PRODUCTS,
@@ -6308,6 +6442,7 @@ export const INITIAL_PRODUCTS = [
   ...QUADS_ENFANTS_2026_PRODUCTS,
   ...CUISINE_MAISON_PRODUCTS,
   ...CHAUSSURES_MODE_PRODUCTS,
+  ...MODE_Timberland_NEWBALANCE_PRODUCTS,
   {
     id: 'smartphone-nova-x12',
     slug: 'smartphone-nova-x12-128go',
